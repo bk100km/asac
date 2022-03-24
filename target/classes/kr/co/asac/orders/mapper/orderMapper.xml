@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- OrderMapper.xml -->
+
+<mapper namespace="kr.co.asac.orders.dao.OrderDAO">
+
+	<!-- OrderClient -->
+	<select id="orderClientList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join product p on p.pcode = o.pcode where m.mid = #{id}
+	</select>
+	
+	<select id="orderClientInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join product p on p.pcode = o.pcode where ocode=#{ocode} 
+	</select>
+	
+	<update id="orderClientUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
+		update orders set oname=#{oname}, oaddrz=#{oaddrz} , oaddr=#{oaddr} , oaddrd=#{oaddrd} , omessage=#{omessage} 
+		where ocode=#{ocode}
+	</update>
+	
+	<delete id="orderClientDelete" >
+		delete from orders where ocode=#{ocode}
+	</delete>
+	
+	<!-- OrderSeller -->
+	<select id="orderSellerList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			s.sid = #{id}
+			<if test="search.searchType==null">
+			</if>
+			<if test="search.searchType=='pname' and keyword != null and keyword != '' ">
+				AND o.pname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="search.searchType=='oname' and keyword != null and keyword != '' ">
+				AND oname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="search.searchType=='mid' and keyword != null and keyword != '' ">
+				AND o.mid like CONCAT('%', #{keyword}, '%')
+			</if>
+		</trim>
+		order by ocode desc
+		limit 1, 10
+	</select>
+	
+	<select id="orderSellerInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where ocode = #{ocode}
+	</select>
+	
+	<update id="orderSellerUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
+		update orders
+		set oname = #{oname}, ophone = #{ophone}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, oregdate = now() where ocode = #{ocode}
+	</update>
+
+	<delete id="orderSellerDelete" >
+		delete from orders where ocode = #{ocode}
+	</delete>
+	
+	<!-- OrderAdmin -->
+	<select id="orderAdminList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchType=='pname' and keyword != null and keyword != '' ">
+				AND p.pname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType=='oname' and keyword != null and keyword != '' ">
+				AND oname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType=='mid' and keyword != null and keyword != '' ">
+				AND o.mid like CONCAT('%', #{keyword}, '%')
+			</if>
+		</trim>
+		order by ocode desc
+		limit #{startList}, #{listSize}
+	</select>
+	
+	<!-- 전체 글의 개수를 읽어 오는 SQL문 -->
+	<select id="orderAdminCount" resultType="int">
+		select count(*) as listCnt from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="keyword != null and keyword != '' ">
+				<if test="searchType=='pname'">
+					AND p.pname like CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="searchType=='oname'">
+					AND oname like CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="searchType=='mid'">
+					AND m.mid like CONCAT('%', #{keyword}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>
+	
+	<select id="orderAdminInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where ocode = #{ocode}
+	</select>
+	
+	<update id="orderAdminUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
+		update orders
+		set oname = #{oname}, ophone = #{ophone}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, oregdate = now() where ocode = #{ocode}
+	</update>
+	
+	<delete id="orderAdminDelete" >
+		delete from orders where ocode = #{ocode}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.asac.member.dao.MemberDAO">
+
+	<!-- client	 -->
+	<select id="memberClientLoginCheck" resultType="String">
+		select * from member where mid=#{mid} and mpwd=#{mpwd}
+	</select>	
+	
+	<select id="memberInfo" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mid=#{mid}
+	</select>
+	
+	<insert id="memberJoin" parameterType="kr.co.asac.member.bean.MemberBean" >
+		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
+		values (#{mid}, #{mpwd}, #{mname}, #{mbirth}, #{mphone}, #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+	</insert>
+	
+	<select id="memberIdChk" resultType="int">
+		select count(*) from member
+		where mid = #{mid}
+	</select>
+	
+	<select id="memberClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mid=#{mid}
+	</select>
+	
+	<update id="memberClientUpdate" parameterType="kr.co.asac.member.bean.MemberBean">
+		update member set mpwd=#{mpwd}, mname=#{mname}, mbirth=#{mbirth}, mphone=#{mphone}, 
+		maddr=#{maddr}, maddrd=#{maddrd}, maddrz=#{maddrz}, mmail=#{mmail}
+		where mid=#{mid}
+	</update>
+	
+	<delete id="memberClientDelete">
+		delete from member where mid=#{mid} and mpwd=#{mpwd}
+	</delete>
+	
+	<select id="memberClientDelPwC" resultType="int">
+		select count(*) from member
+		where mid=#{mid} and mpwd=#{mpwd}
+	</select>
+
+	<!-- seller -->
+	<select id="memberSellerLoginCheck" resultType="String">
+		select sid from seller where sid=#{sid} and spwd=#{spwd}
+	</select>
+	
+	<insert id="memberSellerJoin" parameterType="kr.co.asac.member.bean.SellerBean">
+		insert into seller (sid, spwd ,sname , sbirth , sphone, saddr, saddrd, saddrz , smail ,scompany, snumber, sfile)
+		values (#{sid}, #{spwd} ,#{sname} , #{sbirth} , #{sphone}, #{saddr}, #{saddrd}, #{saddrz} , #{smail} ,#{scompany}, #{snumber}, #{sfile})
+	</insert>
+	
+	<select resultType="kr.co.asac.member.bean.SellerBean" id="memberSellerInfo">
+		select * from seller where sid=#{sid} 
+	</select>
+	
+	<update id="memberSellerUpdate" parameterType="kr.co.asac.member.bean.SellerBean">
+		update seller set sphone=#{sphone} ,saddr=#{saddr}, smail=#{smail} where sid=#{sid}
+	</update>
+	
+	<delete id="memberSellerDelete" parameterType="kr.co.asac.member.bean.SellerBean">
+		delete from seller where sid=#{sid} and spwd=#{spwd}
+	</delete>
+	
+	<!-- admin -->	
+	<select id="memberAdminClientList" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member order by mid asc
+	</select>
+	
+	<select id="memberAdminClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mid=#{mid}
+	</select>
+	
+	<insert id="memberAdminClientInsert">
+		insert into member(mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail) 
+		values(#{mid}, "123123", #{mname}, #{mbirth}, #{mphone}, #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+	</insert>	
+	
+	<update id="memberAdminClientUpdate">
+		update member set mname=#{mname}, mbirth=#{mbirth}, 
+		mphone=#{mphone}, mmail=#{mmail}, maddrz=#{maddrz}, 
+		maddr=#{maddr}, maddrd=#{maddrd} where mid=#{mid}
+	</update>
+	
+	<delete id="memberAdminClientDelete">
+		delete from member where mid=#{mid}
+	</delete>		
+	
+	<select id="memberAdminClientSearch" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where ${searchCategory} like concat('%', #{searchText}, '%') order by mid asc
+	</select>
+	
+	<select id="memberAdminSellerList" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller order by sid asc
+	</select>
+	
+	<select id="memberAdminSellerInfo" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller where sid=#{sid}
+	</select>		
+	
+	<insert id="memberAdminSellerInsert">
+		insert into seller(sid, spwd, sname, sbirth, sphone, saddr, saddrd, saddrz, smail, 
+		scompany, snumber, sfile) 
+		values(#{sid}, "123123", #{sname}, #{sbirth}, #{sphone}, #{saddr}, #{saddrd}, #{saddrz}, #{smail}, 
+		#{scompany}, #{snumber}, #{sfile})
+	</insert>	
+	
+	<update id="memberAdminSellerUpdate">
+		update seller set sname=#{sname}, sbirth=#{sbirth}, 
+		sphone=#{sphone}, smail=#{smail}, saddrz=#{saddrz}, 
+		saddr=#{saddr}, saddrd=#{saddrd} scompany=#{scompany}, 
+		snumber=#{snumber}, sfile=#{sfile} where sid=#{sid}
+	</update>
+	
+	<delete id="memberAdminSellerDelete">
+		delete from seller where sid=#{sid}
+	</delete>		
+	
+	<select id="memberAdminSellerSearch" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller where ${searchCategory} like concat('%', #{searchText}, '%') order by sid asc
+	</select>
+	
+	<update id="memberAdminSellerSokCheck">
+		update seller set sok=#{sok} where sid=#{sid}
+	</update>	
+	
+</mapper>

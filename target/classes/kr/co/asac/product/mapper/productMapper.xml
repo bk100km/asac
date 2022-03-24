@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.asac.product.dao.ProductDAO">
+
+	<!-- admin -->
+	<select id="productadminlist" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product order by pcode asc
+	</select>
+	
+	<select id="productadmininfo" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where pcode=#{pcode}
+	</select>
+	
+	<insert id="productadmininsert" parameterType="kr.co.asac.product.bean.ProductBean">
+		insert into product (pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
+		values (#{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, now(), #{sid})
+	</insert>
+
+	<update id="productadminupdate" parameterType="kr.co.asac.product.bean.ProductBean">
+		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate},
+		ptag=#{ptag}, pfile=#{pfile}, pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid}
+		where pcode=#{pcode}
+	</update>
+	
+	<delete id="productadmindelete">
+		delete from product where pcode=#{pcode}
+	</delete>
+	
+	<!-- seller -->	
+	<select id="productsellerlist" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product
+	</select>
+	<insert id="productsellerinsert" parameterType="kr.co.asac.product.bean.ProductBean">
+		insert into product (pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
+		values ( #{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, #{pregdate}, #{sid} )
+	</insert>
+	<select id="productsellerinfo" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where pcode=#{pcode}
+	</select>
+	<update id="productsellerupdate" parameterType="kr.co.asac.product.bean.ProductBean">
+		update product set pcode=#{pcode}, pname=#{pname} 
+		where pcode=#{pcode}
+	</update>
+	<delete id="productsellerdelete">
+		delete from product where pcode=#{pcode}
+	</delete>
+	
+
+	<!-- client -->	
+	
+	
+		<select id="productList"   parameterType="hashmap" resultType="kr.co.asac.product.bean.ProductBean">
+		
+		<choose>
+		<when test="items == null or items.equals('') or items == 'null' ">
+		
+		select * from product where PCATE=#{pcate}  order by pcode desc limit #{vo.start}, 5
+		</when>
+		<otherwise>
+	
+		select * from product where PCATE=#{pcate} and ${items} like CONCAT('%',#{text},'%') order by pcode desc limit #{vo.start}, 5
+	
+		</otherwise>
+		</choose>
+		
+		</select>
+		
+		
+		<select id="productListDetail" resultType="kr.co.asac.product.bean.ProductBean">
+		
+		select * from Product where PCODE=#{pcode}
+		
+		</select>	
+	
+	
+	
+	<select id="productListCount"  parameterType="hashmap" resultType="int">
+		
+				<choose>
+		<when test="items == null or items.equals('') or items == 'null' ">
+
+		
+		select count(*) from product where PCATE=#{pcate} 
+		
+			</when>
+		<otherwise>
+		select count(*) from product where PCATE=#{pcate} and ${items} like CONCAT('%',#{text},'%')
+		
+		
+		</otherwise>
+		</choose>
+	</select>
+</mapper>

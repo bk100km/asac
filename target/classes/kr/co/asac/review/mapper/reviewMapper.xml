@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- productClientMapper.xml -->
+
+<mapper namespace="kr.co.asac.review.dao.ReviewDAO">
+
+	<select id="reviewList"  parameterType="hashmap"  resultType="kr.co.asac.review.bean.ReviewBean">
+		select * from review where pcode=#{pcode} order by pcode desc limit #{vo.start}, 5
+		
+		</select>
+		
+		
+		
+		<select id="reviewListCount" resultType="int">
+		
+		select count(*) from review where PCODE=#{pcode} 
+		
+	</select>	
+	
+		
+</mapper>
