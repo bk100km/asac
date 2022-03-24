@@ -163,6 +163,7 @@ public class MemberAdminService {
 	public List <SellerBean> memberAdminSellerSearch(HttpServletRequest request, Model model, String searchCategory, String searchText) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
+		System.out.println("searchText값 = " + searchText);
 		List <SellerBean> sellerList = memberDAO.memberAdminSellerSearch(searchCategory, searchText);
 		System.out.println("MemberAdminService : 검색완료");
 		model.addAttribute("sellerList", sellerList);

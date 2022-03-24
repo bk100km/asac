@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.asac.member.bean.MemberBean;
@@ -182,6 +183,16 @@ public class MemberSellerController {
 	    return memberList;
 	}	
 	
+	@RequestMapping(value = "/me/ad/cS/sC/{searchCategory}/all", method = RequestMethod.POST)
+	@ResponseBody
+	public List <MemberBean> memberAdminClientSearchAll(HttpServletRequest request, Model model, @PathVariable("searchCategory") String searchCategory) {
+	    String searchText = "";
+		List <MemberBean> memberList;
+		memberList = memberAdminService.memberAdminClientSearch(request, model, searchCategory, searchText);
+	    memberAdminService.memberAdminSellerList(model);
+	    return memberList;
+	}
+	
 	@RequestMapping(value = "/me/ad/sI", method = RequestMethod.POST)
 	@ResponseBody
 	public SellerBean memberAdminSellerInfo(Model model, String sid) {
@@ -224,11 +235,22 @@ public class MemberSellerController {
 		return "member/memberAdminInsertTab";
 	}
 	
-	@RequestMapping(value = "/me/ad/sS/sC/{searchCategory}/sT/{searchText}", method = RequestMethod.POST)
+	@RequestMapping(value = "/me/ad/sS/sC/{searchCategory}", method = RequestMethod.POST)
 	@ResponseBody
 	public List <SellerBean> memberAdminSellerSearch(HttpServletRequest request, Model model, 
-			@PathVariable("searchCategory") String searchCategory, @PathVariable("searchText") String searchText) {
-	    List <SellerBean> sellerList;
+			@PathVariable("searchCategory") String searchCategory, @RequestParam(value = "sellerSearchText", required = false) String searchText) {
+		List <SellerBean> sellerList;
+	    sellerList = memberAdminService.memberAdminSellerSearch(request, model, searchCategory, searchText);
+	    memberAdminService.memberAdminClientList(model);
+	    return sellerList;
+	}	
+	
+	@RequestMapping(value = "/me/ad/sS/sC/{searchCategory}/all", method = RequestMethod.POST)
+	@ResponseBody
+	public List <SellerBean> memberAdminSellerSearchAll(HttpServletRequest request, Model model, 
+			@PathVariable("searchCategory") String searchCategory) {
+		String searchText = "";
+		List <SellerBean> sellerList;
 	    sellerList = memberAdminService.memberAdminSellerSearch(request, model, searchCategory, searchText);
 	    memberAdminService.memberAdminClientList(model);
 	    return sellerList;

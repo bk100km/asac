@@ -53,6 +53,7 @@ function memberInfoAction(clickedMember) {
                 $('#maddrz').attr('value',member.maddrz);
                 $('#maddr').attr('value',member.maddr);
                 $('#maddr').attr('readonly',false);
+                $('#maddr').attr('onclick',"maddrSearchAction()");
                 $('#maddrd').attr('value',member.maddrd);
                 $('#maddrd').attr('readonly',false);
                 $('#mregdate').attr('value',member.mregdate);
@@ -284,18 +285,17 @@ $("[id='memberSearchButton']").click(function () {
 	</script>
 	<!-- 다음 주소찾기 API -->
 	<script>
-    window.onload = (function(){
-	    document.getElementById("maddr").addEventListener("click", function(){ //주소입력칸을 클릭하면
-	        //카카오 지도 발생
-	        new daum.Postcode({
-	            oncomplete: function(data) { //선택시 입력값 세팅
-	            	document.getElementById("maddrz").value = data.zonecode; // 우편번호 넣기
-	                document.getElementById("maddr").value = data.address; // 주소 넣기
-	                document.querySelector("input[name=maddrd]").focus(); //상세입력 포커싱
-	            }
-	        }).open();
-	    });
-	})();
+	function maddrSearchAction() {
+    	window.onload = (function(){
+	        	new daum.Postcode({
+		            oncomplete: function(data) { //선택시 입력값 세팅
+	            		document.getElementById("maddrz").value = data.zonecode; // 우편번호 넣기
+	                	document.getElementById("maddr").value = data.address; // 주소 넣기
+	                	document.querySelector("input[name=maddrd]").focus(); //상세입력 포커싱
+	            	}
+	        	}).open();
+	    	})();
+	}    	
 	</script>
 		
 </body>

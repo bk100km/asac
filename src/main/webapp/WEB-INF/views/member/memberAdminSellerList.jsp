@@ -26,6 +26,10 @@
 	display: none;
 }
 
+#sellerInsertButtonHidden {
+	display: none;
+}
+
 #sellerSearchText {
     float: right;
     width: 79%;
@@ -58,6 +62,7 @@ function sellerInfoAction(clickedSeller) {
                 $('#saddrz').attr('value',seller.saddrz);
                 $('#saddr').attr('value',seller.saddr);
                 $('#saddr').attr('readonly',false);
+                $('#saddr').attr('onclick',"saddrSearchAction()");
                 $('#saddrd').attr('value',seller.saddrd);
                 $('#saddrd').attr('readonly',false);
                 $('#scompany').attr('value',seller.scompany);
@@ -66,8 +71,9 @@ function sellerInfoAction(clickedSeller) {
                 $('#snumber').attr('readonly',false);
                 $('#sfile').attr('value',seller.sfile);
                 $('#sregdate').attr('value',seller.sregdate);
+                $('#sellerUpdateButton').attr('onclick',"sellerUpdateOk()");
+                $('#sellerDeleteButton').attr('onclick',"sellerDeleteOk()");
             });
-					
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -77,32 +83,38 @@ function sellerInfoAction(clickedSeller) {
     });
 }
 
-$(document).ready(function () {
-$("[id='sellerSearchButton']").click(function () {
-	
+function sellerSearchAction() {	
 	var sellerSearchCategory = $('#sellerSearchCategory option:selected').val();
     var sellerSearchText = document.getElementById('sellerSearchText').value;
 	var sellerListText = "";
-    
     $.ajax({
         type: 'POST',
-        url: './sS/sC/' + sellerSearchCategory + 
-	 		'/sT/' + sellerSearchText,
+        url: './sS/sC/' + sellerSearchCategory,
    		data: {sellerSearchCategory:sellerSearchCategory,
     		sellerSearchText:sellerSearchText},
         success: function(sellerList) {
-        	
         	 $.each(sellerList , function(i){
-                  sellerListText += '<tr id="sellerInfoBtn" onclick="sellerInfoAction(this)"><td>' + sellerList[i].sid + 
+        		  if (sellerList[i].sok == 'Y') {
+                  sellerListText += '<tr id="sellerInfoBtn" data-sid="' + sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + sellerList[i].sid + 
                   					'</td><td>' + sellerList[i].sname + 
                   					'</td><td>' + sellerList[i].sphone + 
                   					'</td><td>' + sellerList[i].sregdate + 
                   					'</td><td><label id="' + sellerList[i].sid + 'sokText">' + sellerList[i].sok + '</label>' +
-                  					'<input type="checkbox" id="sokCheckBox" name="sokCheckBox" data-sid="' + sellerList[i].sid +
-                  					'" data-sok="' + sellerList[i].sok + '" <c:if test="' + sellerList[i].sok + ' eq ' + 'Y' + '}">checked</c:if> />' + 
+                  					'<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="' + sellerList[i].sid +
+                  					'" data-sok="' + sellerList[i].sok + '"' + 'checked />' +
                   					'</td></tr>';
+       		    } else {
+       		    	sellerListText += '<tr id="sellerInfoBtn" data-sid="' + sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + sellerList[i].sid + 
+  					'</td><td>' + sellerList[i].sname + 
+  					'</td><td>' + sellerList[i].sphone + 
+  					'</td><td>' + sellerList[i].sregdate + 
+  					'</td><td><label id="' + sellerList[i].sid + 'sokText">' + sellerList[i].sok + '</label>' +
+  					'<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="' + sellerList[i].sid +
+  					'" data-sok="' + sellerList[i].sok + '"' + ' />' +
+  					'</td></tr>';        			  
+        			  
+        		  }			
              });
-        	 alert(sellerListText);
         	document.getElementById("sellerListBody").innerHTML = sellerListText;
 				
         },
@@ -111,9 +123,110 @@ $("[id='sellerSearchButton']").click(function () {
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
         }
-    });
-});
-});
+    });    
+}
+
+function sellerInsertForm() {
+	var sellerInsertFormText = '';
+	var today = new Date();
+    $.ajax({
+        success: function() {
+        	
+        	$('#sid').attr('value',"");
+            $('#sid').attr('readonly',false);
+            $('#sname').attr('value',"");
+            $('#sname').attr('readonly',false);
+            $('#sbirth').attr('value',"");
+            $('#sbirth').attr('readonly',false);
+            $('#sphone').attr('value',"");
+            $('#sphone').attr('readonly',false);
+            $('#smail').attr('value',"");
+            $('#smail').attr('readonly',false);
+            $('#saddrz').attr('value',"");
+            $('#saddrz').attr('readonly',false);
+            $('#saddr').attr('value',"");
+            $('#saddr').attr('readonly',false);
+            $('#saddrd').attr('value',"");
+            $('#saddrd').attr('readonly',false);
+            $('#scompany').attr('value',"");
+            $('#scompany').attr('readonly',false);
+            $('#snumber').attr('value',"");
+            $('#snumber').attr('readonly',false);
+            $('#sfile').attr('value',"");
+            $('#sfile').attr('readonly',false);
+            $('#sregdate').attr('value', today.toLocaleDateString());
+        	 
+        	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="insertButton" value="회원추가" onclick="insertOk()" title="회원추가 버튼">' +
+			'<input type="submit" class="btn btn-default btn-lg btn-block"' + 
+			'id="sellerInsertButtonHidden" value="회원추가" title="숨겨진 회원추가 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="backButton" value="뒤로가기" onclick="selerInsertCancel()" title="뒤로가기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>';
+			document.getElementById("buttonZone").innerHTML = sellerInsertFormText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
+
+function sellerInsertCancel() {
+    $.ajax({
+        success: function() {
+        	
+        	$('#sid').attr('value',"");
+            $('#sid').attr('readonly',true);
+            $('#sname').attr('value',"");
+            $('#sname').attr('readonly',true);
+            $('#sbirth').attr('value',"");
+            $('#sbirth').attr('readonly',true);
+            $('#sphone').attr('value',"");
+            $('#sphone').attr('readonly',true);
+            $('#smail').attr('value',"");
+            $('#smail').attr('readonly',true);
+            $('#saddrz').attr('value',"");
+            $('#saddrz').attr('readonly',true);
+            $('#saddr').attr('value',"");
+            $('#saddr').attr('readonly',true);
+            $('#saddrd').attr('value',"");
+            $('#saddrd').attr('readonly',true);
+            $('#scompany').attr('value',"");
+            $('#scompany').attr('readonly',true);
+            $('#snumber').attr('value',"");
+            $('#snumber').attr('readonly',true);
+            $('#sfile').attr('value',"");
+            $('#sfile').attr('readonly',true);
+            $('#sregdate').attr('value', "");
+        	 
+        	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="insertButton" value="회원추가" onclick="insertOk()" title="회원추가 버튼">' +
+			'<input type="submit" class="btn btn-default btn-lg btn-block"' + 
+			'id="sellerInsertButtonHidden" value="회원추가" title="숨겨진 회원추가 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="backButton" value="뒤로가기" onclick="" title="뒤로가기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>';
+			document.getElementById("buttonZone").innerHTML = sellerInsertFormText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
 </script>
 
 <br>
@@ -136,7 +249,7 @@ $("[id='sellerSearchButton']").click(function () {
 										</select>
 										<input class="form-control input-sm" id="sellerSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="sellerSearchButton" value="검색">
+											<input type="button" class="btn btn-primary btn-sm" id="sellerSearchButton" value="검색" onclick="sellerSearchAction()">
 										</span>
 									</div>
 								</div>
@@ -162,7 +275,7 @@ $("[id='sellerSearchButton']").click(function () {
 											<td>${seller.sphone}</td>
 											<td>${seller.sregdate}</td>
 											<td><label id="${seller.sid}sokText">${seller.sok}</label>
-												<input type="checkbox" id="sokCheckBox" name="sokCheckBox" data-sid="${seller.sid}" data-sok="${seller.sok}" <c:if test="${seller.sok eq 'Y'}">checked</c:if> />
+												<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="${seller.sid}" data-sok="${seller.sok}" <c:if test="${seller.sok eq 'Y'}">checked</c:if> />
 											</td>
 										</tr>
 									</c:forEach>
@@ -266,23 +379,23 @@ $("[id='sellerSearchButton']").click(function () {
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
-					<div class="row">
+					<div class="row" id="buttonZone">
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="sellerUpdateButton" value="수정하기" onclick="sellerUpdateOk()" title="수정하기 버튼">
+						id="sellerUpdateButton" value="수정하기" title="수정하기 버튼">
 						<input type="submit" class="btn btn-default btn-lg btn-block" 
 						id="sellerUpdateButtonHidden" value="수정하기" title="숨겨진 수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="sellerDeleteButton" value="삭제" onclick="sellerDeleteOk()" title="삭제하기 버튼">
+						id="sellerDeleteButton" value="삭제" title="삭제하기 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>
 						<div class="col-md-12 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
 						id="sellerInsertButton" value="회원추가" 
-						onclick="location='./ci'" title="회원추가 버튼">
+						onclick="sellerInsertForm()" title="회원추가 버튼">
 						</div>						
 					</div>	
 				</form>
@@ -299,21 +412,20 @@ $("[id='sellerSearchButton']").click(function () {
 	
 	<script>
 	
-	$("[name='sokCheckBox']").click(function(){
-		if(this.getAttribute("data-sok") != 'Y') {
+	function sokCheckAction(checkedSeller) {
+		if(checkedSeller.getAttribute("data-sok") != 'Y') {
 			if(!confirm('정말로 승인하시겠습니까?')){
 				return false;
 			} else {
-				var sid = this.getAttribute("data-sid");
-				var sokCheckBox = this;
+				var sid = checkedSeller.getAttribute("data-sid");
 			    $.ajax({
 			        type: 'POST',
 			        url: './sC',
 			        data: {sid:sid, sok:'Y'},
 			        success: function() {
-			        	alert(sokCheckBox.getAttribute("data-sid") + " 계정의 가입승인이 완료되었습니다.");
-			        	sokCheckBox.setAttribute('data-sok', 'Y');
-			        	document.getElementById(sokCheckBox.getAttribute("data-sid") + "sokText").innerText = "Y";
+			        	checkedSeller.setAttribute('data-sok', 'Y');
+			        	document.getElementById(checkedSeller.getAttribute("data-sid") + "sokText").innerText = "Y";
+			        	alert(checkedSeller.getAttribute("data-sid") + " 계정의 가입승인이 완료되었습니다.");
 			        },
 			        error: function(request, status, error) {
 			            console.log("code:" + request.status + 
@@ -326,16 +438,15 @@ $("[id='sellerSearchButton']").click(function () {
 			if(!confirm('정말로 취소하시겠습니까?')){
 				return false;
 			} else {
-				var sid = this.getAttribute("data-sid");
-				var sokCheckBox = this;
+				var sid = checkedSeller.getAttribute("data-sid");
 			    $.ajax({
 			        type: 'POST',
 			        url: './sC',
 			        data: {sid:sid, sok:'N'},
 			        success: function(seller) {
-			        	alert(sokCheckBox.getAttribute("data-sid") + " 계정의 가입승인이 취소되었습니다.");
-			        	sokCheckBox.setAttribute('data-sok', 'N');
-			        	document.getElementById(sokCheckBox.getAttribute("data-sid") + "sokText").innerText = "N";
+			        	checkedSeller.setAttribute('data-sok', 'N');
+			        	document.getElementById(checkedSeller.getAttribute("data-sid") + "sokText").innerText = "N";
+			        	alert(checkedSeller.getAttribute("data-sid") + " 계정의 가입승인이 취소되었습니다.");
 			        },
 			        error: function(request, status, error) {
 			            console.log("code:" + request.status + 
@@ -344,22 +455,8 @@ $("[id='sellerSearchButton']").click(function () {
 			        }
 			    });
 			}
-		}
-	});
-
-	function sellerSearchAction(){
-		
-        var sellerSearchCategory = $('#sellerSearchCategory option:selected').val();
-        var sellerSearchText = document.getElementById('sellerSearchText').value;
-        
-        if (sellerSearchText != "") {
-        $('#sellerSearch').attr('action','http://localhost:8080/asac/me/ad/sS/sC/' + sellerSearchCategory + 
-                '/sT/' + sellerSearchText);
-        $('#sellerSearchButtonHidden').click();
-        } else {
-        	location.replace('http://localhost:8080/asac/me/ad/li') 
-        }
-    }	
+		}		
+	}
 	
 	function sellerUpdateOk() {
 		if(!confirm('정말로 수정하시겠습니까?')){
@@ -383,18 +480,17 @@ $("[id='sellerSearchButton']").click(function () {
 	
 	<!-- 카카오 주소찾기 API -->
 	<script>
-	    window.onload = (function(){
-	    document.getElementById("saddr").addEventListener("click", function(){ //주소입력칸을 클릭하면
-	        //카카오 지도 발생
-	        new daum.Postcode({
-	            oncomplete: function(data) { //선택시 입력값 세팅
-	            	document.getElementById("saddrz").value = data.zonecode; // 우편번호 넣기
-	                document.getElementById("saddr").value = data.address; // 주소 넣기
-	                document.querySelector("input[name=saddrd]").focus(); //상세입력 포커싱
-	            }
-	        }).open();
-	    });
-	})();
+	function saddrSearchAction() {
+	    window.onload = (function() {
+	        	new daum.Postcode({
+		            oncomplete: function(data) { //선택시 입력값 세팅
+	            		document.getElementById("saddrz").value = data.zonecode; // 우편번호 넣기
+	                	document.getElementById("saddr").value = data.address; // 주소 넣기
+	                	document.querySelector("input[name=saddrd]").focus(); //상세입력 포커싱
+	            	}
+	        	}).open();
+		})();
+    }
 	</script>
 		
 </body>
