@@ -50,14 +50,6 @@ public class MemberAdminService {
 		memberDAO.memberAdminClientUpdate(member);
 		model.addAttribute("fromURI", request.getServletPath());
 		request.setAttribute("fromURI", request.getServletPath());
-	    
-   		response.setContentType("text/html;charset=utf-8");
-	   	PrintWriter out = response.getWriter();
-	   	System.out.println("MemberAdminService : 수정완료");
-	   	out.println("<script>");
-	   	out.println("alert('수정이 완료되었습니다.')");
-	   	out.println("</script>");
-	   	out.flush();
 	}	
 	
 	public void memberAdminClientDelete(HttpServletRequest request, Model model, HttpServletResponse response, String mid) throws Exception {
@@ -66,14 +58,6 @@ public class MemberAdminService {
 		memberDAO.memberAdminClientDelete(mid);
 		model.addAttribute("fromURI", request.getServletPath());
 		request.setAttribute("fromURI", request.getServletPath());
-		
-   		response.setContentType("text/html;charset=utf-8");
-	   	PrintWriter out = response.getWriter();
-	   	System.out.println("MemberAdminService : 삭제완료");
-	   	out.println("<script>");
-	   	out.println("alert('삭제가 완료되었습니다.')");
-	   	out.println("</script>");
-	   	out.flush();
 	}
 	
 	public void memberAdminClientInsert(HttpServletRequest request, Model model, HttpServletResponse response, MemberBean member) throws Exception {
@@ -82,14 +66,6 @@ public class MemberAdminService {
 		memberDAO.memberAdminClientInsert(member);
 		model.addAttribute("fromURI", request.getServletPath());
 		request.setAttribute("fromURI", request.getServletPath());
-		
-   		response.setContentType("text/html;charset=utf-8");
-	   	PrintWriter out = response.getWriter();
-	   	System.out.println("MemberAdminService : 추가완료");
-	   	out.println("<script>");
-	   	out.println("alert('회원추가가 완료되었습니다.')");
-	   	out.println("</script>");
-	   	out.flush();
 	}	
 	
 	public List <MemberBean> memberAdminClientSearch(HttpServletRequest request, Model model, String searchCategory, String searchText) {

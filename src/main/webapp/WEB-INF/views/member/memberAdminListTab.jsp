@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% String fromURI = (String)request.getAttribute("fromURI"); %>
+<% System.out.println("탭에서 fromURI값은 = " + fromURI); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,9 +30,11 @@ body { margin: 0;}
 	
 	<div class="mypageDiv" id="mypageDiv">
 
-<% System.out.println("탭에서 fromURI값은 = " + request.getAttribute("fromURI")); %>
-		<% if (request.getAttribute("fromURI") == null || 
-			((String) request.getAttribute("fromURI")).substring(0, 9).equals("/me/ad/cS")) { %>
+		<% if (fromURI == null || 
+			fromURI.substring(0, 9).equals("/me/ad/cS") || 
+			fromURI.substring(0, 9).equals("/me/ad/ci") || 
+			fromURI.substring(0, 9).equals("/me/ad/cU") || 
+			fromURI.substring(0, 9).equals("/me/ad/cD")) { %>
 		<ul class="nav nav-tabs">
 			<li class='active'><a href="#tabmenu_01" data-toggle="tab">일반회원</a></li>
 			<li><a href="#tabmenu_02" data-toggle="tab">판매자회원</a></li>

@@ -111,7 +111,7 @@
 	<update id="memberAdminSellerUpdate">
 		update seller set sname=#{sname}, sbirth=#{sbirth}, 
 		sphone=#{sphone}, smail=#{smail}, saddrz=#{saddrz}, 
-		saddr=#{saddr}, saddrd=#{saddrd} scompany=#{scompany}, 
+		saddr=#{saddr}, saddrd=#{saddrd}, scompany=#{scompany}, 
 		snumber=#{snumber}, sfile=#{sfile} where sid=#{sid}
 	</update>
 	

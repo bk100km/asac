@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,10 @@
 }
 
 #memberUpdateButtonHidden {
+	display: none;
+}
+
+#memberInsertButtonHidden {
 	display: none;
 }
 
@@ -57,6 +61,8 @@ function memberInfoAction(clickedMember) {
                 $('#maddrd').attr('value',member.maddrd);
                 $('#maddrd').attr('readonly',false);
                 $('#mregdate').attr('value',member.mregdate);
+                $('#memberUpdateButton').attr('onclick',"memberUpdateOk()");
+                $('#memberDeleteButton').attr('onclick',"memberDeleteOk()");
             });
 					
         },
@@ -66,22 +72,20 @@ function memberInfoAction(clickedMember) {
             		"\n"+"error:"+error);
         }
     });
-	}
-$(document).ready(function () {
-$("[id='memberSearchButton']").click(function () {
-	
+}
+
+
+function memberSearchAction() {	
 	var memberSearchCategory = $('#memberSearchCategory option:selected').val();
     var memberSearchText = document.getElementById('memberSearchText').value;
 	var memberListText = "";
     
     $.ajax({
         type: 'POST',
-        url: './cS/sC/' + memberSearchCategory + 
-	 		'/sT/' + memberSearchText,
+        url: './cS/sC/' + memberSearchCategory,
    		data: {memberSearchCategory:memberSearchCategory,
     		memberSearchText:memberSearchText},
         success: function(memberList) {
-        	
         	 $.each(memberList , function(i){
                   memberListText += '<tr id="memberInfoBtn" onclick="memberInfoAction(this)" data-mid="' + memberList[i].mid + 
                   					'"><td>' + memberList[i].mid + 
@@ -99,8 +103,220 @@ $("[id='memberSearchButton']").click(function () {
             		"\n"+"error:"+error);
         }
     });
-});
-});
+}
+
+function memberInsertForm() {
+	var memberInsertFormButtonZoneText = '';
+	var memberInsertFormIdZoneText = '';
+	var today = new Date();
+    $.ajax({
+        success: function() {
+        	
+        	$('#memberInfoDetail').attr('action',"memberInsertAction()");
+        	$('#mid').attr('value',"");
+            $('#mid').attr('readonly',false);
+            $('#mname').attr('value',"");
+            $('#mname').attr('readonly',false);
+            $('#mbirth').attr('value',"");
+            $('#mbirth').attr('readonly',false);
+            $('#mphone').attr('value',"");
+            $('#mphone').attr('readonly',false);
+            $('#mmail').attr('value',"");
+            $('#mmail').attr('readonly',false);
+            $('#maddrz').attr('value',"");
+            $('#maddrz').attr('readonly',true);
+            $('#maddr').attr('value',"");
+            $('#maddr').attr('readonly',false);
+            $('#maddr').attr('onclick',"maddrSearchAction()");
+            $('#maddrd').attr('value',"");
+            $('#maddrd').attr('readonly',false);
+            $('#mregdate').attr('value', today.toLocaleDateString());
+        	
+        	memberInsertFormButtonZoneText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="memberInsertButton" value="추가하기" onclick="memberInsertOk()" title="추가하기 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="memberInsertBackButton" value="뒤로가기" onclick="memberInsertCancel()" title="뒤로가기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>';
+			memberInsertFormIdZoneText = '<div class="row">' + 
+			'<div class="col-md-9 mb-3">' +
+			'<label for="mid">아이디  <span class="text-danger">*</span></label>' +
+			'<div class="input-group">' +
+			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<input type="text"' +
+			'class="form-control" name = "mid" id="mid"' + 
+			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
+			'minlength="5" maxlength="20" onchange="memberIdChange()" required autofocus>' +
+			'</div>' +
+			'</div>' +
+			'<div class="col-md-3 mb-3">' +
+			'<label for="memberIdCheckButton" id="memberIdCheckLabel">.</label>' +
+			'<input type="button" class="form-control" name = "memberIdCheckButton" id="memberIdCheckButton" value="중복확인" onclick="memberIdCheckAction()">' +			
+			'<input type="hidden" id="memberIdCheck" name="memberIdCheck" value="N">' +
+			'</div>' +
+			'</div>';			
+				
+			document.getElementById("memberButtonZone").innerHTML = memberInsertFormButtonZoneText;
+			document.getElementById("memberIdZone").innerHTML = memberInsertFormIdZoneText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
+
+function memberInsertCancel() {
+	var memberInsertCancelText = '';
+	var memberInsertFormIdZoneText = '';
+    $.ajax({
+        success: function() {
+        	
+        	$('#memberInfoDetail').attr('action',"./cU");
+        	$('#mid').attr('value',"");
+            $('#mid').attr('readonly',true);
+            $('#mname').attr('value',"");
+            $('#mname').attr('readonly',true);
+            $('#mbirth').attr('value',"");
+            $('#mbirth').attr('readonly',true);
+            $('#mphone').attr('value',"");
+            $('#mphone').attr('readonly',true);
+            $('#mmail').attr('value',"");
+            $('#mmail').attr('readonly',true);
+            $('#maddrz').attr('value',"");
+            $('#maddrz').attr('readonly',true);
+            $('#maddr').attr('value',"");
+            $('#maddr').attr('readonly',true);
+            $('#maddr').attr('onclick',"");
+            $('#maddrd').attr('value',"");
+            $('#maddrd').attr('readonly',true);
+            $('#mregdate').attr('value', "");
+        	 
+        	memberInsertCancelText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="memberUpdateButton" value="수정하기" title="수정하기 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="memberDeleteButton" value="삭제" title="삭제하기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>' +
+			'<div class="col-md-12 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="memberInsertButton" value="회원추가"' + 
+			'onclick="memberInsertForm()" title="회원추가 버튼">';
+			memberInsertFormIdZoneText = '<label for="mid">아이디 <span class="text-danger">*</span></label>' + 
+			'<div class="input-group">' +
+			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<input type="text"' +
+			'class="form-control" name = "mid" id="mid" value="${member.mid}"' +
+			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
+			'minlength="5" maxlength="20" required readonly>' +
+			'</div>';
+			 document.getElementById("memberButtonZone").innerHTML = memberInsertCancelText;
+			 document.getElementById("memberIdZone").innerHTML = memberInsertFormIdZoneText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
+
+function memberInsertAction() {	
+	var mid = document.getElementById('mid').value;
+	var member = $("form[name=memberInfoDetail]").serialize();
+    $.ajax({
+        type: 'POST',
+        url: './ci',
+   		data: member,
+        success: function() {
+			memberSearchAction();
+        	alert("추가한 ID = " + mid + "\n추가가 완료되었습니다.");
+        	memberInsertCancel();
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function memberUpdateAction() {	
+	var mid = document.getElementById('mid').value;
+	var member = $("form[name=memberInfoDetail]").serialize();
+    
+    $.ajax({
+        type: 'POST',
+        url: './cU',
+   		data: member,
+        success: function() {
+			memberSearchAction();
+        	alert("수정한 ID = " + mid + "\n수정이 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function memberDeleteAction() {	
+	var mid = document.getElementById('mid').value;
+    
+    $.ajax({
+        type: 'POST',
+        url: './cD/mid/' + mid,
+   		data: {mid:mid},
+        success: function() {
+        	memberSearchAction();
+        	alert("삭제한 ID = " + mid + "\n삭제가 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function memberIdCheckAction() {	
+	var mid = document.getElementById('mid').value;
+	if (mid == null || mid == "" || mid == "admin" || mid.length < 5 || !mid.match(/^[a-zA-Z0-9]*$/)) {
+		alert("아이디를 다시 입력해주세요.");
+		return false;
+	}
+    
+    $.ajax({
+        type: 'POST',
+        url: './cC',
+   		data: {mid:mid},
+        success: function(member) {
+        	if (member.mid == null) {
+        		alert("사용 가능한 아이디입니다.");
+				document.getElementById('memberIdCheck').value = "Y";
+        	} else {
+        		alert("이미 존재하는 아이디입니다.");
+        	}
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
 </script>
 
 <br>
@@ -123,7 +339,7 @@ $("[id='memberSearchButton']").click(function () {
 										</select>
 										<input class="form-control input-sm" id="memberSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="memberSearchButton" value="검색">
+											<input type="button" class="btn btn-primary btn-sm" id="memberSearchButton" value="검색" onclick="memberSearchAction()">
 										</span>
 									</div>
 								</div>
@@ -165,15 +381,16 @@ $("[id='memberSearchButton']").click(function () {
 							<div class="table-responsive">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
-				<form class="memberInfoDetail" id= "memberInfoDetail" name="memberInfoDetail" action="./cU" method="post">
-
+				<form class="memberInfoDetail" id= "memberInfoDetail" name="memberInfoDetail" method="post">
+					<div class="mb3" id="memberIdZone">
 					<label for="mid">아이디 <span class="text-danger">*</span></label> 
 					<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 						<input type="text"
 							class="form-control" name = "mid" id="mid" value="${member.mid}"
-							placeholder="영문 소문자와 숫자만 입력가능" pattern="^[a-z0-9_]{3,20}$" 
-							minlength="3" maxlength="20" required readonly>
+							placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$" 
+							minlength="5" maxlength="20" required readonly>
+					</div>
 					</div>
 					<div class="mb-3">
 						<label for="mname">이름 <span class="text-danger">*</span></label> <input type="text"
@@ -231,23 +448,21 @@ $("[id='memberSearchButton']").click(function () {
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
-					<div class="row">
+					<div class="row" id="memberButtonZone">
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="memberUpdateButton" value="수정하기" onclick="memberUpdateOk()" title="수정하기 버튼">
-						<input type="submit" class="btn btn-default btn-lg btn-block" 
-						id="memberUpdateButtonHidden" value="수정하기" title="숨겨진 수정하기 버튼">
+						id="memberUpdateButton" value="수정하기" title="수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="memberDeleteButton" value="삭제" onclick="deleteOk()" title="삭제하기 버튼">
+						id="memberDeleteButton" value="삭제" title="삭제하기 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>
 						<div class="col-md-12 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
 						id="memberInsertButton" value="회원추가" 
-						onclick="location='./ci'" title="회원추가 버튼">			
+						onclick="memberInsertForm()" title="회원추가 버튼">			
 						</div>						
 					</div>	
 				</form>
@@ -268,7 +483,7 @@ $("[id='memberSearchButton']").click(function () {
 		if(!confirm('정말로 수정하시겠습니까?')){
 			return false;
 		} else {
-			document.getElementById('memebrUpdateButtonHidden').click();
+			memberUpdateAction();
 		}
 	}
 	
@@ -279,9 +494,28 @@ $("[id='memberSearchButton']").click(function () {
 		if(!confirm('삭제할 ID = ' + mid + '\n정말로 삭제하시겠습니까?')){
 			return false;
 		} else {
-			location.replace('./cD/mid/' + mid);
+			memberDeleteAction();
 		}
 	}
+	
+	function memberInsertOk() {
+		var memberIdCheck = document.getElementById('memberIdCheck').value;
+		
+		if(!confirm('정말로 추가하시겠습니까?')){
+			return false;
+		} else {
+			if(memberIdCheck == "N"){
+				alert("아이디 중복확인을 클릭해주세요.");
+				return false;
+			}
+			memberInsertAction();				
+		}
+	}
+	
+    function memberIdChange() {
+      	document.getElementById('memberIdCheck').value = "N";
+     }
+    
 	</script>
 	<!-- 다음 주소찾기 API -->
 	<script>

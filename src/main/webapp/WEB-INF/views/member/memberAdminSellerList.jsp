@@ -128,10 +128,12 @@ function sellerSearchAction() {
 
 function sellerInsertForm() {
 	var sellerInsertFormText = '';
+	var memberInsertFormIdZoneText = '';
 	var today = new Date();
     $.ajax({
         success: function() {
         	
+        	$('#sellerInfoDetail').attr('action',"sellerInsertAction()");
         	$('#sid').attr('value',"");
             $('#sid').attr('readonly',false);
             $('#sname').attr('value',"");
@@ -143,9 +145,10 @@ function sellerInsertForm() {
             $('#smail').attr('value',"");
             $('#smail').attr('readonly',false);
             $('#saddrz').attr('value',"");
-            $('#saddrz').attr('readonly',false);
+            $('#saddrz').attr('readonly',true);
             $('#saddr').attr('value',"");
             $('#saddr').attr('readonly',false);
+            $('#saddr').attr('onclick',"saddrSearchAction()");
             $('#saddrd').attr('value',"");
             $('#saddrd').attr('readonly',false);
             $('#scompany').attr('value',"");
@@ -158,17 +161,34 @@ function sellerInsertForm() {
         	 
         	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
-			'id="insertButton" value="회원추가" onclick="insertOk()" title="회원추가 버튼">' +
-			'<input type="submit" class="btn btn-default btn-lg btn-block"' + 
-			'id="sellerInsertButtonHidden" value="회원추가" title="숨겨진 회원추가 버튼">' +
+			'id="sellerInsertButton" value="추가하기" onclick="sellerInsertOk()" title="추가하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
-			'id="backButton" value="뒤로가기" onclick="selerInsertCancel()" title="뒤로가기 버튼">' +
+			'id="sellerInsertBackButton" value="뒤로가기" onclick="sellerInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>';
-			document.getElementById("buttonZone").innerHTML = sellerInsertFormText;
+			sellerInsertFormIdZoneText = '<div class="row">' + 
+			'<div class="col-md-9 mb-3">' +
+			'<label for="sid">아이디  <span class="text-danger">*</span></label>' +
+			'<div class="input-group">' +
+			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<input type="text"' +
+			'class="form-control" name = "sid" id="sid"' + 
+			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
+			'minlength="5" maxlength="20" onchange="sellerIdChange()" required autofocus>' +
+			'</div>' +
+			'</div>' +
+			'<div class="col-md-3 mb-3">' +
+			'<label for="sellerIdCheckButton" id="sellerIdCheckLabel">.</label>' +
+			'<input type="button" class="form-control" name = "sellerIdCheckButton" id="sellerIdCheckButton" value="중복확인" onclick="sellerIdCheckAction()">' +			
+			'<input type="hidden" id="sellerIdCheck" name="sellerIdCheck" value="N">' +
+			'</div>' +
+			'</div>';	
+			document.getElementById("sellerButtonZone").innerHTML = sellerInsertFormText;
+			document.getElementById("sellerIdZone").innerHTML = sellerInsertFormIdZoneText;
+			
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -179,9 +199,12 @@ function sellerInsertForm() {
 }
 
 function sellerInsertCancel() {
+	var sellerInsertCancelText = '';
+	var sellerInsertFormIdZoneText = '';
     $.ajax({
         success: function() {
         	
+        	$('#sellerInfoDetail').attr('action',"./sU");
         	$('#sid').attr('value',"");
             $('#sid').attr('readonly',true);
             $('#sname').attr('value',"");
@@ -196,6 +219,7 @@ function sellerInsertCancel() {
             $('#saddrz').attr('readonly',true);
             $('#saddr').attr('value',"");
             $('#saddr').attr('readonly',true);
+            $('#saddr').attr('onclick',"");
             $('#saddrd').attr('value',"");
             $('#saddrd').attr('readonly',true);
             $('#scompany').attr('value',"");
@@ -206,19 +230,30 @@ function sellerInsertCancel() {
             $('#sfile').attr('readonly',true);
             $('#sregdate').attr('value', "");
         	 
-        	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
+        	sellerInsertCancelText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
-			'id="insertButton" value="회원추가" onclick="insertOk()" title="회원추가 버튼">' +
-			'<input type="submit" class="btn btn-default btn-lg btn-block"' + 
-			'id="sellerInsertButtonHidden" value="회원추가" title="숨겨진 회원추가 버튼">' +
+			'id="sellerUpdateButton" value="수정하기" title="수정하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
-			'id="backButton" value="뒤로가기" onclick="" title="뒤로가기 버튼">' +
+			'id="sellerDeleteButton" value="삭제" title="삭제하기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
-			'<br>';
-			document.getElementById("buttonZone").innerHTML = sellerInsertFormText;
+			'<br>' +
+			'<div class="col-md-12 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="sellerInsertButton" value="회원추가"' + 
+			'onclick="sellerInsertForm()" title="회원추가 버튼">';
+			sellerInsertFormIdZoneText = '<label for="sid">아이디 <span class="text-danger">*</span></label>' + 
+			'<div class="input-group">' +
+			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<input type="text"' +
+			'class="form-control" name = "sid" id="sid" value="${seller.sid}"' +
+			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
+			'minlength="5" maxlength="20" required readonly>' +
+			'</div>';
+			 document.getElementById("sellerButtonZone").innerHTML = sellerInsertCancelText;
+			 document.getElementById("sellerIdZone").innerHTML = sellerInsertFormIdZoneText;
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -226,6 +261,94 @@ function sellerInsertCancel() {
             		"\n"+"error:"+error);
         }
     });    
+}
+
+function sellerInsertAction() {	
+	var sid = document.getElementById('sid').value;
+	var seller = $("form[name=sellerInfoDetail]").serialize();
+    $.ajax({
+        type: 'POST',
+        url: './si',
+   		data: seller,
+        success: function() {
+			sellerSearchAction();
+        	alert("추가한 ID = " + sid + "\n추가가 완료되었습니다.");
+        	sellerInsertCancel();
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function sellerUpdateAction() {	
+	var sid = document.getElementById('sid').value;
+	var seller = $("form[name=sellerInfoDetail]").serialize();
+    
+    $.ajax({
+        type: 'POST',
+        url: './sU',
+   		data: seller,
+        success: function() {
+			sellerSearchAction();
+        	alert("수정한 ID = " + sid + "\n수정이 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function sellerDeleteAction() {	
+	var sid = document.getElementById('sid').value;
+    
+    $.ajax({
+        type: 'POST',
+        url: './sD/sid/' + sid,
+   		data: {sid:sid},
+        success: function() {
+        	sellerSearchAction();
+        	alert("삭제한 ID = " + sid + "\n삭제가 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function sellerIdCheckAction() {	
+	var sid = document.getElementById('sid').value;
+	if (sid == null || sid == "" || sid == "admin" || sid.length < 5 || !sid.match(/^[a-zA-Z0-9]*$/)) {
+		alert("아이디를 다시 입력해주세요.");
+		return false;
+	}
+    
+    $.ajax({
+        type: 'POST',
+        url: './sC',
+   		data: {sid:sid},
+        success: function(seller) {
+        	if (seller.sid == null) {
+        		alert("사용 가능한 아이디입니다.");
+				document.getElementById('sellerIdCheck').value = "Y";
+        	} else {
+        		alert("이미 존재하는 아이디입니다.");
+        	}
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
 }
 </script>
 
@@ -295,8 +418,9 @@ function sellerInsertCancel() {
 							<div class="table-responsive">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
-				<form class="sellerInfoDetail" id= "sellerInfoDetail" name="sellerInfoDetail" action="./cU" method="post">
+				<form class="sellerInfoDetail" id= "sellerInfoDetail" name="sellerInfoDetail" method="post">
 
+					<div class="mb3" id="sellerIdZone">
 					<label for="sid">아이디 <span class="text-danger">*</span></label> 
 					<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -304,6 +428,7 @@ function sellerInsertCancel() {
 							class="form-control" name = "sid" id="sid" value="${seller.sid}"
 							placeholder="영문 소문자와 숫자만 입력가능" pattern="^[a-z0-9_]{3,20}$" 
 							minlength="3" maxlength="20" required readonly>
+					</div>
 					</div>
 					<div class="mb-3">
 						<label for="sname">이름 <span class="text-danger">*</span></label> <input type="text"
@@ -330,7 +455,7 @@ function sellerInsertCancel() {
 					<div class="input-group">
 		            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
 					<input type="email"
-							class="form-control" name="mmail" id="smail" value="${seller.smail}"
+							class="form-control" name="smail" id="smail" value="${seller.smail}"
 							placeholder="email@example.com" maxlength="30" required readonly>
 					</div>					
 					<div class="mb-3"></div>
@@ -379,12 +504,10 @@ function sellerInsertCancel() {
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
-					<div class="row" id="buttonZone">
+					<div class="row" id="sellerButtonZone">
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
 						id="sellerUpdateButton" value="수정하기" title="수정하기 버튼">
-						<input type="submit" class="btn btn-default btn-lg btn-block" 
-						id="sellerUpdateButtonHidden" value="수정하기" title="숨겨진 수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
@@ -462,7 +585,7 @@ function sellerInsertCancel() {
 		if(!confirm('정말로 수정하시겠습니까?')){
 			return false;
 		} else {
-			document.getElementById('sellerUpdateButtonHidden').click();
+			sellerUpdateAction();
 		}
 	}
 	
@@ -473,9 +596,28 @@ function sellerInsertCancel() {
 		if(!confirm('삭제할 ID = ' + sid + '\n정말로 삭제하시겠습니까?')){
 			return false;
 		} else {
-			location.replace('./sD/sid/' + sid);
+			sellerDeleteAction();
 		}
 	}
+	
+	function sellerInsertOk() {
+		var sellerIdCheck = document.getElementById('sellerIdCheck').value;
+		
+		if(!confirm('정말로 추가하시겠습니까?')){
+			return false;
+		} else {
+			if(sellerIdCheck == "N"){
+				alert("아이디 중복확인을 클릭해주세요.");
+				return false;
+			}
+			sellerInsertAction();
+		}
+	}    
+	
+	function sellerIdChange() {
+      	document.getElementById('sellerIdCheck').value = "N";
+    }
+   
 	</script>
 	
 	<!-- 카카오 주소찾기 API -->
