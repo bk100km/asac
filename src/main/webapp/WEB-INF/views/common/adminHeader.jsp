@@ -4,14 +4,12 @@
 	String sid = (String)session.getAttribute("sid");
 	// System.out.println(id);
 	
-	if(sid != null){
-		if(!sid.equals("admin")){
+	if(sid == null || !sid.equals("admin")){
 		session.invalidate();
 		out.println("<script>");
 		out.println("alert('접근 권한이 없습니다.');");
-		out.println("location.href='/asac/';");
+		out.println("location.href='http://localhost:8080/asac/';");
 		out.println("</script>");	
-		}
 	}
 %>    
 
@@ -84,16 +82,16 @@ font-size: 0.7em;
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/asac/me/ad/in"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
+      <a class="navbar-brand" href="http://localhost:8080/asac/me/ad/in"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
       </a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav" id="mainNav2">
-        <li><a href="/asac/or/ad/li">주문관리</a></li>
-        <li><a href="http://localhost:8080/asac/pr/ad/li">상품관리</a></li>
-        <li><a href="">정산관리</a></li>
+        <li><a href="http://localhost:8080/asac/or/ad/la">주문관리</a></li>
+        <li><a href="http://localhost:8080/asac/pr/ad/la">상품관리</a></li>
+        <li><a href="http://localhost:8080/asac/sa/ad/ad">매출관리</a></li>
         <li><a href="http://localhost:8080/asac/me/ad/li">회원관리</a></li>
-        <li><a href="">판매자 정보</a></li>
+        <li><a href="http://localhost:8080/asac/me/ad/if">판매자 정보</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="http://localhost:8080/asac/me/ad/lO" title="로그아웃 링크로 이동"><span class="glyphicon glyphicon-log-out"></span> 로그아웃&nbsp;</a></li>

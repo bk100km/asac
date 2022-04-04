@@ -10,7 +10,7 @@
 		session.invalidate();
 		out.println("<script>");
 		out.println("alert('관리자 계정으로 접속하였습니다.');");
-		out.println("location.href='/asac/me/ad/lo';");
+		out.println("location.href='http://localhost:8080/asac/me/ad/lo';");
 		out.println("</script>");	
 		}
 	}
@@ -19,7 +19,7 @@
 		session.invalidate();
 		out.println("<script>");
 		out.println("alert('관리자 계정으로 접속하였습니다.');");
-		out.println("location.href='/asac/me/ad/lo';");
+		out.println("location.href='http://localhost:8080/asac/me/ad/lo';");
 		out.println("</script>");	
 		}
 	}	
@@ -96,17 +96,17 @@ font-size: 0.7em;
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/asac/"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
+      <a class="navbar-brand" href="http://localhost:8080/asac/"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
       </a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav" id="mainNav2">
-        <li><a href="/asac/pr/cl/li?pcate=농산물류&nowPage=1">농산물</a></li>
-        <li><a href="/asac/pr/cl/li?pcate=간편식류&nowPage=1">간편식</a></li>
-        <li><a href="/asac/pr/cl/li?pcate=콩고기류&nowPage=1">대체육ㆍ콩</a></li>
-        <li><a href="/asac/pr/cl/li?pcate=양념소스류&nowPage=1">양념ㆍ소스</a></li>
-        <li><a href="/asac/pr/cl/li?pcate=음료류&nowPage=1">음료</a></li>
-        <li><a href="/asac/pr/cl/li?pcate=생활용품류&nowPage=1">생활ㆍ뷰티</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=농산물류&nowPage=1">농산물</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=간편식류&nowPage=1">간편식</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=콩고기류&nowPage=1">대체육ㆍ콩</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=양념소스류&nowPage=1">양념ㆍ소스</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=음료류&nowPage=1">음료</a></li>
+        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=생활용품류&nowPage=1">생활ㆍ뷰티</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <%
@@ -136,6 +136,16 @@ font-size: 0.7em;
     }
     else{
 %>
+		<li>
+        <form method="post" name="cart">
+		&nbsp; 
+		<input type="hidden" name="cartclick" value="ab" />
+		<button type="submit" onclick="javascript: cart.action='http://localhost:8080/asac/ca/cl/li'">
+			장바구니 
+		</button>
+		</form>
+		</li>
+		
         <li><a href="http://localhost:8080/asac/me/cl/lO" title="로그아웃 링크로 이동"><span class="glyphicon glyphicon-log-out"></span> 로그아웃&nbsp;</a></li>
         <li><a href="http://localhost:8080/asac/me/cl/my" title="마이페이지 링크로 이동"><span class="glyphicon glyphicon-user"></span> 마이페이지&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
         <%

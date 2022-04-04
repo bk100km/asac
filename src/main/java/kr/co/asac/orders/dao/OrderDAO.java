@@ -4,19 +4,29 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
-import kr.co.asac.orders.bean.Search;
+import kr.co.asac.utils.Search;
 
 public interface OrderDAO {
-	public List<OrderBean> orderClientList(String id);
+	
+	// orderClient
+	
+	public List<OrderBean> orderClientList(String mid);
 	
 	public OrderBean orderClientInfo(int ocode);
 	
-	public OrderBean orderClientUpdate(int ocode);
+	public void orderClientUpdate(OrderBean order);
 
 	public int orderClientDelete(int ocode);
+	
+	public MemberBean memberClientInfo(String mid);
 
-	public List<OrderBean> orderSellerList(@Param("id") String id, @Param("search") Search search);
+	// orderSeller
+	
+	public List<OrderBean> orderSellerList(@Param("id") String id, @Param("searchSe") Search search);
+	
+	public int orderSellerCount(@Param("id") String id, @Param("searchSe") Search search) throws Exception;
 	
 	public OrderBean orderSellerInfo(int ocode);
 	
@@ -24,9 +34,11 @@ public interface OrderDAO {
 	
 	public int orderSellerDelete(int ocode);
 	
-	public List<OrderBean> orderAdminList(Search search);
+	// orderAdmin
 	
-	public int orderAdminCount(Search search) throws Exception;
+	public List<OrderBean> orderAdminList(@Param("searchAd") Search search);
+	
+	public int orderAdminCount(@Param("searchAd") Search search) throws Exception;
 	
 	public OrderBean orderAdminInfo(int ocode);
 	

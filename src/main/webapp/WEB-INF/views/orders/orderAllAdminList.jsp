@@ -49,6 +49,13 @@ $(function() {
 		return false;
 	});
 });
+
+$(document).ready(function(){
+	var link = document.location.href; // 현재 URL
+	vat tab = link.split('/').pop(); // 배열 맨 마지막요소 삭제 후 해당값 반환
+	$('a[href$='+tab+']').trigger('click'); // 해당 앵커 트리거를 이용 클릭 이벤트
+});
+
 </script>
 </head>
 <body>
@@ -58,8 +65,7 @@ $(function() {
 		</header>
 
 		<div class="mypageDiv" id="mypageDiv">
-
-		<% if (request.getParameter("fromURI") == null) { %>
+		
 		<ul class="nav nav-tabs">
 			<li class='active'><a href="#tabmenu_01" data-toggle="tab">전체 상품</a></li>
 			<li><a href="#tabmenu_02" data-toggle="tab">본인 상품</a></li>
@@ -69,24 +75,10 @@ $(function() {
 				<jsp:include page="./orderAdminList.jsp"></jsp:include>
 			</div>
 			<div class="tab-pane fade" id="tabmenu_02">
-				<jsp:include page="./orderSellerAdminList.jsp"></jsp:include>
+				<jsp:include page="./orderSellerAdList.jsp"></jsp:include>
 			</div>
 		</div>
-		<% } else { %>
-				<ul class="nav nav-tabs">
-			<li><a href="#tabmenu_01" data-toggle="tab">전체 상품</a></li>
-			<li class='active'><a href="#tabmenu_02" data-toggle="tab">본인 상품</a></li>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane fade" id="tabmenu_01">
-				<jsp:include page="./orderAdminList.jsp"></jsp:include>
-			</div>
-			<div class="tab-pane fade in active" id="tabmenu_02">
-				<jsp:include page="./orderSellerAdminList.jsp"></jsp:include>
-			</div>
-		</div>
-		<% } %>
-		
+				
 	</div>
 	<footer>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>

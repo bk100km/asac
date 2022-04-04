@@ -9,7 +9,7 @@
 		session.invalidate();
 		out.println("<script>");
 		out.println("alert('관리자 계정으로 접속하였습니다.');");
-		out.println("location.href='/asac/me/ad/lo';");
+		out.println("location.href='http://localhost:8080/asac/me/ad/lo';");
 		out.println("</script>");	
 		}
 	}
@@ -84,14 +84,14 @@ font-size: 0.7em;
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/asac/me/se/in"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
+      <a class="navbar-brand" href="http://localhost:8080/asac/me/se/in"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
       </a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav" id="mainNav2">
-        <li><a href="/asac/or/se/li">주문관리</a></li>
-        <li><a href="http://localhost:8080/asac/pr/ad/li">상품관리</a></li>
-        <li><a href="">정산관리</a></li>
+        <li><a href="http://localhost:8080/asac/or/se/li">주문관리</a></li>
+        <li><a href="http://localhost:8080/asac/pr/se/la">상품관리</a></li>
+        <li><a href="http://localhost:8080/asac/sa/se/sd">매출관리</a></li>
         <li><a href="http://localhost:8080/asac/me/se/iF">판매자 정보</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -99,7 +99,7 @@ font-size: 0.7em;
     	if(sid == null){
 		%>
 		<li><a href="http://localhost:8080/asac/me/se/lo" title="판매자 로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 판매자 로그인&nbsp;</a></li>
-   	 	<li><a href="me/se/jo" title="판매자 회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 판매자 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+   	 	<li><a href="http://localhost:8080/asac/me/se/jo" title="판매자 회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 판매자 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
         <%
 		} else {
 		%>   	 	

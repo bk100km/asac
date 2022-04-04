@@ -1,19 +1,20 @@
 package kr.co.asac.cart.bean;
 
 public class CartBean {
-	public int cno;
+	public int ccode;
 	public String mid;
 	public String pcode;
 	public String pname;
 	public int pprice;
 	public int pcount;
 	public String pfile;
+
 	
-	public int getCno() {
-		return cno;
+	public int getCcode() {
+		return ccode;
 	}
-	public void setCno(int cno) {
-		this.cno = cno;
+	public void setCcode(int ccode) {
+		this.ccode = ccode;
 	}
 	public String getMid() {
 		return mid;
@@ -57,9 +58,11 @@ public class CartBean {
 	}
 	@Override
 	public String toString() {
-		return "CartBean [cno=" + cno + ", mid=" + mid + ", pcode=" + pcode + ", pname=" + pname + ", pprice=" + pprice
-				+ ", pcount=" + pcount + ", pfile=" + pfile + "]";
+		return "CartBean [ccode=" + ccode + ", mid=" + mid + ", pcode=" + pcode + ", pname=" + pname + ", pprice="
+				+ pprice + ", pcount=" + pcount + ", pfile=" + pfile + "]";
 	}
+	
+	
 	
 	
 

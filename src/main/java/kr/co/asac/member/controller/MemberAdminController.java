@@ -1,6 +1,10 @@
 package kr.co.asac.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.asac.member.bean.MemberBean;
+import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.service.MemberAdminService;
 import kr.co.asac.member.service.MemberSellerService;
@@ -32,6 +38,11 @@ public class MemberAdminController {
 	@RequestMapping("/me/ad/in")
 	public String memberAdminIndex() {
 		return "adminIndex";
+	}
+	
+	@RequestMapping("/me/ad/in2")
+	public String memberAdminIndex2() {
+		return "/member/memberAdminIndex";
 	}
 	
 	@RequestMapping(value = "me/ad/lo", method = RequestMethod.GET)
@@ -52,11 +63,33 @@ public class MemberAdminController {
 		return "redirect:http://localhost:8080/asac/";
 	}
 	
+	@RequestMapping(value = "/me/ad/if", method = RequestMethod.GET)
+	public String memberAdminInfo(HttpServletRequest request,HttpServletResponse response, HttpSession session, Model model) throws IOException {
+		String sid = (String) session.getAttribute("sid");
+		memberSellerService.memberSellerInfo(request,response, session, model, sid);
+		return "member/memberAdminInfo";
+	}	
+	
 	@RequestMapping(value = "/me/ad/li", method = RequestMethod.GET)
-	public String memberAdminListTab(Model model) {
+	public String memberAdminListTab(Model model,
+			@RequestParam(value="MemberSearchCategory", required = false, defaultValue = "mid") String memberSearchCategory,
+			@RequestParam(value="MemberSearchText", required = false, defaultValue = "") String memberSearchText,
+			@ModelAttribute(value = "memberPaging") PagingBean memberPaging,
+			@RequestParam(value="sellerSearchCategory", required = false, defaultValue = "sid") String sellerSearchCategory, 
+			@RequestParam(value = "sellerSearchText", required = false, defaultValue = "") String sellerSearchText,
+			@ModelAttribute(value = "sellerPaging") PagingBean sellerPaging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		memberAdminService.memberAdminClientList(model);
-		memberAdminService.memberAdminSellerList(model);
+		int memberListCnt = memberAdminService.memberAdminClientCount(memberSearchCategory, memberSearchText);
+		int sellerListCnt = memberAdminService.memberAdminSellerCount(sellerSearchCategory, sellerSearchText);
+		memberPaging.pageInfo(page, range, memberListCnt);
+		sellerPaging.pageInfo(page, range, sellerListCnt);
+		System.out.println("컨트롤러에서 memberPaging 값은 = " + memberPaging);
+		System.out.println("컨트롤러에서 sellerPaging 값은 = " + sellerPaging);
+		
+		memberAdminService.memberAdminClientList(model, memberPaging);
+		memberAdminService.memberAdminSellerList(model, sellerPaging);
 		return "member/memberAdminListTab";
 	}
 	
@@ -92,14 +125,27 @@ public class MemberAdminController {
 		memberAdminService.memberAdminClientInsert(request, model, response, member);
 	}
 	
-	@RequestMapping(value = "/me/ad/cS/sC/{memberSearchCategory}", method = RequestMethod.POST)
+	@RequestMapping(value = "/me/ad/cS", method = RequestMethod.POST)
 	@ResponseBody
-	public List <MemberBean> memberAdminClientSearch(HttpServletRequest request, Model model, @PathVariable("memberSearchCategory") String searchCategory,
-			@RequestParam(value = "memberSearchText", required = false) String searchText) {
+	public Map <String, Object> memberAdminClientSearch(HttpServletRequest request, Model model, 
+			@RequestParam(value = "memberSearchCategory", required = false, defaultValue="mid") String searchCategory,
+			@RequestParam(value = "memberSearchText", required = false, defaultValue="") String searchText,
+			@ModelAttribute(value = "paging") PagingBean paging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int listCnt = memberAdminService.memberAdminClientCount(searchCategory, searchText);
+		paging.pageInfo(page, range, listCnt);
+		System.out.println("컨트롤러에서 paging 값은 = " + paging);
+		
 	    List <MemberBean> memberList;
-		memberList = memberAdminService.memberAdminClientSearch(request, model, searchCategory, searchText);
-	    memberAdminService.memberAdminSellerList(model);
-	    return memberList;
+		memberList = memberAdminService.memberAdminClientSearch(request, model, searchCategory, searchText, paging);
+	    memberAdminService.memberAdminSellerList(model, paging);
+	    
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("paging", paging);
+	    map.put("memberList", memberList);
+	    return map;
 	}	
 	
 	@RequestMapping(value = "/me/ad/cC", method = RequestMethod.POST)
@@ -143,14 +189,26 @@ public class MemberAdminController {
 		memberAdminService.memberAdminSellerInsert(request, model, response, seller);
 	}
 	
-	@RequestMapping(value = "/me/ad/sS/sC/{sellerSearchCategory}", method = RequestMethod.POST)
+	@RequestMapping(value = "/me/ad/sS", method = RequestMethod.POST)
 	@ResponseBody
-	public List <SellerBean> memberAdminSellerSearch(HttpServletRequest request, Model model, 
-			@PathVariable("sellerSearchCategory") String searchCategory, @RequestParam(value = "sellerSearchText", required = false) String searchText) {
+	public Map <String, Object> memberAdminSellerSearch(HttpServletRequest request, Model model, 
+			@RequestParam(value="sellerSearchCategory") String searchCategory, 
+			@RequestParam(value = "sellerSearchText", required = false) String searchText,
+			@ModelAttribute(value = "paging") PagingBean paging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		int listCnt = memberAdminService.memberAdminSellerCount(searchCategory, searchText);
+		paging.pageInfo(page, range, listCnt);
+		System.out.println("컨트롤러에서 paging 값은 = " + paging);
+		
 		List <SellerBean> sellerList;
-	    sellerList = memberAdminService.memberAdminSellerSearch(request, model, searchCategory, searchText);
-	    memberAdminService.memberAdminClientList(model);
-	    return sellerList;
+	    sellerList = memberAdminService.memberAdminSellerSearch(request, model, searchCategory, searchText, paging);
+	    memberAdminService.memberAdminClientList(model, paging);
+	    
+	    Map<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", paging);
+		map.put("sellerList", sellerList);
+	    return map;
 	}	
 	
 	@RequestMapping(value = "/me/ad/sc", method = RequestMethod.POST)
@@ -167,5 +225,33 @@ public class MemberAdminController {
 
 		SellerBean seller = memberAdminService.memberAdminSellerInfo(model, sid);
 	    return seller;
+	}	
+	
+	@RequestMapping(value = "/me/ad/sF", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String memberAdminSellerFileUpload(HttpServletRequest request, Model model, 
+			MultipartFile sfileUpload) throws IOException {
+		
+//		String filePath = request.getSession().getServletContext().getRealPath("upload");
+		String fileName = sfileUpload.getOriginalFilename();
+		System.out.println("fileName값은 = " + fileName);
+		
+        try {
+        	sfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\upload\\" + fileName));
+        } catch(Exception e) {
+            System.out.println("업로드 오류");
+        }
+        System.out.println("업로드 완료");
+        System.out.println("업로드 파일경로 : " + "C:\\asac\\asac\\src\\main\\webapp\\resources\\upload\\");
+		System.out.println("업로드 파일이름 : " + fileName);
+		System.out.println("업로드 파일크기 : " + sfileUpload.getSize());
+		
+		return fileName;
+	}	
+	
+	@RequestMapping(value = "/me/ad/ov", method = RequestMethod.GET)
+	public String memberAdminOver(Model model) {
+		
+		return "member/memberAdminSellerOverTest";
 	}		
 }

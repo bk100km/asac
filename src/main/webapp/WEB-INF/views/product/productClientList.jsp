@@ -5,7 +5,80 @@
 <!DOCTYPE html>
 <html>
     <head>
+    
+    
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+     <style>
+ ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+.rf-pinwheel-tiles .rf-pinwheel-item {
+    background-color: #f2f2f2;
+    border: 5px solid #fff;
+    list-style-type: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.large-4 {
+    flex-basis: 33.33333%;
+    max-width: 33.33333%;
+}
+.column {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+}     
      
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.rf-pinwheel-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+
+
+.as-pinwheel15-section .as-pinwheel-tile {
+    padding: 40px 40px 34px;
+    border: 5px solid #fff;
+    max-width: 100%;
+    background-color: #f5f5f7;
+    text-align: center;
+    box-sizing: border-box;
+}
+.as-pinwheel-tile {
+    line-height: 17px;
+    position: relative;
+}
+.btn {
+    display: inline-block;
+    min-width: 112px;
+    padding: 11px 31px;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid #E1B771 !important;
+    border-radius: 26px;
+    background-color: #E1B771 !important;
+    background-image: linear-gradient(280deg,#fb5a72,#E1B771 !important);
+    color: #fff;
+    font-weight: 500;
+}
+
+     
+     </style>
     </head>
     <body>
     <jsp:include page="../common/clientHeader.jsp" flush="false" />
@@ -16,12 +89,19 @@
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center ">
                 
 					
-					<c:forEach var="product" items="${list}">
+					
 	                    <div class="col mb-5 productlist">
-	                        <div class="card h-100">
+	                        <div class="card">
+	                        <ul class="rf-pinwheel-tiles">
+	                        
+       
+	                        <c:forEach var="product" items="${proClientListlist}">
 	                            <!-- Product image-->
+	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
+	                           <div class="as-pinwheel15-section as-pinwheel15-smalltile as-pinwheel15-smalltileleft as-pinwheel15-tile3 as-util-relatedlink relatedlink">
+	                <div class= as-pinwheel-tile>
 	                            <a href="../cl/dt?pcode=${product.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}">
-	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" width="266" height="291" />
 	                            </a>
 	                            <!-- Product details-->
 	                            <div class="card-body p-4">
@@ -31,15 +111,19 @@
 	                                    <!-- Product price-->
 	                                    <fmt:formatNumber value="${product.pprice}" pattern="#,###,###원"/>
 	                                </div>
+	                                </div>
 	                            </div>
+	                            </div>
+	                            </li>
+	                             </c:forEach>
 	                            <!-- Product actions-->
-	                    
+	                          </ul>
 	                        </div>
 	                    </div>
-                    </c:forEach>
+                   
                 </div>
             </div>
-            	<form name="search" action="/asac/pr/cl/li?">
+            	<form name="search" action="/asac/pr/cl/li">
 						<div  align="center">&nbsp;&nbsp; 
 						<select name="items" class="txt">
 								<option value="pcode" <c:if test="${param.items eq 'pcode'}"> selected="selected"</c:if>>상품코드</option>

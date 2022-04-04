@@ -8,6 +8,7 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="shortcut icon" href="#">
 <script type="text/javascript">
 
 	function checkId() {
@@ -56,181 +57,139 @@
 
 	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
 	function sample4_execDaumPostcode() {
-		new daum.Postcode(
-				{
-					oncomplete : function(data) {
-						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+		new daum.Postcode({
+			oncomplete : function(data) {
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-						// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-						var roadAddr = data.roadAddress; // 도로명 주소 변수
-						var extraRoadAddr = ''; // 참고 항목 변수
+				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var extraRoadAddr = ''; // 참고 항목 변수
 
-						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-							extraRoadAddr += data.bname;
-						}
-						// 건물명이 있고, 공동주택일 경우 추가한다.
-						if (data.buildingName !== '' && data.apartment === 'Y') {
-							extraRoadAddr += (extraRoadAddr !== '' ? ', '
-									+ data.buildingName : data.buildingName);
-						}
-						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-						if (extraRoadAddr !== '') {
-							extraRoadAddr = ' (' + extraRoadAddr + ')';
-						}
+				// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+					extraRoadAddr += data.bname;
+				}
+				// 건물명이 있고, 공동주택일 경우 추가한다.
+				if (data.buildingName !== '' && data.apartment === 'Y') {
+					extraRoadAddr += (extraRoadAddr !== '' ? ', '
+							+ data.buildingName : data.buildingName);
+				}
+				// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				if (extraRoadAddr !== '') {
+					extraRoadAddr = ' (' + extraRoadAddr + ')';
+				}
 
-						// 우편번호와 주소 정보를 해당 필드에 넣는다.
-						document.getElementById('sample4_postcode').value = data.zonecode;
-						document.getElementById("sample4_roadAddress").value = roadAddr;
-						document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('sample4_postcode').value = data.zonecode;
+				document.getElementById("sample4_roadAddress").value = roadAddr;
+				document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
 
-						// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-						if (roadAddr !== '') {
-							document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-						} else {
-							document.getElementById("sample4_extraAddress").value = '';
-						}
+				// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+				if (roadAddr !== '') {
+					document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+				} else {
+					document.getElementById("sample4_extraAddress").value = '';
+				}
 
-						var guideTextBox = document.getElementById("guide");
-						// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-						if (data.autoRoadAddress) {
-							var expRoadAddr = data.autoRoadAddress
-									+ extraRoadAddr;
-							guideTextBox.innerHTML = '(예상 도로명 주소 : '
-									+ expRoadAddr + ')';
-							guideTextBox.style.display = 'block';
+				var guideTextBox = document.getElementById("guide");
+				// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+				if (data.autoRoadAddress) {
+					var expRoadAddr = data.autoRoadAddress
+							+ extraRoadAddr;
+					guideTextBox.innerHTML = '(예상 도로명 주소 : '
+							+ expRoadAddr + ')';
+					guideTextBox.style.display = 'block';
 
-						} else if (data.autoJibunAddress) {
-							var expJibunAddr = data.autoJibunAddress;
-							guideTextBox.innerHTML = '(예상 지번 주소 : '
-									+ expJibunAddr + ')';
-							guideTextBox.style.display = 'block';
-						} else {
-							guideTextBox.innerHTML = '';
-							guideTextBox.style.display = 'none';
-						}
-					}
-				}).open();
+				} else if (data.autoJibunAddress) {
+					var expJibunAddr = data.autoJibunAddress;
+					guideTextBox.innerHTML = '(예상 지번 주소 : '
+							+ expJibunAddr + ')';
+					guideTextBox.style.display = 'block';
+				} else {
+					guideTextBox.innerHTML = '';
+					guideTextBox.style.display = 'none';
+				}
+			}
+		}).open();
 	}
+    
+    $(document).on("keyup", ".phoneNumber", function() { 
+  		$(this).val( 
+  			$(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") 
+  		); 
+  	});
+    
+    /* $(document).on("keyup", ".birth", function() { 
+  		$(this).val( 
+  			$(this).val().replace(/([0-9]{6})([0-9]{1})$/gi,"$1-$2******").replace(/\d{2}([0]\d|[1][0-2])([0][1-9]|[1-2]\d|[3][0-1])[-]*[1-4]\d{6}/,"$1-$2******").replace("--", "-") 
+  		); 
+  	}); */
+  	
+  	function birth_keyup(obj){
+  	    let birth_len = obj.value.length;
+  	    if (event.keyCode==14){
+  	        obj.value = obj.value.slice(0,birth_len)
+  	        return 0;
+  	    } else if(birth_len==6 || birth_len==7){
+  	        obj.value += '-';
+  	    } else if(birth_len==8 || birth_len==9){
+  	        obj.value += '******';
+  	    }
+  	}
+    
+    $(document).ready(function(){
+	    var code = "";                //이메일전송 인증번호 저장위한 코드
 	
-	$(document).on("keyup", ".phoneNumber", function() { $(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); });
+	    $(".mail_input").on('input change', function(){
+        	if($(".mail_input").val()=='')
+        		$("#mail_check_button").attr("disabled", true);
+        	else
+        		$("#mail_check_button").attr("disabled", false);
+        });
+	    
+	    /* 인증번호 이메일 전송 */
+	    $(".mail_check_button").click(function(){
+	    	var email = $(".mail_input").val();            // 입력한 이메일
+	        var checkBox = $(".mail_check_input");        // 인증번호 입력란
+	        var boxWrap = $(".mail_check_input_box");    // 인증번호 입력란 박스
+	        $(".mail_check_input").focus();
+	        
+	    	$.ajax({
+	            type:"GET",
+	            url:"http://localhost:8080/asac/mailCheck?email=" + email,
+	            success:function(data){
+	            	//console.log("data : " + data);
+	            	 checkBox.attr("disabled",false);
+	            	 boxWrap.attr("id", "mail_check_input_box_true");
+	            	 code = data;
+	            }
+	        });
+	    	
+	    });
+	    
+	    /* 인증번호 비교 */
+	    $(".mail_check_input").blur(function(){
+	    	var inputCode = $(".mail_check_input").val();        // 입력코드    
+	        var checkResult = $("#mail_check_input_box_warn");    // 비교 결과     
+	        
+	        if(inputCode == code){                            // 일치할 경우
+	            checkResult.html("인증번호가 일치합니다.");
+	            checkResult.attr("class", "correct");        
+	        } else {                                            // 일치하지 않을 경우
+	            checkResult.html("인증번호를 다시 확인해주세요.");
+	            checkResult.attr("class", "incorrect");
+	            $('.mail_check_input').focus();
+	            $('#submit').attr("disabled", true);
+	        }    
+	        
+	    });
+	    
+	    $(".mail_check_input").on("keyup", function(){ if(this.value.length == 6){ $(".btn_sample4_postcode").focus(); } });
+	    
+	})
 	
-	function checkAll() {
-        if (!checkUserId(form.mid.value)) {
-            return false;
-        } else if (!checkPassword(form.mid.value, form.mpwd.value,
-                form.mpwd2.value)) {
-            return false;
-        } else if (!checkMail(form.mail.value)) {
-            return false;
-        } else if (!checkName(form.name.value)) {
-            return false;
-        } else if (!checkBirth(form.identi1.value, form.identi2.value)) {
-            return false;
-        } else if (!checkFavorite()) {
-            return false;
-        } else if (!checkIntro()) {
-            return false;
-        }
-        return true;
-    }
-
-	function checkUserId(id) {
-        var idRegExp = /^[a-zA-z0-9]{4,12}$/; //아이디 유효성 검사
-        if (!idRegExp.test(id)) {
-            alert("아이디는 영문 대소문자와 숫자 4~12자리로 입력해야합니다!");
-            form.mid.value = "";
-            form.mid.focus();
-            return false;
-        }
-        return true; //확인이 완료되었을 때
-    }
-
-    function checkPassword(password1, password2) {
-        var password1RegExp = /^[a-zA-z0-9]{4,12}$/; //비밀번호 유효성 검사
-        if (!password1RegExp.test(password1)) {
-            alert("비밀번호는 영문 대소문자와 숫자 4~12자리로 입력해야합니다!");
-            form.mpwd.value = "";
-            form.mpwd2.focus();
-            return false;
-        }
-        return true; //확인이 완료되었을 때
-    }    
-
-    function checkMail(mail) {
-        //mail이 입력되었는지 확인하기
-        if (!checkExistData(mail, "이메일을"))
-            return false;
- 
-        var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-        if (!emailRegExp.test(mail)) {
-            alert("이메일 형식이 올바르지 않습니다!");
-            form.mail.value = "";
-            form.mail.focus();
-            return false;
-        }
-        return true; //확인이 완료되었을 때
-    }
-
-    function checkName(name) {
-        if (!checkExistData(name, "이름을"))
-            return false;
- 
-        var nameRegExp = /^[가-힣]{2,4}$/;
-        if (!nameRegExp.test(name)) {
-            alert("이름이 올바르지 않습니다.");
-            return false;
-        }
-        return true; //확인이 완료되었을 때
-    }
-
-    function checkBirth(identi1, identi2) {
-        //birth이 입력되었는지 확인하기
-        if (!checkExistData(identi1, "주민등록번호를 ")
-                || !checkExistData(identi2, "주민등록번호를 "))
-            return false;
- 
-        var totalIdenti = "" + identi1 + identi2;
- 
-        var identiArr = new Array();
-        var sum = 0;
-        var plus = 2;
- 
-        //배열에 주민등록번호 입력 후 유효값 확인하기 위해 sum에 저장
-        for (var i = 0; i < 12; i++) {
-            identiArr[i] = totalIdenti.charAt(i);
-            if (i >= 0 && i <= 7) {
-                sum += totalIdenti[i] * plus;
-                plus++;
-                if (i == 7)
-                    plus = 2;
-            } else {
-                sum += totalIdenti[i] * plus;
-                plus++;
-            }
-        }
-        //주민등록번호 길이 확인하기
-        if (identiArr.length < 12) {
-            alert("주민등록번호는 13자리입니다.");
-            form.identi1.value = "";
-            form.identi2.value = "";
-            form.identi1.focus();
-            return false;
-        }
-        //주민등록번호 유효한지 확인
-        var result = 11 - (sum % 11) % 10
-        if (result != totalIdenti.charAt(12)) { //주민등록번호가 유효하지 않은 경우
-            alert("유효하지않은 주민번호입니다.");
-            form.identi1.value = "";
-            form.identi2.value = "";
-            form.identi1.focus();
-            return false;
-        }
-        return true; //확인이 완료되었을 때
-    }
-
 	
 	
 </script>
@@ -277,12 +236,36 @@ body {
 	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	margin: auto;
 }
+
+#mail_check_input_box_false{
+    background-color:#ebebe4;
+}
+ 
+#mail_check_input_box_true{
+    background-color:white;
+}
+
+.mailfloat{
+	float: left !important;
+}
+
+.correct{
+    color : green;
+}
+.incorrect{
+    color : red;
+}
+
+*:focus {
+    outline: 0;
+}
+
 </style>
 </head>
 <body>
 
-	<jsp:include page="../common/clientHeader.jsp" />
 	
+	<jsp:include page="../common/clientHeader.jsp" />
 	<div class="container">
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
@@ -292,7 +275,7 @@ body {
 						<label for="mid">아이디 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-							<input type="text" class="form-control" id="mid" name="mid" oninput="checkId()" required>
+							<input type="text" class="form-control" id="mid" name="mid" oninput="checkId()" maxlength="10" onkeyup="this.value=this.value.replace(/[^a-zA-Z-_0-9]/g,'');" placeholder="영문 소문자와 숫자만 입력가능" required>
 						</div><br>
 						<div>
 							<span class="id_ok"><p>사용 가능한 아이디입니다.</p></span>
@@ -301,49 +284,59 @@ body {
 					</div>
 					<div class="mb-3">
 						<label for="pw">비밀번호 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd" id="pw" required /><br>
+						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
 					</div>
 					<div class="mb-3">
 						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" required /><br>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
 						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
 						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 					</div>
 					<div class="mb-3">
 						<label for="mname">이름 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="mname" id="mname" required /><br>
+						<input type="text" class="form-control" name="mname" id="mname" placeholder="홍길동" pattern="^[가-힣]+$" maxlength="4"  required><br>
 					</div>
 					<div class="mb-3">
 						<label for="mbirth">생년월일 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="mbirth" id="mbirth" required /><br>
+						<input type="text" class="form-control birth" name="mbirth" id="mbirth" placeholder="예) 910101-1****** " maxlength="14" onkeyup="birth_keyup(this)" required><br>
 					</div>
 					<div class="mb-3">
 						<label for="mphone">전화번호 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span>
-							<input type="text" class="form-control phoneNumber" name="mphone" id="mphone" required /><br>
+							<input type="tel" class="form-control phoneNumber" name="mphone" id="mphone" placeholder="010-1234-1234" maxlength="13" required>
 						</div><br>
 					</div>
-					<div class="mb-3">
-						<label for="mmail">이메일 <span class="text-danger">*</span></label>
-						<div class="input-group">
+					<label for="mmail">이메일 <span class="text-danger">*</span></label>
+					<div class="mb-3 mail_wrap">
+						<div class="col-md-9 input-group mailfloat mail_input_box">
 		            		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-							<input type="text" class="form-control" name="mmail" id="mmail" placeholder="you@example.com" value="" required /><br>
-		            	</div><br>
+							<input type="text" class="form-control mail_input" name="mmail" id="mmail" maxlength="50" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" required>
+		            	</div>
+		            	<div class="mb-3 col-md-3">
+		            		<label>&nbsp;</label>
+		            		<!-- <span>인증번호 전송</span> -->
+		            		<input type="submit" value="인증번호 전송" id="mail_check_button" class="btn mail_check_button"><br>
+		            	</div>
 					</div>
+		           	<div class="clearfix"></div><br>
+					<div class="mb-3 mail_check_wrap mail_check_input_box" id="mail_check_input_box_false">
+						<input type="text" class="form-control mail_check_input" disabled="disabled" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="인증번호를 입력해주세요" required>
+						<span id="mail_check_input_box_warn"></span>
+					</div><br>
 					<div class="row">
 						<div class="col-md-9 mb-3">
 							<label for="sample4_postcode">우편번호 <span class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="maddr" readonly required><br>
+							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="maddrz" readonly required><br>
 						</div>
 						<div class="col-md-3 mb-3">
 							<label>&nbsp;</label><br>
-							<input type="button" class="btn" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+							<input type="button" class="btn btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</div>
 					<div class="mb-3">
 						<label for="sample4_roadAddress">도로명주소</label>
-						<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" name="maddrd" readonly required>
+						<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" name="maddr" readonly required>
 						<p><span id="guide" style="color: #999; display: none"></span><p>
 					</div>
 					<input type="hidden" class="form-control" id="sample4_jibunAddress" placeholder="지번주소" required>
@@ -351,7 +344,7 @@ body {
 						<label for="sample4_detailAddress">상세주소</label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소" name="maddrz" required><br>
+							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" name="maddrd" required><br>
 						</div>
 					</div>
 					<input type="hidden" class="form-control" id="sample4_extraAddress" placeholder="참고항목"><br><br>

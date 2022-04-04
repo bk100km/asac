@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 
 <!DOCTYPE html>
@@ -34,45 +34,160 @@
     float: right;
     width: 79%;
 }
+
+.sgenderLabel input[type="radio"] {
+    display: none;
+}
+ 
+.sgenderLabel input[type="radio"] + span {
+	border-radius: 5px;
+	width: 80px;
+    height: 35px;
+    display: inline-block;
+    padding: 7px 10px;
+    border: 1px solid #dfdfdf;
+    background-color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+}
+ 
+.sgenderLabel input[type="radio"]:checked + span {
+    background-color: #113a6b;
+    color: #ffffff;
+}
+
+#sellerIdCheckLabel {
+	margin-top:14px;
+}
+
+#sfileUploadButtonLabel {
+	margin-top:14px;
+}
+
+#sfileUpload {
+	display: none;
+}
+
+#leftPanel {
+	text-align: center;
+	height: 600px;
+}
+	
+#leftPanel .table-responsive {
+	height: 500px;
+}
+
+#sellerInfoBtn td {
+	line-height: 20px;
+}
+
+th {
+    text-align: center;
+}
+
+/* Overlay */
+.image {
+	display: block;
+	width: auto;
+	height:100%;
+}
+.overlay {
+	position: absolute;
+	transition: all .3s ease;
+	opacity: 0;
+}
+.overlayFade {
+	height: 100%;
+	width:100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+}
 </style>
 </head>
 
 <body>
 
 <script>
-<!-- 상세정보 조회 AJAX -->
+
+// sfilePreview
+$('body').on('click', function() {
+	$('#overlayFade').css("opacity", "0");
+    $('#sellerFormTable').css("opacity", "1");
+    $('#sellerFormTable').css("transition", "all .5s ease");
+});
+
+function sfilePreview() {
+	$('#overlayFade').css("opacity", "0.95");
+    $('#sellerFormTable').css("opacity", "0.05");
+    $('#sellerFormTable').css("transition", "all .5s ease");
+}
+
+// 상세정보 조회 AJAX
 function sellerInfoAction(clickedSeller) {
 	var sid = clickedSeller.getAttribute("data-sid");
+	var sfileZoneText = "";
 	
     $.ajax({
         type: 'POST',
         url: './sI',
         data: {sid:sid},
         success: function(seller) {
+        	
+            sfileZoneText +=  
+				'<div class="row">' +
+				'<div class="col-md-9 mb-3">' +
+					'<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
+						'class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="' + sfile + '"' +
+						'maxlength="10" required readonly>' +
+				'</div>' +
+				'<div class="col-md-3 mb-3">' +
+					'<input type="file" accept="image/jpeg"' +
+						'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">' +
+					'<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>' +
+					'<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">' +							
+				'</div>' +
+				'</div>' + 
+				'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기</a><br/>';
+            document.getElementById("sfileZone").innerHTML = sfileZoneText;
+        	
             $(seller).each(function(index, item) {
-                $('#sid').attr('value',seller.sid);
-                $('#sname').attr('value',seller.sname);
-                $('#sname').attr('readonly',false);
-                $('#sbirth').attr('value',seller.sbirth);
-                $('#sbirth').attr('readonly',false);
-                $('#sphone').attr('value',seller.sphone);
-                $('#sphone').attr('readonly',false);
-                $('#smail').attr('value',seller.smail);
-                $('#smail').attr('readonly',false);
-                $('#saddrz').attr('value',seller.saddrz);
-                $('#saddr').attr('value',seller.saddr);
-                $('#saddr').attr('readonly',false);
+                $('#sid').prop('value',seller.sid);
+                $('#sname').prop('value',seller.sname);
+                $('#sname').prop('readonly',false);
+                $('#sbirth').prop('value',(seller.sbirth).substring(0,8));
+                $('#sbirth').prop('readonly',false);
+                if ((seller.sbirth).substring(8) == "1") {
+                	$('#sgenderMale').prop('disabled',false);
+                	$('#sgenderFemale').prop('disabled',false);
+                	$('#sgenderFemale').prop('checked',false);
+                	$('#sgenderMale').prop('checked',true);
+                } else {
+                	$('#sgenderMale').prop('disabled',false);
+                	$('#sgenderFemale').prop('disabled',false);
+                	$('#sgenderMale').prop('checked',false);
+                	$('#sgenderFemale').prop('checked',true);
+                }
+                $('#sphone').prop('value',(seller.sphone).substring(3));
+                $('#sphone').prop('readonly',false);
+                $('#smail').prop('value',seller.smail);
+                $('#smail').prop('readonly',false);
+                $('#saddrz').prop('value',seller.saddrz);
+                $('#saddr').prop('value',seller.saddr);
+                $('#saddr').prop('readonly',false);
                 $('#saddr').attr('onclick',"saddrSearchAction()");
-                $('#saddrd').attr('value',seller.saddrd);
-                $('#saddrd').attr('readonly',false);
-                $('#scompany').attr('value',seller.scompany);
-                $('#scompany').attr('readonly',false);
-                $('#snumber').attr('value',seller.snumber);
-                $('#snumber').attr('readonly',false);
-                $('#sfile').attr('value',seller.sfile);
-                $('#sregdate').attr('value',seller.sregdate);
+                $('#saddrd').prop('value',seller.saddrd);
+                $('#saddrd').prop('readonly',false);
+                $('#scompany').prop('value',seller.scompany);
+                $('#scompany').prop('readonly',false);
+                $('#snumber').prop('value',seller.snumber);
+                $('#snumber').prop('readonly',false);
+                $('#sfile').prop('value',seller.sfile);
+                $('#sfileUploadButton').prop('disabled',false);
+                $('#sregdate').prop('value',seller.sregdate);
                 $('#sellerUpdateButton').attr('onclick',"sellerUpdateOk()");
                 $('#sellerDeleteButton').attr('onclick',"sellerDeleteOk()");
+                
             });
         },
         error: function(request, status, error) {
@@ -83,40 +198,63 @@ function sellerInfoAction(clickedSeller) {
     });
 }
 
-function sellerSearchAction() {	
+function sellerSearchAction(clikedPage) {	
 	var sellerSearchCategory = $('#sellerSearchCategory option:selected').val();
     var sellerSearchText = document.getElementById('sellerSearchText').value;
 	var sellerListText = "";
+	var sellerPagingText = "";
+	var page = clikedPage;
+	var step = 0;
     $.ajax({
         type: 'POST',
-        url: './sS/sC/' + sellerSearchCategory,
+        url: './sS',
    		data: {sellerSearchCategory:sellerSearchCategory,
-    		sellerSearchText:sellerSearchText},
-        success: function(sellerList) {
-        	 $.each(sellerList , function(i){
-        		  if (sellerList[i].sok == 'Y') {
-                  sellerListText += '<tr id="sellerInfoBtn" data-sid="' + sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + sellerList[i].sid + 
-                  					'</td><td>' + sellerList[i].sname + 
-                  					'</td><td>' + sellerList[i].sphone + 
-                  					'</td><td>' + sellerList[i].sregdate + 
-                  					'</td><td><label id="' + sellerList[i].sid + 'sokText">' + sellerList[i].sok + '</label>' +
-                  					'<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="' + sellerList[i].sid +
-                  					'" data-sok="' + sellerList[i].sok + '"' + 'checked />' +
+    		sellerSearchText:sellerSearchText,
+    		page:page},
+        success: function(map) {
+        	 $.each(map.sellerList , function(i){
+        		  if (map.sellerList[i].sok == 'Y') {
+                  sellerListText += '<tr id="sellerInfoBtn" data-sid="' + map.sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + map.sellerList[i].sid + 
+                  					'</td><td>' + map.sellerList[i].sname + 
+                  					'</td><td>' + map.sellerList[i].sphone + 
+                  					'</td><td>' + map.sellerList[i].sregdate + 
+                  					'</td><td><label id="' + map.sellerList[i].sid + 'sokText">' + map.sellerList[i].sok + '</label>' +
+                  					'<input type="checkbox" id="sokCheckBox" onchange="sokCheckAction(this)" data-sid="' + map.sellerList[i].sid +
+                  					'" data-sok="' + map.sellerList[i].sok + '"' + 'checked />' +
                   					'</td></tr>';
-       		    } else {
-       		    	sellerListText += '<tr id="sellerInfoBtn" data-sid="' + sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + sellerList[i].sid + 
-  					'</td><td>' + sellerList[i].sname + 
-  					'</td><td>' + sellerList[i].sphone + 
-  					'</td><td>' + sellerList[i].sregdate + 
-  					'</td><td><label id="' + sellerList[i].sid + 'sokText">' + sellerList[i].sok + '</label>' +
-  					'<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="' + sellerList[i].sid +
-  					'" data-sok="' + sellerList[i].sok + '"' + ' />' +
+       		      } else {
+       		    	sellerListText += '<tr id="sellerInfoBtn" data-sid="' + map.sellerList[i].sid + '" onclick="sellerInfoAction(this)"><td>' + map.sellerList[i].sid + 
+  					'</td><td>' + map.sellerList[i].sname + 
+  					'</td><td>' + map.sellerList[i].sphone + 
+  					'</td><td>' + map.sellerList[i].sregdate + 
+  					'</td><td><label id="' + map.sellerList[i].sid + 'sokText">' + map.sellerList[i].sok + '</label>' +
+  					'<input type="checkbox" id="sokCheckBox" onchange="sokCheckAction(this)" data-sid="' + map.sellerList[i].sid +
+  					'" data-sok="' + map.sellerList[i].sok + '"' + ' />' +
   					'</td></tr>';        			  
         			  
-        		  }			
+        		  }	
              });
+        	 
+   		     if (map.paging.prev) {
+	    		 sellerPagingText +=
+			 	'<li class="page-item"><a class="page-link" href="#" onclick="sellerSearchAction(1)">이전</a></li>'; 
+    		 }
+    		 for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
+    		 	sellerPagingText +=
+    		 	'<li class="page-item" id="page' + step + '" value="' + step + '"><a class="page-link" href="#" onclick="sellerSearchAction(' + step + ')">' + step + '</a></li>';
+    	     }
+    		 if (map.paging.next) {
+    		 	sellerPagingText +=
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="sellerSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+        	 }
         	document.getElementById("sellerListBody").innerHTML = sellerListText;
-				
+        	document.getElementById("sellerPagingZone").innerHTML = sellerPagingText;
+        	[].forEach.call(document.getElementById("page" + page), function(element) {
+        	    element.classList.remove("active");
+        	    element.classList.remove("sellerActivePage");
+        	});
+        	document.getElementById("page" + page).classList.add("active");
+        	document.getElementById("page" + page).classList.add("sellerActivePage");
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -133,31 +271,36 @@ function sellerInsertForm() {
     $.ajax({
         success: function() {
         	
-        	$('#sellerInfoDetail').attr('action',"sellerInsertAction()");
-        	$('#sid').attr('value',"");
-            $('#sid').attr('readonly',false);
-            $('#sname').attr('value',"");
-            $('#sname').attr('readonly',false);
-            $('#sbirth').attr('value',"");
-            $('#sbirth').attr('readonly',false);
-            $('#sphone').attr('value',"");
-            $('#sphone').attr('readonly',false);
-            $('#smail').attr('value',"");
-            $('#smail').attr('readonly',false);
-            $('#saddrz').attr('value',"");
-            $('#saddrz').attr('readonly',true);
-            $('#saddr').attr('value',"");
-            $('#saddr').attr('readonly',false);
+        	$('#sellerInfoDetail').prop('action',"sellerInsertAction()");
+        	$('#sid').prop('value',"");
+            $('#sid').prop('readonly',false);
+            $('#sname').prop('value',"");
+            $('#sname').prop('readonly',false);
+            $('#sbirth').prop('value',"");
+            $('#sbirth').prop('readonly',false);
+            $('#sgenderMale').prop('checked',false);
+            $('#sgenderFemale').prop('checked',false);
+            $('#sgenderMale').prop('disabled',false);
+            $('#sgenderFemale').prop('disabled',false);
+            $('#sphone').prop('value',"");
+            $('#sphone').prop('readonly',false);
+            $('#smail').prop('value',"");
+            $('#smail').prop('readonly',false);
+            $('#saddrz').prop('value',"");
+            $('#saddrz').prop('readonly',true);
+            $('#saddr').prop('value',"");
+            $('#saddr').prop('readonly',false);
             $('#saddr').attr('onclick',"saddrSearchAction()");
-            $('#saddrd').attr('value',"");
-            $('#saddrd').attr('readonly',false);
-            $('#scompany').attr('value',"");
-            $('#scompany').attr('readonly',false);
-            $('#snumber').attr('value',"");
-            $('#snumber').attr('readonly',false);
-            $('#sfile').attr('value',"");
-            $('#sfile').attr('readonly',false);
-            $('#sregdate').attr('value', today.toLocaleDateString());
+            $('#saddrd').prop('value',"");
+            $('#saddrd').prop('readonly',false);
+            $('#scompany').prop('value',"");
+            $('#scompany').prop('readonly',false);
+            $('#snumber').prop('value',"");
+            $('#snumber').prop('readonly',false);
+            $('#sfile').prop('value',"");
+            $('#sfile').prop('readonly',false);
+            $('#sfileUploadButton').prop('disabled',false);
+            $('#sregdate').prop('value', today.toLocaleDateString());
         	 
         	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
@@ -181,7 +324,7 @@ function sellerInsertForm() {
 			'</div>' +
 			'</div>' +
 			'<div class="col-md-3 mb-3">' +
-			'<label for="sellerIdCheckButton" id="sellerIdCheckLabel">.</label>' +
+			'<label for="sellerIdCheckButton" id="sellerIdCheckLabel"></label>' +
 			'<input type="button" class="form-control" name = "sellerIdCheckButton" id="sellerIdCheckButton" value="중복확인" onclick="sellerIdCheckAction()">' +			
 			'<input type="hidden" id="sellerIdCheck" name="sellerIdCheck" value="N">' +
 			'</div>' +
@@ -204,31 +347,36 @@ function sellerInsertCancel() {
     $.ajax({
         success: function() {
         	
-        	$('#sellerInfoDetail').attr('action',"./sU");
-        	$('#sid').attr('value',"");
-            $('#sid').attr('readonly',true);
-            $('#sname').attr('value',"");
-            $('#sname').attr('readonly',true);
-            $('#sbirth').attr('value',"");
-            $('#sbirth').attr('readonly',true);
-            $('#sphone').attr('value',"");
-            $('#sphone').attr('readonly',true);
-            $('#smail').attr('value',"");
-            $('#smail').attr('readonly',true);
-            $('#saddrz').attr('value',"");
-            $('#saddrz').attr('readonly',true);
-            $('#saddr').attr('value',"");
-            $('#saddr').attr('readonly',true);
+        	$('#sellerInfoDetail').prop('action',"./sU");
+        	$('#sid').prop('value',"");
+            $('#sid').prop('readonly',true);
+            $('#sname').prop('value',"");
+            $('#sname').prop('readonly',true);
+            $('#sbirth').prop('value',"");
+            $('#sbirth').prop('readonly',true);
+            $('#sgenderMale').prop('checked',false);
+            $('#sgenderFemale').prop('checked',false);
+            $('#sgenderMale').prop('disabled',true);
+            $('#sgenderFemale').prop('disabled',true);
+            $('#sphone').prop('value',"");
+            $('#sphone').prop('readonly',true);
+            $('#smail').prop('value',"");
+            $('#smail').prop('readonly',true);
+            $('#saddrz').prop('value',"");
+            $('#saddrz').prop('readonly',true);
+            $('#saddr').prop('value',"");
+            $('#saddr').prop('readonly',true);
             $('#saddr').attr('onclick',"");
-            $('#saddrd').attr('value',"");
-            $('#saddrd').attr('readonly',true);
-            $('#scompany').attr('value',"");
-            $('#scompany').attr('readonly',true);
-            $('#snumber').attr('value',"");
-            $('#snumber').attr('readonly',true);
-            $('#sfile').attr('value',"");
-            $('#sfile').attr('readonly',true);
-            $('#sregdate').attr('value', "");
+            $('#saddrd').prop('value',"");
+            $('#saddrd').prop('readonly',true);
+            $('#scompany').prop('value',"");
+            $('#scompany').prop('readonly',true);
+            $('#snumber').prop('value',"");
+            $('#snumber').prop('readonly',true);
+            $('#sfile').prop('value',"");
+            $('#sfile').prop('readonly',true);
+            $('#sfileUploadButton').prop('disabled',true);
+            $('#sregdate').prop('value', "");
         	 
         	sellerInsertCancelText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
@@ -264,14 +412,25 @@ function sellerInsertCancel() {
 }
 
 function sellerInsertAction() {	
+	if ($('#sgenderMale').is(":checked") == true) {
+		$('#sbirth').val($('#sbirth').val() + "1");
+	} else {
+		$('#sbirth').val($('#sbirth').val() + "2");	
+	}
+	$('#sphone').val("010" + $('#sphone').val());
+	
 	var sid = document.getElementById('sid').value;
 	var seller = $("form[name=sellerInfoDetail]").serialize();
+	
+	$('#sbirth').val($('#sbirth').val().substring(0,8));
+	$('#sphone').val($('#sphone').val().substring(3));
+	
     $.ajax({
         type: 'POST',
         url: './si',
    		data: seller,
         success: function() {
-			sellerSearchAction();
+			sellerSearchAction(document.getElementsByClassName("sellerActivePage")[0].value);
         	alert("추가한 ID = " + sid + "\n추가가 완료되었습니다.");
         	sellerInsertCancel();
         },
@@ -284,15 +443,25 @@ function sellerInsertAction() {
 }
 
 function sellerUpdateAction() {	
+	if ($('#sgenderMale').is(":checked") == true) {
+		$('#sbirth').val($('#sbirth').val() + "1");
+	} else {
+		$('#sbirth').val($('#sbirth').val() + "2");	
+	}
+	$('#sphone').val("010" + $('#sphone').val());
+	
 	var sid = document.getElementById('sid').value;
 	var seller = $("form[name=sellerInfoDetail]").serialize();
+	
+	$('#sbirth').val($('#sbirth').val().substring(0,8));
+	$('#sphone').val($('#sphone').val().substring(3));
     
     $.ajax({
         type: 'POST',
         url: './sU',
    		data: seller,
         success: function() {
-			sellerSearchAction();
+			sellerSearchAction(document.getElementsByClassName("sellerActivePage")[0].value);
         	alert("수정한 ID = " + sid + "\n수정이 완료되었습니다.");
 				
         },
@@ -312,7 +481,7 @@ function sellerDeleteAction() {
         url: './sD/sid/' + sid,
    		data: {sid:sid},
         success: function() {
-        	sellerSearchAction();
+        	sellerSearchAction(document.getElementsByClassName("sellerActivePage")[0].value);
         	alert("삭제한 ID = " + sid + "\n삭제가 완료되었습니다.");
 				
         },
@@ -350,6 +519,45 @@ function sellerIdCheckAction() {
         }
     });
 }
+
+function sfileUploadAction() {
+			var sfileUpload = new FormData($("#sellerInfoDetail")[0]);
+	        var sfileZoneText = "";
+			
+	        $.ajax({
+	            url: "./sF",
+	            type: "POST",
+	            data: sfileUpload,
+	            async: false, 
+	            cache: false, 
+	            processData: false,
+	            contentType: false,
+	            success: function(sfile){
+	                sfileZoneText +=  
+					'<div class="row">' +
+					'<div class="col-md-9 mb-3">' +
+						'<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
+							'class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="' + sfile + '"' +
+							'maxlength="10" required readonly>' +
+					'</div>' +
+					'<div class="col-md-3 mb-3">' +
+						'<input type="file" accept="image/jpeg"' +
+							'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">' +
+						'<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>' +
+						'<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">' +							
+					'</div>' +
+					'</div>' + 
+					'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기</a><br/>';
+	                document.getElementById("sfileZone").innerHTML = sfileZoneText;
+	            },
+	            error: function(request, status, error) {
+	                console.log("code:" + request.status + 
+	                		"\n"+"message:" + request.responseText + 
+	                		"\n"+"error:"+error);
+	            }
+	        });
+}
+
 </script>
 
 <br>
@@ -372,13 +580,13 @@ function sellerIdCheckAction() {
 										</select>
 										<input class="form-control input-sm" id="sellerSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="sellerSearchButton" value="검색" onclick="sellerSearchAction()">
+											<input type="button" class="btn btn-primary btn-sm" id="sellerSearchButton" value="검색" onclick="sellerSearchAction(1)">
 										</span>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" id="leftPanel">
 							<div class="table-responsive">
 								<table class="table table-striped table-bordered table-hover">
 									<thead>
@@ -398,13 +606,29 @@ function sellerIdCheckAction() {
 											<td>${seller.sphone}</td>
 											<td>${seller.sregdate}</td>
 											<td><label id="${seller.sid}sokText">${seller.sok}</label>
-												<input type="checkbox" id="sokCheckBox" onclick="sokCheckAction(this)" data-sid="${seller.sid}" data-sok="${seller.sok}" <c:if test="${seller.sok eq 'Y'}">checked</c:if> />
+												<input type="checkbox" id="sokCheckBox${seller.sid}" onchange="sokCheckAction(this)" data-sid="${seller.sid}" data-sok="${seller.sok}" <c:if test="${seller.sok eq 'Y'}">checked</c:if> />
 											</td>
 										</tr>
 									</c:forEach>
 									</tbody>
 								</table>
 							</div>
+							<ul class="pagination justify-content-center" id="sellerPagingZone">
+								<c:if test= "${sellerPaging.prev}">
+									<li class="page-item"><a class="page-link" href="#" onclick="sellerSearchAction(1)">이전</a></li>
+								</c:if>
+								<c:forEach var="page" begin="${sellerPaging.startPage}" end="${sellerPaging.endPage}">
+									<c:if test="${sellerPaging.page eq page}">
+									<li class="page-item active sellerActivePage" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="sellerSearchAction(${page})">${page}</a></li>
+									</c:if>
+									<c:if test="${sellerPaging.page ne page}">
+									<li class="page-item" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="sellerSearchAction(${page})">${page}</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test= "${sellerPaging.next}">
+									<li class="page-item"><a class="page-link" href="#"  onclick="sellerSearchAction(${sellerPaging.endPage})">다음</a></li>
+								</c:if>
+							</ul>
 						</div>
 					</div>
 					<!--//일반회원관리 -->
@@ -415,7 +639,10 @@ function sellerIdCheckAction() {
 					<div class="panel panel-default">
 						<div class="panel-heading">상세정보패널</div>
 						<div class="panel-body">
-							<div class="table-responsive">
+									<div class="overlay overlayFade" id="overlayFade">
+										<img src="/asac/resources/upload/d.jpg" alt="img" class="image">
+									</div>
+							<div class="table-responsive" id="sellerFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<form class="sellerInfoDetail" id= "sellerInfoDetail" name="sellerInfoDetail" method="post">
@@ -436,11 +663,28 @@ function sellerIdCheckAction() {
 							placeholder="홍길동" pattern="^[가-힣]+$" 
 							minlength='2' maxlength="6" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="row">					
+					<div class="col-md-8 mb-3">
 						<label for="sbirth">생년월일 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control" name = "sbirth" id="sbirth" value="${seller.sbirth}"
 							placeholder="19901212 (기호제외 8자리)" pattern="^[0-9_]{8}$" 
 							maxlength="8" required readonly>
+					</div>
+					<div class="col-md-4 mb-3">
+					<label for="sgender">성별 <span class="text-danger">*</span></label>
+					<div> 
+					<label id="sgenderLabel" class="sgenderLabel">
+					<input type="radio"
+							class="form-control" name = "sgenderGroup" id="sgenderMale" value="남자" disabled>
+					<span>남자</span>
+					</label>
+					<label id="sgenderLabel" class="sgenderLabel">
+					<input type="radio"
+							class="form-control" name = "sgenderGroup" id="sgenderFemale" value="여자" disabled>
+					<span>여자</span>
+					</label>
+					</div>
+					</div>
 					</div>
 					<label for="sphone">연락처 <span class="text-danger">*</span></label> 
 					<div class="input-group">
@@ -489,13 +733,21 @@ function sellerIdCheckAction() {
 							class="form-control" name = "snumber" id="snumber" placeholder="00-0000-00" value="${seller.snumber}"
 							maxlength="10" required readonly>
 					</div>
-					<div class="mb-3"></div>
-					<div class="mb-3">
+					<div class="mb-3" id="sfileZone">
+					<div class="row">
+					<div class="col-md-9 mb-3">
 						<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="${seller.sfile}"
+							class="form-control" name = "sfile" id="sfile" placeholder="파일명은 id로 지정 / .png, .jpg" value="${seller.sfile}"
 							maxlength="10" required readonly>
 					</div>
-					<div class="mb-3"></div>
+					<div class="col-md-3 mb-3">
+						<input type="file" accept="image/jpeg"
+							class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">
+						<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>
+						<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById('sfileUpload').click()" disabled>							
+					</div>
+					</div>
+					</div>
 					<div class="mb-3">
 						<label for="sregdate">가입일 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control" name = "sregdate" id="sregdate" placeholder="20220322" value="${seller.sregdate}"
@@ -534,16 +786,16 @@ function sellerIdCheckAction() {
 	</div>
 	
 	<script>
-	
 	function sokCheckAction(checkedSeller) {
 		if(checkedSeller.getAttribute("data-sok") != 'Y') {
-			if(!confirm('정말로 승인하시겠습니까?')){
+			if(!confirm('정말로 승인하시겠습니까?')) {
+				document.getElementById("sokCheckBox" + checkedSeller.getAttribute('data-sid')).checked = false;
 				return false;
 			} else {
 				var sid = checkedSeller.getAttribute("data-sid");
 			    $.ajax({
 			        type: 'POST',
-			        url: './sC',
+			        url: './sc',
 			        data: {sid:sid, sok:'Y'},
 			        success: function() {
 			        	checkedSeller.setAttribute('data-sok', 'Y');
@@ -559,12 +811,13 @@ function sellerIdCheckAction() {
 			}
 		} else {
 			if(!confirm('정말로 취소하시겠습니까?')){
+				document.getElementById("sokCheckBox" + checkedSeller.getAttribute('data-sid')).checked = true;
 				return false;
 			} else {
 				var sid = checkedSeller.getAttribute("data-sid");
 			    $.ajax({
 			        type: 'POST',
-			        url: './sC',
+			        url: './sc',
 			        data: {sid:sid, sok:'N'},
 			        success: function(seller) {
 			        	checkedSeller.setAttribute('data-sok', 'N');
@@ -617,7 +870,6 @@ function sellerIdCheckAction() {
 	function sellerIdChange() {
       	document.getElementById('sellerIdCheck').value = "N";
     }
-   
 	</script>
 	
 	<!-- 카카오 주소찾기 API -->

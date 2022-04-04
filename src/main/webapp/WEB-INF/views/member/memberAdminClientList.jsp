@@ -29,6 +29,49 @@
     float: right;
     width: 74%;
 }
+
+.mgenderLabel input[type="radio"] {
+    display: none;
+}
+ 
+.mgenderLabel input[type="radio"] + span {
+	border-radius: 5px;
+	width: 97px;
+    height: 35px;
+    display: inline-block;
+    padding: 7px 10px;
+    border: 1px solid #dfdfdf;
+    background-color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+}
+ 
+.mgenderLabel input[type="radio"]:checked + span {
+    background-color: #113a6b;
+    color: #ffffff;
+}
+
+#memberIdCheckLabel {
+	margin-top:14px;
+}
+
+#leftPanel {
+	text-align: center;
+	height: 600px;
+}
+
+#leftPanel .table-responsive {
+	height: 500px;
+}
+
+#memberInfoBtn td {
+	line-height: 27px;
+}
+
+th {
+    text-align: center;
+}
+
 </style>
 </head>
 
@@ -45,22 +88,33 @@ function memberInfoAction(clickedMember) {
         data: {mid:mid},
         success: function(member) {
             $(member).each(function(index, item) {
-                $('#mid').attr('value',member.mid);
-                $('#mname').attr('value',member.mname);
-                $('#mname').attr('readonly',false);
-                $('#mbirth').attr('value',member.mbirth);
-                $('#mbirth').attr('readonly',false);
-                $('#mphone').attr('value',member.mphone);
-                $('#mphone').attr('readonly',false);
-                $('#mmail').attr('value',member.mmail);
-                $('#mmail').attr('readonly',false);
-                $('#maddrz').attr('value',member.maddrz);
-                $('#maddr').attr('value',member.maddr);
-                $('#maddr').attr('readonly',false);
+                $('#mid').prop('value',member.mid);
+                $('#mname').prop('value',member.mname);
+                $('#mname').prop('readonly',false);
+                $('#mbirth').prop('value',(member.mbirth).substring(0,8));
+                $('#mbirth').prop('readonly',false);
+                if ((member.mbirth).substring(8) == "1") {
+                    $('#mgenderMale').prop('disabled',false);
+                    $('#mgenderFemale').prop('disabled',false);
+                    $('#mgenderFemale').prop('checked',false);
+                    $('#mgenderMale').prop('checked',true);
+                } else {
+                    $('#mgenderMale').prop('disabled',false);
+                    $('#mgenderFemale').prop('disabled',false);
+                    $('#mgenderMale').prop('checked',false);
+                    $('#mgenderFemale').prop('checked',true);
+                    }
+                $('#mphone').prop('value',(member.mphone).substring(3));
+                $('#mphone').prop('readonly',false);
+                $('#mmail').prop('value',member.mmail);
+                $('#mmail').prop('readonly',false);
+                $('#maddrz').prop('value',member.maddrz);
+                $('#maddr').prop('value',member.maddr);
+                $('#maddr').prop('readonly',false);
                 $('#maddr').attr('onclick',"maddrSearchAction()");
-                $('#maddrd').attr('value',member.maddrd);
-                $('#maddrd').attr('readonly',false);
-                $('#mregdate').attr('value',member.mregdate);
+                $('#maddrd').prop('value',member.maddrd);
+                $('#maddrd').prop('readonly',false);
+                $('#mregdate').prop('value',member.mregdate);
                 $('#memberUpdateButton').attr('onclick',"memberUpdateOk()");
                 $('#memberDeleteButton').attr('onclick',"memberDeleteOk()");
             });
@@ -75,26 +129,50 @@ function memberInfoAction(clickedMember) {
 }
 
 
-function memberSearchAction() {	
+function memberSearchAction(clikedPage) {	
 	var memberSearchCategory = $('#memberSearchCategory option:selected').val();
     var memberSearchText = document.getElementById('memberSearchText').value;
 	var memberListText = "";
+	var memberPagingText = "";
+	var page = clikedPage;
+	var step = 0;
     
     $.ajax({
         type: 'POST',
-        url: './cS/sC/' + memberSearchCategory,
+        url: './cS',
    		data: {memberSearchCategory:memberSearchCategory,
-    		memberSearchText:memberSearchText},
-        success: function(memberList) {
-        	 $.each(memberList , function(i){
-                  memberListText += '<tr id="memberInfoBtn" onclick="memberInfoAction(this)" data-mid="' + memberList[i].mid + 
-                  					'"><td>' + memberList[i].mid + 
-                  					'</td><td>' + memberList[i].mname + 
-                  					'</td><td>' + memberList[i].mphone + 
-                  					'</td><td>' + memberList[i].mregdate + 
+    		memberSearchText:memberSearchText,
+    		page:page},
+        success: function(map) {
+        	 $.each(map.memberList , function(i){
+                  memberListText += '<tr id="memberInfoBtn" onclick="memberInfoAction(this)" data-mid="' + map.memberList[i].mid + 
+                  					'"><td>' + map.memberList[i].mid + 
+                  					'</td><td>' + map.memberList[i].mname + 
+                  					'</td><td>' + map.memberList[i].mphone + 
+                  					'</td><td>' + map.memberList[i].mregdate + 
                   					'</td></tr>';
              });
+        	 
+   		     if (map.paging.prev) {
+	    		 pagingText +=
+			 	'<li class="page-item"><a class="page-link" href="#" onclick="memberSearchAction(1)">이전</a></li>'; 
+    		 }
+    		 for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
+    		 	memberPagingText +=
+    		 	'<li class="page-item" id="memberPage' + step + '" value="' + step + '"><a class="page-link" href="#" onclick="memberSearchAction(' + step + ')">' + step + '</a></li>';
+    	     }
+    		 if (map.paging.next) {
+    		 	memberPagingText +=
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="memberSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+        	 }
         	document.getElementById("memberListBody").innerHTML = memberListText;
+        	document.getElementById("memberPagingZone").innerHTML = memberPagingText;
+        	[].forEach.call(document.getElementById("memberPage" + page), function(element) {
+        	    element.classList.remove("active");
+        	    element.classList.remove("memberActivePage");
+        	});
+        	document.getElementById("memberPage" + page).classList.add("active");
+        	document.getElementById("memberPage" + page).classList.add("memberActivePage");
 				
         },
         error: function(request, status, error) {
@@ -112,25 +190,29 @@ function memberInsertForm() {
     $.ajax({
         success: function() {
         	
-        	$('#memberInfoDetail').attr('action',"memberInsertAction()");
-        	$('#mid').attr('value',"");
-            $('#mid').attr('readonly',false);
-            $('#mname').attr('value',"");
-            $('#mname').attr('readonly',false);
-            $('#mbirth').attr('value',"");
-            $('#mbirth').attr('readonly',false);
-            $('#mphone').attr('value',"");
-            $('#mphone').attr('readonly',false);
-            $('#mmail').attr('value',"");
-            $('#mmail').attr('readonly',false);
-            $('#maddrz').attr('value',"");
-            $('#maddrz').attr('readonly',true);
-            $('#maddr').attr('value',"");
-            $('#maddr').attr('readonly',false);
+        	$('#memberInfoDetail').prop('action',"memberInsertAction()");
+        	$('#mid').prop('value',"");
+            $('#mid').prop('readonly',false);
+            $('#mname').prop('value',"");
+            $('#mname').prop('readonly',false);
+            $('#mbirth').prop('value',"");
+            $('#mbirth').prop('readonly',false);
+            $('#mgenderMale').prop('checked',false);
+            $('#mgenderFemale').prop('checked',false);
+            $('#mgenderMale').prop('disabled',false);
+            $('#mgenderMale').prop('disabled',false);
+            $('#mphone').prop('value',"");
+            $('#mphone').prop('readonly',false);
+            $('#mmail').prop('value',"");
+            $('#mmail').prop('readonly',false);
+            $('#maddrz').prop('value',"");
+            $('#maddrz').prop('readonly',true);
+            $('#maddr').prop('value',"");
+            $('#maddr').prop('readonly',false);
             $('#maddr').attr('onclick',"maddrSearchAction()");
-            $('#maddrd').attr('value',"");
-            $('#maddrd').attr('readonly',false);
-            $('#mregdate').attr('value', today.toLocaleDateString());
+            $('#maddrd').prop('value',"");
+            $('#maddrd').prop('readonly',false);
+            $('#mregdate').prop('value', today.toLocaleDateString());
         	
         	memberInsertFormButtonZoneText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
@@ -154,7 +236,7 @@ function memberInsertForm() {
 			'</div>' +
 			'</div>' +
 			'<div class="col-md-3 mb-3">' +
-			'<label for="memberIdCheckButton" id="memberIdCheckLabel">.</label>' +
+			'<label for="memberIdCheckButton" id="memberIdCheckLabel"></label>' +
 			'<input type="button" class="form-control" name = "memberIdCheckButton" id="memberIdCheckButton" value="중복확인" onclick="memberIdCheckAction()">' +			
 			'<input type="hidden" id="memberIdCheck" name="memberIdCheck" value="N">' +
 			'</div>' +
@@ -177,25 +259,29 @@ function memberInsertCancel() {
     $.ajax({
         success: function() {
         	
-        	$('#memberInfoDetail').attr('action',"./cU");
-        	$('#mid').attr('value',"");
-            $('#mid').attr('readonly',true);
-            $('#mname').attr('value',"");
-            $('#mname').attr('readonly',true);
-            $('#mbirth').attr('value',"");
-            $('#mbirth').attr('readonly',true);
-            $('#mphone').attr('value',"");
-            $('#mphone').attr('readonly',true);
-            $('#mmail').attr('value',"");
-            $('#mmail').attr('readonly',true);
-            $('#maddrz').attr('value',"");
-            $('#maddrz').attr('readonly',true);
-            $('#maddr').attr('value',"");
-            $('#maddr').attr('readonly',true);
-            $('#maddr').attr('onclick',"");
-            $('#maddrd').attr('value',"");
-            $('#maddrd').attr('readonly',true);
-            $('#mregdate').attr('value', "");
+        	$('#memberInfoDetail').prop('action',"./cU");
+        	$('#mid').prop('value',"");
+            $('#mid').prop('readonly',true);
+            $('#mname').prop('value',"");
+            $('#mname').prop('readonly',true);
+            $('#mbirth').prop('value',"");
+            $('#mbirth').prop('readonly',true);
+            $('#mgenderMale').prop('checked',false);
+            $('#mgenderFemale').prop('checked',false);
+            $('#mgenderMale').prop('disabled',true);
+            $('#mgenderMale').prop('disabled',true);
+            $('#mphone').prop('value',"");
+            $('#mphone').prop('readonly',true);
+            $('#mmail').prop('value',"");
+            $('#mmail').prop('readonly',true);
+            $('#maddrz').prop('value',"");
+            $('#maddrz').prop('readonly',true);
+            $('#maddr').prop('value',"");
+            $('#maddr').prop('readonly',true);
+            $('#maddr').prop('onclick',"");
+            $('#maddrd').prop('value',"");
+            $('#maddrd').prop('readonly',true);
+            $('#mregdate').prop('value', "");
         	 
         	memberInsertCancelText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
@@ -231,14 +317,25 @@ function memberInsertCancel() {
 }
 
 function memberInsertAction() {	
+	if ($('#mgenderMale').is(":checked") == true) {
+		$('#mbirth').val($('#mbirth').val() + "1");
+	} else {
+		$('#mbirth').val($('#mbirth').val() + "2");	
+	}
+	$('#mphone').val("010" + $('#mphone').val());
+	
 	var mid = document.getElementById('mid').value;
 	var member = $("form[name=memberInfoDetail]").serialize();
+	
+	$('#mbirth').val($('#mbirth').val().substring(0,8));
+	$('#mphone').val($('#mphone').val().substring(3));
+	
     $.ajax({
         type: 'POST',
         url: './ci',
    		data: member,
         success: function() {
-			memberSearchAction();
+			memberSearchAction(document.getElementsByClassName("memberActivePage")[0].value);
         	alert("추가한 ID = " + mid + "\n추가가 완료되었습니다.");
         	memberInsertCancel();
         },
@@ -251,15 +348,25 @@ function memberInsertAction() {
 }
 
 function memberUpdateAction() {	
+	if ($('#mgenderMale').is(":checked") == true) {
+		$('#mbirth').val($('#mbirth').val() + "1");
+	} else {
+		$('#mbirth').val($('#mbirth').val() + "2");	
+	}
+	$('#mphone').val("010" + $('#mphone').val());
+	
 	var mid = document.getElementById('mid').value;
 	var member = $("form[name=memberInfoDetail]").serialize();
+	
+	$('#mbirth').val($('#mbirth').val().substring(0,8));
+	$('#mphone').val($('#mphone').val().substring(3));
     
     $.ajax({
         type: 'POST',
         url: './cU',
    		data: member,
         success: function() {
-			memberSearchAction();
+			memberSearchAction(document.getElementsByClassName("memberActivePage")[0].value);
         	alert("수정한 ID = " + mid + "\n수정이 완료되었습니다.");
 				
         },
@@ -279,7 +386,7 @@ function memberDeleteAction() {
         url: './cD/mid/' + mid,
    		data: {mid:mid},
         success: function() {
-        	memberSearchAction();
+        	memberSearchAction(document.getElementsByClassName("memberActivePage")[0].value);
         	alert("삭제한 ID = " + mid + "\n삭제가 완료되었습니다.");
 				
         },
@@ -291,7 +398,7 @@ function memberDeleteAction() {
     });
 }
 
-function memberIdCheckAction() {	
+function memberIdCheckAction() {
 	var mid = document.getElementById('mid').value;
 	if (mid == null || mid == "" || mid == "admin" || mid.length < 5 || !mid.match(/^[a-zA-Z0-9]*$/)) {
 		alert("아이디를 다시 입력해주세요.");
@@ -339,13 +446,13 @@ function memberIdCheckAction() {
 										</select>
 										<input class="form-control input-sm" id="memberSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="memberSearchButton" value="검색" onclick="memberSearchAction()">
+											<input type="button" class="btn btn-primary btn-sm" id="memberSearchButton" value="검색" onclick="memberSearchAction(1)">
 										</span>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" id="leftPanel">
 							<div class="table-responsive">
 								<table id="memberListTable" class="table table-striped table-bordered table-hover">
 									<thead>
@@ -368,6 +475,22 @@ function memberIdCheckAction() {
 									</tbody>
 								</table>
 							</div>
+							<ul class="pagination justify-content-center" id="memberPagingZone">
+								<c:if test= "${memberPaging.prev}">
+									<li class="page-item"><a class="page-link" href="#" onclick="memberSearchAction(1)">이전</a></li>
+								</c:if>
+								<c:forEach var="page" begin="${memberPaging.startPage}" end="${memberPaging.endPage}">
+									<c:if test="${memberPaging.page eq page}">
+									<li class="page-item active memberActivePage" id="memberPage${page}" value="${page}"><a class="page-link" href="#" onclick="memberSearchAction(${page})">${page}</a></li>
+									</c:if>
+									<c:if test="${memberPaging.page ne page}">
+									<li class="page-item" id="memberPage${page}" value="${page}"><a class="page-link" href="#" onclick="memberSearchAction(${page})">${page}</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test= "${memberPaging.next}">
+									<li class="page-item"><a class="page-link" href="#"  onclick="memberSearchAction(${memberPaging.endPage})">다음</a></li>
+								</c:if>
+							</ul>
 						</div>
 					</div>
 					<!--//일반회원관리 -->
@@ -398,11 +521,28 @@ function memberIdCheckAction() {
 							placeholder="홍길동" pattern="^[가-힣]+$" 
 							minlength='2' maxlength="6" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="row">	
+					<div class="col-md-8 mb-3">
 						<label for="mbirth">생년월일 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control" name = "mbirth" id="mbirth" value="${member.mbirth}"
 							placeholder="19901212 (기호제외 8자리)" pattern="^[0-9_]{8}$" 
 							maxlength="8" required readonly>
+					</div>
+					<div class="col-md-4 mb-3">
+					<label for=msgender">성별 <span class="text-danger">*</span></label>
+					<div> 
+					<label id="mgenderLabel" class="mgenderLabel">
+					<input type="radio"
+							class="form-control" name = "mgenderGroup" id="mgenderMale" value="남자" disabled>
+					<span>남자</span>
+					</label>
+					<label id="mgenderLabel" class="mgenderLabel">
+					<input type="radio"
+							class="form-control" name = "mgenderGroup" id="mgenderFemale" value="여자" disabled>
+					<span>여자</span>
+					</label>
+					</div>
+					</div>
 					</div>
 					<label for="mphone">연락처 <span class="text-danger">*</span></label> 
 					<div class="input-group">

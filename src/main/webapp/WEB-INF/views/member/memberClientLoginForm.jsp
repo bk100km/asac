@@ -96,7 +96,7 @@ body {
 					<button onclick="history.back()" class="btn btn-default"> 뒤로가기</button>
 					</div><hr>
 					<div align="center">
-						<a href="" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
+						<a href="http://localhost:8080/asac/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
 					</div>
 				</form:form>
 			</div>

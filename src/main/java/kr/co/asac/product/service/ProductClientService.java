@@ -1,17 +1,20 @@
 package kr.co.asac.product.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.product.dao.ProductDAO;
 import kr.co.asac.review.bean.ReviewBean;
@@ -35,6 +38,8 @@ public class ProductClientService {
 		String text = request.getParameter("text");
 		String items = request.getParameter("items");
 		
+		
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pcate",pcate);
 		map.put("text",text);
@@ -47,11 +52,11 @@ public class ProductClientService {
 		int total = productDAO.productListCount(map);
 		if (nowPage == null && cntPerPage == null) {
 			nowPage = "1";
-			cntPerPage = "5";
+			cntPerPage = "6";
 		} else if (nowPage == null) {
 			nowPage = "1";
 		} else if (cntPerPage == null) { 
-			cntPerPage = "5";
+			cntPerPage = "6";
 		}
 		PagingVO vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
 		model.addAttribute("paging", vo);
@@ -65,7 +70,7 @@ public class ProductClientService {
 		
 		List<ProductBean> list = productDAO.productList(map);
 		System.out.println(map);
-		model.addAttribute("list", list);
+		model.addAttribute("proClientListlist", list);
 
 		
 		
@@ -81,12 +86,49 @@ public class ProductClientService {
 		
 		String reviewNowPage = request.getParameter("reviewNowPage");
 	
+		HttpSession session = request.getSession(); 
 		
+		
+		String mid = (String)session.getAttribute("mid");
+		
+		
+						
+		System.out.println(mid);
+		
+		if(mid == null) {
+			mid = request.getParameter("aid");
+			System.out.println(mid);
+			
+		}
+		
+		
+		
+
+
 		
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
 		ProductBean proDetail = productDAO.productListDetail(pcode);
 		
 		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
+		
+		
+		
+	
+		
+		ArrayList<String> adminIdList = reviewDAO.reviewAdminCheck();
+		
+		boolean aid = adminIdList.contains("mid");
+	
+			if(aid) {
+				
+		    model.addAttribute("aid", mid);
+		    System.out.print(aid);
+		
+		}
+			
+			
+		
+	
 		
 		
 		

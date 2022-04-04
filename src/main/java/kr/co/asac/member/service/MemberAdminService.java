@@ -6,12 +6,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import kr.co.asac.member.bean.MemberBean;
+import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
 
@@ -22,17 +24,17 @@ public class MemberAdminService {
 	private SqlSessionTemplate sqlSessionTemplate;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 	
-	public void memberAdminClientList(Model model) {
+	public void memberAdminClientList(Model model, PagingBean paging) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		List <MemberBean> memberList = memberDAO.memberAdminClientList();
+		List <MemberBean> memberList = memberDAO.memberAdminClientList(paging);
 		model.addAttribute("memberList", memberList);
 	}
 	
-	public void memberAdminSellerList(Model model) {
+	public void memberAdminSellerList(Model model, PagingBean paging) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		List <SellerBean> sellerList = memberDAO.memberAdminSellerList();
+		List <SellerBean> sellerList = memberDAO.memberAdminSellerList(paging);
 		model.addAttribute("sellerList", sellerList);
 	}	
 	
@@ -68,11 +70,18 @@ public class MemberAdminService {
 		request.setAttribute("fromURI", request.getServletPath());
 	}	
 	
-	public List <MemberBean> memberAdminClientSearch(HttpServletRequest request, Model model, String searchCategory, String searchText) {
+	public int memberAdminClientCount(String searchCategory, String searchText) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		List <MemberBean> memberList = memberDAO.memberAdminClientSearch(searchCategory, searchText);
-		System.out.println(memberList);
+		int listCnt = memberDAO.memberAdminClientCount(searchCategory, searchText);
+		System.out.println("MemberAdminService : memberCount 값은 " + listCnt);
+		return listCnt;
+	}
+	
+	public List <MemberBean> memberAdminClientSearch(HttpServletRequest request, Model model, String searchCategory, String searchText, PagingBean paging) {
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		List <MemberBean> memberList = memberDAO.memberAdminClientSearch(searchCategory, searchText, paging);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("fromURI", request.getServletPath());
 		request.setAttribute("fromURI", request.getServletPath());
@@ -136,11 +145,18 @@ public class MemberAdminService {
 	   	out.flush();
 	}	
 	
-	public List <SellerBean> memberAdminSellerSearch(HttpServletRequest request, Model model, String searchCategory, String searchText) {
+	public int memberAdminSellerCount(String searchCategory, String searchText) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		System.out.println("searchText값 = " + searchText);
-		List <SellerBean> sellerList = memberDAO.memberAdminSellerSearch(searchCategory, searchText);
+		int listCnt = memberDAO.memberAdminSellerCount(searchCategory, searchText);
+		System.out.println("MemberAdminService : sellerCount 값은 " + listCnt);
+		return listCnt;
+	}	
+	
+	public List <SellerBean> memberAdminSellerSearch(HttpServletRequest request, Model model, String searchCategory, String searchText, PagingBean paging) {
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		List <SellerBean> sellerList = memberDAO.memberAdminSellerSearch(searchCategory, searchText, paging);
 		System.out.println("MemberAdminService : 검색완료");
 		model.addAttribute("sellerList", sellerList);
 		model.addAttribute("fromURI", request.getServletPath());

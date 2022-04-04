@@ -46,16 +46,30 @@ public class MemberSellerService {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		memberDAO.memberSellerJoin(seller);
 	}
-	public int memberIdChk(SellerBean seller) {
+	public int sellerIdChk(SellerBean seller) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		int result =memberDAO.meberIdChk(seller);
+		int result =memberDAO.sellerIdChk(seller);
 		return result;
 	}
-	public void memberSellerInfo(HttpServletRequest request, HttpSession session, Model model, String sid) {
+	public void memberSellerInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model, String sid) throws IOException {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		sid=(String) request.getSession().getAttribute("sid");
 		SellerBean seller = memberDAO.memberSellerInfo(sid);
 		session.setAttribute("seller", seller);
 		model.addAttribute("seller",seller);		
+		
+		if(sid ==null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	
+		   	out.println("<script>");
+		   	out.println("alert('로그인후 이용하세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		}
+		
+		
 	}
 	public void memberSellerUpdate(HttpServletRequest request, Model model,SellerBean seller) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);

@@ -1,13 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-<script>
+<script type="text/javascript">
 //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
 function sample4_execDaumPostcode() {
     new daum.Postcode({
@@ -65,10 +64,53 @@ function sample4_execDaumPostcode() {
     }).open();
 }
 
-/* $(document).on("keyup", ".phoneNumber", function() { $(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); }); */
+$(function() {
+	//비밀번호 확인
+	$('#pw2').blur(function() {
+		if ($('#pw').val() != $('#pw2').val()) {
+			$('.pw_nok').css("display", "inline-block");
+			$('.pw_ok').css("display", "none");
+			if ($('#pw2').val() != '') { // 비밀번호가 일치하지 않을 때
+				$('#pw2').val('');
+				$('#pw2').focus();
+			}
+		} else { // 비밀번호가 일치할 때
+			$('.pw_nok').css("display", "none");
+			$('.pw_ok').css("display", "inline-block");
+		}
+	})
+});
+
+$(document).on("keyup", ".phoneNumber", function() { 
+	$(this).val( 
+		$(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") 
+	); 
+});
+
+function birth_keyup(obj){
+	    let birth_len = obj.value.length;
+	    if (event.keyCode==14){
+	        obj.value = obj.value.slice(0,birth_len)
+	        return 0;
+	    } else if(birth_len==6 || birth_len==7){
+	        obj.value += '-';
+	    } else if(birth_len==8 || birth_len==9){
+	        obj.value += '******';
+	    }
+	}
 
 </script>
 <style type="text/css">
+.pw_ok {
+	color: #6A82FB;
+	display: none;
+}
+
+.pw_nok {
+	color: red;
+	display: none;
+}
+
 input[readonly] { outline:none; background-color: #e2e2e2; }
 	
 body {
@@ -110,7 +152,13 @@ background: linear-gradient(to top right);
 			</div>
 			<div class="mb-3">
 				<label for="pw">비밀번호</label><br>
-				<input type="password" class="form-control" name="mpwd" value="${member.mpwd }" required><br>
+				<input type="password" class="form-control" name="mpwd" id="pw" value="${member.mpwd }" placeholder="영문/숫자/특수문자(!@#$%^*+=-)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+			</div>
+			<div class="mb-3">
+				<label for="pw2">비밀번호 확인 </label>
+				<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
+				<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
+				<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 			</div>
 			<div class="mb-3">
 				<label for="mname">이름</label><br>
@@ -118,20 +166,20 @@ background: linear-gradient(to top right);
 			</div>
 			<div class="mb-3">
 				<label for="mbirth">생년월일</label><br>
-				<input type="text" class="form-control" name="mbirth" value="${member.mbirth }" required><br>
+				<input type="text" class="form-control birth" name="mbirth" value="${member.mbirth.substring(2) }" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
 			</div>
 			<div class="mb-3">
 				<label for="mphone">전화번호</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span>
-					<input type="text" class="form-control phoneNumber" name="mphone" value="${member.mphone }" required><br>
+					<input type="text" class="form-control phoneNumber" name="mphone" value="${member.mphone }" placeholder="010-1234-1234" pattern="\d{3}-\d{3,4}-\d{4}" maxlength="11" required>
 				</div><br>
 			</div>
 			<div class="mb-3">
 				<label for="mmail">이메일</label>
 				<div class="input-group">
 	           		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-	           		<input type="text" class="form-control" name="mmail" value="${member.mmail }" required><br>
+	           		<input type="text" class="form-control" name="mmail" value="${member.mmail }" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" required>
 	           	</div><br>
 		    </div>
 			<div class="row">
@@ -154,7 +202,7 @@ background: linear-gradient(to top right);
 				<label for="sample4_detailAddress">상세주소</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소" value="${member.maddrd }" readonly required><br>
+					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" value="${member.maddrd }" readonly required><br>
 				</div>
 			</div>
 			<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">

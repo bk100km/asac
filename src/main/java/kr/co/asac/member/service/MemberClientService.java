@@ -45,8 +45,21 @@ public class MemberClientService {
 
 	public void memberClientJoin(MemberBean member) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
-		memberDAO.memberJoin(member);
+		System.out.println("서비스에서 birth값 = " + member.getMbirth());
+		String gender = member.getMbirth().substring(7,8);
+		System.out.println("서비스에서 birth값 = " + member.getMbirth().substring(7,8));
+		String yy = member.getMbirth();
+		String yyyy = null;
+		if(gender.equals("1") || gender.equals("2")) {
+			yyyy = "19"+yy;
+		}else if(gender.equals("3") || gender.equals("4")){
+			yyyy = "20"+yy;
+		}else if(gender.equals("8") || gender.equals("9")) {
+			yyyy = "18"+yy;
+		}
+		member.setMbirth(yyyy);
 		System.out.println(member);
+		memberDAO.memberJoin(member);
 	}
 	
 	public int memberIdChk(MemberBean member) {
@@ -59,6 +72,8 @@ public class MemberClientService {
 	public void memberClientInfo(HttpServletRequest request, HttpSession session, Model model, String mid) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		MemberBean member = memberDAO.memberClientInfo(mid);
+		member.setMphone(member.getMphone().substring(0, 3) + "-" + member.getMphone().substring(3, 7) + "-" + member.getMphone().substring(7, 11));
+		member.setMbirth(member.getMbirth().substring(0, 8) + "-" + member.getMbirth().substring(8) + "******");
 		System.out.println(member);
 		session.setAttribute("member", member);
 		model.addAttribute("member", member);
@@ -67,6 +82,17 @@ public class MemberClientService {
 	public void memberClientUpdate(HttpServletRequest request, Model model, MemberBean member) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		System.out.println("DAO에 member를 보냈다" + member);
+		String gender = member.getMbirth().substring(7,8);
+		String yy = member.getMbirth();
+		String yyyy = null;
+		if(gender.equals("1") || gender.equals("2")) {
+			yyyy = "19"+yy;
+		}else if(gender.equals("3") || gender.equals("4")){
+			yyyy = "20"+yy;
+		}else if(gender.equals("8") || gender.equals("9")) {
+			yyyy = "18"+yy;
+		}
+		member.setMbirth(yyyy);
 		memberDAO.memberClientUpdate(member);	
 		model.addAttribute("member", member);
 	}

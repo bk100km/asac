@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- saleMapper.xml -->
+
+<mapper namespace="kr.co.asac.sales.dao.SaleDAO">
+	
+	<!-- saleAdmin -->
+	<select id="saleAdminDayList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select case dayofweek(oregdate)
+			when 1 then "Sun"
+			when 2 then "Mon"
+			when 3 then "Tue"
+			when 4 then "Wed"
+			when 5 then "Thu"
+			when 6 then "Fri"
+			when 7 then "Sat" end as DateRange
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where date_format(oregdate,"%Y%m%d")
+		group by dayofweek(oregdate)
+	</select>
+	
+	<select id="saleAdminDayConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select case dayofweek(oregdate)
+			when 1 then "Sun"
+			when 2 then "Mon"
+			when 3 then "Tue"
+			when 4 then "Wed"
+			when 5 then "Thu"
+			when 6 then "Fri"
+			when 7 then "Sat" end as DateRange
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where date_format(oregdate,"%Y%m%d") and oconfirmed='구매완료'
+		group by dayofweek(oregdate)
+	</select>
+	
+	<select id="saleAdminDateList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select date(oregdate) as date
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where date_format(oregdate,"%Y%m%d")
+		group by date(oregdate)
+	</select>
+	
+	<select id="saleAdminDateConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select date(oregdate) as date
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where date_format(oregdate,"%Y%m%d")
+		group by date(oregdate)
+	</select>
+	
+	<select id="saleAdminWeekList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select week(oregdate) as week
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
+		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		GROUP BY YEARWEEK(oregdate)
+	</select>
+	
+	<select id="saleAdminWeekConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select week(oregdate) as week
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
+		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		GROUP BY YEARWEEK(oregdate)
+	</select>
+	
+	<select id="saleAdminMonthList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select month(oregdate) as month
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		GROUP BY month(oregdate)
+	</select>
+	
+	<select id="saleAdminMonthConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select month(oregdate) as month
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		GROUP BY month(oregdate)
+	</select>
+	
+	<select id="saleAdminSellerList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by s.sid
+	</select>
+	
+	<select id="saleAdminSellerConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by s.sid
+	</select>
+	
+	<select id="saleAdminSellerListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by s.sid
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleAdminSellerConfirmListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by s.sid
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleAdminSellerListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by s.sid
+		order by count asc
+		limit 5
+	</select>
+	
+	<select id="saleAdminSellerConfirmListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select s.sid
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by s.sid
+		order by count asc
+		limit 5
+	</select>
+
+	<select id="saleAdminProductCateList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pcate
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by p.pcate
+	</select>
+
+	<select id="saleAdminProductCateConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pcate
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by p.pcate
+	</select>
+	
+	<select id="saleAdminProductListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by p.pname
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleAdminProductConfirmListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by p.pname
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleAdminProductListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		group by p.pname
+		order by count asc
+		limit 5
+	</select>
+	
+	<select id="saleAdminProductConfirmListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where oconfirmed='구매완료'
+		group by p.pname
+		order by count asc
+		limit 5
+	</select>
+	
+	<!-- SaleSellerAdmin -->
+	<select id="saleSellerDayList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select case dayofweek(oregdate)
+			when 1 then "Sun"
+			when 2 then "Mon"
+			when 3 then "Tue"
+			when 4 then "Wed"
+			when 5 then "Thu"
+			when 6 then "Fri"
+			when 7 then "Sat" end as DateRange
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and date_format(oregdate,"%Y%m%d")
+		group by dayofweek(oregdate)
+	</select>
+	
+	<select id="saleSellerDayConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select case dayofweek(oregdate)
+			when 1 then "Sun"
+			when 2 then "Mon"
+			when 3 then "Tue"
+			when 4 then "Wed"
+			when 5 then "Thu"
+			when 6 then "Fri"
+			when 7 then "Sat" end as DateRange
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and date_format(oregdate,"%Y%m%d") and oconfirmed='구매완료'
+		group by dayofweek(oregdate)
+	</select>
+	
+	<select id="saleSellerDateList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select date(oregdate) as date
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and date_format(oregdate,"%Y%m%d")
+		group by date(oregdate)
+	</select>
+	
+	<select id="saleSellerDateConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select date(oregdate) as date
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and date_format(oregdate,"%Y%m%d") and oconfirmed='구매완료'
+		group by date(oregdate)
+	</select>
+	
+	<select id="saleSellerWeekList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select week(oregdate) as week
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
+		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id}
+		GROUP BY YEARWEEK(oregdate)
+	</select>
+	
+	<select id="saleSellerWeekConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select week(oregdate) as week
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
+		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and oconfirmed='구매완료'
+		GROUP BY YEARWEEK(oregdate)
+	</select>
+	
+	<select id="saleSellerMonthList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select month(oregdate) as month
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id}
+		GROUP BY month(oregdate)
+	</select>
+	
+	<select id="saleSellerMonthConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select month(oregdate) as month
+        , count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and oconfirmed='구매완료'
+		GROUP BY month(oregdate)
+	</select>
+
+	<select id="saleSellerProductList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and p.pcate = '농산물류'
+		group by p.pname
+	</select>
+	
+	<select id="saleSellerProductConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and p.pcate = '농산물류' and oconfirmed='구매완료'
+		group by p.pname
+	</select>
+	
+	<select id="saleSellerProductListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id}
+		group by p.pname
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleSellerProductConfirmListBest" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and oconfirmed='구매완료'
+		group by p.pname
+		order by count desc
+		limit 5
+	</select>
+	
+	<select id="saleSellerProductListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id}
+		group by p.pname
+		order by count asc
+		limit 5
+	</select>
+	
+	<select id="saleSellerProductConfirmListWorst" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and oconfirmed='구매완료'
+		group by p.pname
+		order by count asc
+		limit 5
+	</select>
+	
+	<select id="saleAdminInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where p.pcate = #{pcate}
+	</select>
+	
+	<select id="saleAdminConfirmInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where p.pcate = #{pcate} and oconfirmed='구매완료'
+	</select>
+	
+	<select id="saleSellerInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and p.pcate = #{pcate}
+	</select>
+	
+	<select id="saleSellerConfirmInfo" resultType="kr.co.asac.orders.bean.OrderBean">
+		select p.pname
+		, count(ocode) as Count
+		, sum(p.pprice) as Total
+		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where s.sid = #{id} and p.pcate = #{pcate} and oconfirmed='구매완료'
+	</select>
+	
+</mapper>

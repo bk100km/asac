@@ -8,7 +8,7 @@
 <mapper namespace="kr.co.asac.review.dao.ReviewDAO">
 
 	<select id="reviewList"  parameterType="hashmap"  resultType="kr.co.asac.review.bean.ReviewBean">
-		select * from review where pcode=#{pcode} order by pcode desc limit #{vo.start}, 5
+		select * from review where pcode=#{pcode} order by rnum desc limit #{vo.start}, 5
 		
 		</select>
 		
@@ -20,5 +20,19 @@
 		
 	</select>	
 	
+	
+	
+	<insert id="reviewInsert" parameterType="kr.co.asac.review.bean.ReviewBean">
+		insert into review (pcode, mid, rrate, rdate, rtitle, rcontent, rfile) 
+		values (#{pcode}, #{mid}, #{rrate}, now(), #{rtitle}, #{rcontent}, #{rfile})
+
+	</insert>
+	        
+     <select id="reviewAdminCheck" resultType="String" >
+		select sid from seller 
+	</select>
+	        
+	        
+	       
 		
 </mapper>

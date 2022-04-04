@@ -3,7 +3,7 @@
 <% String fromURI = (String)request.getAttribute("fromURI"); %>
 <% System.out.println("탭에서 fromURI값은 = " + fromURI); %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <title>ASAC 비건마켓</title>
 <meta charset="utf-8">

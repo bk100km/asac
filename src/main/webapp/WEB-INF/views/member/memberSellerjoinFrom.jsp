@@ -1,24 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>
-<body>
 <script type="text/javascript">
-function sample4_execDaumPostcode() {
+
+
 	function checkId() {
-		var mid = $('#sid').val(); //id값이 "id"인 입력란의 값을 저장
+		var sid = $('#sid').val(); //id값이 "id"인 입력란의 값을 저장
+		var idRegExp = /^[a-zA-z0-9]{4,12}$/;
 		$.ajax({
 			url : './iC', //Controller에서 인식할 주소
 			type : 'post', //POST 방식으로 전달
 			data : {
-				mid : mid
+				sid : sid
 			},
 			success : function(result) {
 				if (result != 1) { //result가 1이 아니면(=0일 경우) -> 사용 가능한 아이디 
@@ -28,9 +30,9 @@ function sample4_execDaumPostcode() {
 				} else { // result가 1일 경우 -> 이미 존재하는 아이디
 					$('.id_already').css("display", "inline-block");
 					$('.id_ok').css("display", "none");
-					$('#sid').focus();
+					$('#mid').focus();
 					$('#submit').attr("disabled", true);
-				}
+				} 
 			},
 			error : function() {
 				alert("에러입니다");
@@ -116,65 +118,199 @@ function sample4_execDaumPostcode() {
 				}).open();
 	}
 	
-	$(document).on("keyup", ".phoneNumber", function() { $(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); });
+	
+function Addfiles(files){
+	filetemp =[]
+	var filesArr =Array.prototype.slices.call(files)
+	
+	for(var i=0; i<filesArr.length; i++){
+		filesTemp.push(filesArr[i])
+	}
+}	
+function fileUpload(){
+        
+        var form = new FormData();
+        form.append( "sfile", $("#sfile")[0].files[0]);
+      
+        alert(form);
+        
+         jQuery.ajax({
+             url : "./sF"
+           , type : "POST"
+           , processData : false
+           , contentType : false
+           , data : form
+           , success:function(response) {
+               alert("성공하였습니다.");
+               console.log(response);
+               location.href("./jo");
+           }
+           ,error: function (jqXHR) 
+           { 
+               alert(jqXHR.responseText); 
+           }
+       });
+}
+	
 </script>
-<h4 class="mb-3">회원가입</h4>
-<form method="post" action="./jA">
-	<div >
-	<label>아이디</label> <input type="text" id="sid" name="sid" required>
-	<button type="button" onclick="checkId()" >중복체크</button>
-	</div><br>
-	<div >
-	<label>비밀번호</label> <input type="password" id="spwd" name="spwd" required>
-	</div><br>
-	<div >
-	<label>비밀번호 확인 </label> <input type="password" id="spwd2" name="spwd2" required>
-	</div><br>
-	<div>
-	<label>이름</label> <input type="text" id="sname" name="sname" required>
-	</div><br>
-	<div>
-	<label>생년월일</label> <input type="text" id="sbirth" name="sbirth" required>
-	</div><br>
-	<div>
-	<label>전화번호</label> <input type="text" id="sphone" name="sphone" required>
-	</div><br>
-	<div>
-	<label>이메일</label> <input type="text" id="smail" name="smail" required>
-	</div><br>
-	<div>
-	<label>회사명</label> <input type="text" id="scompany" name="scompany" required>
-	</div><br>
-	<div>
-	<label>회사번호</label> <input type="text" id="snumber" name="snumber" required>
-	</div><br>
-	<div>
-	<div class="row">
+<style type="text/css">
+.id_ok {
+	color: #6A82FB;
+	display: none;
+}
+
+.id_already {
+	color: red;
+	display: none;
+}
+
+.pw_ok {
+	color: #6A82FB;
+	display: none;
+}
+
+.pw_nok {
+	color: red;
+	display: none;
+}
+
+body {
+	min-height: 100vh;
+	background: -webkit-gradient(linear, left bottom, right top);
+	background: -webkit-linear-gradient(bottom left);
+	background: -moz-linear-gradient(bottom left);
+	background: -o-linear-gradient(bottom left);
+	background: linear-gradient(to top right);
+}
+
+.input-form {
+	max-width: 680px;
+	margin-top: 30px !important;
+	padding: 32px;
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	margin: auto;
+}
+</style>
+</head>
+<body>
+
+	<jsp:include page="../common/sellerHeader.jsp" />
+	
+	<div class="container">
+		<div class="input-form-background row">
+			<div class="input-form mx-auto my-auto">
+				<h4 class="mb-3">회원가입</h4>
+				<form:form class="validation-form" method="post" action="./jA" name="seller" modelAttribute="seller">
+					<div class="mb-3">
+						<label for="sid">아이디 <span class="text-danger">*</span></label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+							<input type="text" class="form-control" id="sid" name="sid" oninput="checkId()" pattern="^[a-z0-9_]{4,10}$" placeholder="아이디(영문소문자와 숫자로 입력)" minlength="4" maxlength="10" required>
+						</div><br>
+						<div>
+							<span class="id_ok"><p>사용 가능한 아이디입니다.</p></span>
+							<span class="id_already"><p>이미 사용중인 아이디입니다.</p></span>
+						</div>
+					</div>
+					<div class="mb-3">
+						<label for="pw">비밀번호 <span class="text-danger">*</span></label>
+						<input type="password" class="form-control" name="spwd" id="pw" pattern="^[a-z0-9_]{4,10}$" placeholder="비밀번호(영문소문자와 숫자로 입력)" minlength="4" maxlength="10" required /><br>
+					</div>
+					<div class="mb-3">
+						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
+						<input type="password" class="form-control" name="spwd2" id="pw2" pattern="^[a-z0-9_]{4,10}$" placeholder="비밀번호확인(영문소문자와 숫자로 입력)" minlength="4"  maxlength="10" required /><br>
+						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
+						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
+					</div>
+					<div class="mb-3">
+						<label for="sname">이름 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" pattern=^[가-힣]+$ minlength="3" maxlength="6" placeholder="이름" name="sname" id="sname" required /><br>
+					</div>
+					<div class="mb-3">
+						<label for="sbirth">생년월일 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" maxlength="8" pattern="^[0-9_]{8}$" placeholder="생년월일(8자리)" name="sbirth" id="sbirth" required /><br>
+					</div>
+					<div class="mb-3">
+						<label for="sphone">전화번호 <span class="text-danger">*</span></label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i>(010)</span>
+							<input type="tel" class="form-control phoneNumber" maxlength="8" pattern=".{8}" placeholder="전화번호(8자리)" name="sphone" id="sphone" required /><br>
+						</div><br>
+					</div>
+					<div class="mb-3">
+						<label for="smail">이메일 <span class="text-danger">*</span></label>
+						<div class="input-group">
+		            		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+							<input type="email" class="form-control" name="smail" id="smail" placeholder="you@example.com" maxlength="30" value="" required /><br>
+		            	</div><br>
+					</div>
+					<div class="mb-3">
+						<label for="scompany">회사명 <span class="text-danger">*</span></label>
+						
+		            		
+							<input type="text" class="form-control" minlength="4" maxlength="8" name="scompany" id="scompany" placeholder="회사번호" required /><br>
+		            	
+					</div>
+					<div class="mb-3">
+						<label for="snumber">사업자번호 <span class="text-danger">*</span></label>
+						
+		            		
+							<input type="text" class="form-control" maxlength="9" name="snumber" id="snumber" placeholder="사업자번호" required /><br>
+		            	
+					</div>
+					<div >
+						<label for="snumber">증명서류 <span class="text-danger">*</span></label>
+						
+		            		
+							<input type="file" class="form-control" name="sfile" id="sfile" value="" required /><br>
+		            	
+					</div>
+					<div class="row">
 						<div class="col-md-9 mb-3">
 							<label for="sample4_postcode">우편번호 <span class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="saddr"><br>
+							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="saddrz" readonly required><br>
 						</div>
 						<div class="col-md-3 mb-3">
 							<label>&nbsp;</label><br>
-							<input type="submit" class="btn" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+							<input type="button" class="btn" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</div>
 					<div class="mb-3">
 						<label for="sample4_roadAddress">도로명주소</label>
-						<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" name="saddrd"><br>
-						<span id="guide" style="color: #999; display: none"></span> 
+						<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" name="saddr" readonly required>
+						<p><span id="guide" style="color: #999; display: none"></span><p>
 					</div>
-					<input type="hidden" class="form-control" id="sample4_jibunAddress" placeholder="지번주소">
+					<input type="hidden" class="form-control" id="sample4_jibunAddress" placeholder="지번주소" required>
 					<div class="mb-3">
 						<label for="sample4_detailAddress">상세주소</label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소" name="saddrz"><br>
+							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소" name="saddrd" required><br>
 						</div>
 					</div>
-	<label>증명서류</label> <input type="file" id="sfile" name="sfile" required>
-	</div><br>
-	<input type="submit" id="submit" class="join_button btn btn-primary btn-lg btn-block" value="가입하기"><br>
-</form>
+					<input type="hidden" class="form-control" id="sample4_extraAddress" placeholder="참고항목">
+					<!-- 
+						<hr class="mb-4">
+						우편번호 : <input type = "text" name="maddr"><br>
+						주소 : <input type = "text" name="maddrd"><br>
+						상세주소 : <input type = "text" name="maddrz"><br> -->
+					
+					<br><br>
+					<div>
+				<input type="submit" id="submit" class="join_button btn btn-primary btn-lg btn-block" value="가입하기" ><br>
+				</div>
+				</form:form>
+			</div>
+		</div>
+	</div>
+	<br><br>
+	<jsp:include page="../common/footer.jsp" />
+
 </body>
 </html>

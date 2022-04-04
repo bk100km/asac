@@ -1,16 +1,14 @@
 package kr.co.asac.product.bean;
 
-import java.util.Date;
-
 public class ProductBean {
 	private String pcode;
 	private String pname;
-	private int price;
+	private int pprice;
 	private String pcate;
 	private String ptag;
 	private String pfile;
 	private String pcontent;
-	private Date pregdate;
+	private String pregdate;
 	private String sid;
 	
 	public String getPcode() {
@@ -25,11 +23,11 @@ public class ProductBean {
 	public void setPname(String pname) {
 		this.pname = pname;
 	}
-	public int getPrice() {
-		return price;
+	public int getPprice() {
+		return pprice;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setPprice(int pprice) {
+		this.pprice = pprice;
 	}
 	public String getPcate() {
 		return pcate;
@@ -55,10 +53,10 @@ public class ProductBean {
 	public void setPcontent(String pcontent) {
 		this.pcontent = pcontent;
 	}
-	public Date getPregdate() {
+	public String getPregdate() {
 		return pregdate;
 	}
-	public void setPregdate(Date pregdate) {
+	public void setPregdate(String pregdate) {
 		this.pregdate = pregdate;
 	}
 	public String getSid() {
@@ -69,7 +67,7 @@ public class ProductBean {
 	}
 	@Override
 	public String toString() {
-		return "ProductBean [pcode=" + pcode + ", pname=" + pname + ", price=" + price + ", pcate=" + pcate + ", ptag="
+		return "ProductBean [pcode=" + pcode + ", pname=" + pname + ", pprice=" + pprice + ", pcate=" + pcate + ", ptag="
 				+ ptag + ", pfile=" + pfile + ", pcontent=" + pcontent + ", pregdate=" + pregdate + ", sid=" + sid
 				+ "]";
 	}

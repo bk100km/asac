@@ -16,7 +16,7 @@
 	
 	<insert id="memberJoin" parameterType="kr.co.asac.member.bean.MemberBean" >
 		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
-		values (#{mid}, #{mpwd}, #{mname}, #{mbirth}, #{mphone}, #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+		values (#{mid}, #{mpwd}, #{mname}, replace(replace(#{mbirth}, '-', ''), '*', ''), replace(#{mphone}, '-', ''), #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
 	</insert>
 	
 	<select id="memberIdChk" resultType="int">
@@ -25,11 +25,11 @@
 	</select>
 	
 	<select id="memberClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
-		select * from member where mid=#{mid}
+		select mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail from member where mid=#{mid}
 	</select>
 	
 	<update id="memberClientUpdate" parameterType="kr.co.asac.member.bean.MemberBean">
-		update member set mpwd=#{mpwd}, mname=#{mname}, mbirth=#{mbirth}, mphone=#{mphone}, 
+		update member set mpwd=#{mpwd}, mname=#{mname}, mbirth=replace(replace(#{mbirth}, '-', ''), '*', ''), mphone=replace(#{mphone}, '-', ''), 
 		maddr=#{maddr}, maddrd=#{maddrd}, maddrz=#{maddrz}, mmail=#{mmail}
 		where mid=#{mid}
 	</update>
@@ -43,6 +43,7 @@
 		where mid=#{mid} and mpwd=#{mpwd}
 	</select>
 
+
 	<!-- seller -->
 	<select id="memberSellerLoginCheck" resultType="String">
 		select sid from seller where sid=#{sid} and spwd=#{spwd}
@@ -53,12 +54,17 @@
 		values (#{sid}, #{spwd} ,#{sname} , #{sbirth} , #{sphone}, #{saddr}, #{saddrd}, #{saddrz} , #{smail} ,#{scompany}, #{snumber}, #{sfile})
 	</insert>
 	
+	<select id="sellerIdChk" resultType="int">
+		select count(*) from seller
+		where sid = #{sid}
+	</select>
+	
 	<select resultType="kr.co.asac.member.bean.SellerBean" id="memberSellerInfo">
 		select * from seller where sid=#{sid} 
 	</select>
 	
 	<update id="memberSellerUpdate" parameterType="kr.co.asac.member.bean.SellerBean">
-		update seller set sphone=#{sphone} ,saddr=#{saddr}, smail=#{smail} where sid=#{sid}
+		update seller set spwd=#{spwd},sphone=#{sphone} ,saddr=#{saddr},saddrz=#{saddrz},saddrd=#{saddrd}, smail=#{smail} where sid=#{sid}
 	</update>
 	
 	<delete id="memberSellerDelete" parameterType="kr.co.asac.member.bean.SellerBean">
@@ -66,8 +72,12 @@
 	</delete>
 	
 	<!-- admin -->	
+	<select id="memberAdminClientCount" resultType="int">
+		select count(*) as listCnt from member where ${searchCategory} like concat('%', #{searchText}, '%')
+	</select>
+	
 	<select id="memberAdminClientList" resultType="kr.co.asac.member.bean.MemberBean">
-		select * from member order by mid asc
+		select * from member order by mid asc limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
 	<select id="memberAdminClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
@@ -90,11 +100,15 @@
 	</delete>		
 	
 	<select id="memberAdminClientSearch" resultType="kr.co.asac.member.bean.MemberBean">
-		select * from member where ${searchCategory} like concat('%', #{searchText}, '%') order by mid asc
+		select * from member where ${searchCategory} like concat('%', #{searchText}, '%') order by mid asc limit #{paging.startList}, #{paging.listSize}
+	</select>
+	
+	<select id="memberAdminSellerCount" resultType="int">
+		select count(*) as listCnt from seller where ${searchCategory} like concat('%', #{searchText}, '%')
 	</select>
 	
 	<select id="memberAdminSellerList" resultType="kr.co.asac.member.bean.SellerBean">
-		select * from seller order by sid asc
+		select * from seller order by sid asc limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
 	<select id="memberAdminSellerInfo" resultType="kr.co.asac.member.bean.SellerBean">
@@ -120,7 +134,7 @@
 	</delete>		
 	
 	<select id="memberAdminSellerSearch" resultType="kr.co.asac.member.bean.SellerBean">
-		select * from seller where ${searchCategory} like concat('%', #{searchText}, '%') order by sid asc
+		select * from seller where ${searchCategory} like concat('%', #{searchText}, '%') order by sid asc limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
 	<update id="memberAdminSellerSokCheck">

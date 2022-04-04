@@ -8,9 +8,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 내역 - 중간 관리자</title>
+<title>주문 내역</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	function fn_prev(page, range, rangeSize, listSize, searchType, keyword) {
 			
@@ -84,78 +88,216 @@
 	  location.href = url;
 	}
 </script>
-<style type="text/css">
+<style>
 body {
-	font-family: ‘SUIT’, 'GulimChe';
-	color: #2B2B2B;
+	color: #566787;
+	background: #f5f5f5;
+	font-family: 'Varela Round', sans-serif;
+	font-size: 13px;
 }
-.tabclass{text-align:left; border-bottom:1px solid #005000; margin-bottom:20px;}
-#pageList { margin: auto; width: 500px; text-align: center; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+	background: #fff;
+	padding: 20px 25px;
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-wrapper .btn {
+	float: right;
+	color: #333;
+	background-color: #fff;
+	border-radius: 3px;
+	border: none;
+	outline: none !important;
+	margin-left: 10px;
+}
+.table-wrapper .btn:hover {
+	color: #333;
+	background: #f2f2f2;
+}
+.table-wrapper .btn.btn-primary {
+	color: #fff;
+	background: #03A9F4;
+}
+.table-wrapper .btn.btn-primary:hover {
+	background: #03a3e7;
+}
+
+.show-entries select.form-control {        
+	width: 80px;
+	margin: 0 5px;
+}
+
+.table-title {	
+	padding: 16px 25px;
+	margin: -20px -25px 10px;
+}
+.table-title h2 {
+	margin: 5px 0 0;
+	font-size: 24px;
+}
+
+.table-filter .filter-group {
+	float: right;
+}
+.table-filter input, .table-filter select {
+	height: 34px;
+	border-radius: 3px;
+	border-color: #ddd;
+	box-shadow: none;
+}
+.table-filter {
+	padding: 5px 0 10px;
+}
+
+.table-filter .btn {
+	height: 34px;
+	font-size: 13px;
+	border: none;
+}
+
+.table-filter .btn i {
+	float: left;
+	font-size: 21px;
+	margin-right: 5px;
+}
+.table-filter .btn span {
+	float: left;
+	margin-top: 2px;
+}
+.table-filter label {
+	font-weight: normal;
+}
+.table-filter select, .table-filter input {
+	display: inline-block;
+	margin-left: 5px;
+}
+.table-filter input {
+	width: 150px;
+	display: inline-block;
+}
+.filter-group select.form-control {
+	width: 110px;
+}
+.filter-icon {
+	float: right;
+	margin-top: 7px;
+}
+.filter-icon i {
+	font-size: 18px;
+	opacity: 0.7;
+}	
+table.table tr th, table.table tr td {
+	border-color: #e9e9e9;
+	padding: 12px 15px;
+	vertical-align: middle;
+}
+table.table tr th:first-child {
+	width: 60px;
+}
+table.table tr th:last-child {
+	width: 80px;
+}
+table.table-striped tbody tr:nth-of-type(odd) {
+	background-color: #fcfcfc;
+}
+table.table-striped.table-hover tbody tr:hover {
+	background: #f5f5f5;
+}
+table.table th i {
+	font-size: 13px;
+	margin: 0 5px;
+	cursor: pointer;
+}	
+table.table td a {
+	font-weight: bold;
+	color: #566787;
+	display: inline-block;
+	text-decoration: none;
+}
+table.table td a:hover {
+	color: #2196F3;
+}
+table.table td a.view {        
+	width: 30px;
+	height: 30px;
+	color: #2196F3;
+	border: 2px solid;
+	border-radius: 30px;
+	text-align: center;
+}
+table.table td a.view i {
+	font-size: 22px;
+	margin: 2px 0 0 1px;
+}   
+table.table .avatar {
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.status {
+	font-size: 30px;
+	margin: 2px 2px 0 0;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 10px;
+}
+.text-success {
+	color: #10c469;
+}
+.text-info {
+	color: #62c9e8;
+}
+.text-warning {
+	color: #FFC107;
+}
+.text-danger {
+	color: #ff5b5b;
+}
+.pagination {
+    float: center;
+    margin: 0 0 5px;
+}
+.pagination li a {
+    border: none !important;
+    font-size: 13px;
+    min-width: 30px;
+    min-height: 30px;
+    padding: 0 10px;
+    color: #999;
+    margin: 0 2px;
+    line-height: 30px;
+    border-radius: 30px !important;
+    text-align: center;
+}
+.pagination li a:hover {
+    color: #666;
+}	
+.pagination li.active a {
+    background: #03A9F4;
+}
+.pagination li.active a:hover {        
+    background: #0397d6;
+}
+.pagination li.disabled i {
+    color: #ccc;
+}
+.pagination li i {
+    font-size: 16px;
+    padding-top: 6px
+}
+.hint-text {
+	float: left;
+	margin-top: 10px;
+	font-size: 13px;
+}
 #topBtn { position: fixed; top: 300px; right: 20px; z-index: 99; display: inline-block; width: 75px; height: 30px;
 	border-radius: 15px; line-height: 30px; text-align: center; text-decoration: none; background: #008000;	opacity: 0.7; color: #fff;}
-.fontdetail {
-	font-family: ‘SUIT’;
-	font-size: 1.2em;
-}
-.pagenumber {
-	font-family: ‘SUIT’;
-	text-align: center;
-	font-size: 1.5em;
-}
-.checked:link {
-	color: #28A745;
-	text-decoration: none;
-}
-th, td {
-	border-bottom: 5px 20px; solid #dee2e6;}
-	.btde {font-size:1.5rem; font-family: ‘SUIT’;}
-	
-	.tabclass{text-align:left;}
-	
-}
-a.tdetail:link {
-	color: #2B2B2B;
-	text-decoration: none;
-}
-a.tdetail:visited {
-	color: #2B2B2B !important;
-	text-decoration: none;
-}
-a.tdetail:hover {
-	color: #28A745;
-	text-decoration: none;
-}
-a.tdetail:active {
-	color: #28A745 ;
-	text-decoration: none;
-}
-.page-item a.active { background-color: #008000; color: white; font-weight: bold; }
-.searchBox { display: flex; flex-wrap: nowrap; justify-content: flex-end; margin-top:20px; margin-bottom: 10px; }
-.search1{ margin-right: 3px; }
-.searchText { width: 300px; height: 38px; border-radius: 3px; border: 1px solid #999999; color: #2B2B2B; }
-.searchSelect { width: 80px; height: 38px; border-radius: 3px; border: 1px solid #999999; color: #2B2B2B; }
-.line {border-bottom:2px solid #008000; border-top:2px solid #008000; font-weight:900; color:#008000;}
-#listForm {flex: 1; width:80%; margin:auto; text-align: center;}
-.wrap { display: flex; min-height: 100vh; flex-direction: column; }
-.nobr { text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
-table {table-layout: fixed;position: relative;width:100%; }
-.table td {vertical-align:middle;}
-.jemok {margin:20px; font-family: ‘SUIT’; text-align: center; font-size: 4em; font-weight:900;}
-#btnRes { font-size:1.5rem; font-family: ‘SUIT’; border: 3px solid #008000; background-color: #008000; color: #FFFFFF; font-weight: bold;}
-#btnUse { font-size:1.5rem; font-family: ‘SUIT’; color: #008000; font-weight: bold;}
-#btnSearch { font-size:1rem; font-family: ‘SUIT’; border: 2px solid #008000; color: #008000; font-weight: bold;}
-#btnSebu {font-family: ‘SUIT’; background-color:#008000; color: #FFFFFF; font-weight: bold;}
+#listForm {flex: 1;  width:80%; margin:auto; text-align: center;}
+.mainTitle { font-family: ‘SUIT’; text-align: center; font-weight:900;}
 
-@media only screen and (max-width:768px) {
-		#pageList { margin: auto; width: 200px; text-align: center; }
-		#input {width : 100px; margin-top:5px; margin-bottom:5px;}
-		.searchText { width: 120px; }
-		.searchBox { justify-content: center; }
-		#btnSebu {font-family: ‘SUIT’; color:#008000; background-color: #FFFFFF; border:1px solid #008000; font-size:12px; font-weight: bold;}
-		#listForm {width:90%;}
-		.jemok {margin:20px; font-family: ‘SUIT’; text-align: center; font-size: 3em; font-weight:900;}
-		#content { overflow: hidden; font-size:1em;}		
-	}
 </style>
 <script type="text/javascript">
 
@@ -185,48 +327,56 @@ $(function() {
 		return false;
 	});
 });
+
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 </head>
 <body>
-	<div class="wrap">
-		<header>
-			<jsp:include page="/WEB-INF/views/common/sellerHeader.jsp" flush="false"></jsp:include>
-		</header>
-		<section id="listForm">
-			<h1 class="jemok">주문 내역</h1>
-		<form name="search">
-			<div class="searchBox">
-			<div class="search1">
-				<select class="searchSelect" name="searchType" id="searchType">
-					<option value="pname">상품명</option>
-					<option value="oname">주문자명</option>
-					<option value="mid">주문자아이디</option>
-				</select>
-			</div>
-			<div class="search1"><input type="text" class="searchText"	placeholder="상품명을 입력하세요" name="keyword" id="keyword" size=100 maxlength="100"></div>
-			<div class="search1"><button type="submit" id="btnSearch" class="btn">검색</button></div>
-			</div></form>
-			<!-- 페이지 목록 갯수   -->
-	<div class="form-group row justify-content-center">
-		<p>게시판 목록 갯수</p>
-		<div class="w100" style="padding-right: 10px">
-			<select class="form-control form-control-sm" name="searchType"
+<header>
+<jsp:include page="/WEB-INF/views/common/sellerHeader.jsp" flush="false"></jsp:include>
+</header>
+<section id="listForm">
+<div class="table-title">
+	<h1 class="mainTitle">주문 목록</h1></div>
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-filter">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="show-entries">
+                            <span>주문 목록 갯수</span>
+                <select class="form-control" name="searchType"
 				id="listSize" onchange="page(1)">
 				<option value="10"
-					<c:if test="${orderPaging.getListSize() == 10 }">selected="selected"</c:if>>10개</option>
+					<c:if test="${orderPagingSe.getListSize() == 10 }">selected="selected"</c:if>>10개</option>
 				<option value="15"
-					<c:if test="${orderPaging.getListSize() == 15 }">selected="selected"</c:if>>15개</option>
+					<c:if test="${orderPagingSe.getListSize() == 15 }">selected="selected"</c:if>>15개</option>
 				<option value="20"
-					<c:if test="${orderPaging.getListSize() == 20 }">selected="selected"</c:if>>20개</option>
+					<c:if test="${orderPagingSe.getListSize() == 20 }">selected="selected"</c:if>>20개</option>
 			</select>
-		</div>
-
-	</div>
-	
-		<div id="rListArea">
-		<div class="table-responsive">
-			<table class="table">
-				<thead>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" id="btnSearch" class="btn btn-primary"><i class="fa fa-search"></i><span>검색</span></button>
+                        <div class="filter-group">
+                            <input type="text" class="form-control" placeholder="내용을 입력하세요." name="keyword" id="keyword">
+                        </div>
+                        <div class="filter-group">
+                            <select class="form-control" name="searchType" id="searchType">
+								<option value="pname">상품명</option>
+								<option value="oname">주문자명</option>
+								<option value="mid">주문자아이디</option>							
+                            </select>
+                        </div>
+                	</div>
+                </div>
+            </div>
+            <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
 					<tr class="line">
 						<td>주문 번호</td>
 						<td>판매자 아이디</td>
@@ -257,7 +407,7 @@ $(function() {
 							<td>${order.ocount}</td>
 							<td>${order.ototal}</td>
 							<td>${order.ophone}</td>
-							<td>${order.oregdate}</td>
+							<td><fmt:formatDate value="${order.oregdate}" pattern="yyyy-MM-dd"/></td>
 							<td>${order.oname}</td>
 							<td>${order.oaddr}</td>
 							<td>${order.ophone}</td>
@@ -265,47 +415,43 @@ $(function() {
 					</c:forEach>
 				</tbody>
 			</table>
-
-			<div id="paginationBox" class="pagination1">
-		<ul class="pagination">
-
-			<c:if test="${orderPaging.prev}">
+			</div>
+            <div class="clearfix">
+                <ul class="pagination">
+                    <c:if test="${orderPagingSe.prev}">
 				<li class="page-item"><a class="page-link" href="#"
-					onClick="fn_prev('${orderPaging.page}', '${orderPaging.range}', '${orderPaging.rangeSize}', '${orderPaging.listSize}'
-					,'${search.searchType}', '${search.keyword}')">이전</a></li>
+					onClick="fn_prev('${orderPagingSe.page}', '${orderPagingSe.range}', '${orderPagingSe.rangeSize}', '${orderPagingSe.listSize}'
+					,'${searchSe.searchType}', '${searchSe.keyword}')">이전</a></li>
 			</c:if>
 
-			<c:forEach begin="${orderPaging.startPage}"
-				end="${orderPaging.endPage}" var="ocode">
+			<c:forEach begin="${orderPagingSe.startPage}"
+				end="${orderPagingSe.endPage}" var="ocode">
 
 				<li
-					class="page-item <c:out value="${orderPaging.page == ocode ? 'active' : ''}"/> "><a
+					class="page-item <c:out value="${orderPagingSe.page == ocode ? 'active' : ''}"/> "><a
 					class="page-link" href="#"
-					onClick="fn_pagination('${ocode}', '${orderPaging.range}', '${orderPaging.rangeSize}', '${orderPaging.listSize}'
-					 ,'${search.searchType}', '${search.keyword}')">
+					onClick="fn_pagination('${ocode}', '${orderPagingSe.range}', '${orderPagingSe.rangeSize}', '${orderPagingSe.listSize}'
+					 ,'${searchSe.searchType}', '${searchSe.keyword}')">
 						${ocode} </a></li>
 			</c:forEach>
 
-			<c:if test="${orderPaging.next}">
+			<c:if test="${orderPagingSe.next}">
 
 				<li class="page-item"><a class="page-link" href="#"
-					onClick="fn_next('${orderPaging.range}', '${orderPaging.range}', '${orderPaging.rangeSize}', '${orderPaging.listSize}'
-					,'${search.searchType}', '${search.keyword}')">다음</a></li>
+					onClick="fn_next('${orderPagingSe.range}', '${orderPagingSe.range}', '${orderPagingSe.rangeSize}', '${orderPagingSe.listSize}'
+					,'${searchSe.searchType}', '${searchSe.keyword}')">다음</a></li>
 			</c:if>
-		</ul>
-	</div>
-	<!-- pagination{e} -->
-	
-		</div>
-		<div>
+                </ul>
+            </div>
+            <div>
 			<a href="#" id="topBtn">맨 위로</a>
-		</div>
-	
-	</div>
-	<div id="pageArea"></div>
-	</section>
-	<footer>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-	</footer>
-</div></body>
+			</div>
+        </div>
+    </div>        
+</div>
+</section>
+<footer>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+</footer>     
+</body>
 </html>

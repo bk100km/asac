@@ -8,7 +8,12 @@ public interface CartDAO {
 	
 	public int cartInsert(CartBean cart); //장바구니 추가
 	
-	public List<CartBean> cartList(String id); 
+	public List<CartBean> cartList(String mid); 
 	
+	public void cartUpdate(CartBean cart);
+	
+	public int cartDeleteAll(String mid);
+	
+	public int cartDeleteSelect(int ccode);
 
 }

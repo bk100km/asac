@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>최고 관리자 상품 상세</title>
+<title>주문 상세 - 최고 관리자</title>
 <script type="text/javascript">
 	
 $(function() {
@@ -39,55 +39,48 @@ $(function() {
 <body>
 <div class="wrap">
 	<header>
-		<jsp:include page="/WEB-INF/views/common/adminHeader.jsp" flush="false"></jsp:include>
+		<jsp:include page="/WEB-INF/views/common/sellerHeader.jsp" flush="false"></jsp:include>
 	</header>
 	
-	<section id="AdminInfoArea">
+	<section id="SellerInfoArea">
 	<h1 class="title">상품 상세 정보</h1>
 	<div id="container" class="table-responsive">
 	<div id="content">
 	<table class="table table-borderless tdiv table-sm">
 	  <tr><td class="thde">상품 코드</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.pcode}</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pcode}</td></tr>
       
-      <tr><td class="thde">판매자아이디</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.sid}</td></tr>
+      <tr><td class="thde">상품 명</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pname}</td></tr>
       
-      <tr><td class="thde">주문자아이디</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.mid}</td></tr>
+      <tr><td class="thde">상품 가격</td></tr>
+      <tr><td class="tdde"><fmt:formatNumber value="${productSellerInfo.pprice}" pattern="#,###"/>원</td></tr>
       
-      <tr><td class="thde">주문자 명</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.mname}</td></tr>
+      <tr><td class="thde">카테고리</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pcate}</td></tr>
       
-      <tr><td class="thde">상품명</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.pname}</td></tr>
+      <tr><td class="thde">상품 태그</td></tr>
+      <tr><td class="tdde">${productSellerInfo.ptag}</td></tr>
+          
+      <tr><td class="thde">상품 사진</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pfile}</td></tr>
       
-      <tr><td class="thde">상품가격</td></tr>
-      <tr><td class="tdde"><fmt:formatNumber value="${ProductAdminInfo.pprice}" pattern="#,###"/>원</td></tr>
+      <tr><td class="thde">상품 설명</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pcontent}</td></tr>
       
-      <tr><td class="thde">수량</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.ocount}</td></tr>
+      <tr><td class="thde">날짜</td></tr>
+      <tr><td class="tdde">${productSellerInfo.pregdate}</td></tr>
       
-      <tr><td class="thde">주문자이름</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.oname}</td></tr>
-      
-      <tr><td class="thde">주문자우편번호</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.oaddrz}</td></tr>
-      
-      <tr><td class="thde">주문자주소</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.oaddr}</td></tr>
-      
-      <tr><td class="thde">주문자상세주소</td></tr>
-      <tr><td class="tdde">${ProductAdminInfo.oaddrd}</td></tr>
-      
+      <tr><td class="thde">판매자 아이디</td></tr>
+      <tr><td class="tdde">${productSellerInfo.sid}</td></tr>
     </table><br>
-	
-	<button type="button" id="btnMod" class="btn btn-lg" onclick="location.href='up?ocode=${OrderAdminInfo.ocode}'">
-	<span class="btde">수 정</span></button>
+    
 	<button type="button" id="btnCan" class="btn btn-lg" onclick="location.href = document.referrer;">
 	<span class="btde">목 록</span></button>
-	<button type="button" id="btnCan" class="btn btn-lg" onclick="location.href ='de?ocode=${OrderAdminInfo.ocode}'">
-	<span class="btde">주문 취소</span></button>	
+	<button type="button" id="btnMod" class="btn btn-lg" onclick="location.href='up?pcode=${ProductSellerInfo.pcode}'">
+	<span class="btde">수 정</span></button>
+	<button type="button" id="btnCan" class="btn btn-lg" onclick="location.href='de?pcode=${ProductSellerInfo.pcode}'">
+	<span class="btde">삭 제</span></button>	
 	</div></div><br>
 	
 	<div>

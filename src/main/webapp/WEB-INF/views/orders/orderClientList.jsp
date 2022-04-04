@@ -13,14 +13,13 @@
 <script>
 	function orderclientDelete(ocode) {
 		if (confirm('주문을 취소 하시겠습니까?')) {
-			location.href = 'de?ocode=' + ocode;
+			location.href = '../../or/cl/de?ocode=' + ocode;
 		}
 	}
 </script>
 </head>
 <body>
       <h3>주문 내역</h3>
-      <p>룰라랄라</p>
       <br>
       <div class="table-responsive">
       <c:forEach var="order" items="${orderClientList}">
@@ -28,9 +27,7 @@
 	      <thead>
 	        <tr>
 	          <th>
-	          <fmt:parseDate var="parseOregDate" value="${order.oregdate}" pattern="yyyy-MM-dd"/>
-	          <fmt:formatDate var="OregRegDate" value="${parseOregDate}" pattern="yyyy-MM-dd"/>
-	    	   ${OregRegDate}</th>
+	          <fmt:formatDate value="${order.oregdate}" pattern="yyyy-MM-dd"/>
 	    	   <th><a href="in?ocode=${order.ocode}">주문번호 : ${order.ocode}</a></th>
 	          <th>총 결제 금액 : <fmt:formatNumber value="${order.ototal}" pattern="#,###,###원"/></th>
 	          <th><a href="javascript:orderclientDelete(${order.ocode})">주문 취소</a></th>

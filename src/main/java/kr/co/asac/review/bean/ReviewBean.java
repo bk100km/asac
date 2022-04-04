@@ -13,6 +13,10 @@ public class ReviewBean {
 	private String rtitle;
 	private String rcontent;
 	private String rfile;
+	private String sid;
+	private String ranswer;
+	private Date adate;  
+	
 	public String getPcode() {
 		return pcode;
 	}
@@ -20,6 +24,24 @@ public class ReviewBean {
 		this.pcode = pcode;
 	}
 	
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+	public String getRanswer() {
+		return ranswer;
+	}
+	public void setRanswer(String ranswer) {
+		this.ranswer = ranswer;
+	}
+	public Date getAdate() {
+		return adate;
+	}
+	public void setAdate(Date adate) {
+		this.adate = adate;
+	}
 	public String getMid() {
 		return mid;
 	}
@@ -65,7 +87,8 @@ public class ReviewBean {
 	@Override
 	public String toString() {
 		return "ReviewBean [pcode=" + pcode + ", mid=" + mid + ", rnum=" + rnum + ", rrate=" + rrate + ", rdate="
-				+ rdate + ", rtitle=" + rtitle + ", rcontent=" + rcontent + ", rfile=" + rfile + "]";
+				+ rdate + ", rtitle=" + rtitle + ", rcontent=" + rcontent + ", rfile=" + rfile + ", sid=" + sid
+				+ ", ranswer=" + ranswer + ", adate=" + adate + "]";
 	}
 
 

@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 </head>
 <body>
 
@@ -48,33 +49,122 @@ function del() {
 }
 </script>
 
+<style>
+	body {
+	min-height: 100vh;
+	background: -webkit-gradient(linear, left bottom, right top);
+	background: -webkit-linear-gradient(bottom left);
+	background: -moz-linear-gradient(bottom left);
+	background: -o-linear-gradient(bottom left);
+	background: linear-gradient(to top right);
+}
+
+.input-form {
+	max-width: 680px;
+	margin-top: 30px !important;
+	padding: 32px;
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	margin: auto;
+}
+</style>
+
 <jsp:include page="../common/sellerHeader.jsp"></jsp:include>
-<div align="center">
-<h2>내 정보</h2>
+
+
 <br><br>
 	
-	<div>
-	<table>
-		
-		<tr><th>이름</th><td>${seller.sname}</td></tr>
-		<tr><th>아이디</th><td>${seller.sid }</td></tr>
-		<tr><th>생년월일</th><td>${seller.sbirth }</td></tr>
-		<tr><th>전화번호</th><td>${seller.sphone }</td></tr>
-		<tr><th>주소</th><td>${seller.saddr }</td></tr>
-		<tr><th>이메일</th><td>${seller.smail }</td></tr>
-		<tr><th>회사명</th><td>${seller.scompany}</td></tr>
-		<tr><th>사업자번호 </th> <td> ${seller.snumber }</td></tr>
-		<tr><th>증명서류</th><td>${seller.sfile }</td></tr>
-		<tr><th>승인여부</th><td>${seller.sok }</td></tr>
-		<tr><th>가입날짜</th><td>${seller.sregdate }</td></tr>
-	</table>
-	</div><br><br>
-	<div><button type="button" onclick="location.href='http://localhost:8080/asac/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
-	<button type="button" onclick="location.href='http://localhost:8080/asac/me/se/in'" class="btn btn-default"> 메인으로</button>
-	<button type="button" onclick="javascript:del();" class="btn btn-default" >탈퇴하기</button>
+	<div class="container">
+	<div class="input-form-background row">
+			<div class="input-form mx-auto my-auto">
+			<h2>내 정보</h2>
+			
+					<div class="mb-3">
+						<label for="sname">이름 </label>
+						<input type="text" class="form-control"  value="${seller.sname}" readonly/><br>
+					</div>
+					
+						<div class="mb-3">
+						<label for="sid">아이디 </label>
+						<input type="text" class="form-control"  value="${seller.sid}" readonly/><br>
+					</div>
+					<div class="mb-3">
+						<label for="sbirth">생년월일 </label>
+						<input type="text" class="form-control"  value="${seller.sbirth}" name="sbirth" id="sbirth" readonly /><br>
+					</div>
+					<div class="mb-3">
+						<label for="sbirth">전화번호 </label>
+						<input type="text" class="form-control"  value="${seller.sphone}" name="sphone" id="sphone" readonly /><br>
+					</div>
+					<div class="mb-3">
+						<label for="smail">이메일</label>
+						<input type="text" class="form-control"  value="${seller.smail}" readonly/><br>
+					</div>		
+					<div class="mb-3">
+						<label for="scompany">회사명 </label>
+						
+		            		
+							<input type="text" class="form-control"  name="scompany" id="scompany" value="${seller.scompany}"  readonly/><br>
+		            	
+					</div>
+					<div class="mb-3">
+						<label for="snumber">사업자번호 </label>
+						
+		            		
+							<input type="text" class="form-control" maxlength="9" name="snumber" id="snumber" value=" ${seller.snumber }" readonly /><br>
+		            	
+					</div>
+					<div >
+						<label for="sfile">증명서류 <span class="text-danger" ></label>
+						
+		            		
+							<input type="text" class="form-control" name="sfile" id="sfile" value="${seller.sfile }" readonly /><br>
+		            	
+					</div>
+					<div >
+						<label for="sok">승인여부 </label>
+						
+		            		
+							<input type="text" class="form-control" name="sok" id="sok" value="${seller.sok}"  readonly /><br>
+		            	
+					</div>
+					<div>
+						<label for="sregdate">가입날짜 </label>
+					    		
+							<input type="text" class="form-control" name="sregdate" id="sregdate" value="${seller.sregdate}"  readonly/><br>
+					</div>
+					<div>
+						<label for="saddrz">우편번호 </label>
+					    		
+							<input type="text" class="form-control" name="saddrz" id="saddrz" value="${seller.saddrz}"  readonly/><br>
+					</div>
+					<div>
+						<label for="saddr">도로명주소 </label>
+					    		
+							<input type="text" class="form-control" name="ssaddre" id="ssaddr" value="${seller.saddr}"  readonly/><br>
+					</div>
+					<div>
+						<label for="saddrd">상세주소 </label>
+					    		
+							<input type="text" class="form-control" name="saddrd" id="saddrd" value="${seller.saddrd}"  readonly/><br>
+					</div>
+					
+					<div><button type="button" onclick="location.href='http://localhost:8080/asac/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
+					<button type="button" onclick="location.href='http://localhost:8080/asac/me/se/in'" class="btn btn-default"> 메인으로</button>
+					<button type="button" onclick="del()" class="btn btn-default" >탈퇴하기</button>
+					
+		</div>
+		</div>
+		</div>
 	</div>
+	<br><br>
 	
-</div>
+
 <br><br><br><br><br>
 <jsp:include page="../common/footer.jsp"></jsp:include>
 </body>

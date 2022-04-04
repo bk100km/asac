@@ -7,11 +7,13 @@
 <meta charset="UTF-8">
 <title>ASAC 비건마켓</title>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- modal bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 <script>
 	$(document).ready(function(){
@@ -73,9 +75,8 @@ body {
 </head>
 <body>
 
-<jsp:include page="../common/adminHeader.jsp"></jsp:include>
 
-<div><br><br><br></div>
+<div><br><br><br><br><br><br><br><br><br><br><br></div>
 <div class="container">
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">
@@ -100,7 +101,7 @@ body {
 		</div>
 	</div>
 </div>   
-<div><br><br><br></div>	 
+<div><br><br><br><br><br><br><br><br><br><br><br></div>	 
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
 

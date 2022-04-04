@@ -41,7 +41,7 @@ public class ProductClientController {
 		productClientService.productClientListDetail(request, response, model, pcode);
 		
 	
-		return "/product/productDetail";
+		return "/product/productClientDetail";
 	}
 	
 	

@@ -1,5 +1,7 @@
 package kr.co.asac.orders.bean;
 
+import java.util.Date;
+
 public class OrderBean {
 	private int ocode;
 	private String sid;
@@ -13,7 +15,9 @@ public class OrderBean {
 	private String ophone;
 	private int ototal;
 	private String omessage;
-	private String oregdate;
+	private String odelivery;
+	private String oconfirmed;
+	private Date oregdate;
 	private String pname;
 	private int pprice;
 	private String mname;
@@ -21,6 +25,14 @@ public class OrderBean {
 	private String maddr;
 	private String maddrd;
 	private String mphone;
+
+	private String daterange;
+	private int count;
+	private int week;
+	private int month;
+	private int total;
+	private Date date;
+	private String pcate;
 
 	public int getOcode() {
 		return ocode;
@@ -118,11 +130,11 @@ public class OrderBean {
 		this.omessage = omessage;
 	}
 
-	public String getOregdate() {
+	public Date getOregdate() {
 		return oregdate;
 	}
 
-	public void setOregdate(String oregdate) {
+	public void setOregdate(Date oregdate) {
 		this.oregdate = oregdate;
 	}
 
@@ -182,6 +194,78 @@ public class OrderBean {
 		this.mphone = mphone;
 	}
 
+	public String getDaterange() {
+		return daterange;
+	}
+
+	public void setDaterange(String daterange) {
+		this.daterange = daterange;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public int getWeek() {
+		return week;
+	}
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public String getPcate() {
+		return pcate;
+	}
+
+	public void setPcate(String pcate) {
+		this.pcate = pcate;
+	}
+
+	public String getOdelivery() {
+		return odelivery;
+	}
+
+	public void setOdelivery(String odelivery) {
+		this.odelivery = odelivery;
+	}
+
+	public String getOconfirmed() {
+		return oconfirmed;
+	}
+
+	public void setOconfirmed(String oconfirmed) {
+		this.oconfirmed = oconfirmed;
+	}
+
 	@Override
 	public String toString() {
 		return "OrderBean [ocode=" + ocode + ", sid=" + sid + ", mid=" + mid + ", pcode=" + pcode + ", ocount=" + ocount
@@ -190,5 +274,5 @@ public class OrderBean {
 				+ pname + ", pprice=" + pprice + ", mname=" + mname + ", maddrz=" + maddrz + ", maddr=" + maddr
 				+ ", maddrd=" + maddrd + ", mphone=" + mphone + "]";
 	}
-	
+
 }

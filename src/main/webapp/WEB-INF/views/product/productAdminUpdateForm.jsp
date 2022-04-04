@@ -24,7 +24,7 @@
 <title>상품 추가</title>
 <script type="text/javascript">
 function goBack() {
-	window.location.href = "./li";
+	window.location.href = "./la";
 }
 
 $(function() {

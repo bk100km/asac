@@ -34,6 +34,13 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
+	<multipart-config>
+		<location>C:\\upload\\</location>
+		<max-file-size>20971520</max-file-size> <!-- 20MB -->
+		<max-request-size>41943040</max-request-size> <!-- 40MB -->
+		<file-size-threshold>20971520</file-size-threshold> <!-- 20MB -->
+	</multipart-config>
+	
 	<!-- 한글 인코딩 필터 처리 -->
 	<filter>
 		<filter-name>characterEncoding</filter-name>

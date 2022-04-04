@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import kr.co.asac.member.bean.MemberBean;
+import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
 
 public interface MemberDAO {
@@ -21,24 +22,26 @@ public interface MemberDAO {
 	// seller
 	public String memberSellerLoginCheck(SellerBean seller);
 	public void memberSellerJoin(SellerBean seller);
-	public int meberIdChk(SellerBean seller);
+	public int sellerIdChk(SellerBean seller);
 	public SellerBean memberSellerInfo(String sid);
 	public void memberSellerUpdate(SellerBean seller);
 	public void memberSellerDelete(SellerBean seller);
 	
 	// admin	
-	public List <MemberBean> memberAdminClientList();
+	public int memberAdminClientCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <MemberBean> memberAdminClientList(@Param("paging") PagingBean paging);
 	public MemberBean memberAdminClientInfo(String mid);
 	public void memberAdminClientUpdate(MemberBean member);
 	public void memberAdminClientDelete(String mid);
 	public void memberAdminClientInsert(MemberBean member);
-	public List <MemberBean> memberAdminClientSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <MemberBean> memberAdminClientSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 	
-	public List <SellerBean> memberAdminSellerList();
+	public int memberAdminSellerCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <SellerBean> memberAdminSellerList(@Param("paging") PagingBean paging);
 	public SellerBean memberAdminSellerInfo(String sid);
 	public void memberAdminSellerUpdate(SellerBean seller);
 	public void memberAdminSellerDelete(String sid);
 	public void memberAdminSellerInsert(SellerBean seller);
-	public List <SellerBean> memberAdminSellerSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <SellerBean> memberAdminSellerSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 	public void memberAdminSellerSokCheck(SellerBean seller);
 }

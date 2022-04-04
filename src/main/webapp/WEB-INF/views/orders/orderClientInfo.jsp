@@ -22,21 +22,20 @@
 <script>
 	function orderclientDelete(ocode) {
 		if (confirm('주문을 취소 하시겠습니까?')) {
-			location.href = 'de?ocode=' + ocode;
+			location.href = 'http://localhost:8080/asac/or/cl/de?ocode=' + ocode;
 		}
 	}
 </script>
 </head> 
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
-
+<form:form method="post" action="http://localhost:8080/asac/or/cl/up?ocode=${orderClientInfo.ocode}" modelAttribute="orderClientInfo">
 	<div class="container-fluid">
   		<h2 style="text-align:center;">주문정보</h2>
   		<br>
   		<h3 class="subtitle">주문 날짜 
-  			  <fmt:parseDate var="parseOregDate" value="${orderClientInfo.oregdate}" pattern="yyyy-MM-dd"/>
-	          <fmt:formatDate var="OregRegDate" value="${parseOregDate}" pattern="yyyy-MM-dd"/>
-	    	   ${OregRegDate}&nbsp;</h3>
+  			 <fmt:formatDate value="${orderClientInfo.oregdate}" pattern="yyyy-MM-dd"/>
+	    	   &nbsp;</h3>
 		<h3 class="subtitle">주문 번호 ${orderClientInfo.ocode}<br></h3>
 		<br>
 	</div>
@@ -63,36 +62,37 @@
     	<div class="col-8">
       		<h3>배송정보</h3>
       		<hr/>
-      		<form:form method="post" action="http://localhost:8080/asac/or/cl/up?ocode=${orderClientInfo.ocode}" modelAttribute="orderClientInfo">
+      		
       		<div class="row">
         	<div class="col-4 yellow">이름  </div>
-        	<div class="col-8 white"><input type="text" value="${orderClientInfo.mname}" required/></div>
+        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo.oname}" required/></div>
         		
         	<div class="col-4 yellow">우편번호  </div>
-        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo.oaddrz}" required/>
+        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo.oaddrz}" readonly required/>
         	<button type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
         	
         	<div class="col-4 yellow">주소  </div>
-        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo.oaddr}" required/></div>
+        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo.oaddr}" readonly required/></div>
         	
         	<div class="col-4 yellow">상세주소  </div>
         	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo.oaddrd}" required/></div>
         	
         	<div class="col-4 yellow">전화번호  </div>
-        	<div class="col-8 white"><input type="text" value="${orderClientInfo.ophone}" required/></div>
+        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo.ophone}" required/></div>
         	
         	<div class="col-4 yellow">요청사항  </div>
-        	<div class="col-8 white"><input type="text" value="${orderClientInfo.omessage}" /></div>
+        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo.omessage}" /></div>
         	<input type="submit" value="변경사항 적용">
      		</div>
-     		</form:form>
+     		
      	</div>
      		<hr/>
     	</div>
   		</div>
+  		</form:form>
 <a href="javascript:orderclientDelete(${orderClientInfo.ocode})">주문 취소</a>
 
-<a href="http://localhost:8080/asac/or/cl/li"><button>주문 목록으로</button></a>
+<a href="http://localhost:8080/asac/me/cl/my"><button>주문 목록으로</button></a>
 <br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
