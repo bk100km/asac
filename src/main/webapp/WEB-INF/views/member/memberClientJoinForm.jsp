@@ -154,19 +154,21 @@
 	    	var email = $(".mail_input").val();            // 입력한 이메일
 	        var checkBox = $(".mail_check_input");        // 인증번호 입력란
 	        var boxWrap = $(".mail_check_input_box");    // 인증번호 입력란 박스
-	        $(".mail_check_input").focus();
 	        
-	    	$.ajax({
-	            type:"GET",
-	            url:"http://localhost:8080/asac/mailCheck?email=" + email,
-	            success:function(data){
-	            	//console.log("data : " + data);
-	            	 checkBox.attr("disabled",false);
-	            	 boxWrap.attr("id", "mail_check_input_box_true");
-	            	 code = data;
-	            }
-	        });
-	    	
+	        if(email==''){
+	        	alert("이메일을 입력해주세요.");
+	        }else{
+	        	$.ajax({
+		            type:"GET",
+		            url:"http://localhost:8080/asac/mailCheck?email=" + email,
+		            success:function(data){
+		            	//console.log("data : " + data);
+		            	 checkBox.attr("disabled",false);
+		            	 boxWrap.attr("id", "mail_check_input_box_true");
+		            	 code = data;
+		            }
+		        });
+	        }
 	    });
 	    
 	    /* 인증번호 비교 */
@@ -180,8 +182,6 @@
 	        } else {                                            // 일치하지 않을 경우
 	            checkResult.html("인증번호를 다시 확인해주세요.");
 	            checkResult.attr("class", "incorrect");
-	            $('.mail_check_input').focus();
-	            $('#submit').attr("disabled", true);
 	        }    
 	        
 	    });
@@ -316,7 +316,7 @@ body {
 		            	<div class="mb-3 col-md-3">
 		            		<label>&nbsp;</label>
 		            		<!-- <span>인증번호 전송</span> -->
-		            		<input type="submit" value="인증번호 전송" id="mail_check_button" class="btn mail_check_button"><br>
+		            		<input type="button" value="인증번호 전송" id="mail_check_button" class="btn mail_check_button"><br>
 		            	</div>
 					</div>
 		           	<div class="clearfix"></div><br>

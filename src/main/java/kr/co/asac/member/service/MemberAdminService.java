@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,8 @@ import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
+import kr.co.asac.orders.bean.OrderBean;
+import kr.co.asac.product.bean.ProductBean;
 
 @Service
 public class MemberAdminService {
@@ -170,5 +171,43 @@ public class MemberAdminService {
 		
 		System.out.println("MemberAdminService : 수정완료");
 		memberDAO.memberAdminSellerSokCheck(seller);
+	}	
+	
+	// chart
+	public void memberAdminDayList(HttpServletRequest request, HttpServletResponse response, Model model)
+			throws Exception {
+		String id = (String) request.getSession().getAttribute("mid");
+		System.out.println("AdminList Sid값 : " + id);
+
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<MemberBean> memberAdminDayList = dao.memberAdminDayList(id);
+		List<MemberBean> memberAdminDayConfirmList = dao.memberAdminDayConfirmList(id);
+		model.addAttribute("memberAdminDayList", memberAdminDayList);
+		model.addAttribute("memberAdminDayConfirmList", memberAdminDayConfirmList);
+
+	}
+	
+	public void memberCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<MemberBean> memberCountMonth = dao.memberCountMonth();
+		model.addAttribute("memberCountMonth", memberCountMonth);
+	}
+	
+	public void productCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<ProductBean> productCountMonth = dao.productCountMonth();
+		model.addAttribute("productCountMonth", productCountMonth);
+	}
+	
+	public void ordersCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<OrderBean> ordersCountMonth = dao.ordersCountMonth();
+		model.addAttribute("ordersCountMonth", ordersCountMonth);
+	}
+	
+	public void ordersSumMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<OrderBean> ordersSumMonth = dao.ordersSumMonth();
+		model.addAttribute("ordersSumMonth", ordersSumMonth);
 	}	
 }

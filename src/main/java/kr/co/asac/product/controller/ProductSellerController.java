@@ -25,37 +25,37 @@ public class ProductSellerController {
 	@Autowired
 	private ProductAdminService productAdminService;
 	
-	@RequestMapping("/pr/se/la")
-	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, @RequestParam(required = false, defaultValue = "1") int page
-			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
-			@ModelAttribute("searchSe") Search search) throws Exception {
-		
-		model.addAttribute("searchSe", search);
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
-		String id = (String) request.getSession().getAttribute("sid");
-		int listCnt = productSellerService.productSellerCount(request, id, search);
-		System.out.println("listCnt??" + listCnt);
-		
-		search.pageInfo(page, range, listCnt);
-		model.addAttribute("productPagingSe", search);
-		
-		productSellerService.productSellerList(request, response, model, search);
-		
-		return "product/productSellerList";
-	}
+//	@RequestMapping("/pr/se/la")
+//	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, @RequestParam(required = false, defaultValue = "1") int page
+//			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
+//			@ModelAttribute("searchSe") Search search) throws Exception {
+//		
+//		model.addAttribute("searchSe", search);
+//		search.setSearchType(searchType);
+//		search.setKeyword(keyword);
+//		String id = (String) request.getSession().getAttribute("sid");
+//		int listCnt = productSellerService.productSellerCount(request, id, search);
+//		System.out.println("listCnt??" + listCnt);
+//		
+//		search.pageInfo(page, range, listCnt);
+//		model.addAttribute("productPagingSe", search);
+//		
+//		productSellerService.productSellerList(request, response, model, search);
+//		
+//		return "product/productSellerList";
+//	}
 
 	@RequestMapping("/pr/se/if")
 	public String productSellerInfo(Model model, @RequestParam String pcode, ProductBean product) {
 		ProductBean info = productSellerService.productSellerInfo(product, pcode);
 		model.addAttribute("productSellerInfo", info);
-		System.out.println("Áß°£°ü¸®ÀÚ info : " + info);
+		System.out.println("ï¿½ß°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ info : " + info);
 		return "product/productSellerInfo";
 	}
 	
 	@RequestMapping(value = "pr/se/in", method = RequestMethod.GET)
 	public String ProductSellerInsert() {
-		System.out.println("ÀÎ¼­Æ® ÆûÀ¸·Î °¨");
+		System.out.println("ï¿½Î¼ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½");
 		return "product/productSellerInsertForm";		
 	}
 	
@@ -63,7 +63,7 @@ public class ProductSellerController {
 	public String ProductSellerInsert(ProductBean product) {
 		System.out.println(product);
 		productSellerService.productSellerInsert(product);
-		System.out.println("ÀÎ¼­Æ® µ¥ÀÌÅÍ ¹Þ¾Æ¿È");
+		System.out.println("ï¿½Î¼ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½");
 		return "redirect:/pr/se/la";	
 	}
 
@@ -71,20 +71,20 @@ public class ProductSellerController {
 	public String ProductSellerUpdate(@RequestParam String pcode, ProductBean product, Model model) throws Exception{
 		ProductBean info = productSellerService.productSellerInfo(product, pcode);
 		model.addAttribute("productSellerUpdate", info);
-		System.out.println("UpdateÁß.22.");
+		System.out.println("Updateï¿½ï¿½.22.");
 		return "product/productSellerUpdateForm";
 	}
 	
 	@RequestMapping(value ="/pr/se/up", method = RequestMethod.POST)
 	public String ProductSellerUpdate(ProductBean product) throws Exception {
 		productSellerService.productSellerUpdate(product);
-		System.out.println("UpdateÁß..");
+		System.out.println("Updateï¿½ï¿½..");
 		return "redirect:/pr/se/la";
 	}
 	
-	@RequestMapping("pr/se/de")
-	public String productSellerDelete(@RequestParam String pcode) {
-		productSellerService.productSellerDelete(pcode);
-		return "redirect:/pr/se/la";
-	}
+//	@RequestMapping("pr/se/de")
+//	public String productSellerDelete(@RequestParam String pcode) {
+//		productSellerService.productSellerDelete(pcode);
+//		return "redirect:/pr/se/la";
+//	}
 }

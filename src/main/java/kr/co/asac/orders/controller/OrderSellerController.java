@@ -1,19 +1,25 @@
 package kr.co.asac.orders.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.service.OrderSellerService;
+import kr.co.asac.utils.PagingBean;
 import kr.co.asac.utils.Search;
 
 @Controller
@@ -21,58 +27,72 @@ public class OrderSellerController {
 
 	@Autowired
 	private OrderSellerService orderSellerService;
-
+	
 	@RequestMapping("/or/se")
 	public String getOrderSellerIndex(Model model) {
 		return "sellerIndex";
 	}
 	
-	@RequestMapping("/or/se/li")
-	public String getOrderSellerList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @RequestParam(required = false, defaultValue = "1") int page
-			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
-			@ModelAttribute("searchSe") Search search) throws Exception {
+	@RequestMapping(value = "/or/se/li", method = RequestMethod.GET)
+	public String orderSellerList(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value="orderSearchCategory", required = false, defaultValue = "pname") String orderSearchCategory,
+			@RequestParam(value="orderSearchText", required = false, defaultValue = "") String orderSearchText,
+			@ModelAttribute(value = "orderPaging") PagingBean orderPaging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		model.addAttribute("searchSe", search);
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
-		String id = (String) request.getSession().getAttribute("sid");
-		int listCnt = orderSellerService.orderSellerCount(request, id, search);
+		int orderListCnt = orderSellerService.orderSellerListCount(request, orderSearchCategory, orderSearchText);
+		orderPaging.pageInfo(page, range, orderListCnt);
+		System.out.println("컨트롤러에서 orderPaging 값은 = " + orderPaging);
 		
-		search.pageInfo(page, range, listCnt);
-		model.addAttribute("orderPagingSe", search);
-		
-		orderSellerService.orderSellerList(request, response, model, search);
+		orderSellerService.orderSellerList(request, response, model, orderPaging);
 		
 		return "orders/orderSellerList";
 	}
 	
-	@RequestMapping("/or/se/in")
-	public String getOrderSellerInfo(Model model, @RequestParam int ocode, OrderBean order) {
-		OrderBean info = orderSellerService.orderSellerInfo(order, ocode);
-		model.addAttribute("orderSellerInfo", info);
-		System.out.println("중간관리자 info : " + info);
-		return "orders/orderSellerInfo";
+	@RequestMapping(value = "/or/se/ls", method = RequestMethod.POST)
+	@ResponseBody
+	public Map <String, Object> orderSellerSearchList(HttpServletRequest request, Model model, 
+			@RequestParam(value = "searchCategory", required = false, defaultValue="pname") String searchCategory,
+			@RequestParam(value = "searchText", required = false, defaultValue="") String searchText,
+			@ModelAttribute(value = "paging") PagingBean paging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int listCnt = orderSellerService.orderSellerListCount(request, searchCategory, searchText);
+		System.out.println("컨트롤러에서 page, range 값은 = " + page + range);
+		System.out.println("컨트롤러에서 searchCategory, searchText 값은 = " + searchCategory + searchText);
+		paging.pageInfo(page, range, listCnt);
+		
+		System.out.println("컨트롤러에서 paging 값은 = " + paging);
+		List <OrderBean> orderList = orderSellerService.orderSellerListSearch(request, model, searchCategory, searchText, paging);
+		System.out.println("orderList확인"+orderList);
+		
+	    Map<String, Object> map = new HashMap<String, Object>(); 
+		map.put("paging", paging);
+		map.put("orderList", orderList);
+	    return map;
 	}
 	
-	@RequestMapping(value = "/or/se/up", method = RequestMethod.GET)
-	public String getOrderSellerUpdateGet(HttpSession session, @RequestParam int ocode, OrderBean order, Model model) throws Exception{
-		String id = (String)session.getAttribute("sid");
-		System.out.println("중간관리자 sid 값 : " + id);
-		OrderBean info = orderSellerService.orderSellerInfo(order, ocode);
-		model.addAttribute("orderSellerUpdate", info);
-		return "orders/orderSellerUpdate";
+	@RequestMapping(value = "/or/se/in", method = RequestMethod.POST)
+	@ResponseBody
+	public OrderBean orderSellerInfo(Model model, @RequestParam("ocode") String ocode, @RequestParam("pname") String pname) {
+		System.out.println("info" + ocode);
+		System.out.println("info1" + pname);
+		OrderBean order = orderSellerService.orderSellerInfo(model, ocode, pname);
+		return order;
 	}
 	
-	@RequestMapping(value ="/or/se/up", method = RequestMethod.POST)
-	public String getOrderSellerUpdatePost(OrderBean order) throws Exception {
-		orderSellerService.orderSellerUpdate(order);
-		System.out.println("Update중..");
-		return "redirect:/or/se/li";
+	@RequestMapping(value = "/or/se/up", method = RequestMethod.POST)
+	@ResponseBody
+	public void orderSellerUpdate(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, Search search) throws Exception {
+		System.out.println("update" + order);
+		orderSellerService.orderSellerUpdate(request, model, response, order);
 	}
 	
-	@RequestMapping("or/se/de")
-	public String orderSellerDelete(@RequestParam int ocode) {
-		orderSellerService.orderSellerDelete(ocode);
-		return "redirect:/or/se/li";
+	@RequestMapping(value = "or/se/de/ocode/{ocode}", method = RequestMethod.POST)
+	@ResponseBody
+	public void orderSellerDelete(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("ocode") String ocode) throws Exception {
+		orderSellerService.orderSellerDelete(request, model, response, ocode);
 	}
 }

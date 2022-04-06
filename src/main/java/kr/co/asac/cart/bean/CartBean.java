@@ -8,6 +8,7 @@ public class CartBean {
 	public int pprice;
 	public int pcount;
 	public String pfile;
+	public String sid;
 
 	
 	public int getCcode() {
@@ -55,6 +56,14 @@ public class CartBean {
 	}
 	public void setPfile(String pfile) {
 		this.pfile = pfile;
+	}
+	
+	
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
 	}
 	@Override
 	public String toString() {

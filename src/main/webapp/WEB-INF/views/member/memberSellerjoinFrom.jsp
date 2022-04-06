@@ -119,37 +119,45 @@
 	}
 	
 	
-function Addfiles(files){
-	filetemp =[]
-	var filesArr =Array.prototype.slices.call(files)
-	
-	for(var i=0; i<filesArr.length; i++){
-		filesTemp.push(filesArr[i])
-	}
-}	
 function fileUpload(){
         
-        var form = new FormData();
-        form.append( "sfile", $("#sfile")[0].files[0]);
-      
-        alert(form);
+        var sfileUpload = new FormData($("#seller")[0])
+        var sfilezone ="";
         
-         jQuery.ajax({
-             url : "./sF"
-           , type : "POST"
-           , processData : false
-           , contentType : false
-           , data : form
-           , success:function(response) {
-               alert("성공하였습니다.");
-               console.log(response);
-               location.href("./jo");
-           }
-           ,error: function (jqXHR) 
-           { 
-               alert(jqXHR.responseText); 
-           }
-       });
+        $.ajax({
+        	
+        	 url: "./sF",
+	            type: "POST",
+	            data: sfileUpload,
+	            async: false, 
+	            cache: false, 
+	            processData: false,
+	            contentType: false,
+	            
+	            success:function(sfile){
+	            	sfilezone +=  
+	            		'<div class="row">' +
+						'<div class="col-md-9 mb-3">' +
+							'<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
+								'class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="' + sfile + '"' +
+								'maxlength="10" required readonly>' +
+						'</div>' +
+						'<div class="col-md-3 mb-3">' +
+							'<input type="file" accept="image/jpeg"' +
+								'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="fileUpload()">' +
+							'<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>' +
+							'<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">' +							
+						'</div>' +
+						'</div>' ;
+	            	 document.getElementById("sfileZone").innerHTML = sfilezone;
+	            },
+	            error:function(request, status, error) {
+	                console.log("code:" + request.status + 
+	                		"\n"+"message:" + request.responseText + 
+	                		"\n"+"error:"+error);
+	            }
+        	
+        })
 }
 	
 </script>
@@ -195,6 +203,15 @@ body {
 	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	margin: auto;
+	
+	
+}
+sfileUploadButtonLabel {
+	margin-top:14px;
+}
+
+#sfileUpload {
+	display: none;
 }
 </style>
 </head>
@@ -206,7 +223,7 @@ body {
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
 				<h4 class="mb-3">회원가입</h4>
-				<form:form class="validation-form" method="post" action="./jA" name="seller" modelAttribute="seller">
+				<form:form class="validation-form" method="post" action="./jA" enctype = "multipart/form-data"  id ="seller" name="seller" >
 					<div class="mb-3">
 						<label for="sid">아이디 <span class="text-danger">*</span></label>
 						<div class="input-group">
@@ -264,12 +281,20 @@ body {
 							<input type="text" class="form-control" maxlength="9" name="snumber" id="snumber" placeholder="사업자번호" required /><br>
 		            	
 					</div>
-					<div >
-						<label for="snumber">증명서류 <span class="text-danger">*</span></label>
-						
-		            		
-							<input type="file" class="form-control" name="sfile" id="sfile" value="" required /><br>
-		            	
+					<div class="mb-3" id="sfileZone">
+					<div class="row">
+					<div class="col-md-9 mb-3">
+						<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text" 
+							class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="${seller.sfile}"
+							maxlength="10" required readonly>
+					</div>
+					<div class="col-md-3 mb-3">
+						<input type="file" accept="image/jpeg" 
+							class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="fileUpload()">
+						<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>
+						<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById('sfileUpload').click()" >							
+					</div>
+					</div>
 					</div>
 					<div class="row">
 						<div class="col-md-9 mb-3">
@@ -295,11 +320,6 @@ body {
 						</div>
 					</div>
 					<input type="hidden" class="form-control" id="sample4_extraAddress" placeholder="참고항목">
-					<!-- 
-						<hr class="mb-4">
-						우편번호 : <input type = "text" name="maddr"><br>
-						주소 : <input type = "text" name="maddrd"><br>
-						상세주소 : <input type = "text" name="maddrz"><br> -->
 					
 					<br><br>
 					<div>

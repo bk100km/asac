@@ -80,4 +80,15 @@ public class MemberBean {
 				+ ", mregdate=" + mregdate + "]";
 	}
 	
+	public void initMember() {
+		this.mid = "";
+		this.mpwd = "";
+		this.mname = "";
+		this.mbirth = "";
+		this.mphone = "";
+		this.maddr = "";
+		this.maddrd = "";
+		this.maddrz = "";
+		this.mmail = "";
+	}
 }

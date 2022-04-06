@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.product.service.ProductClientService;
 import kr.co.asac.review.bean.ReviewBean;
+import kr.co.asac.review.service.ReviewAdminService;
 import kr.co.asac.review.service.ReviewClientService;
 
 
@@ -28,32 +29,52 @@ import kr.co.asac.review.service.ReviewClientService;
 
 public class ReviewAdminController {
 	@Autowired
-	private ReviewClientService reviewClientService;
+	private ReviewAdminService reviewAdminService;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 
 	@RequestMapping(value = "/re/ad/wr",  method = RequestMethod.POST)
-	public String ReviewUpdate (HttpServletRequest request,ReviewBean review, Model model) throws Exception {
+	public String ReviewUpdate (HttpServletRequest request,ReviewBean reviewBean, Model model) throws Exception {
 	
-	
-		System.out.println("안나와?");
+
 		
-		reviewClientService.reviewInsert(review); 
+		reviewAdminService.reviewAdminInsert(reviewBean); 
 		
 
 		
 		HttpSession session = request.getSession(); 
-		String mid = (String)session.getAttribute("mid");
+	
+		String aid = (String)session.getAttribute("sid");
 		String pcode =request.getParameter("pcode");
-		String pcate =request.getParameter("pcate");
-		
-		model.addAttribute("pcate", pcate);
-		model.addAttribute("pcode", pcode);
-		model.addAttribute("mid", mid);
 	
-		return "redirect:/pr/cl/dt?";
-	}
+		System.out.println(pcode);	
 
+		model.addAttribute("pcode", pcode);
+		model.addAttribute("aid", aid);
+		
+		return "redirect:/pr/cl/dt";
+	}
 	
+	@RequestMapping(value = "/re/ad/de",  method = RequestMethod.GET)
+	public String ReviewDelete (HttpServletRequest request, Model model) throws Exception {
+	
+
+		String rnum =request.getParameter("rnum");
+		reviewAdminService.reviewAdminDelete(rnum); 
+		
+
+		
+		HttpSession session = request.getSession(); 
+	
+		String aid = (String)session.getAttribute("sid");
+		String pcode =request.getParameter("pcode");
+	
+		
+
+		model.addAttribute("pcode", pcode);
+		model.addAttribute("aid", aid);
+		
+		return "redirect:/pr/cl/dt";
+	}
 	
 }		
 

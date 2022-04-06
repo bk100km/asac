@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.product.bean.ProductBean;
-import kr.co.asac.utils.Search;
 
 public interface ProductDAO {
 
@@ -17,21 +17,21 @@ public interface ProductDAO {
 
 	public int productListCount(Map<String, Object> map);
 	
-	// <seller>
-	public List<ProductBean> productSellerList(@Param("id") String id, @Param("searchSe") Search search);
-	public int productSellerCount(@Param("id") String id, @Param("searchSe") Search search) throws Exception;
-	public ProductBean productSellerInfo(String pcode);
-	public void productSellerInsert(ProductBean product);
-	public int productSellerUpdate(ProductBean product);
-	public int productSellerDelete(String pcode);
-
-	
-	// <admin>
-	public List<ProductBean> productAdminList(@Param("searchAd") Search search);	
-	public int productAdminCount(@Param("searchAd") Search search) throws Exception;	
+	// admin	
+	public int productAdminCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <ProductBean> productAdminList(@Param("paging") PagingBean paging);
 	public ProductBean productAdminInfo(String pcode);
+	public void productAdminUpdate(ProductBean product);
+	public void productAdminDelete(String pcode);
 	public void productAdminInsert(ProductBean product);
-	public int productAdminUpdate(ProductBean product);
-	public int productAdminDelete(String pcode);
-
+	public List <ProductBean> productAdminSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
+	
+	// seller
+	public int productSellerCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+	public List <ProductBean> productSellerList(@Param("paging") PagingBean paging);
+	public ProductBean productSellerInfo(String pcode);
+	public void productSellerUpdate(ProductBean seller);
+	public void productSellerDelete(String sid);
+	public void productSellerInsert(ProductBean seller);
+	public List <ProductBean> productSellerSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 }

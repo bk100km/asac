@@ -32,6 +32,7 @@ public class ProductClientService {
 	public void productClientList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		
 		String pcate = request.getParameter("pcate");
+		String ptag = request.getParameter("ptag");
 		String nowPage = request.getParameter("nowPage");
 		String cntPerPage = request.getParameter("cntPerPage");
 		
@@ -40,13 +41,15 @@ public class ProductClientService {
 		
 		
 		
+		
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		map.put("pcate",pcate);
 		map.put("text",text);
 		map.put("items",items);
-		
+		map.put("ptag",ptag);
 
-		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		ProductDAO productDAO= sqlSessionTemplate.getMapper(ProductDAO.class);
 		
 		
 		int total = productDAO.productListCount(map);
@@ -64,14 +67,17 @@ public class ProductClientService {
 	
 		map.put("vo",vo);
 		
-	
-		
-		
-		
 		List<ProductBean> list = productDAO.productList(map);
-		System.out.println(map);
+		
+		
+		
+		if (ptag == null || ptag == "") {
+		
+		
 		model.addAttribute("proClientListlist", list);
-
+		}else {
+		model.addAttribute("proClientListlist",list);
+		}
 		
 		
 		
@@ -83,16 +89,12 @@ public class ProductClientService {
 		
 		String nowPage = request.getParameter("nowPage");
 		String cntPerPage = request.getParameter("cntPerPage");
-		
 		String reviewNowPage = request.getParameter("reviewNowPage");
-	
 		HttpSession session = request.getSession(); 
 		
 		
 		String mid = (String)session.getAttribute("mid");
-		
-		
-						
+
 		System.out.println(mid);
 		
 		if(mid == null) {
@@ -101,39 +103,27 @@ public class ProductClientService {
 			
 		}
 		
-		
-		
-
-
-		
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
 		ProductBean proDetail = productDAO.productListDetail(pcode);
 		
 		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
+
 		
-		
-		
-	
 		
 		ArrayList<String> adminIdList = reviewDAO.reviewAdminCheck();
 		
-		boolean aid = adminIdList.contains("mid");
-	
+		boolean aid = adminIdList.contains(mid);
+		
 			if(aid) {
 				
 		    model.addAttribute("aid", mid);
-		    System.out.print(aid);
+		    System.out.print("aid는:"+aid);
 		
 		}
 			
-			
 		
-	
-		
-		
-		
-
 		int total = reviewDAO.reviewListCount(pcode);
+		
 		if (reviewNowPage == null && cntPerPage == null) {
 			reviewNowPage = "1";
 			cntPerPage = "5";
@@ -154,12 +144,29 @@ public class ProductClientService {
 		
 		List<ReviewBean> reviewList = reviewDAO.reviewList(map);
 		
-		System.out.println(vo);
+		List<ReviewBean> reviewAll = reviewDAO.reviewAll(map);
+		
+		double ratesum = 0;
+		
+		for (int i = 0; i < reviewAll.size(); i++) {
+			
+			
+			ReviewBean colums =  reviewAll.get(i);
+			System.out.println("colums"+colums);
+			int colum = colums.getRrate();
+			ratesum += colum;
 	
-		System.out.println("테스트중");
+			}
+	
+	
+	    double average = ratesum / total;
+	    String raverage = String.format("%.1f", average);
+	     
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("proDetail", proDetail);
-		
+		model.addAttribute("mid", mid);
+		model.addAttribute("totalreview", total);
+		model.addAttribute("average", raverage);
 	    }	
 	}
 

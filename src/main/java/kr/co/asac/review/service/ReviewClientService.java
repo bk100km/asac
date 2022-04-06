@@ -3,6 +3,8 @@ package kr.co.asac.review.service;
 
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,30 @@ public class ReviewClientService {
 		System.out.println(review);
 		reviewDAO.reviewInsert(review);
 		
+	}
+	public void reviewUpdate(HttpServletRequest request) {
+		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
+	
+	
+		
+		ReviewBean reviewBean = new ReviewBean();
+		
+
+		 int revisenum = Integer.parseInt(request.getParameter("revisenum"));
+		reviewBean.setRnum(revisenum);
+		 int reviserate = Integer.valueOf(request.getParameter("reviserate"));
+			reviewBean.setRrate(reviserate);
+		
+		reviewBean.setRtitle(request.getParameter("revisetitle"));
+		reviewBean.setRcontent(request.getParameter("revisecontent"));
+		reviewBean.setRfile(request.getParameter("rfile"));
 		
 		
+		
+		
+
+		reviewDAO.reviewUpdate(reviewBean);
+	}	
 		
 		
 		
@@ -37,4 +61,3 @@ public class ReviewClientService {
 
 	}
 
-}

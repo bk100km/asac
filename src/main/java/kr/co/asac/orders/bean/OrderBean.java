@@ -3,7 +3,7 @@ package kr.co.asac.orders.bean;
 import java.util.Date;
 
 public class OrderBean {
-	private int ocode;
+	private String ocode;
 	private String sid;
 	private String mid;
 	private String pcode;
@@ -25,6 +25,7 @@ public class OrderBean {
 	private String maddr;
 	private String maddrd;
 	private String mphone;
+	private String pfile;
 
 	private String daterange;
 	private int count;
@@ -34,11 +35,11 @@ public class OrderBean {
 	private Date date;
 	private String pcate;
 
-	public int getOcode() {
+	public String getOcode() {
 		return ocode;
 	}
 
-	public void setOcode(int ocode) {
+	public void setOcode(String ocode) {
 		this.ocode = ocode;
 	}
 
@@ -264,6 +265,14 @@ public class OrderBean {
 
 	public void setOconfirmed(String oconfirmed) {
 		this.oconfirmed = oconfirmed;
+	}
+
+	public String getPfile() {
+		return pfile;
+	}
+
+	public void setPfile(String pfile) {
+		this.pfile = pfile;
 	}
 
 	@Override

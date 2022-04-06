@@ -42,13 +42,11 @@ public interface SaleDAO {
 	
 	public List<OrderBean> saleSellerMonthList(String id);
 	
+	public List<OrderBean> saleSellerMonthConfirmList(String id);
+	
 	public List<OrderBean> saleSellerProductList(String id);
 	
 	public List<OrderBean> saleSellerProductConfirmList(String id);
-	
-	public List<OrderBean> saleSellerProductListBest(String id);
-	
-	public List<OrderBean> saleSellerProductListWorst(String id);
 	
 	public List<OrderBean> saleAdminInfo(String pcate);
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -19,24 +20,18 @@
 	.yellow{background-color: #C0FA6C; padding:20px;}  
 	.white{background-color: #ffffff; padding:20px;}
 </style>
-<script>
-	function orderclientDelete(ocode) {
-		if (confirm('주문을 취소 하시겠습니까?')) {
-			location.href = 'http://localhost:8080/asac/or/cl/de?ocode=' + ocode;
-		}
-	}
-</script>
 </head> 
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
-<form:form method="post" action="http://localhost:8080/asac/or/cl/up?ocode=${orderClientInfo.ocode}" modelAttribute="orderClientInfo">
+
+<form:form method="post" action="http://localhost:8080/asac/or/cl/up?ocode=${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
 	<div class="container-fluid">
   		<h2 style="text-align:center;">주문정보</h2>
   		<br>
   		<h3 class="subtitle">주문 날짜 
-  			 <fmt:formatDate value="${orderClientInfo.oregdate}" pattern="yyyy-MM-dd"/>
+  			 <fmt:formatDate value="${orderClientInfo[0].oregdate}" pattern="yyyy-MM-dd"/>
 	    	   &nbsp;</h3>
-		<h3 class="subtitle">주문 번호 ${orderClientInfo.ocode}<br></h3>
+		<h3 class="subtitle">주문 번호 ${orderClientInfo[0].ocode}<br></h3>
 		<br>
 	</div>
 	<div class="container-fluid center"> 
@@ -44,19 +39,28 @@
    		<div class="col-8">
       		<h3>결제정보</h3>
       		<hr/>
+      		<c:forEach var="orderClientInfo" items="${orderClientInfo}">
       		<div class="row">
-        	<div class="col-4 yellow">상품 번호  </div>
+        	<div class="col-4 yellow">상품 이름  </div>
         	<div class="col-8 white">${orderClientInfo.pname}</div>
         	
         	<div class="col-4 yellow">상품 가격  </div>
-        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.pprice}" pattern="#,###원"/></div>
+        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.pprice}" pattern="#,###,###원"/></div>
+        	
+        	<div class="col-4 yellow">상품 수량  </div>
+        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ocount}" /></div>
         	
         	<div class="col-4 yellow">상품 번호  </div>
-        	<div class="col-8 white">${orderClientInfo.ototal}</div>
+        	<div class="col-8 white">${orderClientInfo.pcode}</div>
         	
         	<div class="col-4 yellow">총 가격  </div>
-        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ototal}" pattern="#,###원"/> //현재는 상품 가격과 매칭되어있음</div>
+        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ototal}" pattern="#,###,###원"/> </div>
      		</div>
+     		<hr/>
+     		<c:set var="otototal" value="${orderClientInfo.ototal}"/>
+     		<c:set var="ototototal" value="${ototototal = ototototal + otototal}"/>
+     		</c:forEach>
+     		<h2>총 결제 가격: ${ototototal}</h2>
     	</div>
     	
     	<div class="col-8">
@@ -65,23 +69,23 @@
       		
       		<div class="row">
         	<div class="col-4 yellow">이름  </div>
-        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo.oname}" required/></div>
+        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo[0].oname}" required/></div>
         		
         	<div class="col-4 yellow">우편번호  </div>
-        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo.oaddrz}" readonly required/>
+        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo[0].oaddrz}" readonly required/>
         	<button type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
         	
         	<div class="col-4 yellow">주소  </div>
-        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo.oaddr}" readonly required/></div>
+        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo[0].oaddr}" readonly required/></div>
         	
         	<div class="col-4 yellow">상세주소  </div>
-        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo.oaddrd}" required/></div>
+        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo[0].oaddrd}" required/></div>
         	
         	<div class="col-4 yellow">전화번호  </div>
-        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo.ophone}" required/></div>
+        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo[0].ophone}" required/></div>
         	
         	<div class="col-4 yellow">요청사항  </div>
-        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo.omessage}" /></div>
+        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" /></div>
         	<input type="submit" value="변경사항 적용">
      		</div>
      		
@@ -90,7 +94,7 @@
     	</div>
   		</div>
   		</form:form>
-<a href="javascript:orderclientDelete(${orderClientInfo.ocode})">주문 취소</a>
+<a href="../../or/cl/de?ocode=${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
 
 <a href="http://localhost:8080/asac/me/cl/my"><button>주문 목록으로</button></a>
 <br/>

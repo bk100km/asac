@@ -8,39 +8,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 내역</title>
+<title>매출 목록 상품</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript">
+      $(document).ready(function(){ 
+    		getGraph();
+    	});
+      
+      function getGraph(){
+    	  var jsonData = ${weekbook}
+    	  var jsonData2 = ${list2}
+          var jsonObject = JSON.stringify(jsonData);
+          var jsonObject2 = JSON.stringify(jsonData2);
+          var jData = JSON.parse(jsonObject);
+          var jData2 = JSON.parse(jsonObject2);
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Product', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
+          console.log(jData);
+          console.log(jData2);
+          var labelList = new Array();
+          var valueList = new Array();
+          var valueList2 = new Array();
 
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+          for (var i = 0; i < jData.length; i++) {
+             var d = jData[i];
+             labelList.push(d.pname);
+             valueList.push(d.count);
           }
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+          for (var i = 0; i < jData2.length; i++) {
+              var t = jData2[i];
+              valueList2.push(t.count);
+           }
+          
+          new Chart(document.getElementById("weekbook"), {
+             type: "bar",
+             data: {
+                labels : labelList,
+                datasets : [ {
+                   label : "총주문수",
+                   data : valueList,
+                   borderColor: "#0055ff",
+                   backgroundColor: "#0055ff",
+                   borderWidth: 2,
+                   borderRadius: 2,
+                   borderSkipped: false
+                }, {
+                    label : "구매완료수",
+                    data : valueList2,
+                    borderColor: "#005500",
+                    backgroundColor: "#005500",
+                    borderWidth: 2,
+                    borderRadius: 2,
+                    borderSkipped: false
+                }]
+             },
+             options: {
+            	 scales: {
+                   xAxes: [{
+                      reverse: true,
+                      gridLines: {
+                         color: "rgba(0,0,0,0.0)"
+                      }
+                   }],
+                   yAxes: [{
+                      ticks: {
+                         stepSize: 1,
+                         min:0
+                      },
+                      display: true,
+                      borderDash: [3, 3],
+                      gridLines: {
+                         color: "rgba(0,0,0,0.0)"
+                      }
+                   }]
+                },
+                    legend: {
+                      position: 'bottom',
+                    },
+                  title:{
+                  	display : true,
+                  	text: '상품별 매출관리'
+                  }
+                
+             }
+          });
       }
-    </script>
+      
+</script>
 <style>
 body {
 	color: #566787;
@@ -280,10 +339,6 @@ $(function() {
 		return false;
 	});
 });
-
-$(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip();
-});
 </script>
 </head>
 <body>
@@ -296,6 +351,8 @@ $(document).ready(function(){
 <div>
 <button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./sd'">
 <span class="btde">요일별 매출</span></button>
+<button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./sm'">
+<span class="btde">월별 매출</span></button>
 <button type="button" id="btnUse" class="btn btn-lg" onclick="location.href='./sp'" class="btn btn-success">
 <span class="btde">상품/카테고리별 매출</span></button>
 </div>
@@ -323,9 +380,17 @@ $(document).ready(function(){
 				  <c:forEach var="sale" items="${saleSellerProductList}" varStatus="status">
 						<tr class="line">
 							<td>${sale.pname}</td>
-							<td>${saleSellerProductConfirmList[status.index].count}</td>
+							<td>
+								<c:choose>
+								<c:when test="${saleSellerProductConfirmList[status.index].count eq null}">0</c:when>
+								<c:when test="${saleSellerProductConfirmList[status.index].count ne null}">${saleSellerProductConfirmList[status.index].count}</c:when>
+								</c:choose></td>
 							<td>${sale.count}</td>
-							<td><fmt:formatNumber value="${saleSellerProductConfirmList[status.index].total}" pattern="#,###"/>원</td>
+							<td>
+								<c:choose>
+								<c:when test="${saleSellerProductConfirmList[status.index].total eq null}">0원</c:when>
+								<c:when test="${saleSellerProductConfirmList[status.index].total ne null}"><fmt:formatNumber value="${saleSellerProductConfirmList[status.index].total}" pattern="#,###"/>원</c:when>
+								</c:choose></td>
 							<td><fmt:formatNumber value="${sale.total}" pattern="#,###"/>원</td>
 						</tr>
 					</c:forEach>
@@ -339,9 +404,9 @@ $(document).ready(function(){
     
     
     <div class="col-lg-6">
-	<div class="panel panel-default">
-   				 <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
-        </div>
+    <div class="panel panel-default">
+    <canvas id="weekbook"></canvas>
+	</div>	
     </div>
     
     
@@ -352,6 +417,6 @@ $(document).ready(function(){
 </section>
 <footer>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-</footer>     
+</footer> 
 </body>
 </html>

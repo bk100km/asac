@@ -10,10 +10,14 @@ public interface CartDAO {
 	
 	public List<CartBean> cartList(String mid); 
 	
+	public List<CartBean> cartClientPcode(String mid);
+	
 	public void cartUpdate(CartBean cart);
 	
 	public int cartDeleteAll(String mid);
 	
 	public int cartDeleteSelect(int ccode);
+	
+	public void delete(String ccode);
 
 }

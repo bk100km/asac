@@ -6,33 +6,39 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
+import kr.co.asac.utils.PagingBean;
 import kr.co.asac.utils.Search;
 
 public interface OrderDAO {
 	
 	// orderClient
-	
+	public int orderClientInsert(OrderBean orderj);
+
 	public List<OrderBean> orderClientList(String mid);
 	
-	public OrderBean orderClientInfo(int ocode);
+	public List<OrderBean> orderClientOcodeList(String mid);
+	
+	public List<OrderBean> orderClientInfo(String ocode);
 	
 	public void orderClientUpdate(OrderBean order);
 
-	public int orderClientDelete(int ocode);
+	public int orderClientDelete(String ocode);
 	
 	public MemberBean memberClientInfo(String mid);
 
 	// orderSeller
 	
-	public List<OrderBean> orderSellerList(@Param("id") String id, @Param("searchSe") Search search);
+	public List<OrderBean> orderSellerList(@Param("id") String id, @Param("paging") PagingBean paging);
 	
-	public int orderSellerCount(@Param("id") String id, @Param("searchSe") Search search) throws Exception;
+	public List<OrderBean> orderSellerListSearch(@Param("id") String id, @Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 	
-	public OrderBean orderSellerInfo(int ocode);
+	public int orderSellerListCount(@Param("id") String id, @Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+		
+	public OrderBean orderSellerInfo(@Param("ocode") String ocode, @Param("pname") String pname);
 	
 	public void orderSellerUpdate(OrderBean order);
 	
-	public int orderSellerDelete(int ocode);
+	public void orderSellerDelete(String ocode);
 	
 	// orderAdmin
 	

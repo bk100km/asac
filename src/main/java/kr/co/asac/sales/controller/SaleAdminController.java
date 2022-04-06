@@ -55,7 +55,6 @@ public class SaleAdminController {
 	@RequestMapping("/sa/ad/sp")
 	public String getsaleSellerAdProList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
 		saleAdminService.saleSellerAdProductCateList(request, response, model);
-		saleAdminService.saleSellerAdProductListBest(request, response, model);
 		return "sales/saleSellerAdProList";
 	}
 	

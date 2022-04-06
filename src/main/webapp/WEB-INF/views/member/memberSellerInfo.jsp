@@ -120,7 +120,7 @@ function del() {
 		            	
 					</div>
 					<div >
-						<label for="sfile">증명서류 <span class="text-danger" ></label>
+						<label for="sfile">증명서류</label>
 						
 		            		
 							<input type="text" class="form-control" name="sfile" id="sfile" value="${seller.sfile }" readonly /><br>

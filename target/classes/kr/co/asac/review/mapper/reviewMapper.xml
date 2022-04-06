@@ -11,6 +11,16 @@
 		select * from review where pcode=#{pcode} order by rnum desc limit #{vo.start}, 5
 		
 		</select>
+	
+	
+     <select id="reviewAll"  parameterType="hashmap"  resultType="kr.co.asac.review.bean.ReviewBean">
+		select * from review where pcode=#{pcode}
+		
+		</select>
+	
+	
+	
+	
 		
 		
 		
@@ -31,8 +41,24 @@
      <select id="reviewAdminCheck" resultType="String" >
 		select sid from seller 
 	</select>
-	        
-	        
+	               
+	   <update id="reviewAdminInsert" parameterType="kr.co.asac.review.bean.ReviewBean">
+		update review set sid = #{sid},ranswer = #{ranswer}
+		where rnum=#{rnum}
+	</update>     
+	
+	
+	<update id="reviewUpdate" parameterType="kr.co.asac.review.bean.ReviewBean">
+		update review set rrate = #{rrate}, rtitle = #{rtitle}, rcontent = #{rcontent}, rfile = #{rfile}  
+		where rnum=#{rnum}
+	</update>     
+	
+	
+    <update id="reviewAdminDelete">
+		update review set sid = null,ranswer = null
+		 where rnum=#{rnum}
+	</update>
+	
 	       
 		
 </mapper>

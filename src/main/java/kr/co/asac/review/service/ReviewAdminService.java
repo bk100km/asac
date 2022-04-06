@@ -19,19 +19,18 @@ public class ReviewAdminService {
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 	
 
-	public void reviewUpdate(ReviewBean review) {
+	public void reviewAdminInsert(ReviewBean review) {
 		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
-		System.out.println(review);
-		reviewDAO.reviewInsert(review);
+
+		reviewDAO.reviewAdminInsert(review);
+	
+
+
+	}
+	public void reviewAdminDelete(String rnum) {
+		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		reviewDAO.reviewAdminDelete(rnum);
 	
 
 

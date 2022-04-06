@@ -20,7 +20,8 @@ public class SaleSellerService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-	public void saleSellerDayList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public void saleSellerDayList(HttpServletRequest request, HttpServletResponse response, Model model)
+			throws Exception {
 		String id = (String) request.getSession().getAttribute("sid");
 		System.out.println("AdminList Sid값 : " + id);
 
@@ -61,20 +62,13 @@ public class SaleSellerService {
 		String id = (String) request.getSession().getAttribute("sid");
 		System.out.println("AdminList Sid값 : " + id);
 
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('로그인 후 이용해주세요.')");
-			out.println("history.back()");
-			out.println("</script>");
-			out.flush();
-		} else {
-			SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-			List<OrderBean> saleSellerMonthList = dao.saleSellerMonthList(id);
-			model.addAttribute("saleSellerMonthList", saleSellerMonthList);
-			System.out.println(saleSellerMonthList);
-		}
+		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
+		List<OrderBean> saleSellerMonthList = dao.saleSellerMonthList(id);
+		List<OrderBean> saleSellerMonthConfirmList = dao.saleSellerMonthConfirmList(id);
+		model.addAttribute("saleSellerMonthList", saleSellerMonthList);
+		model.addAttribute("saleSellerMonthConfirmList", saleSellerMonthConfirmList);
+		System.out.println(saleSellerMonthList);
+
 	}
 
 	public void saleSellerProductCateList(HttpServletRequest request, HttpServletResponse response, Model model)
@@ -82,63 +76,12 @@ public class SaleSellerService {
 		String id = (String) request.getSession().getAttribute("sid");
 		System.out.println("AdminList Sid값 : " + id);
 
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('로그인 후 이용해주세요.')");
-			out.println("history.back()");
-			out.println("</script>");
-			out.flush();
-		} else {
-			SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-			List<OrderBean> saleSellerProductList = dao.saleSellerProductList(id);
-			List<OrderBean> saleSellerProductConfirmList = dao.saleSellerProductConfirmList(id);
-			model.addAttribute("saleSellerProductList", saleSellerProductList);
-			model.addAttribute("saleSellerProductConfirmList", saleSellerProductConfirmList);
-		}
-	}
+		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
+		List<OrderBean> saleSellerProductList = dao.saleSellerProductList(id);
+		List<OrderBean> saleSellerProductConfirmList = dao.saleSellerProductConfirmList(id);
+		model.addAttribute("saleSellerProductList", saleSellerProductList);
+		model.addAttribute("saleSellerProductConfirmList", saleSellerProductConfirmList);
 
-	public void saleSellerProductListBest(HttpServletRequest request, HttpServletResponse response, Model model)
-			throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("AdminList Sid값 : " + id);
-
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('로그인 후 이용해주세요.')");
-			out.println("history.back()");
-			out.println("</script>");
-			out.flush();
-		} else {
-			SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-			List<OrderBean> saleSellerProductListBest = dao.saleSellerProductListBest(id);
-			model.addAttribute("saleSellerProductListBest", saleSellerProductListBest);
-			System.out.println(saleSellerProductListBest);
-		}
-	}
-
-	public void saleSellerProductListWorst(HttpServletRequest request, HttpServletResponse response, Model model)
-			throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("AdminList Sid값 : " + id);
-
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>");
-			out.println("alert('로그인 후 이용해주세요.')");
-			out.println("history.back()");
-			out.println("</script>");
-			out.flush();
-		} else {
-			SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-			List<OrderBean> saleSellerProductListWorst = dao.saleSellerProductListWorst(id);
-			model.addAttribute("saleSellerProductListWorst", saleSellerProductListWorst);
-			System.out.println(saleSellerProductListWorst);
-		}
 	}
 
 	public void saleSellerInfo(HttpServletRequest request, HttpServletResponse response, OrderBean order, Model model)

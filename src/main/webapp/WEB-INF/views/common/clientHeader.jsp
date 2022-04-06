@@ -1,160 +1,266 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-	String mid = (String)session.getAttribute("mid");
-	String sid = (String)session.getAttribute("sid");
+	String mid = (String) session.getAttribute("mid");
 	System.out.println("헤더에서 mid 값 = " + mid);
-	
-	if(mid != null){
-		if(mid.equals("admin")){
-		session.invalidate();
-		out.println("<script>");
-		out.println("alert('관리자 계정으로 접속하였습니다.');");
-		out.println("location.href='http://localhost:8080/asac/me/ad/lo';");
-		out.println("</script>");	
-		}
-	}
-	if(sid != null){
-		if(sid.equals("admin")){
-		session.invalidate();
-		out.println("<script>");
-		out.println("alert('관리자 계정으로 접속하였습니다.');");
-		out.println("location.href='http://localhost:8080/asac/me/ad/lo';");
-		out.println("</script>");	
-		}
-	}	
-%>    
+%>
 
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
-  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/animate.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/magnific-popup.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/aos.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/ionicons.min.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/jquery.timepicker.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/flaticon.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/icomoon.css">
+<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/style.css">
+
+<!-- Pretendard Font -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
+
+
 <style>
-.navbar-header {
-	height: 120px;
-	padding: 1em;
-	padding-top: 0.5em;
-	margin-left: 3% !important;
+
+.ftco-navbar-light {
+	height: 130px;
 }
 
-.navbar-inverse {
-    background-color: #E1B771 !important;
-    border-color: #E1B771 !important;
+.navbar-brand {
+	font-size: 70px;
+	margin-left: 5rem;
 }
-.navbar-inverse .navbar-nav>li>a {
-    color: #4a2104 !important;
+
+#headerContainer {
+	margin: 0;
+}
+
+@media ( min-width : 1400px) {
+	#headerContainer {
+		max-width: 2000px;
+	}
+}
+
+.ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
+	font-size: 30px;
 	font-family: Pretendard;
-    line-height: 2.5em !important;
-    font-size: 2.4em;
-    margin-left: 40px;
+	padding-left: 0px;
+	padding-right: 90px;
+	color: #82ae46;
 }
 
-.navbar-inverse .navbar-nav>li>a:hover {
-    color: white !important;
-}
-
-.navbar-inverse .navbar-brand {
-    color: #5c2200 !important;
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	font-size: 17px;
 	font-family: Pretendard;
-	font-size: 5em !important;
-	line-height: 70px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 0;
+	background: white;
+	color: #82ae46 !important;
 }
 
-.navbar-inverse .navbar-brand:hover {
-    color: white !important;
+#borderNavCart {
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
-.nav>li {
-margin: auto;
-padding: 0;
+.ftco-navbar-light .navbar-brand:hover {
+	color: #15240e !important;
 }
 
-.navbar-nav>li>a {
-    line-height: 2.5em !important;
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a:hover {
+	color: #15240e !important;
 }
-.navbar-right>li>a {
-    line-height: 3.6em !important;
-    margin: 0 !important;
-    font-size: 2em !important;
+
+.navCarousel {
+	margin-bottom: 9rem !important;
 }
-.navbar-right li {
-font-size: 0.7em;
+
+.ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
+	margin: -4rem 0 0;
+	background: #82ae46;
+	border-radius: 5px;
+	left: -60px;
+	padding: 0;
+}
+
+.ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu .dropdown-item {
+	color: white;
+}
+
+.ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu .dropdown-item:hover {
+	color: #bcd797;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item .dropdown-menu {
+	margin: -1rem 0 0;
+	background: #82ae46;
+	border-radius: 5px;
+	left: -60px;
+	padding: 0;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item .dropdown-menu .dropdown-item {
+	color: white;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item .dropdown-menu .dropdown-item:hover {
+	color: #bcd797;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item.cta>a {
+	color: #15240e !important;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item.cta>a:hover {
+	color: #82ae46 !important;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item>.nav-link {
+	color: #15240e !important;
+}
+
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item>.nav-link:hover {
+	color: #82ae46 !important;
+}
+
+.ftco-navbar-light.scrolled .navbar-brand {
+	color: #15240e !important;
+}
+
+.ftco-navbar-light.scrolled .navbar-brand:hover {
+	color: #82ae46 !important;
+}
+
+.topper .text {
+	width: 100%;
 }
 
 </style>
 
 </head>
 <body>
+	<header>
+		<div class="py-1 bg-primary">
+			<div class="container" id="headerContainer">
+				<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
+					<div class="col-lg-12 d-block">
+						<div class="row d-flex">
+							<div class="col-md pr-4 d-flex topper align-items-center">
+								<div class="icon mr-2 d-flex justify-content-center align-items-center">
+									<span class="icon-paper-plane"></span>
+								</div>
+								<span class="text">bk100km_@naver.com</span>
+							</div>
+							<div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
+								<span class="text">ASAC Vegan Market</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<header>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="http://localhost:8080/asac/"><strong id="Logo">&nbsp;ASAC&nbsp;&nbsp;&nbsp;</strong>
-      </a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav" id="mainNav2">
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=농산물류&nowPage=1">농산물</a></li>
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=간편식류&nowPage=1">간편식</a></li>
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=콩고기류&nowPage=1">대체육ㆍ콩</a></li>
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=양념소스류&nowPage=1">양념ㆍ소스</a></li>
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=음료류&nowPage=1">음료</a></li>
-        <li><a href="http://localhost:8080/asac/pr/cl/li?pcate=생활용품류&nowPage=1">생활ㆍ뷰티</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-      <%
-   	  if(mid == null){
-		if (request.getParameter("fromURI") != null){
-		%>
-		<li><a href="http://localhost:8080/asac/me/cl/lo" title="로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 로그인&nbsp;</a></li>
-   	 	<li><a href="http://localhost:8080/asac/me/cl/jo" title="회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-   	 	<li><a href="http://localhost:8080/asac/me/se/lo" title="판매자 로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 판매자 로그인&nbsp;</a></li>
-   	 	<li><a href="me/se/jo" title="판매자 회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 판매자 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-   	 	<%
-		} else if(request.getAttribute("fromURI") != null){
-		%>			
-		<li><a href="http://localhost:8080/asac/me/cl/lo" title="로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 로그인&nbsp;</a></li>
-        <li><a href="http://localhost:8080/asac/me/cl/jo" title="회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-        <li><a href="http://localhost:8080/asac/me/se/lo" title="판매자 로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 판매자 로그인&nbsp;</a></li>
-   	 	<li><a href="me/se/jo" title="판매자 회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 판매자 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-        <%
-		} else {
-		%>
-		<li><a href="http://localhost:8080/asac/me/cl/lo" title="로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 로그인&nbsp;</a></li>
-	    <li><a href="http://localhost:8080/asac/me/cl/jo" title="회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-	    <li><a href="http://localhost:8080/asac/me/se/lo" title="판매자 로그인 링크로 이동"><span class="glyphicon glyphicon-log-in"></span> 판매자 로그인&nbsp;</a></li>
-   	 	<li><a href="me/se/jo" title="판매자 회원가입 링크로 이동"><span class="glyphicon glyphicon-user"></span> 판매자 회원가입&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-	    <%
-		}
-    }
-    else{
-%>
-		<li>
-        <form method="post" name="cart">
-		&nbsp; 
-		<input type="hidden" name="cartclick" value="ab" />
-		<button type="submit" onclick="javascript: cart.action='http://localhost:8080/asac/ca/cl/li'">
-			장바구니 
-		</button>
-		</form>
-		</li>
-		
-        <li><a href="http://localhost:8080/asac/me/cl/lO" title="로그아웃 링크로 이동"><span class="glyphicon glyphicon-log-out"></span> 로그아웃&nbsp;</a></li>
-        <li><a href="http://localhost:8080/asac/me/cl/my" title="마이페이지 링크로 이동"><span class="glyphicon glyphicon-user"></span> 마이페이지&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-        <%
-    }
-%>
-      </ul>
-    </div>
-  </div>
-</nav>
-</header>
+		<nav
+			class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+			id="ftco-navbar">
+			<div class="container" id="headerContainer">
+				<a class="navbar-brand" href="http://localhost:8080/asac/">ASAC</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#ftco-nav" aria-controls="ftco-nav"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span> Menu
+				</button>
 
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=농산물류&nowPage=1"
+							class="nav-link">농산물</a></li>
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=간편식류&nowPage=1"
+							class="nav-link">간편식</a></li>
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=콩고기류&nowPage=1"
+							class="nav-link">대체육ㆍ콩</a></li>
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=양념소스류&nowPage=1"
+							class="nav-link">양념ㆍ소스</a></li>
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=음료류&nowPage=1"
+							class="nav-link">음료</a></li>
+						<li class="nav-item"><a
+							href="http://localhost:8080/asac/pr/cl/li?pcate=생활용품류&nowPage=1"
+							class="nav-link">생활ㆍ뷰티</a></li>
+
+						<%
+							if (mid == null) {
+						%>
+						<li class="nav-item cta cta-colored"><a
+							href="http://localhost:8080/asac/ca/cl/li" class="nav-link"
+							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
+						<li class="nav-item dropdown cta cta-colored"><a
+							class="nav-link dropdown-toggle" href="#" id="dropdown04"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;로그인</a>
+							<div class="dropdown-menu" aria-labelledby="dropdown04">
+								<a class="dropdown-item"
+									href="http://localhost:8080/asac/me/cl/lo">일반 로그인</a> <a
+									class="dropdown-item"
+									href="http://localhost:8080/asac/me/se/lo">판매자 로그인</a>
+							</div></li>
+						<li class="nav-item dropdown cta cta-colored"><a
+							class="nav-link dropdown-toggle" href="#" id="dropdown05"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;회원가입</a>
+							<div class="dropdown-menu" aria-labelledby="dropdown05">
+								<a class="dropdown-item"
+									href="http://localhost:8080/asac/me/cl/jo">일반 가입</a> <a
+									class="dropdown-item"
+									href="http://localhost:8080/asac/me/se/jo">판매자 가입</a>
+							</div></li>
+						<%
+							} else {
+						%>
+						<li class="nav-item cta cta-colored"><a
+							href="http://localhost:8080/asac/ca/cl/li" class="nav-link"
+							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
+						<li class="nav-item cta cta-colored"><a
+							href="http://localhost:8080/asac/me/cl/lO" class="nav-link"
+							id="borderNavLogin"><span class="icon-sign-out"></span>&nbsp;로그아웃</a></li>
+						<li class="nav-item cta cta-colored"><a
+							href="http://localhost:8080/asac/me/cl/my" class="nav-link"
+							id="borderNavJoin"><span class="icon-info"></span>&nbsp;마이페이지</a></li>
+						<%
+							}
+						%>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	
+	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
+	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/asac/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/owl.carousel.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.magnific-popup.min.js"></script>
+	<script src="/asac/resources/bootstrap/vegefoods-master/js/aos.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.animateNumber.min.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap-datepicker.js"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/scrollax.min.js"></script>
+	<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script	src="/asac/resources/bootstrap/vegefoods-master/js/google-map.js"></script>
+	<script src="/asac/resources/bootstrap/vegefoods-master/js/main.js"></script>
 </body>

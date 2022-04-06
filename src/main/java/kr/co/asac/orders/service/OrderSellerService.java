@@ -1,6 +1,5 @@
 package kr.co.asac.orders.service;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,10 +9,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.dao.OrderDAO;
-import kr.co.asac.utils.Search;
+import kr.co.asac.utils.PagingBean;
 
 @Service
 public class OrderSellerService {
@@ -21,50 +21,49 @@ public class OrderSellerService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	public void orderSellerList(HttpServletRequest request, HttpServletResponse response, Model model, Search search) throws Exception {
+	public void orderSellerList(HttpServletRequest request, HttpServletResponse response, Model model, PagingBean paging) throws Exception {
 		String id = (String) request.getSession().getAttribute("sid");
 		System.out.println("SellerList Sid값 : " + id);
 		
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-		   	PrintWriter out = response.getWriter();
-		   	out.println("<script>");
-		   	out.println("alert('로그인 후 이용해주세요.')");
-		   	out.println("history.back()");
-		   	out.println("</script>");
-		   	out.flush();
-		}
-		else {
-			OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-			List<OrderBean> orderSellerList = dao.orderSellerList(id, search);
-			model.addAttribute("orderSellerList", orderSellerList);
-			System.out.println(orderSellerList);
-	    }
-	}
-	
-	public int orderSellerCount(HttpServletRequest request, String id,Search search) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		return dao.orderAdminCount(search);
+		List<OrderBean> orderSellerList = dao.orderSellerList(id, paging);
+		model.addAttribute("orderSellerList", orderSellerList);
+		System.out.println(orderSellerList);
 	}
 	
-	public OrderBean orderSellerInfo(OrderBean order, int ocode) {
+	
+	public int orderSellerListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
+		String id = (String) request.getSession().getAttribute("sid");
+		System.out.println("서비스에서 서치카테고리" + searchCategory);
+		System.out.println("서비스에서 서치택수트" + searchText);
+		
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		int listCnt = dao.orderSellerListCount(id, searchCategory, searchText);
+		System.out.println("count값" + listCnt);
+		return listCnt;
+	}
+	
+	public OrderBean orderSellerInfo(Model model, String ocode, String pname) {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
-		OrderBean info = dao.orderSellerInfo(ocode);
-		return info;
+		OrderBean order = dao.orderSellerInfo(ocode, pname);
+		return order;
 	}
 	
-	public void orderSellerUpdate(OrderBean order) {
-		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		try {
-			 dao.orderSellerUpdate(order);
-		} catch (Exception e) {
-			System.out.println("update : " + e);
-		}
+	public List<OrderBean> orderSellerListSearch(HttpServletRequest request, Model model, @RequestParam("searchCategory") String searchCategory, @RequestParam("searchText") String searchText, @RequestParam("paging") PagingBean paging) {
+		String id = (String) request.getSession().getAttribute("sid");
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
+		List<OrderBean> orderSellerListSearch = dao.orderSellerListSearch(id, searchCategory, searchText, paging);
+		model.addAttribute("orderSellerListSearch", orderSellerListSearch);
+		return orderSellerListSearch;
 	}
 	
-	public int orderSellerDelete(int ocode){
+	public void orderSellerUpdate(HttpServletRequest request, Model model, HttpServletResponse response, OrderBean order) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		int code = dao.orderSellerDelete(ocode);
-		return code;
+		dao.orderSellerUpdate(order);
+	}
+	
+	public void orderSellerDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		dao.orderSellerDelete(ocode);
 	}
 }

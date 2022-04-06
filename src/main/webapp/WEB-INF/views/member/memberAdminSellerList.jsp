@@ -32,7 +32,6 @@
 
 #sellerSearchText {
     float: right;
-    width: 79%;
 }
 
 .sgenderLabel input[type="radio"] {
@@ -41,10 +40,10 @@
  
 .sgenderLabel input[type="radio"] + span {
 	border-radius: 5px;
-	width: 80px;
-    height: 35px;
+	width: 88px;
+    height: 33px;
     display: inline-block;
-    padding: 7px 10px;
+    padding: 4px 10px;
     border: 1px solid #dfdfdf;
     background-color: #ffffff;
     text-align: center;
@@ -52,7 +51,7 @@
 }
  
 .sgenderLabel input[type="radio"]:checked + span {
-    background-color: #113a6b;
+    background-color: #82ae46;
     color: #ffffff;
 }
 
@@ -70,15 +69,16 @@
 
 #leftPanel {
 	text-align: center;
-	height: 600px;
+	height: 700px;
+	margin-top: 20px;
 }
 	
 #leftPanel .table-responsive {
-	height: 500px;
+	height: 620px;
 }
 
 #sellerInfoBtn td {
-	line-height: 20px;
+	line-height: 21px;
 }
 
 th {
@@ -103,6 +103,72 @@ th {
 	left: 0;
 	opacity: 0;
 }
+
+.seller-panel-default {
+	height: 950px;
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+}
+
+.left-seller-panel-default {
+	height: 760px;
+}
+
+.panel-heading {
+	background: #d8e3c9;
+	color: #85976d;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 38px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: Pretendard;
+}
+
+#sellerSearchCategory {
+	border: none;
+	color: #72815d;
+    font-weight: 700;
+}
+}
+
+option {
+	color: black;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+#sellerSearchButton {
+	border: none;
+	color: #72815d;	
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#panel-heading-right {
+	padding: 4px;
+}
+
+#sfileUploadButton {
+	height: 34px;
+}
+
+#sfilePreview {
+	font-size: 15px;
+	float: right;
+	color: #85976d;
+    font-weight: 600;
+    font-family: 'Pretendard';
+}
+
+#sellerIdCheckButton {
+	height: 34px;
+}
+
 </style>
 </head>
 
@@ -136,19 +202,19 @@ function sellerInfoAction(clickedSeller) {
         	
             sfileZoneText +=  
 				'<div class="row">' +
-				'<div class="col-md-9 mb-3">' +
+				'<div class="col-md-9 mb-1 input-group-sm">' +
 					'<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
 						'class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="' + sfile + '"' +
 						'maxlength="10" required readonly>' +
 				'</div>' +
-				'<div class="col-md-3 mb-3">' +
+				'<div class="col-md-3 mb-1">' +
 					'<input type="file" accept="image/jpeg"' +
 						'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">' +
 					'<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>' +
 					'<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">' +							
 				'</div>' +
 				'</div>' + 
-				'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기</a><br/>';
+				'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기&nbsp; </a>';
             document.getElementById("sfileZone").innerHTML = sfileZoneText;
         	
             $(seller).each(function(index, item) {
@@ -303,27 +369,26 @@ function sellerInsertForm() {
             $('#sregdate').prop('value', today.toLocaleDateString());
         	 
         	sellerInsertFormText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="sellerInsertButton" value="추가하기" onclick="sellerInsertOk()" title="추가하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="sellerInsertBackButton" value="뒤로가기" onclick="sellerInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>';
 			sellerInsertFormIdZoneText = '<div class="row">' + 
-			'<div class="col-md-9 mb-3">' +
+			'<div class="col-md-9 mb-1">' +
 			'<label for="sid">아이디  <span class="text-danger">*</span></label>' +
-			'<div class="input-group">' +
-			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<div class="input-group-sm">' +
 			'<input type="text"' +
 			'class="form-control" name = "sid" id="sid"' + 
 			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
 			'minlength="5" maxlength="20" onchange="sellerIdChange()" required autofocus>' +
 			'</div>' +
 			'</div>' +
-			'<div class="col-md-3 mb-3">' +
+			'<div class="col-md-3">' +
 			'<label for="sellerIdCheckButton" id="sellerIdCheckLabel"></label>' +
 			'<input type="button" class="form-control" name = "sellerIdCheckButton" id="sellerIdCheckButton" value="중복확인" onclick="sellerIdCheckAction()">' +			
 			'<input type="hidden" id="sellerIdCheck" name="sellerIdCheck" value="N">' +
@@ -379,22 +444,21 @@ function sellerInsertCancel() {
             $('#sregdate').prop('value', "");
         	 
         	sellerInsertCancelText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="sellerUpdateButton" value="수정하기" title="수정하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="sellerDeleteButton" value="삭제" title="삭제하기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>' +
 			'<div class="col-md-12 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="sellerInsertButton" value="회원추가"' + 
 			'onclick="sellerInsertForm()" title="회원추가 버튼">';
 			sellerInsertFormIdZoneText = '<label for="sid">아이디 <span class="text-danger">*</span></label>' + 
-			'<div class="input-group">' +
-			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<div class="input-group-sm">' +
 			'<input type="text"' +
 			'class="form-control" name = "sid" id="sid" value="${seller.sid}"' +
 			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
@@ -535,19 +599,19 @@ function sfileUploadAction() {
 	            success: function(sfile){
 	                sfileZoneText +=  
 					'<div class="row">' +
-					'<div class="col-md-9 mb-3">' +
+					'<div class="col-md-9 input-group-sm">' +
 						'<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
 							'class="form-control" name = "sfile" id="sfile" placeholder=".png, .jpg" value="' + sfile + '"' +
 							'maxlength="10" required readonly>' +
 					'</div>' +
-					'<div class="col-md-3 mb-3">' +
+					'<div class="col-md-3">' +
 						'<input type="file" accept="image/jpeg"' +
 							'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">' +
 						'<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>' +
 						'<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">' +							
 					'</div>' +
 					'</div>' + 
-					'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기</a><br/>';
+					'<a href="javascript:sfilePreview()" id="sfilePreview"> 미리보기</a>';
 	                document.getElementById("sfileZone").innerHTML = sfileZoneText;
 	            },
 	            error: function(request, status, error) {
@@ -568,7 +632,7 @@ function sfileUploadAction() {
 				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--일반회원 관리//-->
-					<div class="panel panel-default">
+					<div class="panel seller-panel-default left-seller-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
@@ -580,7 +644,7 @@ function sfileUploadAction() {
 										</select>
 										<input class="form-control input-sm" id="sellerSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="sellerSearchButton" value="검색" onclick="sellerSearchAction(1)">
+											<input type="button" class="btn btn-default btn-md" id="sellerSearchButton" value="검색" onclick="sellerSearchAction(1)">
 										</span>
 									</div>
 								</div>
@@ -636,8 +700,8 @@ function sfileUploadAction() {
 				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
-					<div class="panel panel-default">
-						<div class="panel-heading">상세정보패널</div>
+					<div class="panel seller-panel-default">
+						<div class="panel-heading" id="panel-heading-right"> &nbsp;상세정보패널</div>
 						<div class="panel-body">
 									<div class="overlay overlayFade" id="overlayFade">
 										<img src="/asac/resources/upload/d.jpg" alt="img" class="image">
@@ -647,30 +711,32 @@ function sfileUploadAction() {
 			<div class="input-form col-md-12 mx-auto">
 				<form class="sellerInfoDetail" id= "sellerInfoDetail" name="sellerInfoDetail" method="post">
 
-					<div class="mb3" id="sellerIdZone">
+					<div class="mb1" id="sellerIdZone">
 					<label for="sid">아이디 <span class="text-danger">*</span></label> 
-					<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fas fa-user"></i></span>
+					</div>
 						<input type="text"
-							class="form-control" name = "sid" id="sid" value="${seller.sid}"
-							placeholder="영문 소문자와 숫자만 입력가능" pattern="^[a-z0-9_]{3,20}$" 
+							class="form-control" name = "sid" id="sid" value=""
+							placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$" 
 							minlength="3" maxlength="20" required readonly>
 					</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="sname">이름 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control"  name = "sname" id="sname" value="${seller.sname}"
+							class="form-control"  name = "sname" id="sname" value=""
 							placeholder="홍길동" pattern="^[가-힣]+$" 
 							minlength='2' maxlength="6" required readonly>
 					</div>
 					<div class="row">					
-					<div class="col-md-8 mb-3">
+					<div class="col-md-8 input-group-sm">
 						<label for="sbirth">생년월일 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "sbirth" id="sbirth" value="${seller.sbirth}"
+							class="form-control" name = "sbirth" id="sbirth" value=""
 							placeholder="19901212 (기호제외 8자리)" pattern="^[0-9_]{8}$" 
 							maxlength="8" required readonly>
 					</div>
-					<div class="col-md-4 mb-3">
+					<div class="col-md-4 input-group-sm">
 					<label for="sgender">성별 <span class="text-danger">*</span></label>
 					<div> 
 					<label id="sgenderLabel" class="sgenderLabel">
@@ -687,60 +753,62 @@ function sfileUploadAction() {
 					</div>
 					</div>
 					<label for="sphone">연락처 <span class="text-danger">*</span></label> 
-					<div class="input-group">
-		            <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"> &nbsp; (010) </i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+		            <span class="input-group-text"><i class="fa-light fa-mobile-screen"></i><i class="mhpLabel"> (010) </i></span>
+		            </div>
 						<input type="tel"
-							class="form-control"  name = "sphone" id="sphone" value="${seller.sphone}"
+							class="form-control"  name = "sphone" id="sphone" value=""
 							pattern=".{8}" placeholder="12345678 (010제외, 기호제외 8자리)" 
 							maxlength="8" required readonly>
 					</div>
-					<div class="mb-3"></div>
 					<label for="smail">이메일 <span class="text-danger">*</span></label>
-					<div class="input-group">
-		            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+		            <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+		            </div>
 					<input type="email"
-							class="form-control" name="smail" id="smail" value="${seller.smail}"
+							class="form-control" name="smail" id="smail" value=""
 							placeholder="email@example.com" maxlength="30" required readonly>
 					</div>					
-					<div class="mb-3"></div>
 					<div class="row">
-						<div class="col-md-4 mb-3">
+						<div class="col-md-4 mb-1 input-group-sm">
 							<label for="saddrz">우편번호 </label><input type="text"
-								class="form-control" name = "saddrz" id="saddrz" value="${seller.saddrz}"
+								class="form-control" name = "saddrz" id="saddrz" value=""
 								placeholder="우편번호" maxlength="7" required readonly>
 						</div>
-						<div class="col-md-8 mb-3">
+						<div class="col-md-8 mb-1 input-group-sm">
 							<label for="saddr">주소 <span class="text-danger">*</span></label> <input type="text"
-								class="form-control" name = "saddr" id="saddr" value="${seller.saddr}"
+								class="form-control" name = "saddr" id="saddr" value=""
 								placeholder="여기를 클릭해주세요" required readonly>
 						</div>
 					</div>
 					<label for="saddrd">상세주소 <span class="text-danger">*</span><span class="text-muted"></span></label>
-					<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-					<input type="text" class="form-control" name="saddrd" id="saddrd" value="${seller.saddrd}"
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fa solid fa-house-chimney"></i></span>
+					</div>		
+					<input type="text" class="form-control" name="saddrd" id="saddrd" value=""
 							placeholder="상세주소를 입력해주세요." maxlength="50" required readonly>
 					</div>
-					<div class="mb-3"></div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="scompany">회사명 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "scompany" id="scompany" placeholder="ASAC비건마켓" value="${seller.scompany}"
+							class="form-control" name = "scompany" id="scompany" placeholder="ASAC비건마켓" value=""
 							maxlength="10" required readonly>
 					</div>
-					<div class="mb-3"></div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="snumber">사업자등록번호 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "snumber" id="snumber" placeholder="00-0000-00" value="${seller.snumber}"
+							class="form-control" name = "snumber" id="snumber" placeholder="00-0000-00" value=""
 							maxlength="10" required readonly>
 					</div>
-					<div class="mb-3" id="sfileZone">
+					<div class="mb-1 input-group-sm" id="sfileZone">
 					<div class="row">
-					<div class="col-md-9 mb-3">
+					<div class="col-md-9 input-group-sm">
 						<label for="sfile">증명서류 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "sfile" id="sfile" placeholder="파일명은 id로 지정 / .png, .jpg" value="${seller.sfile}"
+							class="form-control" name = "sfile" id="sfile" placeholder="파일명은 id로 지정 / .png, .jpg" value=""
 							maxlength="10" required readonly>
 					</div>
-					<div class="col-md-3 mb-3">
+					<div class="col-md-3">
 						<input type="file" accept="image/jpeg"
 							class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="sfileUploadAction()">
 						<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>
@@ -749,26 +817,32 @@ function sfileUploadAction() {
 					</div>
 					</div>
 					<div class="mb-3">
-						<label for="sregdate">가입일 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name = "sregdate" id="sregdate" placeholder="20220322" value="${seller.sregdate}"
-							maxlength="10" required readonly>
-					</div>					
+					<label for="sregdate">가입일 <span class="text-danger">*</span></label> 
+					<div class="mb-1 input-group input-group-sm">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa light fa-calendar"></i></span>
+					</div>
+					<input type="text"
+						class="form-control" name = "sregdate" id="sregdate" placeholder="20220322" value=""
+						maxlength="10" required readonly>
+					</div>				
+					</div>	
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
 					<div class="row" id="sellerButtonZone">
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="sellerUpdateButton" value="수정하기" title="수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="sellerDeleteButton" value="삭제" title="삭제하기 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>
 						<div class="col-md-12 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="sellerInsertButton" value="회원추가" 
 						onclick="sellerInsertForm()" title="회원추가 버튼">
 						</div>						

@@ -1,6 +1,5 @@
 package kr.co.asac.product.service;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.product.dao.ProductDAO;
-import kr.co.asac.utils.Search;
 
 @Service
 public class ProductAdminService {
@@ -21,59 +20,62 @@ public class ProductAdminService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	public void productAdminList(HttpServletRequest request, HttpServletResponse response, Model model, Search search) throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("AdminList Sid°ª : " + id);
+	public void productAdminList(Model model, PagingBean paging) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
 		
+		List <ProductBean> productList = productDAO.productAdminList(paging);
+		model.addAttribute("productList", productList);
+	}
+	
+	public ProductBean productAdminInfo(Model model, String pcode) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		ProductBean product = productDAO.productAdminInfo(pcode);		
+		model.addAttribute("product", product);
+		return product;
+	}
+	
+	public void productAdminUpdate(HttpServletRequest request, Model model, HttpServletResponse response, ProductBean product) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminUpdate(product);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}	
+	
+	public void productAdminDelete(HttpServletRequest request, Model model, HttpServletResponse response, String pcode) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminDelete(pcode);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}
+	
+	public void productAdminInsert(HttpServletRequest request, Model model, HttpServletResponse response, ProductBean product) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminInsert(product);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}	
+	
+	public int productAdminCount(String searchCategory, String searchText) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		int listCnt = productDAO.productAdminCount(searchCategory, searchText);
+		System.out.println("productAdminService : productCount ï¿½ï¿½ï¿½ï¿½ " + listCnt);
+		return listCnt;
+	}
+	
+	public List <ProductBean> productAdminSearch(HttpServletRequest request, Model model, String searchCategory, String searchText, PagingBean paging) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		List <ProductBean> productList = productDAO.productAdminSearch(searchCategory, searchText, paging);
+		model.addAttribute("productList", productList);
 		model.addAttribute("fromURI", request.getServletPath());
 		request.setAttribute("fromURI", request.getServletPath());
 		
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-		   	PrintWriter out = response.getWriter();
-		   	out.println("<script>");
-		   	out.println("alert('·Î±×ÀÎ ÈÄ ÀÌ¿ëÇØÁÖ¼¼¿ä.')");
-		   	out.println("history.back()");
-		   	out.println("</script>");
-		   	out.flush();
-		}
-		else {
-			ProductDAO dao = sqlSessionTemplate.getMapper(ProductDAO.class);
-			List<ProductBean> productAdminList = dao.productAdminList(search);
-			model.addAttribute("productAdminList", productAdminList);
-			System.out.println(productAdminList);
-	    }
+		return productList;
 	}
 
-	public int productAdminCount(Search search) throws Exception {
-		ProductDAO dao = sqlSessionTemplate.getMapper(ProductDAO.class);
-		return dao.productAdminCount(search);
-	}
-	
-	public ProductBean productAdminInfo(ProductBean product, String pcode) {
-		ProductDAO dao = sqlSessionTemplate.getMapper(ProductDAO.class); 
-		ProductBean info = dao.productAdminInfo(pcode);
-		return info;
-	}
-	
-	public void productAdminInsert(ProductBean product) {
-		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		productDAO.productAdminInsert(product);
-		System.out.println(product);
-	}
-	
-	public void productAdminUpdate(ProductBean product) {
-		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		try {System.out.println("¼­ºñ½º¿¡¼­ ÂïÈù update" + product);
-			productDAO.productAdminUpdate(product);
-		} catch (Exception e) {
-			System.out.println("update : " + e);
-		}
-	}
-	
-	public int productAdminDelete(String pcode){
-		ProductDAO dao = sqlSessionTemplate.getMapper(ProductDAO.class);
-		int code = dao.productAdminDelete(pcode);
-		return code;
-	}
 }

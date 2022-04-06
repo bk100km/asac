@@ -2,6 +2,7 @@ package kr.co.asac.member.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
+import kr.co.asac.product.bean.ProductBean;
 
 @Service
 public class MemberSellerService {
@@ -51,6 +53,30 @@ public class MemberSellerService {
 		int result =memberDAO.sellerIdChk(seller);
 		return result;
 	}
+	public int sellerProductcount( int count,HttpServletRequest request) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		String sid =(String)request.getSession().getAttribute("sid");
+		HttpSession session = request.getSession();
+		session.setAttribute("sid", sid);
+		System.out.println("sid 설정 전" + request.getSession().getAttribute("sid"));
+		return memberDAO.sellerProductcount(count);
+	}
+	public int sellerOrderscount(int count) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		return memberDAO.sellerOrderscount(count);
+	}
+	public int sellerReviewcount(int count) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		return memberDAO.sellerReviewcount(count);
+	}
+	public void sellerProduct(HttpServletRequest request,Model model) {
+		
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		List <ProductBean> sellerProduct= memberDAO.sellerProduct();
+		model.addAttribute("sellerProduct", sellerProduct);
+		
+	}
+	
 	public void memberSellerInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model, String sid) throws IOException {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		sid=(String) request.getSession().getAttribute("sid");
@@ -83,5 +109,6 @@ public class MemberSellerService {
 		memberDAO.memberSellerDelete(seller);
 		
 	}
+	
 
 }

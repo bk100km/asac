@@ -1,8 +1,12 @@
 package kr.co.asac.orders.service;
 
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +26,64 @@ public class OrderClientService {
 	private SqlSessionTemplate sqlSessionTemplate;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 	
+	public void orderClientInsert(String sidarr, String mid, String pcodearr, String ocountarr, String oname,
+			String oaddrz, String oaddr, String oaddrd, String ophone,  String ototalarr, String omessage) {
+		System.out.println("서비스 들어옴");
+		OrderBean order = new OrderBean();
+			order.setMid(mid);
+			order.setOname(oname);
+			order.setOaddrz(oaddrz);
+			order.setOaddr(oaddr);
+			order.setOaddrd(oaddrd);
+			order.setOphone(ophone);
+			order.setOmessage(omessage);
+			
+			String[] sid = sidarr.split(",");
+			String[] pcode = pcodearr.split(",");
+			String[] ocount = ocountarr.split(",");
+			String[] ototal = ototalarr.split(",");
+			
+			Calendar cal = Calendar.getInstance();
+			int year = cal.get(Calendar.YEAR);
+			String date = year + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1) 
+					 + new DecimalFormat("00").format(cal.get(Calendar.DATE));
+			String dateNum = "";
+			
+			for(int i =1;i <= 6 ; i++) {
+				dateNum += (int)(Math.random()*10);
+			}
+			
+			String ocode = date + "_" + dateNum;
+			
+			order.setOcode(ocode);
+			for(int i=0; i< sid.length; i++) {
+				order.setSid(sid[i]);
+				order.setPcode(pcode[i]);
+				order.setOcount(Integer.parseInt(ocount[i]));
+				order.setOtotal(Integer.parseInt(ototal[i]));
+				
+				OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+				dao.orderClientInsert(order);
+			}
+			System.out.println(order);
+    }
+	
 	public List<OrderBean> orderClientList(String mid, OrderBean order) {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
 		List<OrderBean> list = dao.orderClientList(mid);
 		return list;
 	}
 	
-	public OrderBean orderClientinfo(OrderBean order, int ocode){
+	public List<OrderBean> orderClientOcodeList(String mid, OrderBean order) {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
+		List<OrderBean> ocodelist = dao.orderClientOcodeList(mid);
+		return ocodelist;
+	}
+	
+	
+	public List<OrderBean> orderClientinfo(OrderBean order, String ocode){
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		OrderBean info = dao.orderClientInfo(ocode);
+		List<OrderBean> info = dao.orderClientInfo(ocode);
 		return info;
 	}
 	
@@ -40,7 +93,7 @@ public class OrderClientService {
 		model.addAttribute("order", order);
 	}
 	
-	public int orderClientDelete(int ocode){
+	public int orderClientDelete(String ocode){
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		int info = dao.orderClientDelete(ocode);
 		return info;
@@ -60,10 +113,32 @@ public class OrderClientService {
 		return cartlist;
 	}
 	
-    public int cartInsert(CartBean cart) {
+	
+    public void cartInsert(CartBean cart,HttpServletResponse response, String mid) throws Exception {
     	CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);
-    	int n = dao.cartInsert(cart);
-    	return n;
+    	System.out.println("서비스"+cart);
+    	List<CartBean> pcodelist = dao.cartClientPcode(mid);
+		System.out.println("이녀석" + pcodelist);
+		
+		String pcode = pcodelist.toString();
+		String cartpcode = cart.pcode;
+		boolean isContainsPcode = pcode.contains(cartpcode);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		if (isContainsPcode == true) {
+			out.println("<script>");
+		   	out.println("alert('장바구니에 담겨져있는 상품입니다!')");
+		   	out.println("</script>");
+		   	out.flush();
+		}else {
+		System.out.println("참이어야해" + isContainsPcode);
+    	dao.cartInsert(cart);
+    	out.println("<script>");
+	   	out.println("alert('상품이 장바구니에 담겼습니다!')");
+	   	out.println("</script>");
+	   	out.flush();
+		}
+    	
     }
     
     public void cartUpdate(HttpServletRequest request, Model model, CartBean cart) {
@@ -84,4 +159,8 @@ public class OrderClientService {
 		return info;
 	}
     
+    public void delete(String ccode) {
+    	CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);
+    	dao.delete(ccode);
+    }
 }

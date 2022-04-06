@@ -11,6 +11,7 @@
 <title>ASAC 비건마켓</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 .table-responsive {
@@ -27,7 +28,6 @@
 
 #memberSearchText {
     float: right;
-    width: 74%;
 }
 
 .mgenderLabel input[type="radio"] {
@@ -36,10 +36,10 @@
  
 .mgenderLabel input[type="radio"] + span {
 	border-radius: 5px;
-	width: 97px;
-    height: 35px;
+	width: 89px;
+    height: 33px;
     display: inline-block;
-    padding: 7px 10px;
+    padding: 4px 10px;
     border: 1px solid #dfdfdf;
     background-color: #ffffff;
     text-align: center;
@@ -47,7 +47,7 @@
 }
  
 .mgenderLabel input[type="radio"]:checked + span {
-    background-color: #113a6b;
+    background-color: #a8c383;
     color: #ffffff;
 }
 
@@ -57,19 +57,68 @@
 
 #leftPanel {
 	text-align: center;
-	height: 600px;
+	height: 700px;
+	margin-top: 20px;
 }
 
 #leftPanel .table-responsive {
-	height: 500px;
+	height: 620px;
 }
 
 #memberInfoBtn td {
-	line-height: 27px;
+	line-height: 28px;
 }
 
 th {
     text-align: center;
+}
+
+.panel-default {
+	height: 760px;
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+}
+
+.panel-heading {
+	background: #d8e3c9;
+	color: #85976d;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 38px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: Pretendard;
+}
+
+#memberSearchCategory {
+	border: none;
+	color: #72815d;
+    font-weight: 700;
+}
+
+option {
+	color: black;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+#memberSearchButton {
+	border: none;
+	color: #72815d;	
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#panel-heading-right {
+	padding: 4px;
+}
+
+#memberIdCheckButton {
+	height: 34px;
 }
 
 </style>
@@ -215,27 +264,24 @@ function memberInsertForm() {
             $('#mregdate').prop('value', today.toLocaleDateString());
         	
         	memberInsertFormButtonZoneText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="memberInsertButton" value="추가하기" onclick="memberInsertOk()" title="추가하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="memberInsertBackButton" value="뒤로가기" onclick="memberInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>';
-			memberInsertFormIdZoneText = '<div class="row">' + 
-			'<div class="col-md-9 mb-3">' +
+			memberInsertFormIdZoneText = '<div class="row">' +
+			'<div class="col-md-9 input-group-sm">' +
 			'<label for="mid">아이디  <span class="text-danger">*</span></label>' +
-			'<div class="input-group">' +
-			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
 			'<input type="text"' +
 			'class="form-control" name = "mid" id="mid"' + 
 			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
 			'minlength="5" maxlength="20" onchange="memberIdChange()" required autofocus>' +
 			'</div>' +
-			'</div>' +
-			'<div class="col-md-3 mb-3">' +
+			'<div class="col-md-3 mb-1">' +
 			'<label for="memberIdCheckButton" id="memberIdCheckLabel"></label>' +
 			'<input type="button" class="form-control" name = "memberIdCheckButton" id="memberIdCheckButton" value="중복확인" onclick="memberIdCheckAction()">' +			
 			'<input type="hidden" id="memberIdCheck" name="memberIdCheck" value="N">' +
@@ -284,22 +330,21 @@ function memberInsertCancel() {
             $('#mregdate').prop('value', "");
         	 
         	memberInsertCancelText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="memberUpdateButton" value="수정하기" title="수정하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="memberDeleteButton" value="삭제" title="삭제하기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>' +
 			'<div class="col-md-12 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="memberInsertButton" value="회원추가"' + 
 			'onclick="memberInsertForm()" title="회원추가 버튼">';
 			memberInsertFormIdZoneText = '<label for="mid">아이디 <span class="text-danger">*</span></label>' + 
-			'<div class="input-group">' +
-			'<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>' +
+			'<div class="input-group-sm mb-1">' +
 			'<input type="text"' +
 			'class="form-control" name = "mid" id="mid" value="${member.mid}"' +
 			'placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$"' + 
@@ -431,8 +476,8 @@ function memberIdCheckAction() {
 
 		<div id="page-wrapper">
 			<div class="row">
-				<div class="col-lg-5">
-					<!--좌우분할 5:7-->
+				<div class="col-lg-6">
+					<!--좌우분할 6:6-->
 					<!--일반회원 관리//-->
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -446,7 +491,7 @@ function memberIdCheckAction() {
 										</select>
 										<input class="form-control input-sm" id="memberSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="memberSearchButton" value="검색" onclick="memberSearchAction(1)">
+											<input type="button" class="btn btn-default btn-md" id="memberSearchButton" value="검색" onclick="memberSearchAction(1)">
 										</span>
 									</div>
 								</div>
@@ -495,40 +540,42 @@ function memberIdCheckAction() {
 					</div>
 					<!--//일반회원관리 -->
 				</div>
-				<div class="col-lg-7">
+				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
 					<div class="panel panel-default">
-						<div class="panel-heading">상세정보패널</div>
+						<div class="panel-heading" id="panel-heading-right"> &nbsp;상세정보패널</div>
 						<div class="panel-body">
 							<div class="table-responsive">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<form class="memberInfoDetail" id= "memberInfoDetail" name="memberInfoDetail" method="post">
-					<div class="mb3" id="memberIdZone">
+					<div id="memberIdZone">
 					<label for="mid">아이디 <span class="text-danger">*</span></label> 
-					<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fas fa-user"></i></span>
+					</div>
 						<input type="text"
 							class="form-control" name = "mid" id="mid" value="${member.mid}"
 							placeholder="영문 소문자와 숫자만 입력가능, 5글자 이상" pattern="^[a-z0-9_]{3,20}$" 
 							minlength="5" maxlength="20" required readonly>
 					</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="mname">이름 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name = "mname" id="mname" value="${member.mname}"
 							placeholder="홍길동" pattern="^[가-힣]+$" 
 							minlength='2' maxlength="6" required readonly>
 					</div>
 					<div class="row">	
-					<div class="col-md-8 mb-3">
+					<div class="col-md-8 input-group-sm">
 						<label for="mbirth">생년월일 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control" name = "mbirth" id="mbirth" value="${member.mbirth}"
 							placeholder="19901212 (기호제외 8자리)" pattern="^[0-9_]{8}$" 
 							maxlength="8" required readonly>
 					</div>
-					<div class="col-md-4 mb-3">
+					<div class="col-md-4">
 					<label for=msgender">성별 <span class="text-danger">*</span></label>
 					<div> 
 					<label id="mgenderLabel" class="mgenderLabel">
@@ -545,62 +592,71 @@ function memberIdCheckAction() {
 					</div>
 					</div>
 					<label for="mphone">연락처 <span class="text-danger">*</span></label> 
-					<div class="input-group">
-		            <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"> &nbsp; (010) </i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+		            <span class="input-group-text"><i class="fa-light fa-mobile-screen"></i><i class="mhpLabel"> (010) </i></span>
+		            </div>
 						<input type="tel"
 							class="form-control"  name = "mphone" id="mphone" value="${member.mphone}"
 							pattern=".{8}" placeholder="12345678 (010제외, 기호제외 8자리)" 
 							maxlength="8" required readonly>
 					</div>
-					<div class="mb-3"></div>
 					<label for="mmail">이메일 <span class="text-danger">*</span></label>
-					<div class="input-group">
-		            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+		            <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+		            </div>
 					<input type="email"
 							class="form-control" name="mmail" id="mmail" value="${member.mmail}"
 							placeholder="email@example.com" maxlength="30" required readonly>
 					</div>					
-					<div class="mb-3"></div>
 					<div class="row">
-						<div class="col-md-4 mb-3">
+						<div class="col-md-4 mb-1 input-group-sm">
 							<label for="maddrz">우편번호 </label><input type="text"
 								class="form-control" name = "maddrz" id="maddrz" value="${member.maddrz}"
 								placeholder="우편번호" maxlength="7" required readonly>
 						</div>
-						<div class="col-md-8 mb-3">
+						<div class="col-md-8 mb-1 input-group-sm">
 							<label for="maddr">주소 <span class="text-danger">*</span></label> <input type="text"
 								class="form-control" name = "maddr" id="maddr" value="${member.maddr}"
 								placeholder="여기를 클릭해주세요" required readonly>
 						</div>
 					</div>
 					<label for="maddrd">상세주소 <span class="text-danger">*</span><span class="text-muted"></span></label>
-					<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fa solid fa-house-chimney"></i></span>
+					</div>	
 					<input type="text" class="form-control" name="maddrd" id="maddrd" value="${member.maddrd}"
 							placeholder="상세주소를 입력해주세요." maxlength="50" required readonly>
 					</div>
-					<div class="mb-3"></div>
 					<div class="mb-3">
-						<label for="mregdate">가입일 <span class="text-danger">*</span></label> <input type="text"
+						<label for="mregdate">가입일 <span class="text-danger">*</span></label> 
+						<div class="input-group input-group-sm">
+						<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa light fa-calendar"></i></span>
+						</div>
+						<input type="text"
 							class="form-control" name = "mregdate" id="mregdate" placeholder="가입일" value="${member.mregdate}"
 							maxlength="10" required readonly>
+						</div>
 					</div>					
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
 					<div class="row" id="memberButtonZone">
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="memberUpdateButton" value="수정하기" title="수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="memberDeleteButton" value="삭제" title="삭제하기 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>
 						<div class="col-md-12 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="memberInsertButton" value="회원추가" 
 						onclick="memberInsertForm()" title="회원추가 버튼">			
 						</div>						
@@ -616,6 +672,7 @@ function memberIdCheckAction() {
 			</div>
 		</div>
 	</div>
+
 	
 	<script>
 

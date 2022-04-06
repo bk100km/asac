@@ -58,12 +58,15 @@ $(document).ready(function(){
 
 </script>
 </head>
-<body>
-	<div class="wrap">
-		<header>
+<body id="page-top">
+<!-- Page Wrapper -->
+	<div class="wrapper">
 			<jsp:include page="/WEB-INF/views/common/adminHeader.jsp" flush="false"></jsp:include>
-		</header>
-
+		<!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+        
+            <!-- Main Content -->
+            <div id="content">
 		<div class="mypageDiv" id="mypageDiv">
 		
 		<ul class="nav nav-tabs">
@@ -79,6 +82,8 @@ $(document).ready(function(){
 			</div>
 		</div>
 				
+	</div>
+	</div>
 	</div>
 	<footer>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>

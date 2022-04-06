@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,31 +145,53 @@ background: linear-gradient(to top right);
 	<div class="input-form-background">
 		<div class="input-form ">
 			<form action="./up" class="validation-form" method="post">
-			<div class="mb-3">
-				<label for="mid">아이디</label>
-				<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-					<input type="text" class="form-control" name="mid" value="${member.mid }" readonly>
-				</div><br>
-			</div>
-			<div class="mb-3">
-				<label for="pw">비밀번호</label><br>
-				<input type="password" class="form-control" name="mpwd" id="pw" value="${member.mpwd }" placeholder="영문/숫자/특수문자(!@#$%^*+=-)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
-			</div>
-			<div class="mb-3">
-				<label for="pw2">비밀번호 확인 </label>
-				<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
-				<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
-				<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
-			</div>
+			<c:set var="mid" value="${member.mid }" />
+				<c:if test="${mid.length() <= 10 }">
+					<div class="mb-3">
+						<label for="mid">아이디</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+							<input type="text" class="form-control" name="mid" value="${member.mid }" readonly>
+						</div><br>
+					</div>
+					<div class="mb-3">
+						<label for="pw">비밀번호</label><br>
+						<input type="password" class="form-control" name="mpwd" id="pw" value="${member.mpwd }" placeholder="영문/숫자/특수문자(!@#$%^*+=-)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+					</div>
+					<div class="mb-3">
+						<label for="pw2">비밀번호 확인 </label>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
+						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
+						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
+					</div>
+				</c:if>
+			<c:set var="mid" value="${mid }" />
+				<c:if test="${mid.length() >= 10 }">
+					<input type="hidden" class="form-control" name="mid" value="${mid }" readonly>
+					<input type="hidden" class="form-control" name="mpwd" value="${member.mpwd }" id="pw">
+				</c:if>
+			<c:set var="mid" value="${mid }" />
+				<c:if test="${fn:contains(mid, 'k@') }">
+					<input type="hidden" class="form-control" name="mid" value="${mid }" readonly>
+					<input type="hidden" class="form-control" name="mpwd" value="${member.mpwd }" id="pw">
+				</c:if>
 			<div class="mb-3">
 				<label for="mname">이름</label><br>
 				<input type="text" class="form-control" name="mname" value= "${member.mname }" required><br>
 			</div>
-			<div class="mb-3">
-				<label for="mbirth">생년월일</label><br>
-				<input type="text" class="form-control birth" name="mbirth" value="${member.mbirth.substring(2) }" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
-			</div>
+			<c:set var="mbirth" value="${member.mbirth }" />
+			<c:if test="${mbirth != '' }">
+				<div class="mb-3">
+					<label for="mbirth">생년월일</label><br>
+					<input type="text" class="form-control birth" name="mbirth" value="${member.mbirth.substring(2) }" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
+				</div>
+			</c:if>
+			<c:if test="${mbirth == '' }">
+				<div class="mb-3">
+					<label for="mbirth">생년월일</label><br>
+					<input type="text" class="form-control birth" name="mbirth" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
+				</div>
+			</c:if>
 			<div class="mb-3">
 				<label for="mphone">전화번호</label>
 				<div class="input-group">
@@ -202,7 +226,7 @@ background: linear-gradient(to top right);
 				<label for="sample4_detailAddress">상세주소</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" value="${member.maddrd }" readonly required><br>
+					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" value="${member.maddrd }" required><br>
 				</div>
 			</div>
 			<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">

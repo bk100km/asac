@@ -72,10 +72,16 @@ public class MemberClientService {
 	public void memberClientInfo(HttpServletRequest request, HttpSession session, Model model, String mid) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		MemberBean member = memberDAO.memberClientInfo(mid);
-		member.setMphone(member.getMphone().substring(0, 3) + "-" + member.getMphone().substring(3, 7) + "-" + member.getMphone().substring(7, 11));
-		member.setMbirth(member.getMbirth().substring(0, 8) + "-" + member.getMbirth().substring(8) + "******");
+		System.out.println("clientInfo 서비스");
+		if (!member.getMphone().equals("")) {
+			member.setMphone(member.getMphone().substring(0, 3) + "-" + member.getMphone().substring(3, 7) + "-" + member.getMphone().substring(7, 11));
+		}
+		if (!member.getMbirth().equals("")) {
+			member.setMbirth(member.getMbirth().substring(0, 8) + "-" + member.getMbirth().substring(8) + "******");
+		}
 		System.out.println(member);
 		session.setAttribute("member", member);
+		System.out.println("mypage에 보여지는 member"+member);
 		model.addAttribute("member", member);
 	}
 	
@@ -106,6 +112,16 @@ public class MemberClientService {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		int result = memberDAO.memberClientDelPwC(vo);
 		return result;
+	}
+	
+	public void memberClientNaver(MemberBean member) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		memberDAO.memberClientNaver(member);
+	}
+	
+	public void memberClientKakao(MemberBean member) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		memberDAO.memberClientKakao(member);
 	}
 
 

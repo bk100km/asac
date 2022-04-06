@@ -31,24 +31,24 @@ public class OrderAdminController {
 		return "adminIndex";
 	}
 	
-	@RequestMapping("/or/ad/ls")
-	public String getOrderAdminSellerList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @RequestParam(required = false, defaultValue = "1") int page
-			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
-			@ModelAttribute("searchSe") Search search) throws Exception {
-		
-		model.addAttribute("searchSe", search);
-		search.setSearchType(searchType);
-		search.setKeyword(keyword);
-		String id = (String) request.getSession().getAttribute("sid");
-		int listCnt = orderSellerService.orderSellerCount(request, id, search);
-		
-		search.pageInfo(page, range, listCnt);
-		model.addAttribute("orderPagingSe", search);
-		
-		orderSellerService.orderSellerList(request, response, model, search);
-		
-		return "orders/orderSellerAdList";
-	}
+//	@RequestMapping("/or/ad/ls")
+//	public String getOrderAdminSellerList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @RequestParam(required = false, defaultValue = "1") int page
+//			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
+//			@ModelAttribute("searchSe") Search search) throws Exception {
+//		
+//		model.addAttribute("searchSe", search);
+//		search.setSearchType(searchType);
+//		search.setKeyword(keyword);
+//		String id = (String) request.getSession().getAttribute("sid");
+//		int listCnt = orderSellerService.orderSellerCount(request, id, search);
+//		
+//		search.pageInfo(page, range, listCnt);
+//		model.addAttribute("orderPagingSe", search);
+//		
+//		orderSellerService.orderSellerList(request, response, model, search);
+//		
+//		return "orders/orderSellerAdList";
+//	}
 	
 	@RequestMapping("/or/ad/la")
 	public String getOrderAdminList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @RequestParam(required = false, defaultValue = "1") int page

@@ -1,476 +1,499 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page import="kr.co.asac.orders.bean.OrderBean" %>
-<%@ page import="java.util.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 내역</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+<title>ASAC 비건마켓</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-		//이전 버튼 이벤트
-	function fn_prev(page, range, rangeSize, listSize, searchType, keyword) {	
-		var page = ((range - 2) * rangeSize) + 1;
-		var range = range - 1;
-		var searchType = '${searchAd.searchType}';
-		var keyword = '${searchAd.keyword}';
-		var url = "la";
-		url = url + "?page=" + page;
-		url = url + "&range=" + range;
-		url = url + "&searchType=" + searchType;
-		url = url + "&keyword=" + keyword;
-		url = url + "&listSize=" + $('#listSize').val();
-		location.href = url;
-		}
-
-	  //페이지 번호 클릭
-	function fn_pagination(page, range, rangeSize, listSize, searchType, keyword) {
-		  
-		var range;
-		if (page == 1 || page == 2 || page == 3 || page == 4 || page == 5) {
-			range = 1;
-		} else if (page == 6 || page == 7 || page == 8 || page == 9 || page == 10) { 
-			range = 2;
-		} else if (page == 11 || page == 12 || page == 13 || page == 14 || page == 15) {
-			range = 3;
-		} else if (page == 16 || page == 17 || page == 18 || page == 19 || page == 20) {
-			range = 4;
-		} else if (page == 21 || page == 22 || page == 23 || page == 24 || page == 25) {
-			range = 5;
-		}
-		var searchType = '${searchAd.searchType}';
-		var keyword = '${searchAd.keyword}';
-		var url = "la";
-		url = url + "?page=" + page;
-		url = url + "&range=" + range;
-		url = url + "&searchType=" + searchType;
-		url = url + "&keyword=" + keyword;
-		url = url + "&listSize=" + $('#listSize').val();
-		location.href = url;	
-	}
-
-
-		//다음 버튼 이벤트
-		//다음 페이지 범위의 가장 앞 페이지로 이동
-	function fn_next(page, range, rangeSize, listSize, searchType, keyword) {
-		var page = parseInt((range * rangeSize)) + 1;
-		var range = parseInt(range) + 1;
-		var searchType = '${searchAd.searchType}';
-		var keyword = '${searchAd.keyword}';
-		var url = "la";
-		url = url + "?page=" + page;
-		url = url + "&range=" + range;
-		url = url + "&searchType=" + searchType;
-		url = url + "&keyword=" + keyword;
-		url = url + "&listSize=" + $('#listSize').val();
-			location.href = url;
-		}		
-	/* $는 jQuery를 시작하는 명령어로
-	$(DOM요소) 와 같은 명령어로 각 요소에 접근 할 수 있다.
-	e.preventDefault(); 는 버튼 고유의 기능을 막는 명령어 */ 
-		
-		// 검색
-	$(document).on('click', '#btnSearch', function(e){
-		e.preventDefault();
-		var page = 1;
-		var range = 1;
-		var url = "la";
-		url = url + "?page=" + page;
-		url = url + "&range=" + range;
-		url = url + "&searchType=" + $('#searchType').val();
-		url = url + "&keyword=" + $('#keyword').val();
-		url = url + "&listSize=" + $('#listSize').val();
-		location.href = url;
-		console.log(url);
-
-	});	
-
-	/*한페이지당 게시물 */
-	function page(pcode){
-	  var startPage = pcode;
-	  var listSize = $("#listSize option:selected").val();		
-	  if(listSize == 10){
-		  var url="la?startPage="+startPage+"&listSize="+listSize
-	  }else if(listSize == 15){
-		  var url ="la?startPage="+startPage+"&listSize="+listSize
-	  }else if(listSize == 20){
-	      var url="la?startPage="+startPage+"&listSize="+listSize
-	 
-	  }
-	  location.href = url;
-	}
-</script>
 <style>
-body {
-	color: #566787;
-	background: #f5f5f5;
-	font-family: 'Varela Round', sans-serif;
-	font-size: 13px;
-}
 .table-responsive {
-    margin: 30px 0;
-}
-.table-wrapper {
-	background: #fff;
-	padding: 20px 25px;
-	border-radius: 3px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.05);
-}
-.table-wrapper .btn {
-	float: right;
-	color: #333;
-	background-color: #fff;
-	border-radius: 3px;
-	border: none;
-	outline: none !important;
-	margin-left: 10px;
-}
-.table-wrapper .btn:hover {
-	color: #333;
-	background: #f2f2f2;
-}
-.table-wrapper .btn.btn-primary {
-	color: #fff;
-	background: #03A9F4;
-}
-.table-wrapper .btn.btn-primary:hover {
-	background: #03a3e7;
+    overflow-x: hidden;
 }
 
-.show-entries select.form-control {        
-	width: 80px;
-	margin: 0 5px;
+#productUpdateButtonHidden {
+	display: none;
 }
 
-.table-title {	
-	padding: 16px 25px;
-	margin: -20px -25px 10px;
-}
-.table-title h2 {
-	margin: 5px 0 0;
-	font-size: 24px;
+#productInsertButtonHidden {
+	display: none;
 }
 
-.table-filter .filter-group {
-	float: right;
+#productSearchText {
+    float: right;
+    width: 78%;
 }
-.table-filter input, .table-filter select {
-	height: 34px;
-	border-radius: 3px;
-	border-color: #ddd;
-	box-shadow: none;
-}
-.table-filter {
-	padding: 5px 0 10px;
-}
-
-.table-filter .btn {
-	height: 34px;
-	font-size: 13px;
-	border: none;
-}
-
-.table-filter .btn i {
-	float: left;
-	font-size: 21px;
-	margin-right: 5px;
-}
-.table-filter .btn span {
-	float: left;
-	margin-top: 2px;
-}
-.table-filter label {
-	font-weight: normal;
-}
-.table-filter select, .table-filter input {
-	display: inline-block;
-	margin-left: 5px;
-}
-.table-filter input {
-	width: 150px;
-	display: inline-block;
-}
-.filter-group select.form-control {
-	width: 110px;
-}
-.filter-icon {
-	float: right;
-	margin-top: 7px;
-}
-.filter-icon i {
-	font-size: 18px;
-	opacity: 0.7;
-}	
-table.table tr th, table.table tr td {
-	border-color: #e9e9e9;
-	padding: 12px 15px;
-	vertical-align: middle;
-}
-table.table tr th:first-child {
-	width: 60px;
-}
-table.table tr th:last-child {
-	width: 80px;
-}
-table.table-striped tbody tr:nth-of-type(odd) {
-	background-color: #fcfcfc;
-}
-table.table-striped.table-hover tbody tr:hover {
-	background: #f5f5f5;
-}
-table.table th i {
-	font-size: 13px;
-	margin: 0 5px;
-	cursor: pointer;
-}	
-table.table td a {
-	font-weight: bold;
-	color: #566787;
-	display: inline-block;
-	text-decoration: none;
-}
-table.table td a:hover {
-	color: #2196F3;
-}
-table.table td a.view {        
-	width: 30px;
-	height: 30px;
-	color: #2196F3;
-	border: 2px solid;
-	border-radius: 30px;
+ 
+#leftPanel {
 	text-align: center;
+	height: 600px;
 }
-table.table td a.view i {
-	font-size: 22px;
-	margin: 2px 0 0 1px;
-}   
-table.table .avatar {
-	border-radius: 50%;
-	vertical-align: middle;
-	margin-right: 10px;
+	
+#leftPanel .table-responsive {
+	height: 500px;
 }
-.status {
-	font-size: 30px;
-	margin: 2px 2px 0 0;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 10px;
+
+#sellerInfoBtn td {
+	line-height: 20px;
 }
-.text-success {
-	color: #10c469;
-}
-.text-info {
-	color: #62c9e8;
-}
-.text-warning {
-	color: #FFC107;
-}
-.text-danger {
-	color: #ff5b5b;
-}
-.pagination {
-    float: center;
-    margin: 0 0 5px;
-}
-.pagination li a {
-    border: none !important;
-    font-size: 13px;
-    min-width: 30px;
-    min-height: 30px;
-    padding: 0 10px;
-    color: #999;
-    margin: 0 2px;
-    line-height: 30px;
-    border-radius: 30px !important;
+
+th {
     text-align: center;
 }
-.pagination li a:hover {
-    color: #666;
-}	
-.pagination li.active a {
-    background: #03A9F4;
-}
-.pagination li.active a:hover {        
-    background: #0397d6;
-}
-.pagination li.disabled i {
-    color: #ccc;
-}
-.pagination li i {
-    font-size: 16px;
-    padding-top: 6px
-}
-.hint-text {
-	float: left;
-	margin-top: 10px;
-	font-size: 13px;
-}
-#topBtn { position: fixed; top: 300px; right: 20px; z-index: 99; display: inline-block; width: 75px; height: 30px;
-	border-radius: 15px; line-height: 30px; text-align: center; text-decoration: none; background: blue;	opacity: 0.7; color: #fff;}
-#listForm {flex: 1;  width:80%; margin:auto; text-align: center;}
-.mainTitle { font-family: ‘SUIT’; text-align: center; font-weight:900;}
-#btnUpd {font-family: ‘SUIT’; background-color:skyblue; color: #FFFFFF; font-weight: bold;}
-#btnInf {font-family: ‘SUIT’; background-color:skyblue; color: #FFFFFF; font-weight: bold;}
-#btnDel {font-family: ‘SUIT’; background-color:skyblue; color: #FFFFFF; font-weight: bold;}
-#tdHead {font-size: 20px; font-weight: bold;}
 </style>
-<script type="text/javascript">
+</head>
 
-$(function() {
+<body>
 
-	var url = window.location.href;
-	$('.page-item').find('a').each(function() {
-		if (url == (this.href)) {
-			$(this).toggleClass('active');
-		}
-	});
-});
+<script>
+<!-- 상세정보 조회 AJAX -->
+function productInfoAction(clickedProduct) {
+	var pcode = clickedProduct.getAttribute("data-pcode");
+	
+    $.ajax({
+        type: 'POST',
+        url: './if',
+        data: {pcode:pcode},
+        success: function(product) {
+            $(product).each(function(index, item) {
+                $('#pcode').prop('value',product.pcode);
+                $('#pname').prop('value',product.pname);
+                $('#pprice').prop('value',product.pprice);
+                $('#pcate').prop('value',product.pcate);
+                $('#ptag').prop('value',product.ptag);
+                $('#pfile').prop('value',product.pfile);
+                $('#pcontent').prop('value',product.pcontent);
+                $('#pregdate').prop('value',product.pregdate);
+                $('#sid').prop('value',product.sid);
+                $('#productUpdateButton').prop('onclick',"productUpdateOk()");
+                $('#productDeleteButton').prop('onclick',"productDeleteOk()");
+            });
+					
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
 
-$(function() {
-	$('#topBtn').hide();
-	$(window).scroll(function() {
-		if ($(this).scrollTop() > 200) {
-			$('#topBtn').fadeIn();
-		} else {
-			$('#topBtn').fadeOut();
-		}
-	});
-	$("#topBtn").click(function() {
-		$('html, body').animate({
-			scrollTop : 0
-		}, 300);
-		return false;
-	});
-});
+function productSearchAction() {	
+	var productSearchCategory = $('#productSearchCategory option:selected').val();
+    var productSearchText = document.getElementById('productSearchText').value;
+	var productListText = "";
+    
+    $.ajax({
+        type: 'POST',
+        url: './se/' + productSearchCategory,
+   		data: {productSearchCategory:productSearchCategory,
+    		productSearchText:productSearchText},
+        success: function(productList) {
+        	 $.each(productList , function(i){
+                  productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + productList[i].pcode + 
+                  					'"><td>' + productList[i].pcode + 
+                  					'</td><td>' + productList[i].pname + 
+                  					'</td><td>' + productList[i].pcate + 
+                  					'</td><td>' + productList[i].ptag + 
+                  					'</td><td>' + productList[i].pregdate + 
+                  					'</td><td>' + productList[i].sid + 
+                  					'</td></tr>';
+             });
+        	document.getElementById("productListBody").innerHTML = productListText;
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
 
-$(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip();
-});
+function productInsertForm() {
+	var productInsertFormButtonZoneText = '';
+	var productInsertFormIdZoneText = '';
+	var today = new Date();
+    $.ajax({
+        success: function() {
+        	
+        	$('#productInfoDetail').prop('action',"productInsertAction()");
+        	$('#pcode').prop('value',"");
+            $('#pcode').prop('readonly',false);
+            $('#pname').prop('value',"");
+            $('#pname').prop('readonly',false);
+            $('#pprice').prop('value',"");
+            $('#pprice').prop('readonly',false);
+            $('#pcate').prop('value',"");
+            $('#pcate').prop('readonly',false);
+            $('#ptag').prop('value',"");
+            $('#ptag').prop('readonly',false);
+            $('#pfile').prop('value',"");
+            $('#pfile').prop('readonly',false);
+            $('#pcontent').prop('value',"");
+            $('#pcontent').prop('readonly',false);
+            $('#pregdate').prop('value', today.toLocaleDateString());
+            $('#sid').prop('value',"");
+            $('#sid').prop('readonly',false);
+        	
+        	productInsertFormButtonZoneText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="productInsertButton" value="추가하기" onclick="productInsertOk()" title="추가하기 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="productInsertBackButton" value="뒤로가기" onclick="productInsertCancel()" title="뒤로가기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>';
+			productInsertFormIdZoneText = '<div class="row">' + 
+			'<div class="col-md-9 mb-3">' +
+			'<label for="pcode">상품코드  <span class="text-danger">*</span></label>' +
+			'<input type="text"' +
+			'class="form-control" name="pcode" id="pcode"' + 
+			'placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$"' + 
+			'minlength="4" maxlength="20" required>' +
+			'</div>' +
+			'</div>';			
+				
+			document.getElementById("productButtonZone").innerHTML = productInsertFormButtonZoneText;
+			document.getElementById("productIdZone").innerHTML = productInsertFormIdZoneText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
+
+function productInsertCancel() {
+	var productInsertCancelText = '';
+	var productInsertFormIdZoneText = '';
+    $.ajax({
+        success: function() {
+        	
+        	$('#productInfoDetail').prop('action',"./up");
+        	$('#pcode').prop('value',"");
+            $('#pcode').prop('readonly',false);
+            $('#pname').prop('value',"");
+            $('#pname').prop('readonly',false);
+            $('#pprice').prop('value',"");
+            $('#pprice').prop('readonly',false);
+            $('#pcate').prop('value',"");
+            $('#pcate').prop('readonly',false);
+            $('#ptag').prop('value',"");
+            $('#ptag').prop('readonly',false);
+            $('#pfile').prop('value',"");
+            $('#pfile').prop('readonly',true);
+            $('#pcontent').prop('value',"");
+            $('#pcontent').prop('readonly',false);
+            $('#pregdate').prop('value',"");
+            $('#pregdate').prop('readonly',false);
+            $('#sid').prop('value',"");
+            $('#sid').prop('readonly',false);
+        	 
+        	productInsertCancelText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="productUpdateButton" value="수정하기" title="수정하기 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="productDeleteButton" value="삭제" title="삭제하기 버튼">' +
+			'</div>' +		
+			'<hr class="mb-4">' +
+			'<br>' +
+			'<div class="col-md-12 mb-3">' +
+			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'id="productInsertButton" value="상품추가"' + 
+			'onclick="productInsertForm()" title="상품추가 버튼">';
+			productInsertFormIdZoneText = '<label for="pcode">상품코드 <span class="text-danger">*</span></label>' +
+			'<input type="text"' +
+			'class="form-control" name="pcode" id="pcode" value="${product.pcode}"' +
+			'placeholder="상품 코드" pattern="^[A-Z0-9_]{3,20}$"' + 
+			'minlength="4" maxlength="20" required readonly>' +
+			'</div>';
+			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
+			 document.getElementById("productIdZone").innerHTML = productInsertFormIdZoneText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });    
+}
+
+function productInsertAction() {	
+	var pname = document.getElementById('pname').value;
+	var product = $("form[name=productInfoDetail]").serialize();
+	
+    $.ajax({
+        type: 'POST',
+        url: './in',
+   		data: product,
+        success: function() {
+			productSearchAction();
+        	alert("추가한 상품 = " + pname + "\n추가가 완료되었습니다.");
+        	productInsertCancel();
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function productUpdateAction() {	
+	var pname = document.getElementById('pname').value;
+	var product = $("form[name=productInfoDetail]").serialize();
+	
+    $.ajax({
+        type: 'POST',
+        url: './up',
+   		data: product,
+        success: function() {
+			productSearchAction();
+        	alert("수정한 상품 = " + pname + "\n수정이 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function productDeleteAction() {	
+	var pcode = document.getElementById('pcode').value;
+    
+    $.ajax({
+        type: 'POST',
+        url: './de/pcode/' + pcode,
+   		data: {mid:mid},
+        success: function() {
+        	productSearchAction();
+        	alert("삭제한 ID = " + pcode + "\n삭제가 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
 
 </script>
-</head>
-<body>
-<div class="wrap">
-<header>
-<jsp:include page="/WEB-INF/views/common/adminHeader.jsp" flush="false"></jsp:include>
-</header>
-<section id="listForm">
-<div class="table-title">
-<h1 class="mainTitle">상품 목록</h1>
-</div>
-<div class="container-xl">
-    <div class="table-responsive menu">
-        <div class="table-wrapper">
-            <div class="table-filter">
-                <div class="row">
-                    <div class="col-lg-3 col-sm-12">
-                        <div class="show-entries">
-                            <span>상품 목록 갯수</span>
-                				<select class="form-control" name="searchType" id="listSize" onchange="page(1)">
-								<option value="10"
-									<c:if test="${productPagingAd.getListSize() == 10 }">selected="selected"</c:if>>10개</option>
-								<option value="15"
-									<c:if test="${productPagingAd.getListSize() == 15 }">selected="selected"</c:if>>15개</option>
-								<option value="20"
-									<c:if test="${productPagingAd.getListSize() == 20 }">selected="selected"</c:if>>20개</option>
-								</select>
-                        </div>
-                    </div>
-                	<div class="col-lg-4 col-sm-12">
-                	    <a href="ls" class="btn btn-primary"><i class="material-icons">list</i> <span>나의 목록</span></a>
-                		<a href="la" class="btn btn-primary"><i class="material-icons">list</i> <span>전체 목록</span></a>
-	                </div>
-                    <div class="col-lg-5 col-sm-12">
-                        <button type="button" id="btnSearch" class="btn btn-primary"><i class="fa fa-search"></i><span>검색</span></button>
-                        <div class="filter-group">
-                            <input type="text" class="form-control" placeholder="내용을 입력하세요." name="keyword" id="keyword">
-                        </div>
-                        <div class="filter-group">
-                            <select class="form-control" name="searchType" id="searchType">
-								<option value="pname">상품명</option>
-								<option value="ptag">태그명</option>
-								<option value="pcontent">상품내용</option>
-								<option value="sid">판매자 아이디</option>
-							</select>
-                        </div>
-                	</div>
-                </div>
-            </div>
-	<div class="table-responsive">
-		<table class="table table-striped table-hover">
-			<thead>
-				<tr class="line" id="tdHead">
-					<td>상품 코드</td>
-					<td>상품명</td>
-					<td>상품 가격</td>
-					<td>카테고리</td>
-					<td>태그명</td>
-					<td>상품 내용</td>
-					<td>등록일</td>
-					<td>판매자 아이디</td>
-					<td class="table-filter"><a href="./in" class="btn btn-primary"><i class="material-icons">add</i> <span>상품 추가</span></a></td>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="product" items="${productAdminList}">
-					<tr class="line" data-pcode="${product.pcode}">
-						<td>${product.pcode}</td>
-						<td>${product.pname}</td>
-						<td><fmt:formatNumber value="${product.pprice}" pattern="#,###,###"/>원</td>
-						<td>${product.pcate}</td>
-						<td>${product.ptag}</td>
-						<td>${product.pcontent}</td>
-						<td>${product.pregdate}</td>
-						<td>${product.sid}</td>
-						<td>
-							<button type="button" id="btnInf" class="btn" onclick="location.href='if?pcode=${product.pcode}'">상세</button>
-							<button type="button" id="btnUpd" class="btn" onclick="location.href='./up?pcode=${product.pcode}'">수정</button>
-							<button type="button" id="btnDel" class="btn" onclick="location.href='de?pcode=${product.pcode}'">삭제</button>
-						</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+
+<br>
+	<div id="wrapper">
+
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-7">
+					<!--좌우분할 5:7-->
+					<!--전체 상품 관리//-->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="input-group">
+										<select id="productSearchCategory" name="productSearchCategory" class="btn btn-default btn-md">
+											<option value="pcode">상품코드</option>
+											<option value="pname">상품명</option>
+											<option value="pcate">카테고리</option>
+											<option value="ptag">태그명</option>
+											<option value="pregdate">등록일</option>
+											<option value="sid">판매자아이디</option>
+										</select>
+										<input class="form-control input-sm" id="productSearchText" type="text"
+											placeholder="검색어를 입력해주세요."> <span class="input-group-btn">
+											<input type="button" class="btn btn-primary btn-sm" id="productSearchButton" value="검색" onclick="productSearchAction()">
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body" id="leftPanel">
+							<div class="table-responsive">
+								<table id="productListTable" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>상품코드</th>
+											<th>상품명</th>
+											<th>가격</th>
+											<th>카테고리</th>
+											<th>태그명</th>
+											<th>등록일</th>
+											<th>판매자아이디</th>
+										</tr>
+									</thead>
+									<tbody id="productListBody">
+									<c:forEach items="${productList}" var="product">
+										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
+											<td>${product.pcode}</td>
+											<td>${product.pname}</td>
+											<td>${product.pprice}</td>
+											<td>${product.pcate}</td>
+											<td>${product.ptag}</td>
+											<td>${product.pregdate}</td>
+											<td>${product.sid}</td>
+										</tr>
+									</c:forEach>
+									</tbody>
+								</table>
+							</div>
+							<ul class="pagination justify-content-center">
+								<li class="page-item"><a class="page-link" href="#">이전</a></li>
+								<li class="page-item active"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item"><a class="page-link" href="#">다음</a></li>
+							</ul>
+						</div>
+					</div>
+					<!--//전체 상품 관리 -->
+				</div>
+				
+				<div class="col-lg-5">
+					<!--좌우분할 5:7-->
+					<!--상세정보패널//-->
+					<div class="panel panel-default">
+						<div class="panel-heading">상품 상세 정보</div>
+						<div class="panel-body">
+							<div class="table-responsive">
+		<div class="input-form-backgroud row">
+			<div class="input-form col-md-12 mx-auto">
+				<form class="productInfoDetail" id= "productInfoDetail" name="productInfoDetail" method="post">
+					<div class="mb3" id="productIdZone">
+					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
+						<input type="text"
+							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
+							placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$" 
+							maxlength="20" required readonly>					
+					</div>
+					<div class="mb-3">
+						<label for="pname">상품명 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pname" id="pname" value="${product.pname}"
+							placeholder="상품명" pattern="^[가-힣]+$" 
+							maxlength="35" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="pprice">가격 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pprice" id="pprice" value="${product.pprice}"
+							placeholder="가격" pattern="^[0-9]+$" 
+							maxlength="6" required readonly>
+					</div>	
+					<div class="mb-3">
+						<label for="pcate">카테고리 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pcate" id="pcate" value="${product.pcate}"
+							placeholder="카테고리" pattern="^[가-힣]+$" 
+							maxlength="20" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="ptag">태그명 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="ptag" id="ptag" value="${product.ptag}"
+							placeholder="태그명" pattern="^[가-힣]+$" 
+							maxlength="13" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pfile" id="pfile" value="${product.pfile}"
+							placeholder="상품사진" 
+							maxlength="11" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="pcontent">상품설명 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pcontent" id="pcontent" value="${product.pcontent}"
+							placeholder="상품설명" 
+							maxlength="60" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="pregdate">등록일 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="pregdate" id="pregdate" value="${product.pregdate}"
+							placeholder="등록일" 
+							maxlength="20" required readonly>
+					</div>
+					<div class="mb-3">
+						<label for="pcontent">판매자아이디 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control"  name="sid" id="sid" value="${product.sid}"
+							placeholder="판매자아이디" 
+							maxlength="20" required readonly>
+					</div>
+					
+				
+					<div class="mb-4"></div>
+					<hr class="mb-4">
+					<div class="mb-4"></div>
+					<div class="row" id="productButtonZone">
+						<div class="col-md-6 mb-3">
+						<input type="button" class="btn btn-default btn-lg btn-block" 
+						id="productUpdateButton" value="수정하기" title="수정하기 버튼">
+						</div>
+						<div class="col-md-6 mb-3">
+						<input type="button" class="btn btn-default btn-lg btn-block" 
+						id="productDeleteButton" value="삭제" title="삭제하기 버튼">
+						</div>		
+						<hr class="mb-4">
+						<br>
+						<div class="col-md-12 mb-3">
+						<input type="button" class="btn btn-default btn-lg btn-block" 
+						id="productInsertButton" value="상품추가" 
+						onclick="productInsertForm()" title="상품추가 버튼">			
+						</div>						
+					</div>	
+				</form>
+			</div>
+		</div>
+							</div>	
+						</div>
+					</div>
+					<!--//상세정보패널-->
+				</div>
+			</div>
+		</div>
 	</div>
-    <div class="clearfix">
-		<ul class="pagination">
-			<c:if test="${productPagingAd.prev}">
-				<li class="page-item"><a class="page-link" href="#"
-					onClick="fn_prev('${productPagingAd.page}', '${productPagingAd.range}', '${productPagingAd.rangeSize}', '${productPagingAd.listSize}', 
-					'${searchAd.searchType}', '${searchAd.keyword}')">이전</a>
-				</li>
-			</c:if>
-			<c:forEach begin="${productPagingAd.startPage}" end="${productPagingAd.endPage}" var="pcode">
-				<li
-					class="page-item <c:out value="${productPagingAd.page == pcode ? 'active' : ''}"/> ">
-					<a class="page-link" href="#" onClick="fn_pagination('${pcode}', '${productPagingAd.page}', '${productPagingAd.range}', '${productPagingAd.rangeSize}', '${productPagingAd.listSize}'
-					 ,'${searchAd.searchType}', '${searchAd.keyword}')">${pcode} </a>
-				</li>
-			</c:forEach>
-			<c:if test="${productPagingAd.next}">
-				<li class="page-item"><a class="page-link" href="#"
-					onClick="fn_next('${productPagingAd.range}', '${productPagingAd.range}', '${productPagingAd.rangeSize}', '${productPagingAd.listSize}', 
-					'${searchAd.searchType}', '${searchAd.keyword}')">다음</a>
-				</li>
-			</c:if>
-		</ul>
-	</div>
-	<div>
-		<a href="#" id="topBtn">맨 위로</a>
-	</div></div></div></div>
-</section>
-<footer>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-</footer>
-</div>     
+	
+	<script>
+
+	function productUpdateOk() {
+		if(!confirm('정말로 수정하시겠습니까?')){
+			return false;
+		} else {
+			productUpdateAction();
+		}
+	}
+	
+	function productDeleteOk(){
+		
+		var pname = document.getElementById('pname').value;
+		
+		if(!confirm('삭제할 상품 = ' + pname + '\n정말로 삭제하시겠습니까?')){
+			return false;
+		} else {
+			productDeleteAction();
+		}
+	}
+	
+	function productInsertOk() {
+		if(!confirm('상품을 추가하시겠습니까?')){
+			return false;
+		} else {
+			productInsertAction();
+		}
+	}
+    
+	</script>
+
+		
 </body>
 </html>

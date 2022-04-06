@@ -42,6 +42,16 @@
 		select count(*) from member
 		where mid=#{mid} and mpwd=#{mpwd}
 	</select>
+	
+	<insert id="memberClientNaver" parameterType="kr.co.asac.member.bean.MemberBean">
+		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
+		value (#{mid}, #{mpwd}, #{mname}, #{mbirth}, replace(#{mphone}, '-', ''), #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+	</insert>
+	
+	<insert id="memberClientKakao" parameterType="kr.co.asac.member.bean.MemberBean">
+		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
+		value (#{mid}, #{mpwd}, #{mname}, #{mbirth}, replace(#{mphone}, '-', ''), #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+	</insert>
 
 
 	<!-- seller -->
@@ -70,6 +80,22 @@
 	<delete id="memberSellerDelete" parameterType="kr.co.asac.member.bean.SellerBean">
 		delete from seller where sid=#{sid} and spwd=#{spwd}
 	</delete>
+	
+	<select id="sellerProductcount" resultType="int">
+		 select count(*) from product where sid=#{sid}
+	</select>
+	
+	<select id="sellerOrderscount" resultType="int">
+		select count(*) from orders o join seller s on o.sid = s.sid where s.sid=#{sid}
+	</select>
+	
+	<select id="sellerReviewcount" resultType="int">
+		select count(*) from review r join seller s on r.sid = s.sid where s.sid=#{sid}
+	</select>
+	
+	<select id="sellerProduct" resultType="kr.co.asac.member.bean.SellerBean">
+		select pcate,count(*) as total from product where pcate=#{pcate} and sid=#{sid}
+	</select>
 	
 	<!-- admin -->	
 	<select id="memberAdminClientCount" resultType="int">
@@ -140,5 +166,35 @@
 	<update id="memberAdminSellerSokCheck">
 		update seller set sok=#{sok} where sid=#{sid}
 	</update>	
+	
+	<!-- chart -->
+	<select id="memberCountMonth" resultType="kr.co.asac.member.bean.MemberBean">
+		select concat(month(mregdate),'월') as month
+			, count(mid) as count
+			from member
+			group by month(mregdate);
+	</select>
+	
+	<select id="productCountMonth" resultType="kr.co.asac.member.bean.MemberBean">
+		select concat(month(pregdate),'월') as month
+			, count(pcode) as count
+			from product
+			group by month(pregdate);
+	</select>
+	
+	<select id="ordersCountMonth" resultType="kr.co.asac.member.bean.MemberBean">
+		select concat(month(oregdate),'월') as month
+			, count(pcode) as count
+			from orders
+			group by month(oregdate);
+	</select>
+	
+	<select id="ordersSumMonth" resultType="kr.co.asac.member.bean.MemberBean">
+		select concat(month(oregdate),'월') as month
+		, sum(pprice) as count 
+		from orders 
+		join product on orders.pcode = product.pcode 
+		group by month(oregdate);
+	</select>
 	
 </mapper>

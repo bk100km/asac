@@ -8,9 +8,24 @@
 <mapper namespace="kr.co.asac.orders.dao.OrderDAO">
 
 	<!-- OrderClient -->
+	<!-- 주문 insert -->
+	<insert id="orderClientInsert" parameterType="kr.co.asac.orders.bean.OrderBean">
+		insert into orders (ocode, sid, mid, pcode, ocount, oname, oaddrz, oaddr, oaddrd, ophone, ototal, omessage)
+		values (#{ocode}, #{sid}, #{mid}, #{pcode}, #{ocount}, #{oname}, #{oaddrz}, #{oaddr}, #{oaddrd}, #{ophone}, #{ototal}, #{omessage})
+	</insert>	
+	
 	<!-- 내 주문목록 불러오기 -->
 	<select id="orderClientList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join product p on p.pcode = o.pcode where m.mid = #{mid}
+	</select>
+
+	<!-- 주문번호 불러오기 -->
+	<select id="orderClientOcodeList" resultType="kr.co.asac.orders.bean.OrderBean">
+		select ocode, OREGDATE, p.pname as pname ,count(p.pname) as count, p.pfile as pfile,sum(ototal) as total
+		from orders o join member m on o.mid = m.mid join product p on p.pcode = o.pcode
+		where m.mid = #{mid}
+		group by o.ocode
+		order by oregdate desc
 	</select>
 	
 	<!-- 내 주문상세 불러오기 -->
@@ -37,51 +52,31 @@
 	<!-- OrderSeller -->
 	<select id="orderSellerList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			s.sid = #{id}
-			<if test="searchSe.searchType==null">
-			</if>
-			<if test="searchSe.searchType=='pname' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND p.pname like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-			<if test="searchSe.searchType=='oname' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND oname like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-			<if test="searchSe.searchType=='mid' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND o.mid like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-		</trim>
-		order by ocode desc
-		limit #{searchSe.startList}, #{searchSe.listSize}
+		where s.sid = #{id}
+		order by oregdate
+		limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
-	<!-- 전체 글의 개수를 읽어 오는 SQL문 -->
-	<select id="orderSellerCount" resultType="int">
+	<select id="orderSellerListCount" resultType="int">
 		select count(*) as listCnt from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			s.sid = #{id}
-			<if test="searchSe.keyword != null and searchSe.keyword != '' ">
-				<if test="searchSe.searchType=='pname'">
-					AND p.pname like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-				<if test="searchSe.searchType=='oname'">
-					AND oname like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-				<if test="searchSe.searchType=='mid'">
-					AND m.mid like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-			</if>
-		</trim>
+		where ${searchCategory} like CONCAT('%', #{searchText}, '%') and s.sid = #{id} 
+	</select>
+	
+	<select id="orderSellerListSearch" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where ${searchCategory} like CONCAT('%', #{searchText}, '%') and s.sid = #{id}
+		order by oregdate
+		limit #{paging.startList}, #{paging.listSize}
 	</select>
 
 	<select id="orderSellerInfo" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where ocode = #{ocode}
+		where ocode = #{ocode} and pname = #{pname}
 	</select>
 	
 	<update id="orderSellerUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
 		update orders
-		set oname = #{oname}, ophone = #{ophone}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, oregdate = now() where ocode = #{ocode}
+		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
 	</update>
 
 	<delete id="orderSellerDelete" >

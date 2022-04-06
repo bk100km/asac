@@ -7,8 +7,6 @@
     <head>
     
     
-   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
      <style>
  ul {
     display: block;
@@ -20,10 +18,10 @@
     padding-inline-start: 40px;
 }
 .rf-pinwheel-tiles .rf-pinwheel-item {
-    background-color: #f2f2f2;
-    border: 5px solid #fff;
+   
+
     list-style-type: none;
-    border-radius: 20px;
+
     overflow: hidden;
 }
 .large-4 {
@@ -49,18 +47,14 @@ li {
 
 
 
-.as-pinwheel15-section .as-pinwheel-tile {
-    padding: 40px 40px 34px;
-    border: 5px solid #fff;
-    max-width: 100%;
-    background-color: #f5f5f7;
-    text-align: center;
-    box-sizing: border-box;
+.as-pinwheel15-section  {
+  
+
+    margin-top: 30px;
+    text-align:center;
+  
 }
-.as-pinwheel-tile {
-    line-height: 17px;
-    position: relative;
-}
+
 .btn {
     display: inline-block;
     min-width: 112px;
@@ -76,8 +70,56 @@ li {
     color: #fff;
     font-weight: 500;
 }
+h3 {
+	text-align : center;
 
-     
+
+}
+.productlist{
+  	margin-top:30px;
+  	margin-bottom:30px;
+
+
+}   
+
+.card-img-top{
+
+    width: 330px; 
+    height: 400px;  
+    max-width: 100%; 
+    height:auto;
+    margin-left:12px;
+
+}
+.group_btn {
+          
+            opacity: 0.3;
+            
+          
+
+}
+
+.btn_cart{
+    
+		color: black;
+ 		width:40px;
+        height:40px;
+        font-size: 2rem;
+         position:relative;
+  
+        left:46.7%;
+        bottom:20px;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        cursor: pointer;
+       
+        
+  
+
+
+
+}
+
      </style>
     </head>
     <body>
@@ -85,24 +127,23 @@ li {
   
         <!-- Section-->	
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center ">
-                
-					
-					
-	                    <div class="col mb-5 productlist">
+            <div class="container">
+      
+                        	<h3> ${param.pcate}</h3>
+	                     <div class="col mb-5 productlist">
 	                        <div class="card">
 	                        <ul class="rf-pinwheel-tiles">
-	                        
+	                             
        
 	                        <c:forEach var="product" items="${proClientListlist}">
 	                            <!-- Product image-->
 	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
-	                           <div class="as-pinwheel15-section as-pinwheel15-smalltile as-pinwheel15-smalltileleft as-pinwheel15-tile3 as-util-relatedlink relatedlink">
+	                           <div class="as-pinwheel15-section">
 	                <div class= as-pinwheel-tile>
 	                            <a href="../cl/dt?pcode=${product.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}">
-	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" width="266" height="291" />
+	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
+	                            <div class="group_btn"><button type="button" class="btn_cart"><span class="glyphicon glyphicon-shopping-cart"></span></button> <!----> <!----></div>
 	                            <!-- Product details-->
 	                            <div class="card-body p-4">
 	                                <div class="text-center">
@@ -122,11 +163,11 @@ li {
 	                    </div>
                    
                 </div>
-            </div>
+        
             	<form name="search" action="/asac/pr/cl/li">
 						<div  align="center">&nbsp;&nbsp; 
 						<select name="items" class="txt">
-								<option value="pcode" <c:if test="${param.items eq 'pcode'}"> selected="selected"</c:if>>상품코드</option>
+								<option value="sid" <c:if test="${param.items eq 'sid'}"> selected="selected"</c:if>>판매자</option>
 								<option value="pname"<c:if test="${param.items eq 'pname'}"> selected="selected"</c:if>>상품이름</option>
 						</select>
 						<input name="text" type="text" class="selecttext" <c:if test="${param.text ne null}">value="${param.text}"</c:if>/> 

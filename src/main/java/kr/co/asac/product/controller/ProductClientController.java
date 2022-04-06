@@ -27,10 +27,14 @@ public class ProductClientController {
 	public String proList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 	
 		
-		
+		String ptag = request.getParameter("ptag");
 		productClientService.productClientList(request, response, model);
-	
+		if (ptag == null || ptag == "") {
 		return "/product/productClientList";
+	}else {
+		return "/product/productTagList";
+	}
+	
 	}
 	
 	
@@ -39,6 +43,10 @@ public class ProductClientController {
 		
 		
 		productClientService.productClientListDetail(request, response, model, pcode);
+		
+		String ptag = request.getParameter("ptag");
+		System.out.println("ptag:"+ptag);
+		
 		
 	
 		return "/product/productClientDetail";

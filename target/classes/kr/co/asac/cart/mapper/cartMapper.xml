@@ -11,6 +11,10 @@
 		select * from cart c join member m on c.mid = m.mid join product p on p.pcode = c.pcode where m.mid = #{mid}
 	</select>
 	
+	<select id="cartClientPcode" resultType="kr.co.asac.orders.bean.OrderBean">
+		select pcode from cart where mid = #{mid}
+	</select>
+	
 	<!-- 장바구니에 상품 insert -->
 	<insert id="cartInsert" parameterType="kr.co.asac.cart.bean.CartBean">
 		insert into cart(mid, pcode, pcount)
@@ -29,7 +33,7 @@
 	</delete>
 	
 	<!-- 장바구니 비우기 -->
-	<delete id="cartDeleteSelect">
+	<delete id="delete">
 		delete from cart where ccode=#{ccode}
 	</delete>
 	
