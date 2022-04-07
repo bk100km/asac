@@ -216,9 +216,8 @@ sfileUploadButtonLabel {
 </style>
 </head>
 <body>
-
-	<jsp:include page="../common/sellerHeader.jsp" />
 	
+	<br><br><br><br><br>
 	<div class="container">
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
@@ -329,7 +328,7 @@ sfileUploadButtonLabel {
 			</div>
 		</div>
 	</div>
-	<br><br>
+	<br><br><br><br><br>
 	<jsp:include page="../common/footer.jsp" />
 
 </body>

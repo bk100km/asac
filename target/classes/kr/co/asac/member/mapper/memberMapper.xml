@@ -94,7 +94,11 @@
 	</select>
 	
 	<select id="sellerProduct" resultType="kr.co.asac.member.bean.SellerBean">
-		select pcate,count(*) as total from product where pcate=#{pcate} and sid=#{sid}
+		select pcode,count(*) as total from orders where sid=#{sid} group by pcode;
+	</select>
+	
+	<select id="sellermoney" resultType="kr.co.asac.member.bean.SellerBean">	
+		select sum(pprice) as price from product p join seller s on p.sid = s.sid where s.sid=#{sid};
 	</select>
 	
 	<!-- admin -->	

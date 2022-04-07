@@ -50,6 +50,8 @@
 	</select>
 	
 	<!-- OrderSeller -->
+	
+	<!-- 판매자 상품 주문 내역 -->
 	<select id="orderSellerList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where s.sid = #{id}
@@ -57,11 +59,13 @@
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
+	<!-- 판매자 상품 주문 개수 -->
 	<select id="orderSellerListCount" resultType="int">
 		select count(*) as listCnt from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where ${searchCategory} like CONCAT('%', #{searchText}, '%') and s.sid = #{id} 
 	</select>
 	
+	<!-- 판매자 상품 주문 검색 -->
 	<select id="orderSellerListSearch" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where ${searchCategory} like CONCAT('%', #{searchText}, '%') and s.sid = #{id}
@@ -69,66 +73,58 @@
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 
+	<!-- 판매자 상품 주문 상세정보 -->
 	<select id="orderSellerInfo" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where ocode = #{ocode} and pname = #{pname}
 	</select>
 	
+	<!-- 판매자 상품 주문 배송정보수정 -->
 	<update id="orderSellerUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
 		update orders
 		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
 	</update>
 
+	<!-- 판매자 상품 주문 취소 -->
 	<delete id="orderSellerDelete" >
 		delete from orders where ocode = #{ocode}
 	</delete>
 	
 	<!-- OrderAdmin -->
+	<!-- 주문 전체 내역 -->
 	<select id="orderAdminList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="searchAd.searchType=='pname' and searchAd.keyword != null and searchAd.keyword != '' ">
-				AND p.pname like CONCAT('%', #{searchAd.keyword}, '%')
-			</if>
-			<if test="searchAd.searchType=='oname' and searchAd.keyword != null and searchAd.keyword != '' ">
-				AND oname like CONCAT('%', #{searchAd.keyword}, '%')
-			</if>
-			<if test="searchAd.searchType=='mid' and searchAd.keyword != null and searchAd.keyword != '' ">
-				AND o.mid like CONCAT('%', #{searchAd.keyword}, '%')
-			</if>
-		</trim>
-		order by ocode desc
-		limit #{searchAd.startList}, #{searchAd.listSize}
+		order by oregdate
+		limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
-	<!-- 전체 글의 개수를 읽어 오는 SQL문 -->
-	<select id="orderAdminCount" resultType="int">
+	<!-- 주문 전체 개수 -->
+	<select id="orderAdminListCount" resultType="int">
 		select count(*) as listCnt from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="searchAd.keyword != null and searchAd.keyword != '' ">
-				<if test="searchAd.searchType=='pname'">
-					AND p.pname like CONCAT('%', #{searchAd.keyword}, '%')
-				</if>
-				<if test="searchAd.searchType=='oname'">
-					AND oname like CONCAT('%', #{searchAd.keyword}, '%')
-				</if>
-				<if test="searchAd.searchType=='mid'">
-					AND m.mid like CONCAT('%', #{searchAd.keyword}, '%')
-				</if>
-			</if>
-		</trim>
+		where ${searchCategory} like CONCAT('%', #{searchText}, '%')
 	</select>
 	
+	<!-- 주문 검색 -->
+	<select id="orderAdminListSearch" resultType="kr.co.asac.orders.bean.OrderBean">
+		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		where ${searchCategory} like CONCAT('%', #{searchText}, '%')
+		order by oregdate
+		limit #{paging.startList}, #{paging.listSize}
+	</select>
+
+	<!-- 주문 상세정보 -->
 	<select id="orderAdminInfo" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where ocode = #{ocode}
+		where ocode = #{ocode} and pname = #{pname}
 	</select>
 	
+	<!-- 주문 배송정보수정 -->
 	<update id="orderAdminUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
 		update orders
-		set oname = #{oname}, ophone = #{ophone}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, oregdate = now() where ocode = #{ocode}
+		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
 	</update>
-	
+
+	<!-- 주문 취소 -->
 	<delete id="orderAdminDelete" >
 		delete from orders where ocode = #{ocode}
 	</delete>

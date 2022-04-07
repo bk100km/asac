@@ -49,13 +49,11 @@ public class ProductSellerController {
 	public String productSellerInfo(Model model, @RequestParam String pcode, ProductBean product) {
 		ProductBean info = productSellerService.productSellerInfo(product, pcode);
 		model.addAttribute("productSellerInfo", info);
-		System.out.println("�߰������� info : " + info);
 		return "product/productSellerInfo";
 	}
 	
 	@RequestMapping(value = "pr/se/in", method = RequestMethod.GET)
 	public String ProductSellerInsert() {
-		System.out.println("�μ�Ʈ ������ ��");
 		return "product/productSellerInsertForm";		
 	}
 	
@@ -63,7 +61,6 @@ public class ProductSellerController {
 	public String ProductSellerInsert(ProductBean product) {
 		System.out.println(product);
 		productSellerService.productSellerInsert(product);
-		System.out.println("�μ�Ʈ ������ �޾ƿ�");
 		return "redirect:/pr/se/la";	
 	}
 
@@ -71,14 +68,12 @@ public class ProductSellerController {
 	public String ProductSellerUpdate(@RequestParam String pcode, ProductBean product, Model model) throws Exception{
 		ProductBean info = productSellerService.productSellerInfo(product, pcode);
 		model.addAttribute("productSellerUpdate", info);
-		System.out.println("Update��.22.");
 		return "product/productSellerUpdateForm";
 	}
 	
 	@RequestMapping(value ="/pr/se/up", method = RequestMethod.POST)
 	public String ProductSellerUpdate(ProductBean product) throws Exception {
 		productSellerService.productSellerUpdate(product);
-		System.out.println("Update��..");
 		return "redirect:/pr/se/la";
 	}
 	

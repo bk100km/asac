@@ -43,6 +43,10 @@ if (sid == null || !sid.equals("admin")) {
 .nav-link {
 	font-family: 'Pretendard';
 }
+
+.sidebar .sidebar-heading {
+    color: #436414 !important;
+}
 </style>
 </head>
 <body>
@@ -66,30 +70,40 @@ if (sid == null || !sid.equals("admin")) {
 			<!-- Heading -->
 			<div class="sidebar-heading">Store ManageMent</div>
 
-			<!-- Nav Item - Charts -->
-			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/or/ad/la"> <i
-					class="fas fa-solid fa-truck"></i> <span>주문관리</span></a></li>
+			<!-- Nav Item - Utilities Collapse Menu Order -->
+			<li class="nav-item"><a class="nav-link collapsed" href=""
+				data-toggle="collapse" data-target="#collapseOrders"
+				aria-expanded="true" aria-controls="collapseOrders"> <i
+					class="fas fa-solid fa-truck"></i> <span>주문관리</span>
+			</a>
+				<div id="collapseOrders" class="collapse"
+					aria-labelledby="headingOrders" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">주문 관리</h6>
+						<a class="collapse-item" href="http://localhost:8080/asac/or/ad/al">전체 주문 관리</a>
+						<a class="collapse-item"href="http://localhost:8080/asac/or/ad/sl">본인 주문 관리</a>
+					</div>
+				</div></li>
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/pr/ad/la"> <i
+				href="http://localhost:8080/asac/pr/ad/li"> <i
 					class="fas fa-regular fa-box"></i> <span>상품관리</span></a></li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
-			<li class="nav-item"><a class="nav-link collapsed" href="#"
-				data-toggle="collapse" data-target="#collapseUtilities"
-				aria-expanded="true" aria-controls="collapseUtilities"> <i
+			<li class="nav-item"><a class="nav-link collapsed" href=""
+				data-toggle="collapse" data-target="#collapseSales"
+				aria-expanded="true" aria-controls="collapseSales"> <i
 					class="fas fa-regular fa-calculator"></i> <span>매출관리</span>
 			</a>
-				<div id="collapseUtilities" class="collapse"
+				<div id="collapseSales" class="collapse"
 					aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">매출 통계</h6>
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/se/sp">상품별 매출</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/sa/se/sd">판매자별 매출</a>
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/se/sd">요일별 매출</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/sa/se/sd">월별 매출</a>
+						<a class="collapse-item" href="http://localhost:8080/asac/sa/ad/sp">상품별 매출</a>
+						<a class="collapse-item"href="http://localhost:8080/asac/sa/ad/sd">판매자별 매출</a>
+						<a class="collapse-item" href="http://localhost:8080/asac/sa/ad/sd">요일별 매출</a>
+						<a class="collapse-item"href="http://localhost:8080/asac/sa/ad/sd">월별 매출</a>
 					</div>
 				</div></li>
 

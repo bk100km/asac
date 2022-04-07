@@ -342,9 +342,17 @@ $(function() {
 </script>
 </head>
 <body>
-<header>
-<jsp:include page="/WEB-INF/views/common/sellerHeader.jsp" flush="false"></jsp:include>
-</header>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+	    <!-- Content Wrapper -->
+	    <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+        		<jsp:include page="../common/toolbarHeader.jsp" />
+            
 <section id="listForm">
 <div class="table-title">
 	<h1 class="mainTitle">매출 목록(요일)</h1></div>
@@ -415,8 +423,14 @@ $(function() {
     </div>        
 </div>
 </section>
-<footer>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-</footer> 
+
+	<br><br><br>
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+	</footer>
+	</div>
+	</div>
+</div>
+ 
 </body>
 </html>

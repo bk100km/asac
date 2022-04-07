@@ -1,6 +1,5 @@
 package kr.co.asac.orders.service;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,10 +9,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.dao.OrderDAO;
-import kr.co.asac.utils.Search;
+import kr.co.asac.utils.PagingBean;
 
 @Service
 public class OrderAdminService {
@@ -21,53 +21,40 @@ public class OrderAdminService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	public void orderAdminList(HttpServletRequest request, HttpServletResponse response, Model model, Search search) throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("AdminList Sid값 : " + id);
-		
-		model.addAttribute("fromURI", request.getServletPath());
-		request.setAttribute("fromURI", request.getServletPath());
-		
-		if (id == null) {
-			response.setContentType("text/html;charset=utf-8");
-		   	PrintWriter out = response.getWriter();
-		   	out.println("<script>");
-		   	out.println("alert('로그인 후 이용해주세요.')");
-		   	out.println("history.back()");
-		   	out.println("</script>");
-		   	out.flush();
-		}
-		else {
-			OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-			List<OrderBean> orderAdminList = dao.orderAdminList(search);
-			model.addAttribute("orderAdminList", orderAdminList);
-			System.out.println(orderAdminList);
-	    }
-	}
-
-	public int orderAdminCount(Search search) throws Exception {
+	public void orderAdminList(HttpServletRequest request, HttpServletResponse response, Model model, PagingBean paging) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		return dao.orderAdminCount(search);
+		List<OrderBean> orderAdminList = dao.orderAdminList(paging);
+		model.addAttribute("orderAdminList", orderAdminList);
+		System.out.println(orderAdminList);
 	}
 	
-	public OrderBean orderAdminInfo(OrderBean order, int ocode) {
+	
+	public int orderAdminListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		int listCnt = dao.orderAdminListCount(searchCategory, searchText);
+		return listCnt;
+	}
+	
+	public OrderBean orderAdminInfo(Model model, String ocode, String pname) {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
-		OrderBean info = dao.orderAdminInfo(ocode);
-		return info;
+		OrderBean order = dao.orderAdminInfo(ocode, pname);
+		return order;
 	}
 	
-	public void orderAdminUpdate(OrderBean order) {
-		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		try {
-			 dao.orderSellerUpdate(order);
-		} catch (Exception e) {
-			System.out.println("update : " + e);
-		}
+	public List<OrderBean> orderAdminListSearch(HttpServletRequest request, Model model, @RequestParam("searchCategory") String searchCategory, @RequestParam("searchText") String searchText, @RequestParam("paging") PagingBean paging) {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class); 
+		List<OrderBean> orderAdminListSearch = dao.orderAdminListSearch(searchCategory, searchText, paging);
+		model.addAttribute("orderAdminListSearch", orderAdminListSearch);
+		return orderAdminListSearch;
 	}
 	
-	public int orderAdminDelete(int ocode){
+	public void orderAdminUpdate(HttpServletRequest request, Model model, HttpServletResponse response, OrderBean order) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		int code = dao.orderAdminDelete(ocode);
-		return code;
+		dao.orderAdminUpdate(order);
+	}
+	
+	public void orderAdminDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		dao.orderAdminDelete(ocode);
 	}
 }

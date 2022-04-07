@@ -62,7 +62,7 @@ public class ProductSellerService {
 	
 	public void productSellerUpdate(ProductBean product) {
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		try {System.out.println("���񽺿��� ���� update" + product);
+		try {System.out.println("update" + product);
 			productDAO.productSellerUpdate(product);
 		} catch (Exception e) {
 			System.out.println("update : " + e);

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
+import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.product.bean.ProductBean;
 
 @Service
@@ -69,12 +70,18 @@ public class MemberSellerService {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		return memberDAO.sellerReviewcount(count);
 	}
-	public void sellerProduct(HttpServletRequest request,Model model) {
+	
+	public void sellerProduct(HttpServletRequest request,HttpServletResponse response, Model model) {
 		
-		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		List <ProductBean> sellerProduct= memberDAO.sellerProduct();
+		MemberDAO memberdao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<OrderBean> sellerProduct = memberdao.sellerProduct();
 		model.addAttribute("sellerProduct", sellerProduct);
 		
+	}
+	public void sellermoney(HttpServletRequest request,HttpServletResponse response, Model model,ProductBean pvo) {
+		MemberDAO memberdao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<ProductBean> sellermoney =memberdao.sellermoney();
+		model.addAttribute("sellermoney",sellermoney);
 	}
 	
 	public void memberSellerInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model, String sid) throws IOException {

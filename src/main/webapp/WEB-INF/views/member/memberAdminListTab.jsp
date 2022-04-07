@@ -66,9 +66,10 @@ body { margin: 0;}
 	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
 	
 	<div class="mypageDiv" id="mypageDiv">
 

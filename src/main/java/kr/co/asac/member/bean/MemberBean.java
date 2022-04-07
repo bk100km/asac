@@ -12,11 +12,26 @@ public class MemberBean {
 	private String mmail;
 	private String mregdate;
 	
+	private String month;
+	private int count;
+	
 	public String getMid() {
 		return mid;
 	}
 	public void setMid(String mid) {
 		this.mid = mid;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 	public String getMpwd() {
 		return mpwd;

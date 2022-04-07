@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
 import kr.co.asac.member.service.MemberSellerService;
+import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.product.bean.ProductBean;
 
 @Controller
@@ -36,15 +37,18 @@ public class MemberSellerController {
 	
 	// seller
 	@RequestMapping("/me/se/in")
-	public String memberSellerIndex(Model model ,HttpServletRequest request,SellerBean seller) {
+	public String memberSellerIndex(Model model ,HttpServletResponse response,HttpServletRequest request,SellerBean seller,ProductBean pvo) {
 		
-		memberSellerService.sellerProduct(request, model);
-		MemberDAO memberdao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<ProductBean> myAreaChart =memberdao.sellerProduct();
-		model.addAttribute("myAreaChart", myAreaChart);
+		memberSellerService.sellerProduct(request, response, model);
+		MemberDAO memberdao =sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		String listjson = new Gson().toJson(myAreaChart);
-		model.addAttribute("list", listjson);
+		List<OrderBean> myAreaChart = memberdao.sellerProduct();
+		model.addAttribute("myAreaChart",myAreaChart);
+		
+		String listjson =new Gson().toJson(myAreaChart);
+		model.addAttribute("list",listjson);
+		
+		memberSellerService.sellermoney(request, response, model, pvo);
 		
 		int pcount =0;
 		int ocount =0;

@@ -33,7 +33,8 @@ public interface MemberDAO {
 	public int sellerProductcount(int count);
 	public int sellerOrderscount(int count);
 	public int sellerReviewcount(int count);
-	public List<ProductBean> sellerProduct();
+	public List<OrderBean> sellerProduct();
+	public List<ProductBean> sellermoney();
 	
 	// admin	
 	public int memberAdminClientCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);

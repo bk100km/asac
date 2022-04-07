@@ -44,12 +44,8 @@ public class MemberAdminController {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@RequestMapping("/me/ad/in")
-	public String memberAdminIndex() {
-		return "adminIndex";
-	}
-	
-	@RequestMapping("/me/ad/in2")
-	public String memberAdminIndex2(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member) throws Exception {
+	public String memberAdminIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member) throws Exception  {
+		
 		memberAdminService.memberCountMonth(request, response, model);
 		
 		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
@@ -78,7 +74,7 @@ public class MemberAdminController {
 		String listjson4 = new Gson().toJson(myAreaChart4);
 		model.addAttribute("list4", listjson4);
 		
-		return "/member/memberAdminIndex";
+		return "adminIndex";
 	}
 	
 	@RequestMapping(value = "me/ad/lo", method = RequestMethod.GET)
@@ -90,7 +86,7 @@ public class MemberAdminController {
 	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		
 		memberSellerService.memberSellerLoginCheck(request, response, model, seller);		
-		return "adminIndex";
+		return "redirect:http://localhost:8080/asac/me/ad/in";
 	}
 	
 	@RequestMapping(value = "/me/ad/lO", method = RequestMethod.GET)

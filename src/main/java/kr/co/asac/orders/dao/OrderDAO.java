@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.utils.PagingBean;
-import kr.co.asac.utils.Search;
 
 public interface OrderDAO {
 	
@@ -42,13 +41,16 @@ public interface OrderDAO {
 	
 	// orderAdmin
 	
-	public List<OrderBean> orderAdminList(@Param("searchAd") Search search);
+	public List<OrderBean> orderAdminList(@Param("paging") PagingBean paging);
 	
-	public int orderAdminCount(@Param("searchAd") Search search) throws Exception;
+	public List<OrderBean> orderAdminListSearch( @Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 	
-	public OrderBean orderAdminInfo(int ocode);
+	public int orderAdminListCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);
+		
+	public OrderBean orderAdminInfo(@Param("ocode") String ocode, @Param("pname") String pname);
 	
 	public void orderAdminUpdate(OrderBean order);
 	
-	public int orderAdminDelete(int ocode);
+	public void orderAdminDelete(String ocode);
+
 }

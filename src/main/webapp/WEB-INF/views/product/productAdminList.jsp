@@ -46,6 +46,13 @@
 th {
     text-align: center;
 }
+
+#pfileUploadButtonLabel {
+	margin-top:15px;
+}
+
+#pfileUpload {
+	display: none;
 </style>
 </head>
 
@@ -61,18 +68,25 @@ function productInfoAction(clickedProduct) {
         url: './if',
         data: {pcode:pcode},
         success: function(product) {
+
             $(product).each(function(index, item) {
                 $('#pcode').prop('value',product.pcode);
                 $('#pname').prop('value',product.pname);
+                $('#pname').prop('readonly',false);
                 $('#pprice').prop('value',product.pprice);
+                $('#pprice').prop('readonly',false);
                 $('#pcate').prop('value',product.pcate);
+                $('#pcate').prop('readonly',false);
                 $('#ptag').prop('value',product.ptag);
+                $('#ptag').prop('readonly',false);
                 $('#pfile').prop('value',product.pfile);
+                $('#pfileUploadButton').prop('disabled',false);
                 $('#pcontent').prop('value',product.pcontent);
+                $('#pcontent').prop('readonly',false);
                 $('#pregdate').prop('value',product.pregdate);
                 $('#sid').prop('value',product.sid);
-                $('#productUpdateButton').prop('onclick',"productUpdateOk()");
-                $('#productDeleteButton').prop('onclick',"productDeleteOk()");
+                $('#productUpdateButton').attr('onclick',"productUpdateOk()");
+                $('#productDeleteButton').attr('onclick',"productDeleteOk()");
             });
 					
         },
@@ -84,36 +98,56 @@ function productInfoAction(clickedProduct) {
     });
 }
 
-function productSearchAction() {	
+function productSearchAction(clickedPage) {	
 	var productSearchCategory = $('#productSearchCategory option:selected').val();
     var productSearchText = document.getElementById('productSearchText').value;
 	var productListText = "";
-    
+	var productPagingText = "";
+	var page = clickedPage;
+	var step = 0;
     $.ajax({
         type: 'POST',
-        url: './se/' + productSearchCategory,
+        url: './se',
    		data: {productSearchCategory:productSearchCategory,
-    		productSearchText:productSearchText},
-        success: function(productList) {
-        	 $.each(productList , function(i){
-                  productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + productList[i].pcode + 
-                  					'"><td>' + productList[i].pcode + 
-                  					'</td><td>' + productList[i].pname + 
-                  					'</td><td>' + productList[i].pcate + 
-                  					'</td><td>' + productList[i].ptag + 
-                  					'</td><td>' + productList[i].pregdate + 
-                  					'</td><td>' + productList[i].sid + 
-                  					'</td></tr>';
-             });
+   			productSearchText:productSearchText,
+    		page:page},
+    		success: function(map) {
+           	 $.each(map.productList , function(i){
+           		productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + map.productList[i].pcode + 
+                     					'"><td>' + map.productList[i].pname + 
+                     					'</td><td>' + map.productList[i].pcate + 
+                     					'</td><td>' + map.productList[i].ptag +
+                     					'</td><td>' + map.productList[i].sid +
+                     					'</td></tr>';
+                });
+        	 
+   		     if (map.paging.prev) {
+	    		 productPagingText +=
+			 	'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>'; 
+    		 }
+    		 for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
+    			 productPagingText +=
+    		 	'<li class="page-item" id="page' + step + '" value="' + step + '"><a class="page-link" href="#" onclick="productSearchAction(' + step + ')">' + step + '</a></li>';
+    	     }
+    		 if (map.paging.next) {
+    		 	productPagingText +=
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(' + map.paging.endPage + ')">다음</a></li>';
+        	 }
         	document.getElementById("productListBody").innerHTML = productListText;
-				
+        	document.getElementById("productPagingZone").innerHTML = productPagingText;
+        	[].forEach.call(document.getElementById("page" + page), function(element) {
+        	    element.classList.remove("active");
+        	    element.classList.remove("productActivePage");
+        	});
+        	document.getElementById("page" + page).classList.add("active");
+        	document.getElementById("page" + page).classList.add("productActivePage");
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
         }
-    });
+    });    
 }
 
 function productInsertForm() {
@@ -136,6 +170,7 @@ function productInsertForm() {
             $('#ptag').prop('readonly',false);
             $('#pfile').prop('value',"");
             $('#pfile').prop('readonly',false);
+            $('#pfileUploadButton').prop('disabled',false);
             $('#pcontent').prop('value',"");
             $('#pcontent').prop('readonly',false);
             $('#pregdate').prop('value', today.toLocaleDateString());
@@ -153,7 +188,7 @@ function productInsertForm() {
 			'<hr class="mb-4">' +
 			'<br>';
 			productInsertFormIdZoneText = '<div class="row">' + 
-			'<div class="col-md-9 mb-3">' +
+			'<div class="col-md-12 mb-3">' +
 			'<label for="pcode">상품코드  <span class="text-danger">*</span></label>' +
 			'<input type="text"' +
 			'class="form-control" name="pcode" id="pcode"' + 
@@ -181,23 +216,24 @@ function productInsertCancel() {
         	
         	$('#productInfoDetail').prop('action',"./up");
         	$('#pcode').prop('value',"");
-            $('#pcode').prop('readonly',false);
+            $('#pcode').prop('readonly',true);
             $('#pname').prop('value',"");
-            $('#pname').prop('readonly',false);
+            $('#pname').prop('readonly',true);
             $('#pprice').prop('value',"");
-            $('#pprice').prop('readonly',false);
+            $('#pprice').prop('readonly',true);
             $('#pcate').prop('value',"");
-            $('#pcate').prop('readonly',false);
+            $('#pcate').prop('readonly',true);
             $('#ptag').prop('value',"");
-            $('#ptag').prop('readonly',false);
+            $('#ptag').prop('readonly',true);
             $('#pfile').prop('value',"");
             $('#pfile').prop('readonly',true);
+            $('#pfileUploadButton').prop('disabled',true);
             $('#pcontent').prop('value',"");
-            $('#pcontent').prop('readonly',false);
-            $('#pregdate').prop('value',"");
-            $('#pregdate').prop('readonly',false);
+            $('#pcontent').prop('readonly',true);
+            $('#pregdate').prop('value', "");
+            $('#pregdate').prop('readonly',true);
             $('#sid').prop('value',"");
-            $('#sid').prop('readonly',false);
+            $('#sid').prop('readonly',true);
         	 
         	productInsertCancelText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
@@ -216,7 +252,7 @@ function productInsertCancel() {
 			productInsertFormIdZoneText = '<label for="pcode">상품코드 <span class="text-danger">*</span></label>' +
 			'<input type="text"' +
 			'class="form-control" name="pcode" id="pcode" value="${product.pcode}"' +
-			'placeholder="상품 코드" pattern="^[A-Z0-9_]{3,20}$"' + 
+			'placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$"' + 
 			'minlength="4" maxlength="20" required readonly>' +
 			'</div>';
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
@@ -239,7 +275,7 @@ function productInsertAction() {
         url: './in',
    		data: product,
         success: function() {
-			productSearchAction();
+        	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
         	alert("추가한 상품 = " + pname + "\n추가가 완료되었습니다.");
         	productInsertCancel();
         },
@@ -252,7 +288,7 @@ function productInsertAction() {
 }
 
 function productUpdateAction() {	
-	var pname = document.getElementById('pname').value;
+	var pcode = document.getElementById('pcode').value;
 	var product = $("form[name=productInfoDetail]").serialize();
 	
     $.ajax({
@@ -260,8 +296,8 @@ function productUpdateAction() {
         url: './up',
    		data: product,
         success: function() {
-			productSearchAction();
-        	alert("수정한 상품 = " + pname + "\n수정이 완료되었습니다.");
+        	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
+        	alert("수정이 완료되었습니다.");
 				
         },
         error: function(request, status, error) {
@@ -278,11 +314,49 @@ function productDeleteAction() {
     $.ajax({
         type: 'POST',
         url: './de/pcode/' + pcode,
-   		data: {mid:mid},
+   		data: {pcode:pcode},
         success: function() {
-        	productSearchAction();
-        	alert("삭제한 ID = " + pcode + "\n삭제가 완료되었습니다.");
+        	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
+        	alert("삭제가 완료되었습니다.");
 				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
+
+function pfileUploadAction() {
+	var pfileUpload = new FormData($("#productInfoDetail")[0]);
+    var pfileZoneText = "";
+	
+    $.ajax({
+        url: "./fu",
+        type: "POST",
+        data: pfileUpload,
+        async: false, 
+        cache: false, 
+        processData: false,
+        contentType: false,
+        success: function(pfile){
+            pfileZoneText +=  
+			'<div class="row">' +
+			'<div class="col-md-9 mb-3">' +
+				'<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"' +
+					'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
+					'maxlength="11" required readonly>' +
+			'</div>' +
+			'<div class="col-md-3 mb-3">' +
+				'<input type="file" accept="image/*"' +
+					'class="form-control" name="pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">' +
+				'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
+				'<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="파일등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+			'</div>' +
+			'</div>' + 
+			'<a href="resources/image/product/' + pfile + '">미리보기' + pfile + '</a><br/>';
+            document.getElementById("pfileZone").innerHTML = pfileZoneText;
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -296,7 +370,6 @@ function productDeleteAction() {
 
 <br>
 	<div id="wrapper">
-
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-7">
@@ -308,11 +381,9 @@ function productDeleteAction() {
 								<div class="col-lg-12">
 									<div class="input-group">
 										<select id="productSearchCategory" name="productSearchCategory" class="btn btn-default btn-md">
-											<option value="pcode">상품코드</option>
 											<option value="pname">상품명</option>
 											<option value="pcate">카테고리</option>
-											<option value="ptag">태그명</option>
-											<option value="pregdate">등록일</option>
+											<option value="ptag">태그명</option>											
 											<option value="sid">판매자아이디</option>
 										</select>
 										<input class="form-control input-sm" id="productSearchText" type="text"
@@ -327,37 +398,40 @@ function productDeleteAction() {
 							<div class="table-responsive">
 								<table id="productListTable" class="table table-striped table-bordered table-hover">
 									<thead>
-										<tr>
-											<th>상품코드</th>
-											<th>상품명</th>
-											<th>가격</th>
+										<tr>										
+											<th>상품명</th>								
 											<th>카테고리</th>
-											<th>태그명</th>
-											<th>등록일</th>
+											<th>태그명</th>								
 											<th>판매자아이디</th>
 										</tr>
 									</thead>
 									<tbody id="productListBody">
 									<c:forEach items="${productList}" var="product">
 										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
-											<td>${product.pcode}</td>
 											<td>${product.pname}</td>
-											<td>${product.pprice}</td>
 											<td>${product.pcate}</td>
-											<td>${product.ptag}</td>
-											<td>${product.pregdate}</td>
+											<td>${product.ptag}</td>											
 											<td>${product.sid}</td>
 										</tr>
 									</c:forEach>
 									</tbody>
 								</table>
 							</div>
-							<ul class="pagination justify-content-center">
-								<li class="page-item"><a class="page-link" href="#">이전</a></li>
-								<li class="page-item active"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#">다음</a></li>
+							<ul class="pagination justify-content-center" id="productPagingZone">
+								<c:if test= "${productPaging.prev}">
+									<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>
+								</c:if>
+								<c:forEach var="page" begin="${productPaging.startPage}" end="${productPaging.endPage}">
+									<c:if test="${productPaging.page eq page}">
+									<li class="page-item active productActivePage" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									</c:if>
+									<c:if test="${productPaging.page ne page}">
+									<li class="page-item" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test= "${productPaging.next}">
+									<li class="page-item"><a class="page-link" href="#"  onclick="productSearchAction(${productPaging.endPage})">다음</a></li>
+								</c:if>
 							</ul>
 						</div>
 					</div>
@@ -374,7 +448,7 @@ function productDeleteAction() {
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<form class="productInfoDetail" id= "productInfoDetail" name="productInfoDetail" method="post">
-					<div class="mb3" id="productIdZone">
+					<div class="mb-3" id="productIdZone">
 					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
 						<input type="text"
 							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
@@ -405,11 +479,20 @@ function productDeleteAction() {
 							placeholder="태그명" pattern="^[가-힣]+$" 
 							maxlength="13" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="mb-3" id="pfileZone">
+					<div class="row">
+					<div class="col-md-9 mb-3">
 						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control"  name="pfile" id="pfile" value="${product.pfile}"
-							placeholder="상품사진" 
+							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="${product.pfile}"
 							maxlength="11" required readonly>
+					</div>
+					<div class="col-md-3 mb-3">
+						<input type="file" accept="image/*"
+							class="form-control" name="pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">
+						<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>
+						<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="파일등록" onclick="document.getElementById('pfileUpload').click()" disabled>							
+					</div>
+					</div>
 					</div>
 					<div class="mb-3">
 						<label for="pcontent">상품설명 <span class="text-danger">*</span></label> <input type="text"
@@ -466,7 +549,7 @@ function productDeleteAction() {
 	<script>
 
 	function productUpdateOk() {
-		if(!confirm('정말로 수정하시겠습니까?')){
+		if(!confirm('정말 수정하시겠습니까?')){
 			return false;
 		} else {
 			productUpdateAction();
@@ -474,10 +557,7 @@ function productDeleteAction() {
 	}
 	
 	function productDeleteOk(){
-		
-		var pname = document.getElementById('pname').value;
-		
-		if(!confirm('삭제할 상품 = ' + pname + '\n정말로 삭제하시겠습니까?')){
+		if(!confirm('정말 삭제하시겠습니까?')){
 			return false;
 		} else {
 			productDeleteAction();

@@ -176,12 +176,16 @@ function orderDeleteAction() {
     });
 }
 </script>
-
-<br>
-<div id="wrapper">
-<header>
-<jsp:include page="/WEB-INF/views/common/sellerHeader.jsp" flush="false"></jsp:include>
-</header>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+		<jsp:include page="../common/sellerHeader.jsp" />
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <jsp:include page="../common/toolbarHeader.jsp" />
+                
 <section id="orderList">
 		<div id="page-wrapper">
 			<div class="row">
@@ -402,6 +406,8 @@ function orderDeleteAction() {
 <footer>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
 </footer>
+</div>
+</div>
 </div>
 </body>
 </html>

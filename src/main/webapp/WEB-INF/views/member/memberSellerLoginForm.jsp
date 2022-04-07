@@ -74,9 +74,7 @@ body {
 </head>
 <body>
 
-<jsp:include page="../common/sellerHeader.jsp"></jsp:include>
-
-<div><br><br><br></div>
+<div><br><br><br><br><br><br><br><br><br><br><br></div>
 <div class="container">
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">
@@ -101,7 +99,7 @@ body {
 		</div>
 	</div>
 </div>   
-<div><br><br><br></div>	 
+<div><br><br><br><br><br><br><br><br><br><br><br><br></div>	 
 
 <jsp:include page="../common/footer.jsp"></jsp:include>
 

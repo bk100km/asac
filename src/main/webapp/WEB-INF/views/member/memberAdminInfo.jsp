@@ -74,7 +74,15 @@ function del() {
 }
 </style>
 
-<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+	    <!-- Content Wrapper -->
+	    <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <jsp:include page="../common/toolbarHeader.jsp" />
 
 
 <br><br>
@@ -165,7 +173,12 @@ function del() {
 	<br><br>
 	
 
-<br><br><br><br><br>
-<jsp:include page="../common/footer.jsp"></jsp:include>
+	<br><br><br>
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+	</footer>
+	</div>
+	</div>
+</div>
 </body>
 </html>

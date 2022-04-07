@@ -42,6 +42,10 @@
 .nav-link {
 	font-family: 'Pretendard';
 }
+
+.sidebar .sidebar-heading {
+    color: #436414 !important;
+}
 </style>
 </head>
 <body>
@@ -52,7 +56,7 @@
 
 			<!-- Sidebar - Brand -->
 			<a class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="http://localhost:8080/asac/me/ad/in">
+				href="http://localhost:8080/asac/me/se/in">
 				<div class="sidebar-brand-icon">
 					<i class="fas fa-regular fa-seedling"></i>
 				</div>
@@ -72,7 +76,7 @@
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/pr/se/la"> <i
+				href="http://localhost:8080/asac/pr/se/li"> <i
 					class="fas fa-regular fa-box"></i> <span>상품관리</span></a></li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
