@@ -16,12 +16,15 @@ public interface MemberDAO {
 	public String memberClientLoginCheck(MemberBean member);
 	public void memberJoin(MemberBean member);
 	public int memberIdChk(MemberBean member);
+	public MemberBean memberInfo(String mid);
 	public MemberBean memberClientInfo(String mid);
 	public void memberClientUpdate(MemberBean member);
 	public void memberClientDelete(MemberBean vo);
 	public int memberClientDelPwC(MemberBean vo);
 	public void memberClientNaver(MemberBean member);
 	public void memberClientKakao(MemberBean member);
+	public int updatePw(MemberBean vo) throws Exception;
+	public MemberBean findId(MemberBean vo) throws Exception;
 	
 	// seller
 	public String memberSellerLoginCheck(SellerBean seller);
@@ -54,6 +57,7 @@ public interface MemberDAO {
 	public List <SellerBean> memberAdminSellerSearch(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText, @Param("paging") PagingBean paging);
 	public void memberAdminSellerSokCheck(SellerBean seller);
 	
+	
 	// chart
 	public List<MemberBean> memberAdminDayList(String id);
 	public List<MemberBean> memberAdminDayConfirmList(String id);
@@ -61,4 +65,6 @@ public interface MemberDAO {
 	public List<ProductBean> productCountMonth();
 	public List<OrderBean> ordersCountMonth();
 	public List<OrderBean> ordersSumMonth();
+	public List<OrderBean> recentOrder();
+	public List<ProductBean> topThreeOrder();
 }

@@ -21,53 +21,174 @@
 	display: none;
 }
 
+#productSearchButtonHidden {
+	display: none;
+}
+
 #productInsertButtonHidden {
 	display: none;
 }
 
 #productSearchText {
     float: right;
-    width: 78%;
 }
- 
+
+#productIdCheckLabel {
+	margin-top:14px;
+}
+
+#pfileUploadButtonLabel {
+	margin-top:14px;
+}
+
+#pfileUpload {
+	display: none;
+}
+
 #leftPanel {
 	text-align: center;
-	height: 600px;
+	height: 700px;
+	margin-top: 20px;
 }
 	
 #leftPanel .table-responsive {
-	height: 500px;
+	height: 620px;
 }
 
-#sellerInfoBtn td {
-	line-height: 20px;
+#productInfoBtn td {
+	line-height: 21px;
 }
 
 th {
     text-align: center;
 }
 
-#pfileUploadButtonLabel {
-	margin-top:15px;
+/* Overlay */
+.image {
+	display: block;
+	width: auto;
+	height:100%;
+}
+.overlay {
+	position: absolute;
+	transition: all .3s ease;
+	opacity: 0;
+}
+.overlayFade {
+	height: 100%;
+	width:100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
 }
 
-#pfileUpload {
-	display: none;
+.product-panel-default {
+	height: 950px;
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+}
+
+.left-product-panel-default {
+	height: 760px;
+}
+
+.panel-heading {
+	background: #d8e3c9;
+	color: #85976d;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 38px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: Pretendard;
+}
+
+#productSearchCategory {
+	border: none;
+	color: #72815d;
+    font-weight: 700;
+}
+}
+
+option {
+	color: black;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+#productSearchButton {
+	border: none;
+	color: #72815d;	
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#panel-heading-right {
+	padding: 4px;
+}
+
+#pfileUploadButton {
+	height: 34px;
+}
+
+#pfilePreview {
+	font-size: 15px;
+	float: right;
+	color: #85976d;
+    font-weight: 600;
+    font-family: 'Pretendard';
+}
+
 </style>
 </head>
-
 <body>
 
 <script>
+
+//pfilePreview
+$('body').on('click', function() {
+	$('#overlayFade').css("opacity", "0");
+    $('#productFormTable').css("opacity", "1");
+    $('#productFormTable').css("transition", "all .5s ease");
+});
+
+function pfilePreview() {
+	$('#overlayFade').css("opacity", "0.95");
+    $('#productFormTable').css("opacity", "0.05");
+    $('#productFormTable').css("transition", "all .5s ease");
+}
+
 <!-- 상세정보 조회 AJAX -->
 function productInfoAction(clickedProduct) {
 	var pcode = clickedProduct.getAttribute("data-pcode");
+	var pfileZoneText = "";
 	
     $.ajax({
         type: 'POST',
         url: './if',
         data: {pcode:pcode},
         success: function(product) {
+        	
+            pfileZoneText +=  
+				'<div class="row">' +
+				'<div class="col-md-9 mb-1 input-group-sm">' +
+					'<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
+						'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
+						'maxlength="10" required readonly>' +
+				'</div>' +
+				'<div class="col-md-3 mb-1">' +
+					'<input type="file" accept="image/*"' +
+						'class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">' +
+					'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
+					'<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+				'</div>' +
+				'</div>' + 
+				'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기&nbsp; </a>';
+            document.getElementById("pfileZone").innerHTML = pfileZoneText;
 
             $(product).each(function(index, item) {
                 $('#pcode').prop('value',product.pcode);
@@ -151,7 +272,7 @@ function productSearchAction(clickedPage) {
 }
 
 function productInsertForm() {
-	var productInsertFormButtonZoneText = '';
+	var productInsertFormText = '';
 	var productInsertFormIdZoneText = '';
 	var today = new Date();
     $.ajax({
@@ -176,29 +297,19 @@ function productInsertForm() {
             $('#pregdate').prop('value', today.toLocaleDateString());
             $('#sid').prop('value',"");
             $('#sid').prop('readonly',false);
-        	
-        	productInsertFormButtonZoneText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+        	 
+        	productInsertFormText = '<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productInsertButton" value="추가하기" onclick="productInsertOk()" title="추가하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productInsertBackButton" value="뒤로가기" onclick="productInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>';
-			productInsertFormIdZoneText = '<div class="row">' + 
-			'<div class="col-md-12 mb-3">' +
-			'<label for="pcode">상품코드  <span class="text-danger">*</span></label>' +
-			'<input type="text"' +
-			'class="form-control" name="pcode" id="pcode"' + 
-			'placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$"' + 
-			'minlength="4" maxlength="20" required>' +
-			'</div>' +
-			'</div>';			
-				
-			document.getElementById("productButtonZone").innerHTML = productInsertFormButtonZoneText;
-			document.getElementById("productIdZone").innerHTML = productInsertFormIdZoneText;
+			document.getElementById("productButtonZone").innerHTML = productInsertFormText;
+			
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -236,27 +347,21 @@ function productInsertCancel() {
             $('#sid').prop('readonly',true);
         	 
         	productInsertCancelText = '<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productUpdateButton" value="수정하기" title="수정하기 버튼">' +
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productDeleteButton" value="삭제" title="삭제하기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>' +
 			'<div class="col-md-12 mb-3">' +
-			'<input type="button" class="btn btn-default btn-lg btn-block"' + 
-			'id="productInsertButton" value="상품추가"' + 
-			'onclick="productInsertForm()" title="상품추가 버튼">';
-			productInsertFormIdZoneText = '<label for="pcode">상품코드 <span class="text-danger">*</span></label>' +
-			'<input type="text"' +
-			'class="form-control" name="pcode" id="pcode" value="${product.pcode}"' +
-			'placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$"' + 
-			'minlength="4" maxlength="20" required readonly>' +
-			'</div>';
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
+			'id="productInsertButton" value="회원추가"' + 
+			'onclick="productInsertForm()" title="회원추가 버튼">';
+
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
-			 document.getElementById("productIdZone").innerHTML = productInsertFormIdZoneText;
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -265,6 +370,7 @@ function productInsertCancel() {
         }
     });    
 }
+
 
 function productInsertAction() {	
 	var pname = document.getElementById('pname').value;
@@ -343,19 +449,19 @@ function pfileUploadAction() {
         success: function(pfile){
             pfileZoneText +=  
 			'<div class="row">' +
-			'<div class="col-md-9 mb-3">' +
+			'<div class="col-md-9 input-group-sm">' +
 				'<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"' +
-					'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
+					'class="form-control" name="pfile" id="pfile" placeholder=".png, .jpg" value="' + pfile + '"' +
 					'maxlength="11" required readonly>' +
 			'</div>' +
-			'<div class="col-md-3 mb-3">' +
+			'<div class="col-md-3">' +
 				'<input type="file" accept="image/*"' +
-					'class="form-control" name="pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">' +
+					'class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">' +
 				'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
-				'<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="파일등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+				'<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
 			'</div>' +
 			'</div>' + 
-			'<a href="resources/image/product/' + pfile + '">미리보기' + pfile + '</a><br/>';
+			'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기</a>';
             document.getElementById("pfileZone").innerHTML = pfileZoneText;
         },
         error: function(request, status, error) {
@@ -372,10 +478,10 @@ function pfileUploadAction() {
 	<div id="wrapper">
 		<div id="page-wrapper">
 			<div class="row">
-				<div class="col-lg-7">
+				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--전체 상품 관리//-->
-					<div class="panel panel-default">
+					<div class="panel product-panel-default left-product-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
@@ -388,7 +494,7 @@ function pfileUploadAction() {
 										</select>
 										<input class="form-control input-sm" id="productSearchText" type="text"
 											placeholder="검색어를 입력해주세요."> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="productSearchButton" value="검색" onclick="productSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
 										</span>
 									</div>
 								</div>
@@ -396,7 +502,7 @@ function pfileUploadAction() {
 						</div>
 						<div class="panel-body" id="leftPanel">
 							<div class="table-responsive">
-								<table id="productListTable" class="table table-striped table-bordered table-hover">
+								<table class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>										
 											<th>상품명</th>								
@@ -438,100 +544,103 @@ function pfileUploadAction() {
 					<!--//전체 상품 관리 -->
 				</div>
 				
-				<div class="col-lg-5">
+				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
-					<div class="panel panel-default">
-						<div class="panel-heading">상품 상세 정보</div>
+					<div class="panel product-panel-default">
+						<div class="panel-heading" id="panel-heading-right"> &nbsp;상품 상세 정보</div>
 						<div class="panel-body">
-							<div class="table-responsive">
+									<div class="overlay overlayFade" id="overlayFade">
+										<img src="/asac/resources/upload/" alt="img" class="image">
+									</div>
+							<div class="table-responsive" id="productFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<form class="productInfoDetail" id= "productInfoDetail" name="productInfoDetail" method="post">
-					<div class="mb-3" id="productIdZone">
+				
+					<div class="mb-1 input-group-sm">
 					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
 						<input type="text"
 							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
 							placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$" 
 							maxlength="20" required readonly>					
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pname">상품명 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="pname" id="pname" value="${product.pname}"
 							placeholder="상품명" pattern="^[가-힣]+$" 
 							maxlength="35" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pprice">가격 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="pprice" id="pprice" value="${product.pprice}"
 							placeholder="가격" pattern="^[0-9]+$" 
 							maxlength="6" required readonly>
 					</div>	
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pcate">카테고리 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="pcate" id="pcate" value="${product.pcate}"
 							placeholder="카테고리" pattern="^[가-힣]+$" 
 							maxlength="20" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="ptag">태그명 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="ptag" id="ptag" value="${product.ptag}"
 							placeholder="태그명" pattern="^[가-힣]+$" 
 							maxlength="13" required readonly>
 					</div>
-					<div class="mb-3" id="pfileZone">
+					<div class="mb-1 input-group-sm" id="pfileZone">
 					<div class="row">
-					<div class="col-md-9 mb-3">
-						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="${product.pfile}"
-							maxlength="11" required readonly>
+					<div class="col-md-9 input-group-sm">
+						<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"
+							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value=""
+							maxlength="10" required readonly>
 					</div>
-					<div class="col-md-3 mb-3">
+					<div class="col-md-3">
 						<input type="file" accept="image/*"
-							class="form-control" name="pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">
+							class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">
 						<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>
-						<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="파일등록" onclick="document.getElementById('pfileUpload').click()" disabled>							
+						<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById('pfileUpload').click()" disabled>							
 					</div>
 					</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pcontent">상품설명 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="pcontent" id="pcontent" value="${product.pcontent}"
 							placeholder="상품설명" 
 							maxlength="60" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pregdate">등록일 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="pregdate" id="pregdate" value="${product.pregdate}"
 							placeholder="등록일" 
 							maxlength="20" required readonly>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1 input-group-sm">
 						<label for="pcontent">판매자아이디 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control"  name="sid" id="sid" value="${product.sid}"
 							placeholder="판매자아이디" 
 							maxlength="20" required readonly>
 					</div>
 					
-				
-					<div class="mb-4"></div>
+					
 					<hr class="mb-4">
-					<div class="mb-4"></div>
+				
 					<div class="row" id="productButtonZone">
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productUpdateButton" value="수정하기" title="수정하기 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productDeleteButton" value="삭제" title="삭제하기 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>
 						<div class="col-md-12 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
+						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productInsertButton" value="상품추가" 
-						onclick="productInsertForm()" title="상품추가 버튼">			
+						onclick="productInsertForm()" title="상품추가 버튼">
 						</div>						
 					</div>	
 				</form>

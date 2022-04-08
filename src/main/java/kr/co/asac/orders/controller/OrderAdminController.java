@@ -49,7 +49,7 @@ public class OrderAdminController {
 		orderPaging.pageInfo(page, range, orderListCnt);
 		
 		orderAdminService.orderAdminList(request, response, model, orderPaging);
-		return "orders/orderAdminList";
+		return "orders/orderAdminPage";
 	}
 	
 	@RequestMapping(value = "/or/ad/as", method = RequestMethod.POST)
@@ -83,7 +83,7 @@ public class OrderAdminController {
 		int orderListCnt = orderSellerService.orderSellerListCount(request, orderSearchCategory, orderSearchText);
 		orderPaging.pageInfo(page, range, orderListCnt);
 		orderSellerService.orderSellerList(request, response, model, orderPaging);
-		return "orders/orderAdSellerList";
+		return "orders/orderAdminSellerPage";
 	}
 	
 	@RequestMapping(value = "/or/ad/ss", method = RequestMethod.POST)

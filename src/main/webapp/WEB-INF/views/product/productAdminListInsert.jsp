@@ -33,23 +33,20 @@
 				<div class="col-lg-7">
 					<!--좌우분할 5:7-->
 					<!--전체 상품 관리//-->
-					<div class="panel panel-default">
+					<div class="panel product-panel-default left-product-panel-default">
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-lg-5 pt5">일반회원관리</div>
-								<div class="col-lg-7">
+								<div class="col-lg-12">
 									<div class="input-group">
 										<select id="productSearchCategory" name="productSearchCategory" class="btn btn-default btn-md">
-											<option value="pcode">상품코드</option>
 											<option value="pname">상품명</option>
 											<option value="pcate">카테고리</option>
-											<option value="ptag">태그명</option>
-											<option value="pregdate">등록일</option>
+											<option value="ptag">태그명</option>											
 											<option value="sid">판매자아이디</option>
 										</select>
 										<input class="form-control input-sm" id="productSearchText" type="text"
 											placeholder="검색어를 입력해주세요."> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="productSearchButton" value="검색" onclick="productSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
 										</span>
 									</div>
 								</div>
@@ -57,39 +54,42 @@
 						</div>
 						<div class="panel-body" id="leftPanel">
 							<div class="table-responsive">
-								<table id="productListTable" class="table table-striped table-bordered table-hover">
+								<table class="table table-striped table-bordered table-hover">
 									<thead>
-										<tr>
-											<th>상품코드</th>
-											<th>상품명</th>
-											<th>가격</th>
+										<tr>										
+											<th>상품명</th>								
 											<th>카테고리</th>
-											<th>태그명</th>
-											<th>등록일</th>
+											<th>태그명</th>								
 											<th>판매자아이디</th>
 										</tr>
 									</thead>
 									<tbody id="productListBody">
 									<c:forEach items="${productList}" var="product">
 										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
-											<td>${product.pcode}</td>
 											<td>${product.pname}</td>
-											<td>${product.pprice}</td>
 											<td>${product.pcate}</td>
-											<td>${product.ptag}</td>
-											<td>${product.pregdate}</td>
+											<td>${product.ptag}</td>											
 											<td>${product.sid}</td>
 										</tr>
 									</c:forEach>
 									</tbody>
 								</table>
 							</div>
-							<ul class="pagination justify-content-center">
-								<li class="page-item"><a class="page-link" href="#">이전</a></li>
-								<li class="page-item active"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#">다음</a></li>
+							<ul class="pagination justify-content-center" id="productPagingZone">
+								<c:if test= "${productPaging.prev}">
+									<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>
+								</c:if>
+								<c:forEach var="page" begin="${productPaging.startPage}" end="${productPaging.endPage}">
+									<c:if test="${productPaging.page eq page}">
+									<li class="page-item active productActivePage" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									</c:if>
+									<c:if test="${productPaging.page ne page}">
+									<li class="page-item" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test= "${productPaging.next}">
+									<li class="page-item"><a class="page-link" href="#"  onclick="productSearchAction(${productPaging.endPage})">다음</a></li>
+								</c:if>
 							</ul>
 						</div>
 					</div>

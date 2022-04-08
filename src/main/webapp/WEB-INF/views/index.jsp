@@ -54,6 +54,7 @@ h1 {
 	font-weight: 800;
 	letter-spacing: .05em;
 	line-height: 1;
+	margin-top: 10px;
 	margin-right: 20px;
 	padding: 10px 26px;
 	text-transform: capitalize;
@@ -149,7 +150,7 @@ h1 {
 					<h2 class="mb-4">베스트 상품</h2>
 
 					<!-- TagZone -->
-					<div class="col-md-12 tagZone">
+					<div class="col-md-12 tagZone" id="tagZone">
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
 								<a class="tagButton" href="#">콩</a>
@@ -206,21 +207,21 @@ h1 {
 		</div>
 		<div class="container">
 			<div class="row">
+				<c:forEach var="product" items="${proClientListlist}">
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-1.jpg"
-							alt="Colorlib Template"> <span class="status">50%</span>
+							src="/asac/resources/image/product/${product.pfile}"
+							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
 							<h3>
-								<a href="#">아프리카 파프리카</a>
+								<a href="#">${product.pname}</a>
 							</h3>
 							<div class="d-flex">
 								<div class="pricing">
 									<p class="price">
-										<span class="mr-2 price-dc">50,000원</span><span
-											class="price-sale">25,000원</span>
+										<span class="price-sale">${product.pprice}</span>
 									</p>
 								</div>
 							</div>
@@ -235,6 +236,7 @@ h1 {
 						</div>
 					</div>
 				</div>
+				</c:forEach>
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"

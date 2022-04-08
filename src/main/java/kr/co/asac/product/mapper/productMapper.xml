@@ -37,6 +37,41 @@
 		select * from product where ${searchCategory} like concat('%', #{searchText}, '%') order by pcode asc limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
+	
+	
+	<!-- adminMy -->
+	<select id="productAdminMyCount" resultType="int">
+		select count(*) as listCnt from product where ${productMySearchCategory} like concat('%', #{productMySearchText}, '%')
+	</select>
+	
+	<select id="productAdminMyList" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where sid=#{sid} order by pcode asc limit #{paging.startList}, #{paging.listSize}
+	</select>
+	
+	<select id="productAdminMyInfo" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where pcode=#{pcode}
+	</select>
+	
+	<insert id="productAdminMyInsert">
+		insert into product(pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
+		values(#{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, now(), #{sid})
+	</insert>	
+	
+	<update id="productAdminMyUpdate">
+ 		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate},
+ 		ptag=#{ptag}, pfile=#{pfile}, pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid}
+ 		where pcode=#{pcode}
+ 	</update>
+	
+	<delete id="productAdminMyDelete">
+		delete from product where pcode=#{pcode}
+	</delete>		
+	
+	<select id="productAdminMySearch" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where ${productMySearchCategory} like concat('%', #{productMySearchText}, '%') order by pcode asc limit #{paging.startList}, #{paging.listSize}
+	</select>
+	
+	
 	<!-- seller -->	
 	<select id="productSellerList" resultType="kr.co.asac.product.bean.ProductBean">
 		select * from product pcode

@@ -31,46 +31,151 @@
 
 <style>
 
-.ftco-navbar-light {
-	height: 130px;
+
+
+@media ( min-width : 1800px) {
+.navbar-brand {
+	font-size: 80px;
+	margin-left: 4rem;
+}
 }
 
+@media ( max-width : 1799px) {
 .navbar-brand {
-	font-size: 70px;
-	margin-left: 5rem;
+	font-size: 50px;
+	margin-left: 3rem;
+}
+}
+
+@media ( max-width : 1399px) {
+.navbar-brand {
+	font-size: 40px;
+	margin-left: 2rem;
+}
 }
 
 #headerContainer {
 	margin: 0;
 }
 
-@media ( min-width : 1400px) {
-	#headerContainer {
+#headerContainer {
 		max-width: 2000px;
-	}
 }
 
+.navbar-expand-lg .navbar-nav {
+	margin: auto;
+}
+
+@media ( min-width : 1800px) {
 .ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
-	font-size: 30px;
+	font-size: 190%;
 	font-family: Pretendard;
-	padding-left: 0px;
-	padding-right: 90px;
+	padding-left: 1em;
+	padding-right: 2em;
+	margin: auto;
 	color: #82ae46;
 }
+}
 
-.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
-	font-size: 17px;
+@media ( max-width : 1799px) {
+.ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
+	font-size: 150%;
 	font-family: Pretendard;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 1em;
+	padding-right: 2em;
+	color: #82ae46;
+}
+}
+
+@media ( max-width : 1399px ) {
+.ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
+	font-size: 110%;
+	font-family: Pretendard;
+	padding-left: 1em;
+	padding-right: 2em;
+	color: #82ae46;
+}
+}
+
+@media ( max-width : 1199px ) {
+.ftco-navbar-light .navbar-nav>.nav-item>.nav-link {
+	font-size: 100%;
+	font-family: Pretendard;
+	padding-left: 1em;
+	padding-right: 1em;
+	color: #82ae46;
+}
+}
+
+@media ( min-width : 1800px) {
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	font-size: 15px;
+	font-family: Pretendard;
+	padding-left: 0.5em;
+	padding-right: 1em;
 	padding-top: 0;
 	background: white;
 	color: #82ae46 !important;
 }
+}
 
+@media ( max-width : 1799px) {
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	font-size: 12px;
+	font-family: Pretendard;
+	padding-left: 0.5em;
+	padding-right: 1em;
+	padding-top: 0;
+	background: white;
+	color: #82ae46 !important;
+}
+}
+
+@media ( max-width : 1399px) {
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	font-size: 12px;
+	font-family: Pretendard;
+	padding-left: 1em;
+	padding-right: 2em;
+	padding-top: 0;
+	background: white;
+	color: #82ae46 !important;
+}
+}
+
+@media ( max-width : 1199px) {
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	font-size: 10px;
+	font-family: Pretendard;
+	padding-left: 0.5em;
+	padding-right: 0.8em;
+	padding-top: 0;
+	background: white;
+	color: #82ae46 !important;
+}
+}
+
+@media ( max-width : 992px) {
+.ftco-navbar-light .navbar-nav>.nav-item.cta>a {
+	padding-left: 2em;
+	margin-top: 1em;
+	margin-bottom: -1em;
+	background: black;
+}
+}
+
+@media ( max-width : 992px) {
+.ftco-navbar-light.scrolled .navbar-nav>.nav-item.cta>a {
+	background: white;
+}
+}
+
+@media ( min-width : 992px) {
 #borderNavCart {
 	border-top-left-radius: 20px;
 	border-bottom-left-radius: 20px;
+	margin-left: 3em;
+}
 }
 
 .ftco-navbar-light .navbar-brand:hover {
@@ -85,12 +190,25 @@
 	margin-bottom: 9rem !important;
 }
 
+@media ( min-width : 1400px) {
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
 	margin: -4rem 0 0;
 	background: #82ae46;
 	border-radius: 5px;
 	left: -60px;
 	padding: 0;
+}
+}
+
+@media ( max-width : 1023px) {
+.ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
+	margin: -3rem 0 0;
+	background: #82ae46;
+	border-radius: 5px;
+	left: -70px;
+	padding: 0;
+	width: 60px;
+}
 }
 
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu .dropdown-item {
@@ -102,7 +220,7 @@
 }
 
 .ftco-navbar-light.scrolled .navbar-nav>.nav-item .dropdown-menu {
-	margin: -1rem 0 0;
+	margin: 0rem 0 0;
 	background: #82ae46;
 	border-radius: 5px;
 	left: -60px;
@@ -174,7 +292,7 @@
 			class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
 			id="ftco-navbar">
 			<div class="container" id="headerContainer">
-				<a class="navbar-brand" href="http://localhost:8080/asac/">ASAC</a>
+				<a class="navbar-brand" href="<%= request.getContextPath() %>/">ASAC</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#ftco-nav" aria-controls="ftco-nav"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -184,59 +302,59 @@
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=농산물류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=농산물류&nowPage=1"
 							class="nav-link">농산물</a></li>
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=간편식류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=간편식류&nowPage=1"
 							class="nav-link">간편식</a></li>
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=콩고기류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=콩고기류&nowPage=1"
 							class="nav-link">대체육ㆍ콩</a></li>
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=양념소스류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=양념소스류&nowPage=1"
 							class="nav-link">양념ㆍ소스</a></li>
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=음료류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=음료류&nowPage=1"
 							class="nav-link">음료</a></li>
 						<li class="nav-item"><a
-							href="http://localhost:8080/asac/pr/cl/li?pcate=생활용품류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li?pcate=생활용품류&nowPage=1"
 							class="nav-link">생활ㆍ뷰티</a></li>
 
 						<%
 							if (mid == null) {
 						%>
 						<li class="nav-item cta cta-colored"><a
-							href="http://localhost:8080/asac/ca/cl/li" class="nav-link"
+							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
 							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown04"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;로그인</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
 								<a class="dropdown-item"
-									href="http://localhost:8080/asac/me/cl/lo">일반 로그인</a> <a
+									href="<%= request.getContextPath() %>/me/cl/lo">일반 로그인</a> <a
 									class="dropdown-item"
-									href="http://localhost:8080/asac/me/se/lo">판매자 로그인</a>
+									href="<%= request.getContextPath() %>/me/se/lo">판매자 로그인</a>
 							</div></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown05"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;회원가입</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown05">
 								<a class="dropdown-item"
-									href="http://localhost:8080/asac/me/cl/jo">일반 가입</a> <a
+									href="<%= request.getContextPath() %>/me/cl/jo">일반 가입</a> <a
 									class="dropdown-item"
-									href="http://localhost:8080/asac/me/se/jo">판매자 가입</a>
+									href="<%= request.getContextPath() %>/me/se/jo">판매자 가입</a>
 							</div></li>
 						<%
 							} else {
 						%>
 						<li class="nav-item cta cta-colored"><a
-							href="http://localhost:8080/asac/ca/cl/li" class="nav-link"
+							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
 							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
 						<li class="nav-item cta cta-colored"><a
-							href="http://localhost:8080/asac/me/cl/lO" class="nav-link"
+							href="<%= request.getContextPath() %>/me/cl/lO" class="nav-link"
 							id="borderNavLogin"><span class="icon-sign-out"></span>&nbsp;로그아웃</a></li>
 						<li class="nav-item cta cta-colored"><a
-							href="http://localhost:8080/asac/me/cl/my" class="nav-link"
+							href="<%= request.getContextPath() %>/me/cl/my" class="nav-link"
 							id="borderNavJoin"><span class="icon-info"></span>&nbsp;마이페이지</a></li>
 						<%
 							}

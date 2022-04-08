@@ -10,7 +10,15 @@ public class ProductBean {
 	private String pcontent;
 	private String pregdate;
 	private String sid;
+
+	private int cnt;
 	
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 	public String getPcode() {
 		return pcode;
 	}

@@ -8,37 +8,19 @@ import kr.co.asac.orders.bean.OrderBean;
 
 public interface SaleDAO {
 
-	public List<OrderBean> saleAdminDayList();
+	// saleSeller
 	
-	public List<OrderBean> saleAdminDayConfirmList();
-	
-	public List<OrderBean> saleAdminDateList();
-	
-	public List<OrderBean> saleAdminWeekList();
-	
-	public List<OrderBean> saleAdminMonthList();
-	
-	public List<OrderBean> saleAdminSellerList();
-	
-	public List<OrderBean> saleAdminSellerListBest();
-	
-	public List<OrderBean> saleAdminSellerListWorst();
-	
-	public List<OrderBean> saleAdminProductCateList();
-	
-	public List<OrderBean> saleAdminProductCateConfirmList();
-	
-	public List<OrderBean> saleAdminProductListBest();
-	
-	public List<OrderBean> saleAdminProductListWorst();
-
 	public List<OrderBean> saleSellerDayList(String id);
 	
 	public List<OrderBean> saleSellerDayConfirmList(String id);
 	
 	public List<OrderBean> saleSellerDateList(String id);
 	
+	public List<OrderBean> saleSellerDateConfirmList(String id);
+	
 	public List<OrderBean> saleSellerWeekList(String id);
+	
+	public List<OrderBean> saleSellerWeekConfirmList(String id);
 	
 	public List<OrderBean> saleSellerMonthList(String id);
 	
@@ -48,11 +30,42 @@ public interface SaleDAO {
 	
 	public List<OrderBean> saleSellerProductConfirmList(String id);
 	
-	public List<OrderBean> saleAdminInfo(String pcate);
+	// saleAdmin
 	
-	public List<OrderBean> saleAdminConfirmInfo(String pcate);
+	public List<OrderBean> saleAdminDayList();
 	
-	public List<OrderBean> saleSellerInfo(@Param("id") String id, @Param("pcate") String pcate);
+	public List<OrderBean> saleAdminDayConfirmList();
+	
+	public List<OrderBean> saleAdminDateList();
+	
+	public List<OrderBean> saleAdminDateConfirmList();
+	
+	public List<OrderBean> saleAdminWeekList();
+	
+	public List<OrderBean> saleAdminWeekConfirmList();
+	
+	public List<OrderBean> saleAdminMonthList();
+	
+	public List<OrderBean> saleAdminMonthConfirmList();
+	
+	public List<OrderBean> saleAdminSellerList();
+	
+	public List<OrderBean> saleAdminSellerConfirmList();
+	
+	public List<OrderBean> saleAdminCateList();
+	
+	public List<OrderBean> saleAdminCateConfirmList();
 
-	public List<OrderBean> saleSellerConfirmInfo(@Param("id") String id, @Param("pcate") String pcate);
+	public List<OrderBean> saleAdminCateProductList(String pcate);
+	
+	public List<OrderBean> saleAdminCateProductConfirmList(String pcate);
+	
+	public List<OrderBean> saleAdminSellerCateList(@Param("id") String id, @Param("pcate") String pcate);
+
+	public List<OrderBean> saleAdminSellerCateConfirmList(@Param("id") String id, @Param("pcate") String pcate);
+		
+	public List<OrderBean> saleAdminSellerCateProductList(@Param("id") String id, @Param("pcate") String pcate);
+
+	public List<OrderBean> saleAdminSellerCateProductConfirmList(@Param("id") String id, @Param("pcate") String pcate);
+
 }

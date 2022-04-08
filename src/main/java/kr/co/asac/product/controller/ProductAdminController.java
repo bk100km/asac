@@ -112,5 +112,88 @@ public class ProductAdminController {
         } catch(Exception e) {
         }
 		return fileName;
+	}
+	
+//adminMy
+	
+	@RequestMapping(value = "/pr/ad/aif", method = RequestMethod.POST)
+	@ResponseBody
+	public ProductBean productAdminMyInfo(Model model, String pcode) {
+	    ProductBean product = productAdminService.productAdminMyInfo(model, pcode);
+	    return product;
+	}
+	
+	@RequestMapping(value = "/pr/ad/ali", method = RequestMethod.GET)
+	public String productAdminMyList(Model model,
+			@RequestParam(value="productMySearchCategory", required = false, defaultValue = "pcode") String productMySearchCategory,
+			@RequestParam(value="productMySearchText", required = false, defaultValue = "") String productMySearchText,
+			@ModelAttribute(value = "productMyPaging") PagingBean productMyPaging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int productMyListCnt = productAdminService.productAdminMyCount(productMySearchCategory, productMySearchText);
+		productMyPaging.pageInfo(page, range, productMyListCnt);
+		System.out.println("컨트롤러에서 productPaging 값은 = " + productMyPaging);
+		productAdminService.productAdminMyList(model, productMyPaging);
+		return "product/productAdminListTab";
+	}
+	
+	@RequestMapping(value = "/pr/ad/aup", method = RequestMethod.POST)
+	@ResponseBody
+	public void productAdminMyUpdate(HttpServletRequest request, HttpServletResponse response, Model model, 
+			ProductBean product) throws Exception {
+		
+		productAdminService.productAdminMyUpdate(request, model, response, product);
+	}	
+	
+	@RequestMapping(value = "/pr/ad/ade/pcode/{pcode}", method = RequestMethod.POST)
+	@ResponseBody
+	public void productAdminMyDelete(HttpServletRequest request, HttpServletResponse response, Model model, 
+			@PathVariable("pcode") String pcode) throws Exception {
+		
+		productAdminService.productAdminMyDelete(request, model, response, pcode);
 	}		
+	
+	@RequestMapping(value = "/pr/ad/ain", method = RequestMethod.POST)
+	@ResponseBody
+	public void productAdminMyInsert(HttpServletRequest request, HttpServletResponse response, Model model, 
+			ProductBean product) throws Exception {
+		
+		productAdminService.productAdminMyInsert(request, model, response, product);
+	}
+	
+	@RequestMapping(value = "/pr/ad/ase", method = RequestMethod.POST)
+	@ResponseBody
+	public Map <String, Object> productAdminMySearch(HttpServletRequest request, Model model, 
+			@RequestParam(value="productMySearchCategory") String productMySearchCategory, 
+			@RequestParam(value = "productMySearchText", required = false) String productMySearchText,
+			@ModelAttribute(value = "paging") PagingBean paging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		int listCnt = productAdminService.productAdminMyCount(productMySearchCategory, productMySearchText);
+		paging.pageInfo(page, range, listCnt);
+		System.out.println("컨트롤러에서 paging 값은 = " + paging);
+		
+		List <ProductBean> productMyList;
+	    productMyList = productAdminService.productAdminMySearch(request, model, productMySearchCategory, productMySearchText, paging);
+	    productAdminService.productAdminMyList(model, paging);
+	    
+	    Map<String, Object> map = new HashMap<String, Object>();
+		map.put("paging", paging);
+		map.put("productMyList", productMyList);
+	    return map;
+	}
+	
+		
+	@RequestMapping(value = "/pr/ad/afu", method = RequestMethod.POST, produces="application/text; charset=UTF-8")
+	@ResponseBody
+	public String productAdminMyFileUpload(HttpServletRequest request, Model model, 
+			MultipartFile pfileUpload) throws IOException {
+		String fileName = new String(pfileUpload.getOriginalFilename().getBytes("utf-8"), "utf-8");
+		try {
+			pfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+        } catch(Exception e) {
+        }
+		return fileName;
+	}
 }

@@ -57,7 +57,7 @@ if (sid == null || !sid.equals("admin")) {
 
 			<!-- Sidebar - Brand -->
 			<a class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="http://localhost:8080/asac/me/ad/in">
+				href="<%= request.getContextPath() %>/me/ad/in">
 				<div class="sidebar-brand-icon">
 					<i class="fas fa-regular fa-seedling"></i>
 				</div>
@@ -80,14 +80,14 @@ if (sid == null || !sid.equals("admin")) {
 					aria-labelledby="headingOrders" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">주문 관리</h6>
-						<a class="collapse-item" href="http://localhost:8080/asac/or/ad/al">전체 주문 관리</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/or/ad/sl">본인 주문 관리</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/or/ad/al">전체 주문 관리</a>
+						<a class="collapse-item"href="<%= request.getContextPath() %>/or/ad/sl">본인 주문 관리</a>
 					</div>
 				</div></li>
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/pr/ad/li"> <i
+				href="<%= request.getContextPath() %>/pr/ad/li"> <i
 					class="fas fa-regular fa-box"></i> <span>상품관리</span></a></li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
@@ -100,10 +100,11 @@ if (sid == null || !sid.equals("admin")) {
 					aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">매출 통계</h6>
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/ad/sp">상품별 매출</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/sa/ad/sd">판매자별 매출</a>
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/ad/sd">요일별 매출</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/sa/ad/sd">월별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/ad/dy">날짜별 매출</a>
+						<a class="collapse-item"href="<%= request.getContextPath() %>/sa/ad/ct">상품별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/ad/sl">판매자별 매출</a>
+						<a class="collapse-item"href="<%= request.getContextPath() %>/sa/ad/sy">본인 날짜별 매출</a>
+						<a class="collapse-item"href="<%= request.getContextPath() %>/sa/ad/at">본인 상품별 매출</a>
 					</div>
 				</div></li>
 
@@ -115,12 +116,12 @@ if (sid == null || !sid.equals("admin")) {
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/me/ad/li"> <i
+				href="<%= request.getContextPath() %>/me/ad/li"> <i
 					class="fas fa-solid fa-user"></i> <span>회원관리</span></a></li>
 
 			<!-- Nav Item - Tables -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/me/ad/if"> <i
+				href="<%= request.getContextPath() %>/me/ad/if"> <i
 					class="fas fa-solid fa-users"></i> <span>판매자 정보</span></a></li>
 
 			<!-- Divider -->

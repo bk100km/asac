@@ -56,7 +56,7 @@
 
 			<!-- Sidebar - Brand -->
 			<a class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="http://localhost:8080/asac/me/se/in">
+				href="<%= request.getContextPath() %>/me/se/in">
 				<div class="sidebar-brand-icon">
 					<i class="fas fa-regular fa-seedling"></i>
 				</div>
@@ -71,12 +71,12 @@
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/or/se/li"> <i
+				href="<%= request.getContextPath() %>/or/se/li"> <i
 					class="fas fa-solid fa-truck"></i> <span>주문관리</span></a></li>
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/pr/se/li"> <i
+				href="<%= request.getContextPath() %>/pr/se/li"> <i
 					class="fas fa-regular fa-box"></i> <span>상품관리</span></a></li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
@@ -89,9 +89,9 @@
 					aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">매출 통계</h6> 
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/se/sp">상품별 매출</a>
-						<a class="collapse-item" href="http://localhost:8080/asac/sa/se/sd">요일별 매출</a>
-						<a class="collapse-item"href="http://localhost:8080/asac/sa/se/sd">월별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/sp">상품별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/sd">요일별 매출</a>
+						<a class="collapse-item"href="<%= request.getContextPath() %>/sa/se/sd">월별 매출</a>
 					</div>
 				</div></li>
 
@@ -103,7 +103,7 @@
 
 			<!-- Nav Item - Tables -->
 			<li class="nav-item"><a class="nav-link"
-				href="http://localhost:8080/asac/me/se/iF"> <i
+				href="<%= request.getContextPath() %>/me/se/iF"> <i
 					class="fas fa-solid fa-users"></i> <span>판매자 정보</span></a></li>
 
 			<!-- Divider -->

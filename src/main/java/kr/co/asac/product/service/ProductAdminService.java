@@ -78,4 +78,64 @@ public class ProductAdminService {
 		return productList;
 	}
 
+	
+	//admin My
+	
+	public void productAdminMyList(Model model, PagingBean paging) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		List <ProductBean> productList = productDAO.productAdminMyList(paging);
+		model.addAttribute("productList", productList);
+	}
+	
+	public ProductBean productAdminMyInfo(Model model, String pcode) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		ProductBean product = productDAO.productAdminMyInfo(pcode);		
+		model.addAttribute("product", product);
+		return product;
+	}
+	
+	public void productAdminMyUpdate(HttpServletRequest request, Model model, HttpServletResponse response, ProductBean product) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminMyUpdate(product);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}	
+	
+	public void productAdminMyDelete(HttpServletRequest request, Model model, HttpServletResponse response, String pcode) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminMyDelete(pcode);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}
+	
+	public void productAdminMyInsert(HttpServletRequest request, Model model, HttpServletResponse response, ProductBean product) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		productDAO.productAdminMyInsert(product);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+	}	
+	
+	public int productAdminMyCount(String searchCategory, String searchText) throws Exception {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		int listCnt = productDAO.productAdminMyCount(searchCategory, searchText);
+		System.out.println("productAdminService : productCount ���� " + listCnt);
+		return listCnt;
+	}
+	
+	public List <ProductBean> productAdminMySearch(HttpServletRequest request, Model model, String productMySearchCategory, String productMySearchText, PagingBean paging) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		
+		List <ProductBean> productList = productDAO.productAdminSearch(productMySearchCategory, productMySearchText, paging);
+		model.addAttribute("productList", productList);
+		model.addAttribute("fromURI", request.getServletPath());
+		request.setAttribute("fromURI", request.getServletPath());
+		
+		return productList;
+	}
 }

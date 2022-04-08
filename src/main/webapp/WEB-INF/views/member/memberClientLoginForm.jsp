@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>ASAC 비건마켓</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- modal bootstrap -->
@@ -134,6 +136,8 @@ body {
 							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<form:input path="mpwd" id="mpwd" type="password" class="form-control" name="mpwd" placeholder="비밀번호" data-toggle="tooltip" data-placement="top" title="비밀번호 입력란"  />
 						</div>
+						<a href="http://localhost:8080/asac/member/findid">아이디</a> |
+						<a href="http://localhost:8080/asac/member/findpw">비밀번호 찾기</a>
 						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
 						<button onclick="history.back()" class="btn btn-default"> 뒤로가기</button>
 						</div><hr>

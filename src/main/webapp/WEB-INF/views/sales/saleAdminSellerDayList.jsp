@@ -8,39 +8,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 내역</title>
+<title>매출 목록 상품</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		getGraph();
+	});
+      
+	function getGraph(){
+		var jsonData = ${seldayList}
+		var jsonDataConfirm = ${seldayConfirmList}
+		    	  
+		var jsonObject = JSON.stringify(jsonData);
+		var jsonObjectConfirm = JSON.stringify(jsonDataConfirm);
+		          
+		var jData = JSON.parse(jsonObject);
+		var jDataConfirm = JSON.parse(jsonObjectConfirm);
+		
+		var labelList = new Array();
+		var valueList = new Array();
+		var valueConfirmList = new Array();
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Product', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
+		for (var i = 0; i < jData.length; i++) {
+			var d = jData[i];
+			labelList.push(d.daterange);
+			valueList.push(d.total);
+		}
+		for (var i = 0; i < jDataConfirm.length; i++) {
+			var t = jDataConfirm[i];
+			valueConfirmList.push(t.total);
+		}
+          
+		new Chart(document.getElementById("chart"), {
+			type: "bar",
+			data: {
+				labels : labelList,
+				datasets : [ {
+				label : "총주문수",
+ 					data : valueList,
+					borderColor: "#0055ff",
+					backgroundColor: "#0055ff",
+					borderWidth: 2,
+					borderRadius: 2,
+					borderSkipped: false
+				}, {
+					label : "구매완료수",
+					data : valueConfirmList,
+					borderColor: "#005500",
+					backgroundColor: "#005500",
+					borderWidth: 2,
+					borderRadius: 2,
+					borderSkipped: false
+				}]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						reverse: true,
+						gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}],
+					yAxes: [{
+						ticks: {
+						stepSize: 10000,
+						min:0
+						},
+						display: true,
+						borderDash: [3, 3],
+						gridLines: {
+						color: "rgba(0,0,0,0.0)"
+					}
+				}]
+			},
+			legend: {
+				position: 'bottom',
+				},
+				title:{
+ 				display : true,
+				text: '상품별 매출관리'
+				}
+			}
+		});
+	}
+      
+</script>
 <style>
 body {
 	color: #566787;
@@ -280,34 +338,26 @@ $(function() {
 		return false;
 	});
 });
-
-$(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip();
-});
 </script>
 </head>
 <body>
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
-	    <!-- Content Wrapper -->
-	    <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
-            <div id="content">
-            
+<header>
+<jsp:include page="/WEB-INF/views/common/adminHeader.jsp" flush="false"></jsp:include>
+</header>
 <section id="listForm">
 <div class="table-title">
-	<h1 class="mainTitle">매출 목록(요일)</h1></div>
-		<div class="tabclass">
-  				<button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./ad'">
-				<span class="btde">전체 내역</span></button>
-				<button type="button" id="btnUse" class="btn btn-lg" onclick="location.href='./sd'" class="btn btn-success">
-				<span class="btde">본인 내역</span></button>
-<button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./ad'">
-<span class="btde">요일별 매출</span></button>
-<button type="button" id="btnUse" class="btn btn-lg" onclick="location.href='./ap'" class="btn btn-success">
-<span class="btde">상품/카테고리별 매출</span></button>
+	<h1 class="mainTitle">매출 통계(날짜)</h1></div>
+<div>
+
+<button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./sy'">
+<span class="btde">요일별</span></button>
+<button type="button" id="btnRes" class="btn btn-lg" onclick="location.href='./st'">
+<span class="btde">일별</span></button>
+<button type="button" id="btnUse" class="btn btn-lg" onclick="location.href='./se'" class="btn btn-success">
+<span class="btde">주별</span></button>
+<button type="button" id="btnUse" class="btn btn-lg" onclick="location.href='./so'" class="btn btn-success">
+<span class="btde">월별</span></button>
+
 </div>
 <div class="container-xl">
     <div id="wrapper">
@@ -322,7 +372,7 @@ $(document).ready(function(){
             <table class="table table-striped table-hover">
                 <thead>
 					<tr class="line">
-						<td>상품</td>
+						<td>요일</td>
 						<td>구매완료수</td>
 						<td>총 주문수</td>
 						<td>구매완료 금액</td>
@@ -330,12 +380,20 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody>
-				  <c:forEach var="sale" items="${saleAdminProductCateList}" varStatus="status">
+				  <c:forEach var="sale" items="${saleSellerDayList}" varStatus="status">
 						<tr class="line">
-							<td>${sale.pcate}</td>
-							<td>${saleAdminProductCateConfirmList[status.index].count}</td>
+							<td>${sale.daterange}</td>
+							<td>
+								<c:choose>
+								<c:when test="${saleSellerDayConfirmList[status.index].count eq null}">0</c:when>
+								<c:when test="${saleSellerDayConfirmList[status.index].count ne null}">${saleSellerDayConfirmList[status.index].count}</c:when>
+								</c:choose></td>
 							<td>${sale.count}</td>
-							<td><fmt:formatNumber value="${saleAdminProductCateConfirmList[status.index].total}" pattern="#,###"/>원</td>
+							<td>
+								<c:choose>
+								<c:when test="${saleSellerDayConfirmList[status.index].total eq null}">0원</c:when>
+								<c:when test="${saleSellerDayConfirmList[status.index].total ne null}"><fmt:formatNumber value="${saleSellerDayConfirmList[status.index].total}" pattern="#,###"/>원</c:when>
+								</c:choose></td>
 							<td><fmt:formatNumber value="${sale.total}" pattern="#,###"/>원</td>
 						</tr>
 					</c:forEach>
@@ -349,25 +407,18 @@ $(document).ready(function(){
     
     
     <div class="col-lg-6">
-	<div class="panel panel-default">
-   				 <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
-        </div>
+    	<div class="panel panel-default">
+    		<canvas id="chart"></canvas>
+		</div>	
     </div>
-    
-    
+      
     		</div>
     	</div>
     </div>        
 </div>
-
 </section>
-	<br><br><br>
-	<footer>
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-	</footer>
-	</div>
-	</div>
-</div>
-   
+<footer>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+</footer> 
 </body>
 </html>

@@ -52,6 +52,16 @@
 		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
 		value (#{mid}, #{mpwd}, #{mname}, #{mbirth}, replace(#{mphone}, '-', ''), #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
 	</insert>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePw" >
+		update member set mpwd = #{mpwd} where mid = #{mid}
+	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findId" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mname = #{mname} and mmail = #{mmail} and mphone = #{mphone}
+	</select>
 
 
 	<!-- seller -->
@@ -116,7 +126,7 @@
 	
 	<insert id="memberAdminClientInsert">
 		insert into member(mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail) 
-		values(#{mid}, "123123", #{mname}, #{mbirth}, #{mphone}, #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+		values(#{mid}, #{mpwd}, #{mname}, #{mbirth}, #{mphone}, #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
 	</insert>	
 	
 	<update id="memberAdminClientUpdate">
@@ -199,6 +209,21 @@
 		from orders 
 		join product on orders.pcode = product.pcode 
 		group by month(oregdate);
+	</select>
+	
+	<select id="recentOrder" resultType="kr.co.asac.orders.bean.OrderBean">
+		select mid, pname, oregdate
+		from orders 
+		join product on orders.pcode=product.pcode 
+		order by oregdate desc limit 3;
+	</select>
+	
+	<select id="topThreeOrder" resultType="kr.co.asac.product.bean.ProductBean">
+		select count(pname) cnt
+		, pname, pcate, ptag from orders 
+		join product on orders.pcode=product.pcode 
+		group by pname 
+		order by cnt desc limit 3;
 	</select>
 	
 </mapper>

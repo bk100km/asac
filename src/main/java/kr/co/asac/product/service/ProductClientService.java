@@ -168,6 +168,33 @@ public class ProductClientService {
 		model.addAttribute("totalreview", total);
 		model.addAttribute("average", raverage);
 	    }	
+	
+	// indexList
+//	public void productClientIndexList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+//		
+//		String pcate = request.getParameter("pcate");
+//		String ptag = request.getParameter("ptag");
+//		String nowPage = "1";
+//		String cntPerPage = "6";
+//		String text = request.getParameter("text");
+//		String items = request.getParameter("items");
+//		int total = 8;
+//		
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		
+//		PagingVO vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+//		model.addAttribute("paging", vo);
+//		map.put("vo",vo);
+//		
+//		map.put("pcate",pcate);
+//		map.put("text",text);
+//		map.put("items",items);
+//		map.put("ptag",ptag);
+//
+//		ProductDAO productDAO= sqlSessionTemplate.getMapper(ProductDAO.class);
+//		List<ProductBean> list = productDAO.productList(map);
+//		model.addAttribute("proClientListlist", list);
+//	}
 	}
 
 

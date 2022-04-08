@@ -44,8 +44,7 @@ public class MemberAdminController {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@RequestMapping("/me/ad/in")
-	public String memberAdminIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member) throws Exception  {
-		
+	public String memberAdminIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member, OrderBean vo) throws Exception {
 		memberAdminService.memberCountMonth(request, response, model);
 		
 		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
@@ -74,6 +73,8 @@ public class MemberAdminController {
 		String listjson4 = new Gson().toJson(myAreaChart4);
 		model.addAttribute("list4", listjson4);
 		
+		memberAdminService.recentOrder(request, response, model, vo);
+		memberAdminService.topThreeOrder(request, response, model, vo);
 		return "adminIndex";
 	}
 	
@@ -83,16 +84,46 @@ public class MemberAdminController {
 	}
 	
 	@RequestMapping(value = "/me/ad/lA", method = RequestMethod.POST)
-	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
+	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller, OrderBean vo) throws Exception {
 		
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		List<MemberBean> myAreaChart = dao.memberCountMonth();
+		model.addAttribute("myAreaChart", myAreaChart);
+		
+		List<ProductBean> myAreaChart2 = dao.productCountMonth();
+		model.addAttribute("myAreaChart2", myAreaChart2);
+		
+		List<OrderBean> myAreaChart3 = dao.ordersCountMonth();
+		model.addAttribute("myAreaChart3", myAreaChart3);
+		
+		List<OrderBean> myAreaChart4 = dao.ordersSumMonth();
+		model.addAttribute("myAreaChart4", myAreaChart4);
+		
+		String listjson = new Gson().toJson(myAreaChart);
+		model.addAttribute("list", listjson);
+		
+		String listjson2 = new Gson().toJson(myAreaChart2);
+		model.addAttribute("list2", listjson2);
+		
+		String listjson3 = new Gson().toJson(myAreaChart3);
+		model.addAttribute("list3", listjson3);
+		
+		String listjson4 = new Gson().toJson(myAreaChart4);
+		model.addAttribute("list4", listjson4);
+		
+		memberAdminService.recentOrder(request, response, model, vo);
+		memberAdminService.topThreeOrder(request, response, model, vo);
+		
+		System.out.println("로그인 액션 들어왔어");
 		memberSellerService.memberSellerLoginCheck(request, response, model, seller);		
-		return "redirect:http://localhost:8080/asac/me/ad/in";
+		return "/adminIndex";
 	}
 	
 	@RequestMapping(value = "/me/ad/lO", method = RequestMethod.GET)
 	public String memberAdminLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/asac/";
+		return "redirect:http://localhost:8080/";
 	}
 	
 	@RequestMapping(value = "/me/ad/if", method = RequestMethod.GET)

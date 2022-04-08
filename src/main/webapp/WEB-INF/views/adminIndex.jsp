@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,12 +11,22 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 	<script>
 	$(document).ready(function(){ 
+		getRandomColor();
 		getGraph();
 		getGraph2();
 		getGraph3();
 		getGraph4();
 	});
-  
+			
+	function getRandomColor() {
+	    var letters = '0123456789ABCDEF'.split('');
+	    var color = '#';
+	    for (var i = 0; i < 6; i++ ) {
+	        color += letters[Math.floor(Math.random() * 16)];
+	    }
+	    return color;
+	}
+	 
   function getGraph(){
 	  var jsonData = ${list};
       var jsonObject = JSON.stringify(jsonData);
@@ -38,8 +49,11 @@
             datasets : [ {
                label : "총 회원수",
                data : valueList,
-               borderColor: "#0055ff",
-               backgroundColor: "#0055ff",
+               backgroundColor: [
+             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+               ],
                borderWidth: 2,
                borderRadius: 2,
                borderSkipped: false
@@ -101,8 +115,11 @@
              datasets : [ {
                 label : "총 상품수",
                 data : valueList,
-                borderColor: "#0055ff",
-                backgroundColor: "#3e95cd",
+                backgroundColor: [
+              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                ],
                 borderWidth: 2,
                 borderRadius: 2,
                 borderSkipped: false
@@ -162,8 +179,12 @@
              datasets : [ {
                 label : "총 구매수",
                 data : valueList,
-                borderColor: "#0055ff",
-                backgroundColor: "#ffffff",
+                backgroundColor: [
+                	"#ffffff"
+                ],
+                borderColor:[
+                	getRandomColor()
+                ],
                 borderWidth: 2,
                 borderRadius: 2,
                 borderSkipped: false
@@ -223,8 +244,11 @@
              datasets : [ {
                 label : "총 구매수",
                 data : valueList,
-                borderColor: "#0055ff",
-                backgroundColor: "#0055ff",
+                backgroundColor: [
+                   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
+              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                ],
                 borderWidth: 2,
                 borderRadius: 2,
                 borderSkipped: false
@@ -263,7 +287,6 @@
   }
 	</script>
 </head>
-
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -279,24 +302,34 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">관리자 통계</h1>
-                    </div>
-
-                    <!-- Content Row -->
+                    
                     <div class="row">
-
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="text-sm font-weight-bold text-success text-uppercase mb-1">
+												최근 주문 내역
+                                            </div>
+                                            <div class="h8 mb-0 font-weight-bold text-gray-800">
+	                                            <table class="table table-hover">
+	                                           		<tr>
+	                                            		<td>고객명</td>
+	                                            		<td>상품명</td>
+	                                            		<td>주문 날짜</td>
+	                                           		</tr>
+                                            		<c:forEach items="${recentOrder }" var="orders">
+                                            		<tr>
+                                            			<td>${orders.mid }</td>
+                                            			<td>${orders.pname }</td>
+                                            			<td><fmt:formatDate value="${orders.oregdate }" pattern="yyyy-MM-dd"/></td>
+                                            		</tr>
+                                            		
+                                            		</c:forEach>
+                                            	</table>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -305,66 +338,37 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            <div class="text-sm font-weight-bold text-warning text-uppercase mb-1">
+												TOP3 주문 내역
+                                            </div>
+                                            <div class="h8 mb-0 font-weight-bold text-gray-800">
+	                                            <table class="table table-hover">
+	                                           		<tr>
+	                                            		<td>Top3</td>
+	                                            		<td>판매수</td>
+	                                            		<td>상품명</td>
+	                                            		<td>카테고리</td>
+	                                            		<td>상품 태그</td>
+	                                           		</tr>
+                                            		<c:forEach items="${topThreeOrder}" var="top" varStatus="status">
+                                            		<tr>
+                                            			<td>${status.count}</td>
+                                            			<td>${top.cnt }</td>
+                                            			<td>${top.pname }</td>
+                                            			<td>${top.pcate }</td>
+                                            			<td>${top.ptag }</td>
+                                            		</tr>
+                                            		</c:forEach>
+                                            	</table>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

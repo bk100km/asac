@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -65,6 +66,11 @@ public class MemberAdminService {
 	
 	public void memberAdminClientInsert(HttpServletRequest request, Model model, HttpServletResponse response, MemberBean member) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String secureMpwd = encoder.encode("123123");
+		member.setMpwd(secureMpwd);
+		System.out.println("secureMpwd 값은 = " + secureMpwd);
 		
 		memberDAO.memberAdminClientInsert(member);
 		model.addAttribute("fromURI", request.getServletPath());
@@ -210,4 +216,16 @@ public class MemberAdminService {
 		List<OrderBean> ordersSumMonth = dao.ordersSumMonth();
 		model.addAttribute("ordersSumMonth", ordersSumMonth);
 	}	
+	
+	public void recentOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<OrderBean> recentOrder = dao.recentOrder();
+		model.addAttribute("recentOrder", recentOrder);
+	}
+	
+	public void topThreeOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
+		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		List<ProductBean> topThreeOrder = dao.topThreeOrder();
+		model.addAttribute("topThreeOrder", topThreeOrder);
+	}
 }

@@ -422,8 +422,46 @@ public class MemberClientController {
 		// 4.파싱 닉네임 세션으로 저장
 		session.setAttribute("mid", member.getMid()); // 세션 생성
 		model.addAttribute("result", apiResult);
-		
+		// test
 		return "redirect:http://localhost:8080/asac/me/cl/my";
+	}
+	
+	@RequestMapping(value = "/member/findpw", method = RequestMethod.GET)
+	public String findPwGET() throws Exception{
+		return "member/findpw";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/member/findpw", method = RequestMethod.POST)
+	public void findPwPOST(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value = "id") String mid,
+			@RequestParam(value = "email") String mmail) throws Exception{
+		System.out.println("들어왔어findpw");
+		MemberBean member = new MemberBean();
+		member.setMid(mid);
+		member.setMmail(mmail);
+		memberClientService.findPw(request, response, member, model, mid);
+		System.out.println(member);
+	}
+	
+	@RequestMapping(value = "/member/findid", method = RequestMethod.GET)
+	public String findIdGET() throws Exception{
+		return "member/findid";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/member/findid", method = RequestMethod.POST)
+	public void findIdPOST(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value = "name") String mname,
+			@RequestParam(value = "phone") String mphone,
+			@RequestParam(value = "email") String mmail) throws Exception{
+		System.out.println("들어왔어findid");
+		MemberBean member = new MemberBean();
+		member.setMname(mname);
+		member.setMphone(mphone);
+		member.setMmail(mmail);
+		System.out.println(member);
+		memberClientService.findId(request, response, member, model, mname, mphone, mmail);
 	}
 
 }

@@ -43,11 +43,10 @@ public class OrderSellerController {
 		
 		int orderListCnt = orderSellerService.orderSellerListCount(request, orderSearchCategory, orderSearchText);
 		orderPaging.pageInfo(page, range, orderListCnt);
-		System.out.println("컨트롤러에서 orderPaging 값은 = " + orderPaging);
 		
 		orderSellerService.orderSellerList(request, response, model, orderPaging);
 		
-		return "orders/orderSellerList";
+		return "orders/orderSellerPage";
 	}
 	
 	@RequestMapping(value = "/or/se/ls", method = RequestMethod.POST)
@@ -60,13 +59,10 @@ public class OrderSellerController {
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
 		int listCnt = orderSellerService.orderSellerListCount(request, searchCategory, searchText);
-		System.out.println("컨트롤러에서 page, range 값은 = " + page + range);
-		System.out.println("컨트롤러에서 searchCategory, searchText 값은 = " + searchCategory + searchText);
+
 		paging.pageInfo(page, range, listCnt);
 		
-		System.out.println("컨트롤러에서 paging 값은 = " + paging);
 		List <OrderBean> orderList = orderSellerService.orderSellerListSearch(request, model, searchCategory, searchText, paging);
-		System.out.println("orderList확인"+orderList);
 		
 	    Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("paging", paging);
@@ -77,8 +73,6 @@ public class OrderSellerController {
 	@RequestMapping(value = "/or/se/in", method = RequestMethod.POST)
 	@ResponseBody
 	public OrderBean orderSellerInfo(Model model, @RequestParam("ocode") String ocode, @RequestParam("pname") String pname) {
-		System.out.println("info" + ocode);
-		System.out.println("info1" + pname);
 		OrderBean order = orderSellerService.orderSellerInfo(model, ocode, pname);
 		return order;
 	}
@@ -86,7 +80,6 @@ public class OrderSellerController {
 	@RequestMapping(value = "/or/se/up", method = RequestMethod.POST)
 	@ResponseBody
 	public void orderSellerUpdate(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, Search search) throws Exception {
-		System.out.println("update" + order);
 		orderSellerService.orderSellerUpdate(request, model, response, order);
 	}
 	
