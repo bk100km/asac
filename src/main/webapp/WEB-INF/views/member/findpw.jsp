@@ -12,7 +12,7 @@
 	$(function(){
 		$("#findBtn").click(function(){
 			$.ajax({
-				url : "http://localhost:8080/asac/member/findpw",
+				url : "http://localhost:8080/me/cl/fP",
 				type : "POST",
 				data : {
 					id : $("#mid").val(),
@@ -20,7 +20,7 @@
 				},
 				success : function(result) {
 					alert(result);
-					location.href="http://localhost:8080/asac/me/cl/lo";
+					location.href="http://localhost:8080/me/cl/lo";
 				},
 			})
 		});

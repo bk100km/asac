@@ -241,6 +241,10 @@ public class MemberClientService {
 				System.out.println("findId()에서 id값은 = " + ck.getMid());
 				sendEmail(ck, "findId");
 				out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+				/*
+				 * out.println(
+				 * "<script>location.href='http://localhost:8080/me/cl/lo';</script>");
+				 */
 				out.close();
 			}
 		}

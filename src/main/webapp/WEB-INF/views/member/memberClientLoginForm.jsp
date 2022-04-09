@@ -6,12 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ASAC 비건마켓</title>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- modal bootstrap -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <script>
@@ -43,7 +40,7 @@
   function kakaoLogin() {
 
     $.ajax({
-        url: 'http://localhost:8080/asac/me/cl/lo/getKakaoAuthUrl',
+        url: 'http://localhost:8080/me/cl/lo/getKakaoAuthUrl',
         type: 'get',
         async: false,
         dataType: 'text',
@@ -120,7 +117,7 @@ body {
 						<h2>네이버 아이디 로그인 성공하셨습니다!!</h2>
 						<h3>'${mid}' 님 환영합니다!</h3>
 						<h3>
-							<a href="http://localhost:8080/asac/logout">로그아웃</a>
+							<a href="http://localhost:8080/logout">로그아웃</a>
 						</h3>
 					</c:when>
 					<c:otherwise>
@@ -136,8 +133,8 @@ body {
 							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<form:input path="mpwd" id="mpwd" type="password" class="form-control" name="mpwd" placeholder="비밀번호" data-toggle="tooltip" data-placement="top" title="비밀번호 입력란"  />
 						</div>
-						<a href="http://localhost:8080/asac/member/findid">아이디</a> |
-						<a href="http://localhost:8080/asac/member/findpw">비밀번호 찾기</a>
+						<a href="http://localhost:8080/me/cl/fI">아이디</a> |
+						<a href="http://localhost:8080/me/cl/fP">비밀번호 찾기</a>
 						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
 						<button onclick="history.back()" class="btn btn-default"> 뒤로가기</button>
 						</div><hr>
@@ -152,7 +149,7 @@ body {
 							<img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/></a></div>
 						<br>
 						<div align="center">
-							<a href="http://localhost:8080/asac/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
+							<a href="http://localhost:8080/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
 						</div>
 						</form:form>
 					</c:otherwise>

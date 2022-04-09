@@ -426,13 +426,13 @@ public class MemberClientController {
 		return "redirect:http://localhost:8080/asac/me/cl/my";
 	}
 	
-	@RequestMapping(value = "/member/findpw", method = RequestMethod.GET)
+	@RequestMapping(value = "/me/cl/fP", method = RequestMethod.GET)
 	public String findPwGET() throws Exception{
 		return "member/findpw";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/member/findpw", method = RequestMethod.POST)
+	@RequestMapping(value = "/me/cl/fP", method = RequestMethod.POST)
 	public void findPwPOST(HttpServletRequest request, HttpServletResponse response, Model model,
 			@RequestParam(value = "id") String mid,
 			@RequestParam(value = "email") String mmail) throws Exception{
@@ -444,13 +444,13 @@ public class MemberClientController {
 		System.out.println(member);
 	}
 	
-	@RequestMapping(value = "/member/findid", method = RequestMethod.GET)
+	@RequestMapping(value = "/me/cl/fI", method = RequestMethod.GET)
 	public String findIdGET() throws Exception{
 		return "member/findid";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/member/findid", method = RequestMethod.POST)
+	@RequestMapping(value = "/me/cl/fI", method = RequestMethod.POST)
 	public void findIdPOST(HttpServletRequest request, HttpServletResponse response, Model model,
 			@RequestParam(value = "name") String mname,
 			@RequestParam(value = "phone") String mphone,

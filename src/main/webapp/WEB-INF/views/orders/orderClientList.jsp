@@ -13,7 +13,6 @@
 
 </head>
 <body>
-      <h3>주문 내역</h3>
       <br>
       <div class="table-responsive">
      

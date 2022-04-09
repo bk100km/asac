@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
+import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.utils.PagingBean;
 
 public interface OrderDAO {
@@ -39,6 +40,8 @@ public interface OrderDAO {
 	
 	public void orderSellerDelete(String ocode);
 	
+	public void orderSellerDeliveryUpdate(OrderBean order);
+	
 	// orderAdmin
 	
 	public List<OrderBean> orderAdminList(@Param("paging") PagingBean paging);
@@ -52,5 +55,8 @@ public interface OrderDAO {
 	public void orderAdminUpdate(OrderBean order);
 	
 	public void orderAdminDelete(String ocode);
-
+	
+	public void orderAdminDeliveryUpdate(OrderBean order);
+	
+	public List<ProductBean> orderProductList();
 }

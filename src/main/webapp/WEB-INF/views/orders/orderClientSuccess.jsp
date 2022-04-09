@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-야호
+야호~!!
+${orderClientInfo}
 </body>
 </html>

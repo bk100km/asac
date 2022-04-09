@@ -5,140 +5,71 @@
 
 <mapper namespace="kr.co.asac.product.dao.ProductDAO">
 
-	<!-- admin -->
-	<select id="productAdminCount" resultType="int">
-		select count(*) as listCnt from product where ${searchCategory} like concat('%', #{searchText}, '%')
-	</select>
+	<!-- ProductSeller -->
 	
-	<select id="productAdminList" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product order by pcode asc limit #{paging.startList}, #{paging.listSize}
-	</select>
-	
-	<select id="productAdminInfo" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where pcode=#{pcode}
-	</select>
-	
-	<insert id="productAdminInsert">
+		<select id="productSellerList" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where sid = #{id} order by pcode asc limit #{paging.startList}, #{paging.listSize}
+		</select>
+
+		<select id="productSellerListCount" resultType="int">
+		select count(*) as listCnt from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') and sid = #{id} 
+		</select>
+
+		<select id="productSellerListSearch" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') and sid = #{id}
+		order by pcode asc limit #{paging.startList}, #{paging.listSize} 
+		</select>
+
+		<select id="productSellerInfo" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where pcode = #{pcode}
+		</select>
+		
+		<insert id="productSellerInsert">
 		insert into product(pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
 		values(#{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, now(), #{sid})
-	</insert>	
+		</insert>
+
+		<update id="productSellerUpdate" parameterType="kr.co.asac.product.bean.ProductBean">
+		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate}, ptag=#{ptag}, pfile=#{pfile}, 
+		pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid} where pcode=#{pcode} 
+ 		</update>
+
+		<delete id="productSellerDelete">
+		delete from product where pcode = #{pcode} 
+		</delete>
+
+	<!-- ProductAdmin -->
 	
-	<update id="productAdminUpdate">
- 		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate},
- 		ptag=#{ptag}, pfile=#{pfile}, pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid}
- 		where pcode=#{pcode}
- 	</update>
-	
-	<delete id="productAdminDelete">
-		delete from product where pcode=#{pcode}
-	</delete>		
-	
-	<select id="productAdminSearch" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where ${searchCategory} like concat('%', #{searchText}, '%') order by pcode asc limit #{paging.startList}, #{paging.listSize}
-	</select>
-	
-	
-	
-	<!-- adminMy -->
-	<select id="productAdminMyCount" resultType="int">
-		select count(*) as listCnt from product where ${productMySearchCategory} like concat('%', #{productMySearchText}, '%')
-	</select>
-	
-	<select id="productAdminMyList" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where sid=#{sid} order by pcode asc limit #{paging.startList}, #{paging.listSize}
-	</select>
-	
-	<select id="productAdminMyInfo" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where pcode=#{pcode}
-	</select>
-	
-	<insert id="productAdminMyInsert">
+		<select id="productAdminList" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product order by pcode asc limit #{paging.startList}, #{paging.listSize} 
+		</select>
+
+		<select id="productAdminListCount" resultType="int">
+		select count(*) as listCnt from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') 
+		</select>
+
+		<select id="productAdminListSearch" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where ${searchCategory} like CONCAT('%', #{searchText}, '%')
+		order by pcode asc limit #{paging.startList}, #{paging.listSize} </select>
+
+		<select id="productAdminInfo" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where pcode = #{pcode}
+		</select>
+		
+		<insert id="productAdminInsert">
 		insert into product(pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
 		values(#{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, now(), #{sid})
-	</insert>	
-	
-	<update id="productAdminMyUpdate">
- 		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate},
- 		ptag=#{ptag}, pfile=#{pfile}, pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid}
- 		where pcode=#{pcode}
- 	</update>
-	
-	<delete id="productAdminMyDelete">
-		delete from product where pcode=#{pcode}
-	</delete>		
-	
-	<select id="productAdminMySearch" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where ${productMySearchCategory} like concat('%', #{productMySearchText}, '%') order by pcode asc limit #{paging.startList}, #{paging.listSize}
-	</select>
-	
-	
-	<!-- seller -->	
-	<select id="productSellerList" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			sid = #{id}
-			<if test="searchSe.searchType==null">
-			</if>
-			<if test="searchSe.searchType=='pname' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND pname like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-			<if test="searchSe.searchType=='ptag' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND ptag like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-			<if test="searchSe.searchType=='pcontent' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND pcontent like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-			<if test="searchSe.searchType=='sid' and searchSe.keyword != null and searchSe.keyword != '' ">
-				AND sid like CONCAT('%', #{searchSe.keyword}, '%')
-			</if>
-		</trim>
-		order by pcode asc
-		limit #{searchSe.startList}, #{searchSe.listSize}
-	</select>
-	
-	<!-- 전체 글의 개수를 읽어 오는 SQL문 -->
-	<select id="productSellerCount" resultType="int">
-		select count(*) as listCnt from product pcode
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			sid = #{id}
-			<if test="searchSe.keyword != null and searchSe.keyword != '' ">
-				<if test="searchSe.searchType=='pname'">
-					AND pname like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-				<if test="searchSe.searchType=='ptag'">
-					AND ptag like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-				<if test="searchSe.searchType=='pcontent'">
-					AND pcontent like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>
-				<if test="searchSe.searchType=='sid'">
-					AND sid like CONCAT('%', #{searchSe.keyword}, '%')
-				</if>				
-			</if>
-		</trim>
-	</select>
-	
-	<select id="productSellerInfo" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where pcode=#{pcode}
-	</select>
-	
-	<insert id="productSellerInsert" parameterType="kr.co.asac.product.bean.ProductBean">
-		insert into product (pcode, pname, pprice, pcate, ptag, pfile, pcontent, pregdate, sid) 
-		values (#{pcode}, #{pname}, #{pprice}, #{pcate}, #{ptag}, #{pfile}, #{pcontent}, now(), #{sid})
-	</insert>
+		</insert>
 
-	<update id="productSellerUpdate" parameterType="kr.co.asac.product.bean.ProductBean">
-		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate},
-		ptag=#{ptag}, pfile=#{pfile}, pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid}
-		where pcode=#{pcode}
-	</update>
-	
-	<delete id="productSellerDelete">
-		delete from product where pcode=#{pcode}
-	</delete>
-	
-	
+		<update id="productAdminUpdate" parameterType="kr.co.asac.product.bean.ProductBean">
+		update product set pcode=#{pcode}, pname=#{pname}, pprice=#{pprice}, pcate=#{pcate}, ptag=#{ptag}, pfile=#{pfile}, 
+		pcontent=#{pcontent}, pregdate=#{pregdate}, sid=#{sid} where pcode=#{pcode} 
+		</update>
 
+		<delete id="productAdminDelete">
+		delete from product where pcode = #{pcode}
+		</delete>
+		
 	<!-- client -->	
 		<select id="productList"   parameterType="hashmap" resultType="kr.co.asac.product.bean.ProductBean">
 		

@@ -74,7 +74,7 @@ $(document).ready(function(){
 <div class="container">
 	<div class="input-form-background row">
 		<div class="input-form mx-auto my-auto">
-			<form action="http://localhost:8080/asac/me/cl/dC" method="post" id="delForm">
+			<form action="http://localhost:8080/me/cl/dC" method="post" id="delForm">
 				<h3 class="mb-3">회원탈퇴</h3>
 				<hr class="mb-4">
 				<input type="hidden" id="mid" name="mid" value="${member.mid}"/>

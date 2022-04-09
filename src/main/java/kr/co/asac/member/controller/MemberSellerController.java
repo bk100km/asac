@@ -2,13 +2,11 @@ package kr.co.asac.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,59 +16,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-
+import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.SellerBean;
-import kr.co.asac.member.dao.MemberDAO;
 import kr.co.asac.member.service.MemberSellerService;
 import kr.co.asac.orders.bean.OrderBean;
-import kr.co.asac.product.bean.ProductBean;
 
 @Controller
 public class MemberSellerController {
 	
 	@Autowired
 	private MemberSellerService memberSellerService;
-
-	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;
 	
 	// seller
 	@RequestMapping("/me/se/in")
-	public String memberSellerIndex(Model model ,HttpServletResponse response,HttpServletRequest request,SellerBean seller,ProductBean pvo) {
+	public String memberSellerIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member, OrderBean vo) throws Exception {
 		
-		memberSellerService.sellerProduct(request, response, model);
-		MemberDAO memberdao =sqlSessionTemplate.getMapper(MemberDAO.class);
-		
-		List<OrderBean> myAreaChart = memberdao.sellerProduct();
-		model.addAttribute("myAreaChart",myAreaChart);
-		
-		String listjson =new Gson().toJson(myAreaChart);
-		model.addAttribute("list",listjson);
-		
-		memberSellerService.sellermoney(request, response, model, pvo);
-		
-		int pcount =0;
-		int ocount =0;
-		int rcount =0;
-		
-		System.out.println("컨트롤러에서 sid 값은 = " + request.getSession().getAttribute("sid"));
-		pcount =memberSellerService.sellerProductcount(pcount, request);
-		ocount =memberSellerService.sellerOrderscount(ocount);
-		rcount =memberSellerService.sellerReviewcount(rcount);
-		
-		System.out.println(pcount);
-		System.out.println(ocount);
-		System.out.println(rcount);
-		
-		model.addAttribute("pcount", pcount);
-		model.addAttribute("ocount",ocount);
-		model.addAttribute("rcount",rcount);
-		
-		
-		
-		
-		
+		memberSellerService.sellerIndexChart(request, response, model, vo);		
 		return "sellerIndex";
 	}
 	
@@ -82,16 +43,17 @@ public class MemberSellerController {
 	}
 	
 	@RequestMapping(value = "/me/se/lA", method = RequestMethod.POST)
-	public String memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
+	public String memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller, OrderBean vo) throws Exception {
 		
-		memberSellerService.memberSellerLoginCheck(request, response, model, seller);		
+		memberSellerService.memberSellerLoginCheck(request, response, model, seller);
+		memberSellerService.sellerIndexChart(request, response, model, vo);	
 		return "sellerIndex";
 	}
 	
 	@RequestMapping(value = "/me/se/lO", method = RequestMethod.GET)
 	public String memberSellerLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/asac/";
+		return "redirect:http://localhost:8080/";
 	}
 	
 	@RequestMapping(value = "/me/se/jo", method = RequestMethod.GET)

@@ -83,6 +83,13 @@ public class OrderSellerController {
 		orderSellerService.orderSellerUpdate(request, model, response, order);
 	}
 	
+	@RequestMapping(value = "/or/se/dc", method = RequestMethod.POST)
+	@ResponseBody
+	public void orderSellerDeliveryUpdate(OrderBean order) throws Exception {
+		System.out.println(order);
+		orderSellerService.orderSellerDeliveryUpdate(order);
+	}
+	
 	@RequestMapping(value = "or/se/de/ocode/{ocode}", method = RequestMethod.POST)
 	@ResponseBody
 	public void orderSellerDelete(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("ocode") String ocode) throws Exception {

@@ -26,7 +26,7 @@ public class OrderClientService {
 	private SqlSessionTemplate sqlSessionTemplate;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 	
-	public void orderClientInsert(String sidarr, String mid, String pcodearr, String ocountarr, String oname,
+	public String orderClientInsert(String sidarr, String mid, String pcodearr, String ocountarr, String oname,
 			String oaddrz, String oaddr, String oaddrd, String ophone,  String ototalarr, String omessage) {
 		System.out.println("서비스 들어옴");
 		OrderBean order = new OrderBean();
@@ -66,6 +66,8 @@ public class OrderClientService {
 				dao.orderClientInsert(order);
 			}
 			System.out.println(order);
+			
+			return ocode;
     }
 	
 	public List<OrderBean> orderClientList(String mid, OrderBean order) {

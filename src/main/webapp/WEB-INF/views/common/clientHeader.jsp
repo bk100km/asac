@@ -12,18 +12,18 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/open-iconic-bootstrap.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/animate.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.carousel.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/magnific-popup.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/aos.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/ionicons.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/jquery.timepicker.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/flaticon.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/icomoon.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/style.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/animate.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/magnific-popup.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/aos.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/ionicons.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/jquery.timepicker.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/flaticon.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/icomoon.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/style.css">
 
 <!-- Pretendard Font -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
@@ -365,20 +365,20 @@
 		</nav>
 	</header>
 	
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/owl.carousel.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.magnific-popup.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/aos.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.animateNumber.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap-datepicker.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/scrollax.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/owl.carousel.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.magnific-popup.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/aos.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.animateNumber.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap-datepicker.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/scrollax.min.js"></script>
 	<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/google-map.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/main.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/google-map.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/main.js"></script>
 </body>

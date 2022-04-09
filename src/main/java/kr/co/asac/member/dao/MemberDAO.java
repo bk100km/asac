@@ -58,7 +58,7 @@ public interface MemberDAO {
 	public void memberAdminSellerSokCheck(SellerBean seller);
 	
 	
-	// chart
+	// chartAdmin
 	public List<MemberBean> memberAdminDayList(String id);
 	public List<MemberBean> memberAdminDayConfirmList(String id);
 	public List<MemberBean> memberCountMonth();
@@ -67,4 +67,12 @@ public interface MemberDAO {
 	public List<OrderBean> ordersSumMonth();
 	public List<OrderBean> recentOrder();
 	public List<ProductBean> topThreeOrder();
+	
+	// chartSeller
+	public List<SellerBean> sellerCountMonth();
+	public List<ProductBean> sellerProductCountMonth(String sid);
+	public List<OrderBean> sellerOrdersCountMonth(String sid);
+	public List<OrderBean> sellerOrdersSumMonth(String sid);
+	public List<OrderBean> sellerRecentOrder(String sid);
+	public List<ProductBean> sellerTopThreeOrder(String sid);
 }

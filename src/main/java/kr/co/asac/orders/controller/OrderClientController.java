@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +28,7 @@ public class OrderClientController {
 	
 	@ResponseBody
 	@RequestMapping(value="/or/cl/is", method = RequestMethod.POST)
-	public int orderClientInsert(HttpServletRequest request, Model model, 
+	public String orderClientInsert(HttpServletRequest request, Model model, 
 			@RequestParam(value="sidarr", required = false) String sidarr, 
 			@RequestParam(value="pcodearr", required = false) String pcodearr, @RequestParam(value="ocountarr", required = false) String ocountarr, 
 			@RequestParam(value="oname", required = false) String oname, @RequestParam(value="oaddrz", required = false) String oaddrz, 
@@ -53,14 +54,24 @@ public class OrderClientController {
 		
 		HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
-		orderClientService.orderClientInsert(sidarr, mid, pcodearr, ocountarr,oname, oaddrz,oaddr, 
+		String ocode = orderClientService.orderClientInsert(sidarr, mid, pcodearr, ocountarr,oname, oaddrz,oaddr, 
 				oaddrd,ophone,ototalarr, omessage);
-
-		int result = 0; 
-		return result;
+		return ocode;
 	}
 	
-
+	@RequestMapping("or/cl/su/{ocode}/{ccode}")
+	public String getOrderClientSuccess(Model model, @PathVariable String ocode, @PathVariable String[] ccode,OrderBean order) {
+		 int size = ccode.length;
+	        for(int i=0; i<size; i++) {
+	        	orderClientService.delete(ccode[i]);
+	        }
+		List<OrderBean> info = orderClientService.orderClientinfo(order, ocode);
+		model.addAttribute("orderClientInfo",info);
+		
+	return "orders/orderClientSuccess";
+		
+	}
+	
 	@RequestMapping("/or/cl/li")
 	public String getOrderClientList(HttpServletRequest request, Model model, OrderBean order) {
 		HttpSession session = request.getSession(); 
@@ -139,12 +150,6 @@ public class OrderClientController {
 		int info = orderClientService.cartDeleteAll(mid);
 		return "redirect:li";
 	}
-	
-//	@RequestMapping(value="/ca/cl/ds", method = RequestMethod.GET)
-//	public String cartDeleteSelect(@RequestParam int ccode) {
-//		int info = orderClientService.cartDeleteSelect(ccode);
-//		return "redirect:li";
-//	}
 	
 	@RequestMapping(value = "/ca/cl/ds")
     public String ajaxTest(HttpServletRequest request) {

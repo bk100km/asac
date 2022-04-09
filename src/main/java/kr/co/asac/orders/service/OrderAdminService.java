@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.dao.OrderDAO;
+import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.utils.PagingBean;
 
 @Service
@@ -27,8 +28,7 @@ public class OrderAdminService {
 		model.addAttribute("orderAdminList", orderAdminList);
 		System.out.println(orderAdminList);
 	}
-	
-	
+		
 	public int orderAdminListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		int listCnt = dao.orderAdminListCount(searchCategory, searchText);
@@ -53,8 +53,20 @@ public class OrderAdminService {
 		dao.orderAdminUpdate(order);
 	}
 	
+	public void orderAdminDeliveryUpdate(OrderBean order) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		dao.orderAdminDeliveryUpdate(order);
+	}
+	
 	public void orderAdminDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		dao.orderAdminDelete(ocode);
+	}
+	
+	public void orderProductList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		List<ProductBean> orderProductList = dao.orderProductList();
+		model.addAttribute("orderProductList", orderProductList);
+		System.out.println(orderProductList);
 	}
 }

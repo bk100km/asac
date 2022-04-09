@@ -17,18 +17,18 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap"	rel="stylesheet">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/open-iconic-bootstrap.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/animate.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.carousel.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/owl.theme.default.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/magnific-popup.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/aos.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/ionicons.min.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/bootstrap-datepicker.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/jquery.timepicker.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/flaticon.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/icomoon.css">
-<link rel="stylesheet" href="/asac/resources/bootstrap/vegefoods-master/css/style.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/open-iconic-bootstrap.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/animate.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/magnific-popup.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/aos.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/ionicons.min.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/jquery.timepicker.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/flaticon.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/icomoon.css">
+<link rel="stylesheet" href="/resources/bootstrap/vegefoods-master/css/style.css">
 
 <!-- Pretendard Font -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
@@ -99,7 +99,115 @@ h1 {
 .mx-1 {
     margin-left: 11.5rem !important;
 }
+
+#rcountbox {
+	display: inline;	
+}
+
+.pbutton {
+	font-size: 10px;
+	color: #FFFFFF;
+	display: inline-block;
+}
+
+#result {
+	font-size: 20px;
+	color: #2B2B2B;
+	display: inline;
+	margin: 0 10px;
+	vertical-align: baseline;
+}
+
+.mbutton {
+	font-size: 10px;
+	color: #FFFFFF;
+	display: inline-block;
+}
+
 </style>
+
+<script type="text/javascript">
+function pcateChange(value) {
+	var pcate = value;
+	$('#selectPnameInfo option').each(function() {
+		var pname = $(this).attr('class');
+		if (pcate == pname) {
+			$(this).removeAttr('hidden');
+			$('#selectPnameInfo option.gibon').prop("selected", true);
+			$('#selectPnameInfo').val("");
+			$('#selectPnameInfo option.gibon').attr('hidden', 'hidden');
+			pageInit();
+		}
+		if (pcate != pname) {
+			$(this).attr('hidden', 'hidden');
+			$('#selectPnameInfo option.gibon').attr('hidden', 'hidden');
+		}
+		if (pcate == "") {
+			$('#selectPnameInfo option.gibon').prop("selected", true);
+			$('#selectPnameInfo option.gibon').removeAttr('hidden');
+			$('#selectPnameInfo').val("");
+			pageInit();
+		}
+	});
+}
+function pnameChange(value) {
+	var pname = value;
+	var pcode = $('#selectPnameInfo option.' + pname + '.pcode').val();
+	var pcate = $('#selectPnameInfo option.' + pname + '.pcate').val();
+	var price = $('#selectPnameInfo option.' + pname + '.price').val();
+	if (pname != "") {
+		$('#rcount').val("1");
+		$('#result').text("1");
+		$('#rcountbox').css('display', '-webkit-inline-box');
+		$('#price').text(price);
+		$('#onePrice').val(price);
+		$('#pricesum').text(price);
+		$('#totalprice').val(price);
+		$('#pcode').val(pcode);
+	} else {
+	}
+}
+function pageInit() {
+	$('#optionBox').css('display', 'none');
+	$('#price').text("");
+	$('#pricesum').text("");
+	$('#onePrice').val("");
+	$('#result').text("1");
+	$('#rcount').val("1");
+	$('#totalprice').text("");
+	$('#totalprice').val("");
+}
+
+function count(type) {
+
+	const resultElement = document.getElementById('result');
+	const priceElement = document.getElementById('price');
+	const resultpriceElement = document.getElementById('pricesum');
+
+	let number = resultElement.innerText.replace(/,/g, '');
+	let price = priceElement.innerText.replace(/,/g, '');
+	let totalprice = resultpriceElement.innerText.replace(/,/g, '');
+
+	if (type === 'plus') {
+		if (number < 5)
+			number = parseInt(number) + 1;
+		if (totalprice < (price * 5))
+			totalprice = parseInt(totalprice) + parseInt(price);
+	}
+	if (type === 'minus') {
+		if (number > 1)
+			number = parseInt(number) - 1;
+		if (parseInt(totalprice) > parseInt(price))
+			totalprice = totalprice - parseInt(price);
+	}
+
+	resultElement.innerText = number;
+	document.getElementById('rcount').setAttribute('value', number);
+	resultpriceElement.innerText = totalprice;
+	document.getElementById('totalprice').setAttribute('value', totalprice);
+}
+</script>
+
 </head>
 <body class="goto-here">
 <jsp:include page="common/clientHeader.jsp"></jsp:include>
@@ -107,7 +215,7 @@ h1 {
 	<section id="home-section" class="hero">
 		<div class="home-slider owl-carousel">
 			<div class="slider-item"
-				style="background-image: url(/asac/resources/bootstrap/vegefoods-master/images/bg_1.jpg);">
+				style="background-image: url(/resources/bootstrap/vegefoods-master/images/bg_1.jpg);">
 				<div class="overlay"></div>
 				<div class="container">
 					<div
@@ -124,7 +232,7 @@ h1 {
 			</div>
 
 			<div class="slider-item"
-				style="background-image: url(/asac/resources/bootstrap/vegefoods-master/images/bg_2.jpg);">
+				style="background-image: url(/resources/bootstrap/vegefoods-master/images/bg_2.jpg);">
 				<div class="overlay"></div>
 				<div class="container">
 					<div
@@ -211,7 +319,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/image/product/${product.pfile}"
+							src="/resources/image/product/${product.pfile}"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -240,7 +348,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-2.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-2.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -268,7 +376,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-3.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-3.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -296,7 +404,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-4.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-4.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -326,7 +434,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-5.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-5.jpg"
 							alt="Colorlib Template"> <span class="status">30%</span>
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -355,7 +463,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-6.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-6.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -383,7 +491,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-7.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-7.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -411,7 +519,7 @@ h1 {
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/asac/resources/bootstrap/vegefoods-master/images/product-8.jpg"
+							src="/resources/bootstrap/vegefoods-master/images/product-8.jpg"
 							alt="Colorlib Template">
 							<div class="overlay"></div> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
@@ -446,8 +554,8 @@ h1 {
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-7 ftco-animate">
-						<form action="#" class="billing-form">
-							<h3 class="mb-4 billing-heading" id="quickOrderMenu">빠른 주문</h3>
+				<form action="#" class="billing-form">
+					<h3 class="mb-4 billing-heading" id="quickOrderMenu">빠른 주문</h3>
 	          	<div class="row align-items-end">
                 <div class="w-100"></div>
 		            <div class="col-md-12">
@@ -455,13 +563,14 @@ h1 {
 		            		<label for="country">카테고리</label>
 		            		<div class="select-wrap">
 		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		                  <select name="" id="" class="form-control">
-		                  	<option value="">농산물</option>
-		                    <option value="">간편식</option>
-		                    <option value="">대체육ㆍ콩</option>
-		                    <option value="">양념ㆍ소스</option>
-		                    <option value="">음료</option>
-		                    <option value="">생활ㆍ뷰티</option>
+		                  <select name="pcate" id="selectCateInfo" class="form-control custom-select" required="required" onchange="pcateChange(this.value);">
+		                  	<option value="" selected>상품 카테고리 선택</option>
+		                  	<option value="농산물류">농산물</option>
+		                    <option value="간편식류">간편식</option>
+		                    <option value="콩고기류">대체육ㆍ콩</option>
+		                    <option value="양념소스류">양념ㆍ소스</option>
+		                    <option value="음료류">음료</option>
+		                    <option value="생활용품류">생활ㆍ뷰티</option>
 		                  </select>
 		                </div>
 		            	</div>
@@ -472,13 +581,14 @@ h1 {
 		            		<label for="country">상품명</label>
 		            		<div class="select-wrap">
 		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		                  <select name="" id="" class="form-control">
-		                  	<option value="">상품1</option>
-		                    <option value="">상품2</option>
-		                    <option value="">상품3</option>
-		                    <option value="">상품4</option>
-		                    <option value="">상품5</option>
-		                    <option value="">상품6</option>
+		                  <select name="pname" id="selectPnameInfo" class="form-control custom-select" required="required" onchange="pnameChange(this.value);">
+		                  	<option value="" class="gibon" selected>상품 선택</option>
+		                  	<c:forEach var="product" items="${orderProductList}">
+		                  		<option value="${product.pcode}" class="${product.pname} pcode"	hidden>
+								<option value="${product.pname}" class="${product.pcate}" hidden>${product.pname}</option>
+								<option value="${product.pcate}" class="${product.pname} pcate"	hidden>
+								<option value="${product.pprice}" class="${product.pname} price" hidden>
+		                    </c:forEach>
 		                  </select>
 		                </div>
 		            	</div>
@@ -492,20 +602,30 @@ h1 {
 	          		<div class="cart-detail cart-total p-3 p-md-4">
 	          			<h3 class="billing-heading mb-4">주문내용</h3>
 	          			<p class="d-flex">
+	          				<div id="rcountbox">
 		    						<span>단가</span>
-		    						<span>3,000원</span>
+		    						<span id="price" style="display:none">${productList.price}원</span>
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>수량</span>
-		    						<span>5개</span>
+		    						<span style="display:block; width:inherit;">
+		    							<button id="omb" class="btn mbutton" type="button" onclick='count("minus")'>-</button>
+											<span id='result'>1</span>
+										<button id="opb" class="btn pbutton" type="button" onclick='count("plus")'>+</button>
+										<input type="hidden" name="rcount" value="1" id="rcount">
+									</span>
 		    					</p>
 		    					<hr>
 		    					<p class="d-flex total-price">
 		    						<span>합계 금액</span>
-		    						<span>15,000원</span>
+		    						<span id="pricesum" style="display:none">15,000원</span>
+		    						<input type="hidden" id="onePrice" name="price" value="">
+									<input type="hidden" name="totalprice" value="" id="totalprice">
+									<input type="hidden" name="pcode" value="" id="pcode">
 		    					</p>
-		    					<p><a href="#"class="btn btn-primary py-3 px-4">주문하기</a></p>
-								</div>
+		    					<p><button type="submit" class="btn btn-primary py-3 px-4">주문하기</button></p>
+							</div>
+					</div>
 	          	</div>
 	          </div>
           </div> <!-- .col-md-8 -->
@@ -583,21 +703,21 @@ h1 {
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
 
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/owl.carousel.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.magnific-popup.min.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/aos.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/jquery.animateNumber.min.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/bootstrap-datepicker.js"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/scrollax.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/owl.carousel.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.magnific-popup.min.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/aos.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.animateNumber.min.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap-datepicker.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/scrollax.min.js"></script>
 	<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script	src="/asac/resources/bootstrap/vegefoods-master/js/google-map.js"></script>
-	<script src="/asac/resources/bootstrap/vegefoods-master/js/main.js"></script>
+	<script	src="/resources/bootstrap/vegefoods-master/js/google-map.js"></script>
+	<script src="/resources/bootstrap/vegefoods-master/js/main.js"></script>
 </body>
 </html>

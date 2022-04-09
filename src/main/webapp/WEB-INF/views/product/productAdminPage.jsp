@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +8,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ASAC 비건마켓</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!-- Pretend Font -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
+
+<style>
 
 <style>
 .table-responsive {
@@ -21,7 +27,7 @@
 	display: none;
 }
 
-#productSearchButtonHidden {
+#SearchButtonHidden {
 	display: none;
 }
 
@@ -29,12 +35,8 @@
 	display: none;
 }
 
-#productSearchText {
+#SearchText {
     float: right;
-}
-
-#productIdCheckLabel {
-	margin-top:14px;
 }
 
 #pfileUploadButtonLabel {
@@ -105,7 +107,7 @@ th {
     font-family: Pretendard;
 }
 
-#productSearchCategory {
+#searchCategory {
 	border: none;
 	color: #72815d;
     font-weight: 700;
@@ -120,7 +122,7 @@ option {
 	padding: 15px;
 }
 
-#productSearchButton {
+#SearchButton {
 	border: none;
 	color: #72815d;	
     font-size: 1.1rem;
@@ -143,10 +145,34 @@ option {
     font-family: 'Pretendard';
 }
 
+.nav-tabs {
+	font-size: 20px;
+}
+
+.nav-tabs > li {
+	margin-left: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background: #d8e3c9;
+	bproduct-top-left-radius: 10px;
+	bproduct-top-right-radius: 10px;
+}
+
+.nav-tabs > li > a{
+	color: #85976d;
+	font-family: Pretendard;
+	text-decoration: none;
+}
+
+.nav-tabs > .active {
+	background: #b8d590;
+}
 </style>
 </head>
-<body>
 
+<body>
 <script>
 
 //pfilePreview
@@ -163,33 +189,14 @@ function pfilePreview() {
 }
 
 <!-- 상세정보 조회 AJAX -->
-function productInfoAction(clickedProduct) {
-	var pcode = clickedProduct.getAttribute("data-pcode");
-	var pfileZoneText = "";
+function productInfoAction(clickedproduct) {
+	var pcode = clickedproduct.getAttribute("data-pcode");
 	
     $.ajax({
         type: 'POST',
         url: './if',
         data: {pcode:pcode},
         success: function(product) {
-        	
-            pfileZoneText +=  
-				'<div class="row">' +
-				'<div class="col-md-9 mb-1 input-group-sm">' +
-					'<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
-						'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
-						'maxlength="10" required readonly>' +
-				'</div>' +
-				'<div class="col-md-3 mb-1">' +
-					'<input type="file" accept="image/*"' +
-						'class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">' +
-					'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
-					'<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
-				'</div>' +
-				'</div>' + 
-				'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기&nbsp; </a>';
-            document.getElementById("pfileZone").innerHTML = pfileZoneText;
-
             $(product).each(function(index, item) {
                 $('#pcode').prop('value',product.pcode);
                 $('#pname').prop('value',product.pname);
@@ -219,57 +226,60 @@ function productInfoAction(clickedProduct) {
     });
 }
 
+
 function productSearchAction(clickedPage) {	
-	var productSearchCategory = $('#productSearchCategory option:selected').val();
-    var productSearchText = document.getElementById('productSearchText').value;
+	var searchCategory = $('#searchCategory option:selected').val();
+    var searchText = document.getElementById('searchText').value;
 	var productListText = "";
-	var productPagingText = "";
+	var productPagingText ="";
 	var page = clickedPage;
 	var step = 0;
+    
     $.ajax({
         type: 'POST',
-        url: './se',
-   		data: {productSearchCategory:productSearchCategory,
-   			productSearchText:productSearchText,
+        url: './as',
+   		data: {searchCategory:searchCategory,
+    		searchText:searchText,
     		page:page},
-    		success: function(map) {
-           	 $.each(map.productList , function(i){
-           		productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + map.productList[i].pcode + 
-                     					'"><td>' + map.productList[i].pname + 
-                     					'</td><td>' + map.productList[i].pcate + 
-                     					'</td><td>' + map.productList[i].ptag +
-                     					'</td><td>' + map.productList[i].sid +
-                     					'</td></tr>';
-                });
-        	 
-   		     if (map.paging.prev) {
-	    		 productPagingText +=
-			 	'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>'; 
-    		 }
-    		 for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
-    			 productPagingText +=
-    		 	'<li class="page-item" id="page' + step + '" value="' + step + '"><a class="page-link" href="#" onclick="productSearchAction(' + step + ')">' + step + '</a></li>';
-    	     }
-    		 if (map.paging.next) {
-    		 	productPagingText +=
-    		 	'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(' + map.paging.endPage + ')">다음</a></li>';
-        	 }
-        	document.getElementById("productListBody").innerHTML = productListText;
-        	document.getElementById("productPagingZone").innerHTML = productPagingText;
-        	[].forEach.call(document.getElementById("page" + page), function(element) {
-        	    element.classList.remove("active");
-        	    element.classList.remove("productActivePage");
-        	});
-        	document.getElementById("page" + page).classList.add("active");
-        	document.getElementById("page" + page).classList.add("productActivePage");
-        },
-        error: function(request, status, error) {
-            console.log("code:" + request.status + 
-            		"\n"+"message:" + request.responseText + 
-            		"\n"+"error:"+error);
-        }
-    });    
+        success: function(map) {
+        	 $.each(map.productList , function(i){
+        		 productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + map.productList[i].pcode + 
+					'"><td>' + map.productList[i].pname + 
+					'</td><td>' + map.productList[i].pcate + 
+					'</td><td>' + map.productList[i].ptag +
+					'</td><td>' + map.productList[i].sid +
+					'</td></tr>';
+			});
+
+			if (map.paging.prev) {
+				productPagingText +=
+				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>'; 
+			}
+			for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
+				productPagingText +=
+				'<li class="page-item" id="page' + step + '" value="' + step + '"><a class="page-link" href="#" onclick="productSearchAction(' + step + ')">' + step + '</a></li>';
+			}
+			if (map.paging.next) {
+				productPagingText +=
+				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(' + map.paging.endPage + ')">다음</a></li>';
+			}
+			document.getElementById("productListBody").innerHTML = productListText;
+			document.getElementById("productPagingZone").innerHTML = productPagingText;
+			[].forEach.call(document.getElementById("page" + page), function(element) {
+			element.classList.remove("active");
+			element.classList.remove("productActivePage");
+			});
+			document.getElementById("page" + page).classList.add("active");
+			document.getElementById("page" + page).classList.add("productActivePage");
+		},
+		error: function(request, status, error) {
+		console.log("code:" + request.status + 
+				"\n"+"message:" + request.responseText + 
+				"\n"+"error:"+error);
+		}
+	});    
 }
+
 
 function productInsertForm() {
 	var productInsertFormText = '';
@@ -358,8 +368,8 @@ function productInsertCancel() {
 			'<br>' +
 			'<div class="col-md-12 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
-			'id="productInsertButton" value="회원추가"' + 
-			'onclick="productInsertForm()" title="회원추가 버튼">';
+			'id="productInsertButton" value="상품추가"' + 
+			'onclick="productInsertForm()" title="상품추가 버튼">';
 
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
         },
@@ -392,6 +402,7 @@ function productInsertAction() {
         }
     });
 }
+
 
 function productUpdateAction() {	
 	var pcode = document.getElementById('pcode').value;
@@ -473,28 +484,37 @@ function pfileUploadAction() {
 }
 
 </script>
+<!-- Page Wrapper -->
+<div id="wrapper">
+<header>
+<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
+</header>
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+<!-- Main Content -->
+<div id="content">
+<!-- Topbar -->
+<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
 
-<br>
-	<div id="wrapper">
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-6">
-					<!--좌우분할 5:7-->
-					<!--전체 상품 관리//-->
+					<!--좌우분할 6:6-->
+					<!--주문 관리//-->
 					<div class="panel product-panel-default left-product-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="input-group">
-										<select id="productSearchCategory" name="productSearchCategory" class="btn btn-default btn-md">
+										<select id="searchCategory" name="searchCategory" class="btn btn-default btn-md">
 											<option value="pname">상품명</option>
 											<option value="pcate">카테고리</option>
 											<option value="ptag">태그명</option>											
 											<option value="sid">판매자아이디</option>
 										</select>
-										<input class="form-control input-sm" id="productSearchText" type="text"
-											placeholder="검색어를 입력해주세요."> <span class="input-group-btn">
-											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
+										<input class="form-control input-sm" id="searchText" type="text"
+											placeholder="검색어 입력"> <span class="input-group-btn">
+											<input type="button" class="btn btn-default btn-md" id="SearchButton" value="검색" onclick="productSearchAction()">
 										</span>
 									</div>
 								</div>
@@ -504,7 +524,7 @@ function pfileUploadAction() {
 							<div class="table-responsive">
 								<table class="table table-striped table-bordered table-hover">
 									<thead>
-										<tr>										
+										<tr>
 											<th>상품명</th>								
 											<th>카테고리</th>
 											<th>태그명</th>								
@@ -512,7 +532,7 @@ function pfileUploadAction() {
 										</tr>
 									</thead>
 									<tbody id="productListBody">
-									<c:forEach items="${productList}" var="product">
+									<c:forEach var="product" items="${productAdminList}">
 										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
 											<td>${product.pname}</td>
 											<td>${product.pcate}</td>
@@ -529,10 +549,10 @@ function pfileUploadAction() {
 								</c:if>
 								<c:forEach var="page" begin="${productPaging.startPage}" end="${productPaging.endPage}">
 									<c:if test="${productPaging.page eq page}">
-									<li class="page-item active productActivePage" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									<li class="page-item active productActivePage" id="productPage${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
 									</c:if>
 									<c:if test="${productPaging.page ne page}">
-									<li class="page-item" id="page${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
+									<li class="page-item" id="productPage${page}" value="${page}"><a class="page-link" href="#" onclick="productSearchAction(${page})">${page}</a></li>
 									</c:if>
 								</c:forEach>
 								<c:if test= "${productPaging.next}">
@@ -541,18 +561,17 @@ function pfileUploadAction() {
 							</ul>
 						</div>
 					</div>
-					<!--//전체 상품 관리 -->
+					<!--//일반상품관리 -->
 				</div>
-				
 				<div class="col-lg-6">
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
 					<div class="panel product-panel-default">
-						<div class="panel-heading" id="panel-heading-right"> &nbsp;상품 상세 정보</div>
+						<div class="panel-heading" id="panel-heading-right">상품 상세 정보</div>
 						<div class="panel-body">
-									<div class="overlay overlayFade" id="overlayFade">
-										<img src="/asac/resources/upload/" alt="img" class="image">
-									</div>
+						<div class="overlay overlayFade" id="overlayFade">
+							<img src="/resources/image/product/무화과잼.jpg" alt="img" class="image">
+						</div>
 							<div class="table-responsive" id="productFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
@@ -592,7 +611,7 @@ function pfileUploadAction() {
 					<div class="mb-1 input-group-sm" id="pfileZone">
 					<div class="row">
 					<div class="col-md-9 input-group-sm">
-						<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"
+						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
 							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value=""
 							maxlength="10" required readonly>
 					</div>
@@ -646,15 +665,15 @@ function pfileUploadAction() {
 				</form>
 			</div>
 		</div>
-							</div>	
-						</div>
-					</div>
-					<!--//상세정보패널-->
+	</div>	
+	</div>
+	</div>					
+		<!--//상세정보패널-->
 				</div>
 			</div>
 		</div>
-	</div>
-	
+
+
 	<script>
 
 	function productUpdateOk() {
@@ -682,7 +701,12 @@ function pfileUploadAction() {
 	}
     
 	</script>
-
-		
+	
+	</div>
+<footer>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+</footer>
+</div>
+</div>
 </body>
 </html>

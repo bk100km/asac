@@ -55,7 +55,7 @@
 	<select id="orderSellerList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where s.sid = #{id}
-		order by oregdate
+		order by oregdate desc
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
@@ -69,7 +69,7 @@
 	<select id="orderSellerListSearch" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where ${searchCategory} like CONCAT('%', #{searchText}, '%') and s.sid = #{id}
-		order by oregdate
+		order by oregdate desc
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 
@@ -84,7 +84,14 @@
 		update orders
 		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
 	</update>
-
+	
+	<!-- 판매자 상품 주문 배송상태수정 -->
+	<update id="orderSellerDeliveryUpdate">
+		update orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
+		set odelivery = #{odelivery}
+		where ocode = #{ocode} and p.pname = #{pname}
+	</update>	
+	
 	<!-- 판매자 상품 주문 취소 -->
 	<delete id="orderSellerDelete" >
 		delete from orders where ocode = #{ocode}
@@ -94,7 +101,7 @@
 	<!-- 주문 전체 내역 -->
 	<select id="orderAdminList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		order by oregdate
+		order by oregdate desc
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 	
@@ -108,7 +115,7 @@
 	<select id="orderAdminListSearch" resultType="kr.co.asac.orders.bean.OrderBean">
 		select * from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where ${searchCategory} like CONCAT('%', #{searchText}, '%')
-		order by oregdate
+		order by oregdate desc
 		limit #{paging.startList}, #{paging.listSize}
 	</select>
 
@@ -124,9 +131,20 @@
 		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
 	</update>
 
+	<!-- 관리자 상품 주문 배송상태수정 -->
+	<update id="orderAdminDeliveryUpdate">
+		update orders set odelivery=#{odelivery} where ocode=#{ocode}
+	</update>
+	
 	<!-- 주문 취소 -->
 	<delete id="orderAdminDelete" >
 		delete from orders where ocode = #{ocode}
 	</delete>
+	
+	<!-- Index -->
+	<!-- 빠른 주문 -->
+	<select id="orderProductList" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product
+	</select>
 	
 </mapper>

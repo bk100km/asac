@@ -326,13 +326,13 @@ function fileUpdate(){
 								onkeyup="inputNumberFormat(this);" disabled />
 							<hr /></hr>
 						
-								<a class="atag btn-default" href="http://localhost:8080/pr/cl/li?ptag=${proDetail.ptag}&nowPage=1" role="button" ><span>#${proDetail.ptag}</span></a>
+								<a class="atag btn-default" href="http://localhost:8080/asac/pr/cl/li?ptag=${proDetail.ptag}&nowPage=1" role="button" ><span>#${proDetail.ptag}</span></a>
 					
 							<div class="colum-10">
 								<button class="btn" type="submit" onclick="">바로 구매</button>
 								&nbsp;
 								<button class="btn" type="submit"
-									onclick="javascript: productDetail.action='http://localhost:8080/ca/cl/in'">장바구니</button>
+									onclick="javascript: productDetail.action='http://localhost:8080/asac/ca/cl/in'">장바구니</button>
     							</c:when>
 							</c:choose>
 								<div>

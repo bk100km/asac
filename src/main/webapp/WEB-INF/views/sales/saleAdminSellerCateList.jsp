@@ -341,9 +341,17 @@ $(function() {
 </script>
 </head>
 <body>
+<!-- Page Wrapper -->
+<div id="wrapper">
 <header>
-<jsp:include page="/WEB-INF/views/common/adminHeader.jsp" flush="false"></jsp:include>
+<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
 </header>
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+<!-- Main Content -->
+<div id="content">
+<!-- Topbar -->
+<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
 <section id="listForm">
 <div class="table-title">
 	<h1 class="mainTitle">매출 통계(상품)</h1></div>
@@ -408,8 +416,11 @@ $(function() {
     </div>        
 </div>
 </section>
+</div>
 <footer>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-</footer> 
+</footer>
+</div>
+</div>
 </body>
 </html>

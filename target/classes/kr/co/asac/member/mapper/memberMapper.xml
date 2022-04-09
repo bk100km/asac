@@ -181,7 +181,57 @@
 		update seller set sok=#{sok} where sid=#{sid}
 	</update>	
 	
-	<!-- chart -->
+	<!-- chartSeller -->
+	<select id="sellerCountMonth" resultType="kr.co.asac.member.bean.SellerBean">
+		select concat(month(sregdate),'월') as month
+			, count(sid) as count
+			from seller
+			group by month(sregdate);
+	</select>
+	
+	<select id="sellerProductCountMonth" resultType="kr.co.asac.member.bean.SellerBean">
+		select concat(month(pregdate),'월') as month
+			, count(pcode) as count
+			from product 
+			where sid = #{sid}
+			group by month(pregdate);
+	</select>
+	
+	<select id="sellerOrdersCountMonth" resultType="kr.co.asac.member.bean.SellerBean">
+		select concat(month(oregdate),'월') as month
+			, count(pcode) as count
+			from orders 
+			where sid = #{sid}
+			group by month(oregdate);
+	</select>
+	
+	<select id="sellerOrdersSumMonth" resultType="kr.co.asac.member.bean.SellerBean">
+		select concat(month(oregdate),'월') as month
+		, sum(pprice) as count 
+		from orders
+		join product on orders.pcode = product.pcode
+		where product.sid = #{sid} 
+		group by month(oregdate);
+	</select>
+	
+	<select id="sellerRecentOrder" resultType="kr.co.asac.orders.bean.OrderBean">
+		select mid, pname, oregdate
+		from orders
+		join product on orders.pcode=product.pcode
+		where product.sid = #{sid}
+		order by oregdate desc limit 3;
+	</select>
+	
+	<select id="sellerTopThreeOrder" resultType="kr.co.asac.product.bean.ProductBean">
+		select count(pname) cnt
+		, pname, pcate, ptag from orders
+		join product on orders.pcode=product.pcode
+		where product.sid = #{sid} 
+		group by pname 
+		order by cnt desc limit 3;
+	</select>
+	
+	<!-- chartAdmin -->
 	<select id="memberCountMonth" resultType="kr.co.asac.member.bean.MemberBean">
 		select concat(month(mregdate),'월') as month
 			, count(mid) as count

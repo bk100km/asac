@@ -4,13 +4,13 @@
 <%
 	String sid = (String) session.getAttribute("sid");
 
-// 	if(sid != null){
-// 		session.invalidate();
-// 		out.println("<script>");
-// 		out.println("alert('접근 권한이 없습니다.');");
-// 		out.println("location.href='http://localhost:8080/asac/';");
-// 		out.println("</script>");	
-// 	}
+	if(sid == null){
+		session.invalidate();
+		out.println("<script>");
+		out.println("alert('접근 권한이 없습니다.');");
+		out.println("location.href='http://localhost:8080/';");
+		out.println("</script>");	
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -89,9 +89,8 @@
 					aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">매출 통계</h6> 
-						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/sp">상품별 매출</a>
-						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/sd">요일별 매출</a>
-						<a class="collapse-item"href="<%= request.getContextPath() %>/sa/se/sd">월별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/dy">요일별 매출</a>
+						<a class="collapse-item" href="<%= request.getContextPath() %>/sa/se/po">상품별 매출</a>
 					</div>
 				</div></li>
 
@@ -118,20 +117,20 @@
 	</header>
 
 	<!-- Bootstrap core JavaScript-->
-	<script src="/asac/resources/bootstrap/adminIndex/vendor/jquery/jquery.min.js"></script>
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/resources/bootstrap/adminIndex/vendor/jquery/jquery.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for all pages-->
-	<script src="/asac/resources/bootstrap/adminIndex/js/sb-admin-2.min.js"></script>
+	<script src="/resources/bootstrap/adminIndex/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/chart.js/Chart.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/chart.js/Chart.min.js"></script>
 
 	<!-- Page level custom scripts -->
-	<script	src="/asac/resources/bootstrap/adminIndex/js/demo/chart-area-demo.js"></script>
-	<script	src="/asac/resources/bootstrap/adminIndex/js/demo/chart-pie-demo.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/js/demo/chart-area-demo.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/js/demo/chart-pie-demo.js"></script>
 </body>
 </html>

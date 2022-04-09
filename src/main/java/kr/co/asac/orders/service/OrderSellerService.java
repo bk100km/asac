@@ -34,9 +34,6 @@ public class OrderSellerService {
 	
 	public int orderSellerListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
 		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("서비스에서 서치카테고리" + searchCategory);
-		System.out.println("서비스에서 서치택수트" + searchText);
-		
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		int listCnt = dao.orderSellerListCount(id, searchCategory, searchText);
 		System.out.println("count값" + listCnt);
@@ -60,6 +57,11 @@ public class OrderSellerService {
 	public void orderSellerUpdate(HttpServletRequest request, Model model, HttpServletResponse response, OrderBean order) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		dao.orderSellerUpdate(order);
+	}
+	
+	public void orderSellerDeliveryUpdate(OrderBean order) throws Exception {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		dao.orderSellerDeliveryUpdate(order);
 	}
 	
 	public void orderSellerDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {

@@ -11,9 +11,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<style>
-#orderList {flex:1; width:80%; margin:auto;}
 
+<!-- Pretend Font -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
+
+<style>
 .table-responsive {
     overflow-x: hidden;
 }
@@ -22,7 +24,7 @@
 	display: none;
 }
 
-#orderInsertButtonHidden {
+#orderSearchButtonHidden {
 	display: none;
 }
 
@@ -30,17 +32,112 @@
     float: right;
     width: 74%;
 }
+
+#leftPanel {
+	text-align: center;
+	margin-top: 20px;
+}
+
+#orderInfoBtn td {
+	line-height: 21px;
+}
+
+th {
+    text-align: center;
+}
+
+.order-panel-default {
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+}
+
+.left-order-panel-default {
+	height: 760px;
+}
+
+.panel-heading {
+	background: #d8e3c9;
+	color: #85976d;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    height: 38px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    font-family: Pretendard;
+}
+
+#searchCategory {
+	border: none;
+	color: #72815d;
+    font-weight: 700;
+}
+}
+
+option {
+	color: black;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+#orderSearchButton {
+	border: none;
+	color: #72815d;	
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+body { margin: 0;}
+
+#orderList {
+	width: 85%;  
+	margin: 0 auto; 
+	margin-top: 50px;
+}
+
+#page-wrapper {
+	width: 90%;
+	margin: auto;
+	margin-top: 30px;
+	height: 1000px;
+}
+
+.nav-tabs {
+	font-size: 20px;
+}
+
+.nav-tabs > li {
+	margin-left: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background: #d8e3c9;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.nav-tabs > li > a{
+	color: #85976d;
+	font-family: Pretendard;
+	text-decoration: none;
+}
+
+.nav-tabs > .active {
+	background: #b8d590;
+}
 </style>
 </head>
 
 <body>
-
 <script>
 <!-- 상세정보 조회 AJAX -->
 function orderInfoAction(clickedOrder) {
 	var ocode = clickedOrder.getAttribute("data-ocode");
 	var pname = clickedOrder.getAttribute("data-pname");
-	
+
     $.ajax({
         type: 'POST',
         url: './in',
@@ -96,14 +193,28 @@ function orderSearchAction(clikedPage) {
     		page:page},
         success: function(map) {
         	 $.each(map.orderList , function(i){
+        		 if (map.orderList[i].odelivery == '배송완료') {
                   orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
                   					'"><td>' + map.orderList[i].ocode + 
                   					'</td><td>' + map.orderList[i].mname + 
                   					'</td><td>' + map.orderList[i].pname + 
                   					'</td><td>' + map.orderList[i].ocount +
-                  					'</td><td>' + map.orderList[i].ototal +
+                  					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
+                  					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
+                  					'" data-odelivery="' + map.orderList[i].odelivery + '"' + 'checked />' +
                   					'</td></tr>';
-             });
+        		 } else {
+        			 orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
+   					'"><td>' + map.orderList[i].ocode + 
+   					'</td><td>' + map.orderList[i].mname + 
+   					'</td><td>' + map.orderList[i].pname + 
+   					'</td><td>' + map.orderList[i].ocount +
+   					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
+   					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
+   					'" data-odelivery="' + map.orderList[i].odelivery + '"' + ' />' +
+   					'</td></tr>';
+        		 }
+			});
         	 
         	 if (map.paging.prev) {
 	    		 pagingText +=
@@ -175,25 +286,76 @@ function orderDeleteAction() {
         }
     });
 }
-</script>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-        	<!-- Topbar -->
-        	<jsp:include page="../common/toolbarHeader.jsp" />
-        	
+function deliveryCheckAction(checkedOrder) {
+	if(checkedOrder.getAttribute("data-odelivery") != '배송완료') {
+		if(!confirm('정말로 배송이 완료되었습니까?')) {
+			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = false;
+			return false;
+		} else {
+			var ocode = checkedOrder.getAttribute("data-ocode");
+		    $.ajax({
+		        type: 'POST',
+		        url: './da',
+		        data: {ocode:ocode, odelivery:'배송완료'},
+		        success: function() {
+		        	checkedOrder.setAttribute('data-odelivery', '배송완료');
+		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송완료";
+		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"true");
+		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송이 완료되었습니다.");
+		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
+		        },
+		        error: function(request, status, error) {
+		            console.log("code:" + request.status + 
+		            		"\n"+"message:" + request.responseText + 
+		            		"\n"+"error:"+error);
+		        }
+		    });
+		}
+	} else {
+		if(!confirm('배송상태를 변경하시겠습니까?')){
+			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = true;
+			return false;
+		} else {
+			var ocode = checkedOrder.getAttribute("data-ocode");
+		    $.ajax({
+		        type: 'POST',
+		        url: './da',
+		        data: {ocode:ocode, odelivery:'배송준비중'},
+		        success: function(order) {
+		        	checkedOrder.setAttribute('data-odelivery', '배송준비중');
+		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송준비중";
+		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"false");
+		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송상태가 변경되었습니다.");
+		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
+		        },
+		        error: function(request, status, error) {
+		            console.log("code:" + request.status + 
+		            		"\n"+"message:" + request.responseText + 
+		            		"\n"+"error:"+error);
+		        }
+		    });
+		}
+	}		
+}
+</script>
+<!-- Page Wrapper -->
+<div id="wrapper">
+<header>
+<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
+</header>
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
+<!-- Main Content -->
+<div id="content">
+<!-- Topbar -->
+<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
 <section id="orderList">
-		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-6">
-					<!--좌우분할 5:7-->
-					<!--일반회원 관리//-->
-					<div class="panel panel-default">
+					<!--좌우분할 6:6-->
+					<!--주문 관리//-->
+					<div class="panel order-panel-default left-order-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
@@ -220,7 +382,7 @@ function orderDeleteAction() {
 											<th>주문자명</th>
 											<th>상품명</th>
 											<th>수량</th>
-											<th>총가격</th>
+											<th>배송상태</th>
 										</tr>
 									</thead>
 									<tbody id="orderListBody">
@@ -230,7 +392,9 @@ function orderDeleteAction() {
 											<td>${order.mname}</td>
 											<td>${order.pname}</td>
 											<td>${order.ocount}</td>
-											<td>${order.ototal}</td>
+											<td><label id="${order.ocode}deliveryText">${order.odelivery}</label>
+												<input type="checkbox" id="deliveryCheckBox${order.ocode}" onchange="deliveryCheckAction(this)" data-ocode="${order.ocode}" data-odelivery="${order.odelivery}" <c:if test="${order.odelivery eq '배송완료'}">checked</c:if> />
+											</td>
 										</tr>
 									</c:forEach>
 									</tbody>
@@ -260,7 +424,7 @@ function orderDeleteAction() {
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
 					<div class="panel panel-default">
-						<div class="panel-heading">상세정보패널</div>
+						<div class="panel-heading" id="panel-heading-right">주문 상세 정보</div>
 						<div class="panel-body">
 							<div class="table-responsive">
 		<div class="input-form-backgroud row">
@@ -344,13 +508,15 @@ function orderDeleteAction() {
 					<div class="mb-4"></div>
 					<div class="row" id="orderButtonZone">
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" id="orderUpdateButton" value="주문 수정" title="주문 수정 버튼">
+						<input type="button" class="btn btn-default btn-lg btn-block" 
+						id="orderUpdateButton" value="주문 수정" title="주문 수정 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
+						<input type="button" class="btn btn-default btn-lg btn-block" 
+						id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
 						</div>		
 						<hr class="mb-4">
-						<br>		
+						<br>				
 					</div>	
 				
 			</div>
@@ -364,10 +530,7 @@ function orderDeleteAction() {
 		</div>
 	</section>
 
-
-	
 	<script>
-
 	function orderUpdateOk() {
 		if(!confirm('정말로 수정하시겠습니까?')){
 			return false;
@@ -402,10 +565,8 @@ function orderDeleteAction() {
 	    	})();
 	}    	
 	</script>
-	
-	</div>
-	<jsp:include page="../common/footer.jsp"></jsp:include>
-	</div>
-	</div>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
+</div>
+</div>
 </body>
 </html>

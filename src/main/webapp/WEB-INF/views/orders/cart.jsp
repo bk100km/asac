@@ -25,7 +25,6 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col"><input id="allCheck" type="checkbox" name="allCheck"/></th>
-  					<th scope="col">상품</th>
   					<th scope="col">상품이미지</th>
 					<th scope="col">상품명</th>
 					<th scope="col">가격</th>
@@ -97,27 +96,65 @@
 		<c:forEach var="cart" items="${cartList}">
 			<c:set var="ototal" value="${cart.pcount * cart.pprice}"/>
 			<input type="hidden" name="ototal" id="ototal" value="${ototal}" />
-			<c:set var="carttotal" value="${carttotal = carttotal + ototal}"/>
-		</c:forEach>
-		<input type="hidden" name="carttotal" id="carttotal" value="${carttotal}" />${carttotal}	
-		</h3>
+		<%-- 	<c:set var="carttotal" value="${carttotal = carttotal + ototal}"/> --%>
+		</c:forEach> 
+		<input type="hidden" name="carttotal" id="carttotal" value="${carttotal}" />	
+		</h3><div id="carttotal">${carttotal}</div>
 		<br><br><br>
      	<button class="btn btn-outline-info" id="kakaopay" type="button">결제하기</button>
      	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script>
+	$(function(){
+		var chkObj = document.getElementsByName("check");
+		var rowCnt = chkObj.length;
+		
+		$("input[name='allCheck']").click(function(){
+			var chk_listArr = $("input[name='check']");
+			for (var i=0; i<chk_listArr.length; i++){
+				chk_listArr[i].checked = this.checked;
+			}
+		});
+		$("input[name='check']").click(function(){
+			if($("input[name='check']:checked").length == rowCnt){
+				$("input[name='allCheck']")[0].checked = true;
+			}
+			else{
+				$("input[name='allCheck']")[0].checked = false;
+			}
+			
+		});
+	});
+
 	$("#kakaopay").click(function () {
 		
+		/* var valueArr = new Array();
+	    var list = $("input[name='check']");
+	    for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	            valueArr.push(list[i].value);
+	        }
+	    } */
 		var ccode = new Array();
-		$("input[name='ccode']").each(function() {
-			ccode.push($(this).val());
+		var list = $("input[name='check']");
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	    			ccode.push(list[i].value);
+	    		};
+	        }
+		console.log(ccode);		
+		
+		var pnamecheckedarr = new Array();
+		$("input[name='pname']").each(function() {
+			pnamecheckedarr.push($(this).val());
 		});
-		console.log(ccode);
 		
 		var pname = new Array();
-		$("input[name='pname']").each(function() {
-			pname.push($(this).val());
-		});
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	        	pname.push(pnamecheckedarr[i]);
+	    		};
+	        }
 		console.log(pname);
 		
 		if(pname.length != 1){
@@ -138,7 +175,7 @@
 		console.log(oaddrz2);
 		
 		var carttotal = ${carttotal};
-		
+
 		var mid = $("#mid").val();
 		console.log(mid);
 		var oname = $("#oname").val();
@@ -154,31 +191,66 @@
 		var omessage = $("#omessage").val();
 		console.log(omessage);
 		
-		var sidarr = new Array();
+		var sidcheckedarr = new Array();
 		$('input[name=sid]').each(function() {
-			sidarr.push($(this).val());
+			sidcheckedarr.push($(this).val());
 		});
+
+		var sidarr = new Array();
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	        	sidarr.push(sidcheckedarr[i]);
+	    		};
+	        }
 		console.log(sidarr);
 		
-		var pcodearr = new Array();
+		var pcodecheckedarr = new Array();
 		$('input[name=pcode]').each(function() {
-			pcodearr.push($(this).val());
+			pcodecheckedarr.push($(this).val());
 		});
+		console.log(pcodecheckedarr);
+		
+		var pcodearr = new Array();
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	        	pcodearr.push(pcodecheckedarr[i]);
+	    		};
+	        }
 		console.log(pcodearr);
 		
-		var ocountarr = new Array();
+		
+		var ocountcheckedarr = new Array();
 		$('input[name=pcount]').each(function() {
-			ocountarr.push($(this).val());
+			ocountcheckedarr.push($(this).val());
 		});
+		console.log(ocountcheckedarr);
+		
+		var ocountarr = new Array();
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	        	ocountarr.push(ocountcheckedarr[i]);
+	    		};
+	        }
 		console.log(ocountarr);
 		
-		var ototalarr = new Array();
+		var ototalcheckedarr = new Array();
 		$('input[name=ototal]').each(function() {
-			ototalarr.push($(this).val());
+			ototalcheckedarr.push($(this).val());
 		});
+		console.log(ototalcheckedarr);
+		
+		var ototalarr = new Array();
+		for(var i = 0; i < list.length; i++){
+	        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+	        	ototalarr.push(ototalcheckedarr[i]);
+	    		};
+	        }
 		console.log(ototalarr);
+		
+		//${ototototal = ototototal + otototal} 전체 토탈 구하는 거
 
 		
+	    
 		var IMP = window.IMP; // 생략가능
 		IMP.init('imp21297747'); 
 		// i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
@@ -209,7 +281,7 @@
 			if (rsp.success) {
 				//[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 				jQuery.ajax({
-					url: "/asac/or/cl/is", //cross-domain error가 발생하지 않도록 주의해주세요
+					url: "/or/cl/is", //cross-domain error가 발생하지 않도록 주의해주세요
 					type: 'POST',
 					traditional : true,
 					data: {
@@ -229,7 +301,8 @@
 					}
 				}).done(function(data) {
 					//[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
-					if ( result ) { //여기부터
+					var ocode = data;
+					if (ocode != null) { //여기부터
 						
 						var msg = '결제가 완료되었습니다.';
 						msg += '\n고유ID : ' + rsp.imp_uid;
@@ -238,8 +311,8 @@
 						msg += '카드 승인번호 : ' + rsp.apply_num;
 						
 						//alert("결제완료" + msg);
-						location.href = "/asac/ca/cl/de";
-						location.href = "/asac/me/cl/my";
+						
+						location.href = "/or/cl/su/"+ocode+"/"+ccode;
 					} else {
 						alert("결제실패" + msg);
 					}
@@ -250,6 +323,8 @@
 			}
 		});
 	});
+	
+	
 </script>
 <script type="text/javascript">
 		$(function(){
@@ -269,6 +344,21 @@
 				else{
 					$("input[name='allCheck']")[0].checked = false;
 				}
+				
+				var ototalcheckedarr = new Array();
+				$('input[name=ototal]').each(function() {
+					ototalcheckedarr.push($(this).val());
+				});
+				
+				const carttotal = 0;
+				var list = $("input[name='check']");
+				for(var i = 0; i < list.length; i++){
+			        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+			        	carttotal = carttotal + ototalcheckedarr[i];
+			    		};
+			        }
+				$('div#carttotal').text(carttotal);
+				$('input#carttotal').attr('value', carttotal);
 			});
 		});
 		function deleteValue(){

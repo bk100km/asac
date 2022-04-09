@@ -16,11 +16,13 @@
 	        	$("#mname").focus();
 	        }else if($("#mphone").val()==''){
 	        	alert("핸드폰을 입력해주세요.");
+	        	$("#mname").focus();
 	        }else if($("#mmail").val()==''){
 	        	alert("이메일을 입력해주세요.");
+	        	$("#mname").focus();
 	        }
 			$.ajax({
-				url : "http://localhost:8080/asac/member/findid",
+				url : "http://localhost:8080//me/cl/fI",
 				type : "POST",
 				data : {
 					name : $("#mname").val(),
@@ -29,7 +31,6 @@
 				},
 				success : function(result) {
 					alert(result);
-					location.href="http://localhost:8080/asac/me/cl/lo";
 				},
 			})
 		});
@@ -76,8 +77,8 @@
 					<input class="w3-input" type="text" id="mmail" name="mmail" placeholder="회원가입한 이메일주소를 입력하세요" required>
 				</p>
 				<p class="w3-center">
-					<button type="button" id="findBtn" class="w3-button w3-hover-white w3-ripple w3-margin-top w3-round mybtn">찾기</button>
-					<button type="button" onclick="history.go(-1);" class="w3-button w3-hover-white w3-ripple w3-margin-top w3-round mybtn">로그인으로</button>
+					<button type="submit" id="findBtn" class="w3-button w3-hover-white w3-ripple w3-margin-top w3-round mybtn">찾기</button>
+					<button type="submit" onclick="history.go(-1);" class="w3-button w3-hover-white w3-ripple w3-margin-top w3-round mybtn">로그인으로</button>
 				</p>
 			</div>
 		</div>

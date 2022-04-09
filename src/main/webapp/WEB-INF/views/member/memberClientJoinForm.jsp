@@ -160,7 +160,7 @@
 	        }else{
 	        	$.ajax({
 		            type:"GET",
-		            url:"http://localhost:8080/asac/mailCheck?email=" + email,
+		            url:"http://localhost:8080/mailCheck?email=" + email,
 		            success:function(data){
 		            	//console.log("data : " + data);
 		            	 checkBox.attr("disabled",false);

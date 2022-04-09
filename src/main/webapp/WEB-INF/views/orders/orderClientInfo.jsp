@@ -24,7 +24,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
 
-<form:form method="post" action="http://localhost:8080/asac/or/cl/up?ocode=${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
+<form:form method="post" action="http://localhost:8080/or/cl/up?ocode=${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
 	<div class="container-fluid">
   		<h2 style="text-align:center;">주문정보</h2>
   		<br>
@@ -96,7 +96,7 @@
   		</form:form>
 <a href="../../or/cl/de?ocode=${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
 
-<a href="http://localhost:8080/asac/me/cl/my"><button>주문 목록으로</button></a>
+<a href="http://localhost:8080/me/cl/my"><button>주문 목록으로</button></a>
 <br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

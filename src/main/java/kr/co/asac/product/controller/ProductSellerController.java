@@ -1,80 +1,115 @@
 package kr.co.asac.product.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.asac.product.bean.PagingBean;
 import kr.co.asac.product.bean.ProductBean;
-import kr.co.asac.product.service.ProductAdminService;
 import kr.co.asac.product.service.ProductSellerService;
+import kr.co.asac.utils.Search;
 
 @Controller
 public class ProductSellerController {
 
 	@Autowired
 	private ProductSellerService productSellerService;
+		
+	@RequestMapping(value = "/pr/se/li", method = RequestMethod.GET)
+	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model,
+			@RequestParam(value="productSearchCategory", required = false, defaultValue = "pcode") String productSearchCategory,
+			@RequestParam(value="productSearchText", required = false, defaultValue = "") String productSearchText,
+			@ModelAttribute(value = "productPaging") PagingBean productPaging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int productListCnt = productSellerService.productSellerListCount(request, productSearchCategory, productSearchText);
+		productPaging.pageInfo(page, range, productListCnt);
+		
+		productSellerService.productSellerList(request, response, model, productPaging);
+		
+		return "product/productSellerPage";
+	}
+	
+	@RequestMapping(value = "/pr/se/ls", method = RequestMethod.POST)
+	@ResponseBody
+	public Map <String, Object> productSellerListSearch(HttpServletRequest request, Model model, 
+			@RequestParam(value = "searchCategory", required = false, defaultValue="pcode") String searchCategory,
+			@RequestParam(value = "searchText", required = false, defaultValue="") String searchText,
+			@ModelAttribute(value = "paging") PagingBean paging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int listCnt = productSellerService.productSellerListCount(request, searchCategory, searchText);
 
-	@Autowired
-	private ProductAdminService productAdminService;
-	
-//	@RequestMapping("/pr/se/la")
-//	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, @RequestParam(required = false, defaultValue = "1") int page
-//			,@RequestParam(required = false, defaultValue = "1") int range, @RequestParam(required = false) String searchType, @RequestParam(required = false) String keyword,
-//			@ModelAttribute("searchSe") Search search) throws Exception {
-//		
-//		model.addAttribute("searchSe", search);
-//		search.setSearchType(searchType);
-//		search.setKeyword(keyword);
-//		String id = (String) request.getSession().getAttribute("sid");
-//		int listCnt = productSellerService.productSellerCount(request, id, search);
-//		System.out.println("listCnt??" + listCnt);
-//		
-//		search.pageInfo(page, range, listCnt);
-//		model.addAttribute("productPagingSe", search);
-//		
-//		productSellerService.productSellerList(request, response, model, search);
-//		
-//		return "product/productSellerList";
-//	}
-
-	@RequestMapping("/pr/se/if")
-	public String productSellerInfo(Model model, @RequestParam String pcode, ProductBean product) {
-		ProductBean info = productSellerService.productSellerInfo(product, pcode);
-		model.addAttribute("productSellerInfo", info);
-		return "product/productSellerInfo";
+		paging.pageInfo(page, range, listCnt);
+		
+		List <ProductBean> productList = productSellerService.productSellerListSearch(request, model, searchCategory, searchText, paging);
+		
+	    Map<String, Object> map = new HashMap<String, Object>(); 
+		map.put("paging", paging);
+		map.put("productList", productList);
+	    return map;
 	}
 	
-	@RequestMapping(value = "pr/se/in", method = RequestMethod.GET)
-	public String ProductSellerInsert() {
-		return "product/productSellerInsertForm";		
+	@RequestMapping(value = "/pr/se/if", method = RequestMethod.POST)
+	@ResponseBody
+	public ProductBean productSellerInfo(Model model, @RequestParam("pcode") String pcode) {
+		ProductBean product = productSellerService.productSellerInfo(model, pcode);
+		return product;
 	}
 	
-	@RequestMapping(value = "pr/se/in", method = RequestMethod.POST)
-	public String ProductSellerInsert(ProductBean product) {
-		System.out.println(product);
-		productSellerService.productSellerInsert(product);
-		return "redirect:/pr/se/la";	
+	@RequestMapping(value = "/pr/se/in", method = RequestMethod.POST)
+	@ResponseBody
+	public void productSellerInsert(HttpServletRequest request, HttpServletResponse response, Model model, 
+			ProductBean product) throws Exception {
+		
+		productSellerService.productSellerInsert(request, model, response, product);
+	}
+	
+	@RequestMapping(value = "/pr/se/up", method = RequestMethod.POST)
+	@ResponseBody
+	public void productSellerUpdate(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, Search search) throws Exception {
+		productSellerService.productSellerUpdate(request, model, response, product);
+	}
+		
+	@RequestMapping(value = "pr/se/de/pcode/{pcode}", method = RequestMethod.POST)
+	@ResponseBody
+	public void productSellerDelete(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("pcode") String pcode) throws Exception {
+		productSellerService.productSellerDelete(request, model, response, pcode);
 	}
 
-	@RequestMapping(value = "/pr/se/up", method = RequestMethod.GET)
-	public String ProductSellerUpdate(@RequestParam String pcode, ProductBean product, Model model) throws Exception{
-		ProductBean info = productSellerService.productSellerInfo(product, pcode);
-		model.addAttribute("productSellerUpdate", info);
-		return "product/productSellerUpdateForm";
+	@RequestMapping(value = "/pr/se/fu", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String productSellerFileUpload(HttpServletRequest request, Model model, 
+			MultipartFile sfileUpload) throws IOException {
+		
+//		String filePath = request.getSession().getServletContext().getRealPath("upload");
+		String fileName = sfileUpload.getOriginalFilename();
+	
+        try {
+        	sfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+        } catch(Exception e) {
+
+        }
+		
+		return fileName;
 	}
 	
-	@RequestMapping(value ="/pr/se/up", method = RequestMethod.POST)
-	public String ProductSellerUpdate(ProductBean product) throws Exception {
-		productSellerService.productSellerUpdate(product);
-		return "redirect:/pr/se/la";
-	}
-	
-//	@RequestMapping("pr/se/de")
-//	public String productSellerDelete(@RequestParam String pcode) {
-//		productSellerService.productSellerDelete(pcode);
-//		return "redirect:/pr/se/la";
-//	}
 }

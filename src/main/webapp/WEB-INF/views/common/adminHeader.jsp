@@ -85,10 +85,20 @@ if (sid == null || !sid.equals("admin")) {
 					</div>
 				</div></li>
 
-			<!-- Nav Item - Charts -->
-			<li class="nav-item"><a class="nav-link"
-				href="<%= request.getContextPath() %>/pr/ad/li"> <i
-					class="fas fa-regular fa-box"></i> <span>상품관리</span></a></li>
+			<!-- Nav Item - Utilities Collapse Menu Order -->
+			<li class="nav-item"><a class="nav-link collapsed" href=""
+				data-toggle="collapse" data-target="#collapseProduct"
+				aria-expanded="true" aria-controls="collapseProduct"> <i
+					class="fas fa-solid fa-box"></i> <span>상품관리</span>
+			</a>
+				<div id="collapseProduct" class="collapse"
+					aria-labelledby="headingProduct" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">상품 관리</h6>
+						<a class="collapse-item" href="http://localhost:8080/pr/ad/al">전체 상품 관리</a>
+						<a class="collapse-item"href="http://localhost:8080/pr/ad/sl">내 상품 관리</a>
+					</div>
+				</div></li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
 			<li class="nav-item"><a class="nav-link collapsed" href=""
@@ -136,20 +146,20 @@ if (sid == null || !sid.equals("admin")) {
 	</header>
 
 	<!-- Bootstrap core JavaScript-->
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/jquery/jquery.min.js"></script>
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/jquery/jquery.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for all pages-->
-	<script src="/asac/resources/bootstrap/adminIndex/js/sb-admin-2.min.js"></script>
+	<script src="/resources/bootstrap/adminIndex/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
-	<script	src="/asac/resources/bootstrap/adminIndex/vendor/chart.js/Chart.min.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/vendor/chart.js/Chart.min.js"></script>
 
 	<!-- Page level custom scripts -->
-	<script	src="/asac/resources/bootstrap/adminIndex/js/demo/chart-area-demo.js"></script>
-	<script	src="/asac/resources/bootstrap/adminIndex/js/demo/chart-pie-demo.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/js/demo/chart-area-demo.js"></script>
+	<script	src="/resources/bootstrap/adminIndex/js/demo/chart-pie-demo.js"></script>
 </body>
 </html>
