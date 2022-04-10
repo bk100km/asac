@@ -36,7 +36,7 @@ function del() {
         data: {sid:sid, spwd:spwd},
         success: function() {
 				alert("탈퇴 되었습니다");
-				location.href="http://localhost:8080/asac/";
+				location.href="<%= request.getContextPath() %>";
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -159,8 +159,8 @@ function del() {
 							<input type="text" class="form-control" name="saddrd" id="saddrd" value="${seller.saddrd}"  readonly/><br>
 					</div>
 					
-					<div><button type="button" onclick="location.href='http://localhost:8080/asac/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
-					<button type="button" onclick="location.href='http://localhost:8080/asac/me/se/in'" class="btn btn-default"> 메인으로</button>
+					<div><button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
+					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/in'" class="btn btn-default"> 메인으로</button>
 					<button type="button" onclick="del()" class="btn btn-default" >탈퇴하기</button>
 					
 		</div>

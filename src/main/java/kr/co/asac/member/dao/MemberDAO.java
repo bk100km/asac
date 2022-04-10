@@ -13,14 +13,14 @@ import kr.co.asac.product.bean.ProductBean;
 public interface MemberDAO {
 
 	// client
-	public String memberClientLoginCheck(MemberBean member);
+	public MemberBean memberClientLoginCheck(String mid);
 	public void memberJoin(MemberBean member);
 	public int memberIdChk(MemberBean member);
 	public MemberBean memberInfo(String mid);
 	public MemberBean memberClientInfo(String mid);
 	public void memberClientUpdate(MemberBean member);
 	public void memberClientDelete(MemberBean vo);
-	public int memberClientDelPwC(MemberBean vo);
+	public MemberBean memberClientDelPwC(String mid);
 	public void memberClientNaver(MemberBean member);
 	public void memberClientKakao(MemberBean member);
 	public int updatePw(MemberBean vo) throws Exception;

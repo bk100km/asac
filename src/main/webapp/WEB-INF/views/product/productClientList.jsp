@@ -7,7 +7,13 @@
     <head>
     
     
+    
+    
      <style>
+     
+
+     
+     
  ul {
     display: block;
     list-style-type: disc;
@@ -57,18 +63,14 @@ li {
 
 .btn {
     display: inline-block;
-    min-width: 112px;
-    padding: 11px 31px;
-    font-size: 16px;
-    line-height: 26px;
-    text-align: center;
-    vertical-align: top;
-    border: 1px solid #E1B771 !important;
-    border-radius: 26px;
-    background-color: #E1B771 !important;
-    background-image: linear-gradient(280deg,#fb5a72,#E1B771 !important);
-    color: #fff;
-    font-weight: 500;
+	width: 4em;
+	height:2em;
+	font-size: 15px !important;
+	text-align: center;
+	border-radius: 26px !important;
+
+
+
 }
 h3 {
 	text-align : center;
@@ -84,10 +86,9 @@ h3 {
 
 .card-img-top{
 
-    width: 330px; 
-    height: 400px;  
-    max-width: 100%; 
-    height:auto;
+    width: 300px; 
+    height: 370px;  
+
     margin-left:12px;
 
 }
@@ -106,20 +107,41 @@ h3 {
         height:40px;
         font-size: 2rem;
          position:relative;
-  
+
         left:46.7%;
         bottom:20px;
         transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
         cursor: pointer;
-       
-        
   
+}
+.selecttext{
+		width:15em;
+        height:1.5em;
+		
 
+}
+.searchdiv{
+	margin-left:60%;
+	margin-bottom:2%;
 
 
 }
 
+.searchform{
+	width:100%;
+	height:100%;
+
+}
+
+
+.txt{
+		width:5em;
+        height:1.5em;
+}
+.pagination{
+	color:black !important;
+}
      </style>
     </head>
     <body>
@@ -128,21 +150,44 @@ h3 {
         <!-- Section-->	
         <section class="py-5">
             <div class="container">
+            
+            <form class="searchform" id="searchForm" name="search" method="post">
+						<div class="searchdiv"  align="center">&nbsp;&nbsp; 
+						<select name="items" id="items" class="txt">
+								<option value="sid" <c:if test="${param.items eq 'sid'}"> selected="selected"</c:if>>판매자</option>
+								<option value="pname"<c:if test="${param.items eq 'pname'}"> selected="selected"</c:if>>상품이름</option>
+						</select>
+						<input name="text" id="text" type="text" class="selecttext" <c:if test="${param.text ne null}">value="${param.text}"</c:if>/> 
+						<input type="button" id="btnAdd" class="btn btn-outline-dark" value="검색" onclick="searchAction()">
+						<input type="hidden" name="nowPage" value="1"/>
+						<input type="hidden" id="pcate" name="pcate" value="${param.pcate}"/>
+						</div>
+		</form>
       
                         	<h3> ${param.pcate}</h3>
 	                     <div class="col mb-5 productlist">
-	                        <div class="card">
+	                        <div class="prodiv">
 	                        <ul class="rf-pinwheel-tiles">
-	                             
-       
+
 	                        <c:forEach var="product" items="${proClientListlist}">
 	                            <!-- Product image-->
 	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
 	                           <div class="as-pinwheel15-section">
 	                <div class= as-pinwheel-tile>
-	                            <a href="../cl/dt?pcode=${product.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}">
-	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                
+	                		<c:choose>
+		                    <c:when test="${param.items != null}">
+	                            <a href="/pr/cl/dt/${product.pcode}/items/${param.items}/text/${param.text}/${paging.nowPage}">
+	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
+	                              </c:when>
+	                            <c:otherwise>
+	                            <a href="/pr/cl/dt/${product.pcode}/${paging.nowPage}">
+	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            </a>
+	                            </c:otherwise>
+	                          
+	                            </c:choose>
 	                            <div class="group_btn"><button type="button" class="btn_cart"><span class="glyphicon glyphicon-shopping-cart"></span></button> <!----> <!----></div>
 	                            <!-- Product details-->
 	                            <div class="card-body p-4">
@@ -164,46 +209,78 @@ h3 {
                    
                 </div>
         
-            	<form name="search" action="/asac/pr/cl/li">
-						<div  align="center">&nbsp;&nbsp; 
-						<select name="items" class="txt">
-								<option value="sid" <c:if test="${param.items eq 'sid'}"> selected="selected"</c:if>>판매자</option>
-								<option value="pname"<c:if test="${param.items eq 'pname'}"> selected="selected"</c:if>>상품이름</option>
-						</select>
-						<input name="text" type="text" class="selecttext" <c:if test="${param.text ne null}">value="${param.text}"</c:if>/> 
-						<input type="submit" id="btnAdd" class="btn btn-outline-dark"  value="검색 " />
-						<input type="hidden" name="nowPage" value="1"/>
-						<input type="hidden" name="pcate" value="${param.pcate}"/>
-						</div>
-		</form>
+            	
 		<div style="display: block; text-align: center;">
-	<ul class="pagination">			
+	<ul class="pagination justify-content-center">			
 		<c:if test="${paging.startPage != 1 }">
-		<li>
-			<a href="/asac/pr/cl/li?pcate=${param.pcate}&items=${param.items}&text=${param.text}&nowPage=${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+		<li >
+		<c:choose>
+		<c:when test="${param.items != null}">
+			<a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
 			&laquo;</span></a>
+			</c:when>
+		<c:otherwise>
+			<a class="page-link" href="/pr/cl/li/${pcate}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+			&laquo;</span></a>
+			</c:otherwise>
+			</c:choose>
 		</li>
 		</c:if>
 		<c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
 			<c:choose>
 				<c:when test="${p == paging.nowPage}">
-				<li class="active">	<span>${p}<span class="sr-only">(current)</span></span></li>
+				<li class="page-item active">	<span class="page-link" >${p}<span class="sr-only">(current)</span></span></li>
 				</c:when>
 				<c:when test="${p != paging.nowPage }">
-					<li><a href="/asac/pr/cl/li?pcate=${param.pcate}&items=${param.items}&text=${param.text}&nowPage=${p}">${p}</a></li>
+			<c:choose>		
+		        <c:when test="${param.items != null}">
+				
+					<li><a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${p}">${p}</a></li>
+					</c:when>
+				<c:otherwise>
+					
+						<li><a class="page-link" href="/pr/cl/li/${pcate}/${p}">${p}</a></li>
+					</c:otherwise>
+					</c:choose>
 				</c:when>
 			</c:choose>
 		</c:forEach>
+		
 		<c:if test="${paging.endPage != paging.lastPage}">
-			<a href="/asac/pr/cl/li?pcate=${param.pcate}&items=${param.items}&text=${param.text}&nowPage=${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-      </a>
+		<c:choose>
+		 <c:when test="${param.items != null}">
+		<li class="page-item">
+			<a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+    	 </li>
+    	 <c:otherwise>
+    	 <li class="page-item">
+    	 <a class="page-link" href="/pr/cl/li/${pcate}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+    	 </li>
+    	 </c:otherwise>
+    	 
+    	 
+    	 
+    	 	 </c:when>
+    	 </c:choose>
 		</c:if>
   	</ul>
   	</div>
   	       </section>
-     		
+
         <jsp:include page="../common/footer.jsp" flush="false" /> 
 
+	<script>
+	function searchAction() {
+
+	if(document.getElementById("text").value ==""){
+		alert("검색어를 입력해 주세요.")}
+	else{	
+		var form = document.getElementById("searchForm");
+	    form.action = "http://localhost:8080/pr/cl/li/${pcate}"+"/items/" + document.getElementById("items").value + "/text/" + document.getElementById("text").value + "/1";
+	    form.submit();
+	}
+	}
+	</script>
         
     </body>
 </html>

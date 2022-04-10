@@ -29,9 +29,10 @@ public class MemberSellerController {
 	
 	// seller
 	@RequestMapping("/me/se/in")
-	public String memberSellerIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member, OrderBean vo) throws Exception {
+	public String memberSellerIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member) throws Exception {
 		
-		memberSellerService.sellerIndexChart(request, response, model, vo);		
+		//sellerChart
+		memberSellerService.sellerIndexChart(request, response, model);		
 		return "sellerIndex";
 	}
 	
@@ -43,10 +44,12 @@ public class MemberSellerController {
 	}
 	
 	@RequestMapping(value = "/me/se/lA", method = RequestMethod.POST)
-	public String memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller, OrderBean vo) throws Exception {
+	public String memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		
 		memberSellerService.memberSellerLoginCheck(request, response, model, seller);
-		memberSellerService.sellerIndexChart(request, response, model, vo);	
+		
+		//sellerChart
+		memberSellerService.sellerIndexChart(request, response, model);	
 		return "sellerIndex";
 	}
 	

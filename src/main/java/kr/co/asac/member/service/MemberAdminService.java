@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.google.gson.Gson;
+
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
@@ -67,10 +69,9 @@ public class MemberAdminService {
 	public void memberAdminClientInsert(HttpServletRequest request, Model model, HttpServletResponse response, MemberBean member) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
+		// 비밀번호 암호화
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String secureMpwd = encoder.encode("123123");
-		member.setMpwd(secureMpwd);
-		System.out.println("secureMpwd 값은 = " + secureMpwd);
+		member.setMpwd(encoder.encode("123123"));
 		
 		memberDAO.memberAdminClientInsert(member);
 		model.addAttribute("fromURI", request.getServletPath());
@@ -180,51 +181,25 @@ public class MemberAdminService {
 	}	
 	
 	// chart
-	public void memberAdminDayList(HttpServletRequest request, HttpServletResponse response, Model model)
-			throws Exception {
-		String id = (String) request.getSession().getAttribute("mid");
-		System.out.println("AdminList Sid값 : " + id);
-
+	public void adminIndexChart(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
 		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<MemberBean> memberAdminDayList = dao.memberAdminDayList(id);
-		List<MemberBean> memberAdminDayConfirmList = dao.memberAdminDayConfirmList(id);
-		model.addAttribute("memberAdminDayList", memberAdminDayList);
-		model.addAttribute("memberAdminDayConfirmList", memberAdminDayConfirmList);
-
-	}
-	
-	public void memberCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<MemberBean> memberCountMonth = dao.memberCountMonth();
-		model.addAttribute("memberCountMonth", memberCountMonth);
-	}
-	
-	public void productCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<ProductBean> productCountMonth = dao.productCountMonth();
-		model.addAttribute("productCountMonth", productCountMonth);
-	}
-	
-	public void ordersCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<OrderBean> ordersCountMonth = dao.ordersCountMonth();
-		model.addAttribute("ordersCountMonth", ordersCountMonth);
-	}
-	
-	public void ordersSumMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<OrderBean> ordersSumMonth = dao.ordersSumMonth();
-		model.addAttribute("ordersSumMonth", ordersSumMonth);
-	}	
-	
-	public void recentOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		List<MemberBean> myAreaChart = dao.memberCountMonth();
+		List<ProductBean> myAreaChart2 = dao.productCountMonth();
+		List<OrderBean> myAreaChart3 = dao.ordersCountMonth();
+		List<OrderBean> myAreaChart4 = dao.ordersSumMonth();
+		
+		String listjson = new Gson().toJson(myAreaChart);
+		model.addAttribute("list", listjson);
+		String listjson2 = new Gson().toJson(myAreaChart2);
+		model.addAttribute("list2", listjson2);
+		String listjson3 = new Gson().toJson(myAreaChart3);
+		model.addAttribute("list3", listjson3);
+		String listjson4 = new Gson().toJson(myAreaChart4);
+		model.addAttribute("list4", listjson4);
+		
 		List<OrderBean> recentOrder = dao.recentOrder();
 		model.addAttribute("recentOrder", recentOrder);
-	}
-	
-	public void topThreeOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
 		List<ProductBean> topThreeOrder = dao.topThreeOrder();
 		model.addAttribute("topThreeOrder", topThreeOrder);
 	}

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,27 +31,31 @@ public class ReviewClientController {
 	private ReviewClientService reviewClientService;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 
-	@RequestMapping(value = "/re/cl/wr",  method = RequestMethod.POST)
-	public String ReviewInsert (HttpServletRequest request,ReviewBean review, Model model) throws Exception {
+	@RequestMapping(value = { "/re/cl/wr/{nowcode}/items/{items}/text/{text}/{nowPage}","/re/cl/wr/{nowcode}/{nowPage}"},  method = RequestMethod.POST)
+	public String ReviewInsert (HttpServletRequest request,ReviewBean review, Model model,
+			@PathVariable(required = false) String nowcode,	@PathVariable(required = false) String text,
+			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage
+			) throws Exception {
 	
-	
-		System.out.println("안나와?");
-		
+
 		reviewClientService.reviewInsert(review); 
 		
 
 		
 		HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
-		String pcode =request.getParameter("pcode");
-		String pcate =request.getParameter("pcate");
-		
-		model.addAttribute("pcate", pcate);
-		model.addAttribute("pcode", pcode);
 		model.addAttribute("mid", mid);
-	
-		return "redirect:/pr/cl/dt?";
+		
+
+		if (text == null || text == "") {
+			System.out.println("여기야?1");
+		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage;
+		}else {	
+		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage;
 	}
+		
+	}
+	
 
 	@RequestMapping(value = "/re/cl/sF", method = RequestMethod.POST)
 	@ResponseBody
@@ -64,7 +69,7 @@ public class ReviewClientController {
 			String fileName = rfile.getOriginalFilename();
 			 System.out.println(fileName);
 	        try {
-	        	rfile.transferTo(new File("C:\\swork\\asac5\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+	        	rfile.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
 	        } catch(Exception e) {
 	            System.out.println("업로드 오류");
 	        }
@@ -75,8 +80,11 @@ public class ReviewClientController {
 			
 			return fileName;
 		}	
-	@RequestMapping(value = "/re/cl/up",  method = RequestMethod.POST)
-	public String ReviewUpdate (HttpServletRequest request, Model model) throws Exception {
+	@RequestMapping(value = { "/re/cl/up/{nowcode}/items/{items}/text/{text}/{nowPage}","/re/cl/up/{nowcode}/{nowPage}"},  method = RequestMethod.POST)
+	public String ReviewUpdate (HttpServletRequest request,ReviewBean review, Model model,
+			@PathVariable(required = false) String nowcode,	@PathVariable(required = false) String text,
+			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage
+			) throws Exception {
 	
 	
 		
@@ -86,14 +94,16 @@ public class ReviewClientController {
 		
 		HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
-		String pcode =request.getParameter("pcode");
-		String pcate =request.getParameter("pcate");
 		
-		model.addAttribute("pcate", pcate);
-		model.addAttribute("pcode", pcode);
+		model.addAttribute("nowcode", nowcode);
 		model.addAttribute("mid", mid);
 	
-		return "redirect:/pr/cl/dt?";
+		if (text == null || text == "") {
+			System.out.println("여기야?1");
+		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage;
+		}else {	
+		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage;
+	}
 	}
 	
 	

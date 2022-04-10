@@ -6,8 +6,8 @@
 <mapper namespace="kr.co.asac.member.dao.MemberDAO">
 
 	<!-- client	 -->
-	<select id="memberClientLoginCheck" resultType="String">
-		select * from member where mid=#{mid} and mpwd=#{mpwd}
+	<select id="memberClientLoginCheck" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mid=#{mid}
 	</select>	
 	
 	<select id="memberInfo" resultType="kr.co.asac.member.bean.MemberBean">
@@ -38,9 +38,8 @@
 		delete from member where mid=#{mid} and mpwd=#{mpwd}
 	</delete>
 	
-	<select id="memberClientDelPwC" resultType="int">
-		select count(*) from member
-		where mid=#{mid} and mpwd=#{mpwd}
+	<select id="memberClientDelPwC" resultType="kr.co.asac.member.bean.MemberBean">
+		select * from member where mid=#{mid}
 	</select>
 	
 	<insert id="memberClientNaver" parameterType="kr.co.asac.member.bean.MemberBean">

@@ -31,7 +31,7 @@ body { margin: 0;}
 			<li><a href="#tabmenu_02" data-toggle="tab">내 정보</a></li>
 		</ul>
 		<div class="tab-content">
-			<div class="tab-pane fade in active" id="tabmenu_01">
+			<div class="tab-pane in active" id="tabmenu_01">
 				<jsp:include page="../orders/orderClientList.jsp"></jsp:include>
 			</div>
 			<div class="tab-pane fade" id="tabmenu_02">
@@ -47,7 +47,7 @@ body { margin: 0;}
 			<div class="tab-pane fade" id="tabmenu_01">
 				<jsp:include page="../orders/orderClientList.jsp"></jsp:include>
 			</div>
-			<div class="tab-pane fade in active" id="tabmenu_02">
+			<div class="tab-pane in active" id="tabmenu_02">
 				<jsp:include page="./memberClientInfo.jsp"></jsp:include>
 			</div>
 		</div>

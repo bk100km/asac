@@ -54,9 +54,9 @@ function check(input) {
 function fileUpload(){
 	var rfileform = new FormData($("#writeform")[0]);
     var sfileZoneText = "";
-	alert("나온다!");
+	
      $.ajax({
-         url : "/asac/re/cl/sF"
+         url : "/re/cl/sF"
        , type : "POST"
        , data: rfileform
        , async: false
@@ -64,7 +64,7 @@ function fileUpload(){
        , processData : false
        , contentType : false
        , success:function(rfile) {
-           alert("성공하였습니다.");
+     
           
        }
        ,error: function (jqXHR) 
@@ -79,7 +79,7 @@ function fileUpdate(){
     var sfileZoneText = "";
 	alert(rfileform);
      $.ajax({
-         url : "/asac/re/cl/sF"
+         url : "/re/cl/sF"
        , type : "POST"
        , data: rfileform
        , async: false
@@ -112,6 +112,7 @@ function fileUpdate(){
 	margin: 0;
 	padding: 0;
 	min-width: 0;
+	
 }
 
 .large-4 {
@@ -220,8 +221,9 @@ function fileUpdate(){
 }
 .NFNlCQC2mv {
     position: absolute;
-    bottom: 5%;
+
     right: 73%;
+   
 }
 .NFNlCQC2mv ._2Q0vrZJNK1 {
     display: inline-block;
@@ -260,6 +262,17 @@ function fileUpdate(){
 	
 	font-weight: 500;
 }
+.tbox{
+	margin-left: 50%;
+	
+
+
+
+}
+.imgbox{
+	float: left;
+
+}
 </style>
 
 
@@ -289,17 +302,15 @@ function fileUpdate(){
 			<div class="column large-4 small-12">
 				<div class="row gx-4 gx-lg-5 align-items-center">
 					<div class="column large-7 large-offset-1">
-						<div class="col-md-6">
-							<img src="/asac/resources/image/product/${proDetail.pfile}"
+						<div class="imgbox">
+							<img src="/resources/image/product/${proDetail.pfile}"
 								width="450" height="450" title="${proDetail.pname}"
 								alt="${proDetail.pcontent}" />
 						</div>
-				<div class="NFNlCQC2mv"><div class="_2Q0vrZJNK1"><span class="_2lJgrD1cyO">리뷰수</span>
-				<a href="#scrollspyHeading2" role="button"><strong class="_2pgHN-ntx6">${totalreview}&nbsp;&nbsp;&nbsp;</strong></a></div><div class="_2Q0vrZJNK1">
-				<span class="_2lJgrD1cyO"> 사용자 총 평점 </span><strong class="_2pgHN-ntx6"> 5.0 <span class="_1RFxMQxpZW"><span class="blind"> /</span></span> ${average}</strong></div></div>
+
 					
 					
-					<div class="column large-4 small-12">
+					<div class="tbox">
 						<span class="name">${proDetail.pname}</span>
 						<form name="productDetail" method="post">
 							<input name="mid" type="hidden" value="${mid}">
@@ -326,7 +337,7 @@ function fileUpdate(){
 								onkeyup="inputNumberFormat(this);" disabled />
 							<hr /></hr>
 						
-								<a class="atag btn-default" href="http://localhost:8080/pr/cl/li?ptag=${proDetail.ptag}&nowPage=1" role="button" ><span>#${proDetail.ptag}</span></a>
+								<a class="atag btn-default" href="http://localhost:8080/pr/cl/li/ptag/${proDetail.ptag}/1" role="button" ><span>#${proDetail.ptag}</span></a>
 					
 							<div class="colum-10">
 								<button class="btn" type="submit" onclick="">바로 구매</button>
@@ -338,23 +349,41 @@ function fileUpdate(){
 								<div>
 						
 									<c:choose>
-										<c:when test="${!empty param.ptag}">
+										<c:when test="${!empty ptag}">
 												<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/asac/pr/cl/li?ptag=${param.ptag}&nowPage=${param.nowPage}'">
+												onclick="location.href='/pr/cl/li/ptag/${ptag}/${nowPage}'">
 										</c:when>
 										<c:when test="${aid != null}">
 											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/asac/pr/se/la'">
+												onclick="location.href='/pr/se/la'">
+										</c:when>
+										<c:when test="${items != null}">
+											<input class="btn content" type="button" value="상품목록"
+												onclick="location.href='/pr/cl/li/${proDetail.pcate}/items/${items}/text/${text}/${nowPage}'">
 										</c:when>
 										<c:otherwise>
 											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/asac/pr/cl/li?pcate=${proDetail.pcate}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}'">
+												onclick="location.href='/pr/cl/li/${proDetail.pcate}/${nowPage}'">
 
 										</c:otherwise>
 									</c:choose>
 								</div>
 						
 							</div>
+							<div class="NFNlCQC2mv">
+						<c:choose>	
+							<c:when test="${totalreview != ''}">
+											<div class="_2Q0vrZJNK1"><span class="_2lJgrD1cyO">리뷰수</span>
+				<a href="#scrollspyHeading2" role="button"><strong class="_2pgHN-ntx6">${totalreview}&nbsp;&nbsp;&nbsp;</strong></a></div><div class="_2Q0vrZJNK1">
+				<span class="_2lJgrD1cyO"> 사용자 총 평점 </span><strong class="_2pgHN-ntx6"> 5.0 <span class="_1RFxMQxpZW"><span class="blind"> /</span></span> ${average}</strong></div>
+						</c:when>
+						<c:otherwise>
+						
+						<span>아직 작성된 리뷰가 없습니다.</span>
+						</c:otherwise>
+						
+						</c:choose>
+						</div>
 						</form>
 					</div>
 

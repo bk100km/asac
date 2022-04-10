@@ -8,7 +8,7 @@ if (sid == null || !sid.equals("admin")) {
 	session.invalidate();
 	out.println("<script>");
 	out.println("alert('접근 권한이 없습니다.');");
-	out.println("location.href='http://localhost:8080/asac/';");
+	out.println("location.href='http://localhost:8080/';");
 	out.println("</script>");
 }
 %>

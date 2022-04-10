@@ -302,22 +302,22 @@
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=농산물류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/농산물류/1"
 							class="nav-link">농산물</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=간편식류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/간편식류/1"
 							class="nav-link">간편식</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=콩고기류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/콩고기류/1"
 							class="nav-link">대체육ㆍ콩</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=양념소스류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/양념소스류/1"
 							class="nav-link">양념ㆍ소스</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=음료류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/음료류/1"
 							class="nav-link">음료</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/cl/li?pcate=생활용품류&nowPage=1"
+							href="<%= request.getContextPath() %>/pr/cl/li/생활용품류/1"
 							class="nav-link">생활ㆍ뷰티</a></li>
 
 						<%

@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -29,22 +30,24 @@ public class MemberClientService {
 	
 	public void memberClientLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
-		String mid = memberDAO.memberClientLoginCheck(member);
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("mid", mid);
-		model.addAttribute("mid", mid);
+		// 비밀번호 복호화
+		MemberBean secureMember = memberDAO.memberClientLoginCheck(member.getMid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-	    if(mid == null){
-   		response.setContentType("text/html;charset=utf-8");
-	   	PrintWriter out = response.getWriter();
-	   	System.out.println("로그인 실패");
-	   	out.println("<script>");
-	   	out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.')");
-	   	out.println("history.back()");
-	   	out.println("</script>");
-	   	out.flush();
-	   	
+		if(secureMember == null || !encoder.matches(member.getMpwd(), secureMember.getMpwd())) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	System.out.println("로그인 실패");
+		   	out.println("<script>");
+		   	out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();
+		} else {
+			HttpSession session = request.getSession();
+			session.setAttribute("mid", secureMember.getMid());
+			model.addAttribute("mid", secureMember.getMid());
 	    }	
 	}
 	
@@ -78,7 +81,11 @@ public class MemberClientService {
 			yyyy = "18"+yy;
 		}
 		member.setMbirth(yyyy);
-		System.out.println(member);
+		
+		// 비밀번호 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		member.setMpwd(encoder.encode(member.getMpwd()));
+		
 		memberDAO.memberJoin(member);
 	}
 	
@@ -119,18 +126,38 @@ public class MemberClientService {
 			yyyy = "18"+yy;
 		}
 		member.setMbirth(yyyy);
+		
+		// 비밀번호 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		member.setMpwd(encoder.encode(member.getMpwd()));
+		
 		memberDAO.memberClientUpdate(member);	
 		model.addAttribute("member", member);
 	}
 	
 	public void memberClientDelete(MemberBean vo) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		// 비밀번호 복호화
+		MemberBean secureMember = memberDAO.memberClientLoginCheck(vo.getMid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) { 
 		memberDAO.memberClientDelete(vo);
+		}
 	}
 	
 	public int memberClientDelPwC(MemberBean vo) {
+		int result = 0;
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		int result = memberDAO.memberClientDelPwC(vo);
+		
+		// 비밀번호 복호화
+		MemberBean secureMember = memberDAO.memberClientDelPwC(vo.getMid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) {
+			result = 1;
+		}
 		return result;
 	}
 	
@@ -214,10 +241,14 @@ public class MemberClientService {
 				mpwd += (char) ((Math.random() * 26) + 97);
 			}
 			vo.setMpwd(mpwd);
-			// 비밀번호 변경
-			memberDAO.updatePw(vo);
+			
 			// 비밀번호 변경 메일 발송
 			sendEmail(vo, "findpw");
+			// 비밀번호 암호화
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			vo.setMpwd(encoder.encode(vo.getMpwd()));
+			// 비밀번호 변경
+			memberDAO.updatePw(vo);
 
 			out.print("이메일로 임시 비밀번호를 발송하였습니다.");
 			out.close();

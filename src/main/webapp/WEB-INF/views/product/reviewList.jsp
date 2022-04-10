@@ -238,7 +238,7 @@ function closeSellerRevise(){
 									<tr style="display: none;" id="${review.rnum}test">
 
 										<td colspan="2"><img
-											src="/asac/resources/image/product/${review.rfile}"
+											src="/resources/image/product/${review.rfile}"
 											width="100" height="100" alt="${review.rfile}">
 											${review.rcontent}</td>
 
@@ -249,8 +249,10 @@ function closeSellerRevise(){
 
 
 								<form
-								action="/asac/re/ad/wr?pcate=${proDetail.pcate}&pcode=${proDetail.pcode}&aid=${aid}"
+								action="/re/ad/wr/${proDetail.pcode}"
 								method="post" id="updateForm" name="updateform">
+								
+								
 							    <input type="hidden" id="sid" name="sid" value="${aid}">
 							    <input type="hidden" id="rnum" name="rnum" value="${review.rnum}">
 								<c:choose>
@@ -292,9 +294,10 @@ function closeSellerRevise(){
 												<button type="button" class="btn" id = "${review.rnum}seller"
 													style="margin-top: 20px; line-height: 20px; text-align: center; float: right; font-size: 13px;"
 													onclick="openSellerRevise(this.id)">수정</button>
+													
 												<button type="button" class="btn"  value="${review.rnum}"
 													style="margin-top: 5px; line-height: 20px; text-align: center; float: right; font-size: 13px;"
-													onclick="location.href='/asac/re/ad/de?pcate=${proDetail.pcate}&pcode=${proDetail.pcode}&aid=${aid}&rnum=${review.rnum}'">삭제
+													onclick="location.href='/re/ad/de/${proDetail.pcode}/${review.rnum}'">삭제
 												 </button>
 											</td>
 										</c:if>
@@ -318,33 +321,63 @@ function closeSellerRevise(){
 
 							<div style="display: block; text-align: center;">
 
-								<ul class="pagination">
+								<ul class="pagination justify-content-center">
 									<c:if test="${paging.startPage != 1 }">
-
-										<li><a
-											href="/asac/pr/cl/dt?pcode=${param.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}&reviewNowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}&aid=${aid}"
+									<c:choose>
+		                           <c:when test="${items != null}">
+										<li><a class="page-link"
+											href="/pr/cl/dt/${pcode}/items/${items}/text/${text}/${nowPage}/${paging.startPage - 1 }"
 											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 										</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a class="page-link"
+											href="/pr/cl/dt/${pcode}/${nowPage}/${paging.startPage - 1 }"
+											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+										</a></li>
+									
+									</c:otherwise>
+									</c:choose>	
+										
 									</c:if>
 									<c:forEach begin="${paging.startPage}" end="${paging.endPage}"
 										var="p">
 										<c:choose>
 											<c:when test="${p == paging.reviewNowPage}">
-												<li class="active"><span>${p}<span
-														class="sr-only">(current)</span></span></li>
+											<li class="page-item active">	<span class="page-link" >${p}<span class="sr-only">(current)</span></span></li>
 											</c:when>
 											<c:when test="${p != paging.reviewNowPage }">
-												<li><a
-													href="/asac/pr/cl/dt?pcode=${param.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}&reviewNowPage=${p}&cntPerPage=${paging.cntPerPage}&aid=${aid}">${p}</a></li>
+										      <c:choose>
+		                                        <c:when test="${items != null}">
+												<li><a class="page-link"
+													href="/pr/cl/dt/${pcode}/items/${param.items}/text/${text}/${nowPage}/${p}">${p}</a></li>
+											    </c:when>
+											<c:otherwise>
+												<li><a class="page-link"
+													href="/pr/cl/dt/${pcode}/${nowPage}/${p}">${p}</a></li>	
+	
+											</c:otherwise>
+											
+											</c:choose>
+	
 											</c:when>
 										</c:choose>
 									</c:forEach>
 									<c:if test="${paging.endPage != paging.lastPage}">
-
-										<li><a
-											href="/asac/pr/cl/dt?pcode=${param.pcode}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}&reviewNowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}&aid=${aid}"
+									  <c:choose>
+		                               <c:when test="${items != null}">
+										<li><a class="page-link"
+											href="/pr/cl/dt/${pcode}/items/${items}/text/${text}/${nowPage}/${paging.endPage+1 }"
 											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 										</a></li>
+										</c:when>
+										<c:otherwise>
+										<li><a class="page-link"
+											href="/pr/cl/dt/${pcode}/${nowPage}/${paging.endPage+1 }"
+											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+										</a></li>
+										</c:otherwise>
+									</c:choose>
 
 									</c:if>
 								</ul>
@@ -360,12 +393,20 @@ function closeSellerRevise(){
 						<div class="container py-4" id="myDiv" style="display: none;">
 
 							<br />
+							<c:choose>
+		                    <c:when test="${items != null}">
 							<form
-								action="/asac/re/cl/wr?pcate=${proDetail.pcate}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}"
+								action="/re/cl/wr/${pcode}/items/${items}/text/${text}/${nowPage}"
 								method="post" id="writeform" name="writeform">
-
-								<label>상품이름</label> <input class="form-control" name="pcode"
-									value="${proDetail.pcode} " required="required" readonly />
+							</c:when>
+							<c:otherwise>
+								<form
+								action="/re/cl/wr/${pcode}/${nowPage}"
+								method="post" id="writeform" name="writeform">
+								</c:otherwise>
+							</c:choose>
+								<label>${items}</label> <input class="form-control" name="pcode"
+									value="${pcode} " required="required" readonly />
 
 
 								<div class="form-group">
@@ -413,9 +454,19 @@ function closeSellerRevise(){
 					<div class="container py-4" id="reviseForm" style="display: none;">
 
 							<br />
+					
+							<c:choose>
+		                    <c:when test="${items != null}">
 							<form
-								action="/asac/re/cl/up?pcate=${proDetail.pcate}&items=${param.items}&text=${param.text}&nowPage=${param.nowPage}"
+								action="/re/cl/up/${pcode}/items/${items}/text/${text}/${nowPage}"
 								method="post" id="updateform" name="updateform">
+							</c:when>
+							<c:otherwise>
+								<form
+								action="/re/cl/up/${pcode}/${nowPage}"
+								method="post" id="updateform" name="updateform">
+								</c:otherwise>
+							</c:choose>
 
 								<label>리뷰번호</label> <input class="form-control"  id="revisenum" name="revisenum"
 									value="" required="required" readonly />

@@ -120,59 +120,8 @@ public class MemberSellerService {
 		
 	}
 	
-	// chart
-	public void memberAdminDayList(HttpServletRequest request, HttpServletResponse response, Model model)
-			throws Exception {
-		String id = (String) request.getSession().getAttribute("mid");
-		System.out.println("AdminList Sid값 : " + id);
-
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<MemberBean> memberAdminDayList = dao.memberAdminDayList(id);
-		List<MemberBean> memberAdminDayConfirmList = dao.memberAdminDayConfirmList(id);
-		model.addAttribute("memberAdminDayList", memberAdminDayList);
-		model.addAttribute("memberAdminDayConfirmList", memberAdminDayConfirmList);
-
-	}
-	
-	public void memberCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<MemberBean> memberCountMonth = dao.memberCountMonth();
-		model.addAttribute("memberCountMonth", memberCountMonth);
-	}
-	
-	public void productCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<ProductBean> productCountMonth = dao.productCountMonth();
-		model.addAttribute("productCountMonth", productCountMonth);
-	}
-	
-	public void ordersCountMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<OrderBean> ordersCountMonth = dao.ordersCountMonth();
-		model.addAttribute("ordersCountMonth", ordersCountMonth);
-	}
-	
-	public void ordersSumMonth(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<OrderBean> ordersSumMonth = dao.ordersSumMonth();
-		model.addAttribute("ordersSumMonth", ordersSumMonth);
-	}	
-	
-	public void recentOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		String sid = (String) request.getSession().getAttribute("sid");
-		List<OrderBean> recentOrder = dao.sellerRecentOrder(sid);
-		model.addAttribute("recentOrder", recentOrder);
-	}
-	
-	public void topThreeOrder(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		String sid = (String) request.getSession().getAttribute("sid");
-		List<ProductBean> topThreeOrder = dao.sellerTopThreeOrder(sid);
-		model.addAttribute("topThreeOrder", topThreeOrder);
-	}	
-	
-	public void sellerIndexChart(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean vo) throws Exception{
+	// chart	
+	public void sellerIndexChart(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
 		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
 		String sid = (String) request.getSession().getAttribute("sid");

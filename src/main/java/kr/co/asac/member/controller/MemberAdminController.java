@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,16 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.PagingBean;
 import kr.co.asac.member.bean.SellerBean;
-import kr.co.asac.member.dao.MemberDAO;
 import kr.co.asac.member.service.MemberAdminService;
 import kr.co.asac.member.service.MemberSellerService;
-import kr.co.asac.orders.bean.OrderBean;
-import kr.co.asac.product.bean.ProductBean;
 
 @Controller
 public class MemberAdminController {
@@ -40,41 +34,10 @@ public class MemberAdminController {
 	private MemberSellerService memberSellerService;
 	@Autowired
 	private MemberAdminService memberAdminService;
-	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@RequestMapping("/me/ad/in")
-	public String memberAdminIndex(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean member, OrderBean vo) throws Exception {
-		memberAdminService.memberCountMonth(request, response, model);
-		
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		
-		List<MemberBean> myAreaChart = dao.memberCountMonth();
-		model.addAttribute("myAreaChart", myAreaChart);
-		
-		List<ProductBean> myAreaChart2 = dao.productCountMonth();
-		model.addAttribute("myAreaChart2", myAreaChart2);
-		
-		List<OrderBean> myAreaChart3 = dao.ordersCountMonth();
-		model.addAttribute("myAreaChart3", myAreaChart3);
-		
-		List<OrderBean> myAreaChart4 = dao.ordersSumMonth();
-		model.addAttribute("myAreaChart4", myAreaChart4);
-		
-		String listjson = new Gson().toJson(myAreaChart);
-		model.addAttribute("list", listjson);
-		
-		String listjson2 = new Gson().toJson(myAreaChart2);
-		model.addAttribute("list2", listjson2);
-		
-		String listjson3 = new Gson().toJson(myAreaChart3);
-		model.addAttribute("list3", listjson3);
-		
-		String listjson4 = new Gson().toJson(myAreaChart4);
-		model.addAttribute("list4", listjson4);
-		
-		memberAdminService.recentOrder(request, response, model, vo);
-		memberAdminService.topThreeOrder(request, response, model, vo);
+	public String memberAdminIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		memberAdminService.adminIndexChart(request, response, model);
 		return "adminIndex";
 	}
 	
@@ -84,39 +47,10 @@ public class MemberAdminController {
 	}
 	
 	@RequestMapping(value = "/me/ad/lA", method = RequestMethod.POST)
-	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller, OrderBean vo) throws Exception {
+	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		
-		List<MemberBean> myAreaChart = dao.memberCountMonth();
-		model.addAttribute("myAreaChart", myAreaChart);
-		
-		List<ProductBean> myAreaChart2 = dao.productCountMonth();
-		model.addAttribute("myAreaChart2", myAreaChart2);
-		
-		List<OrderBean> myAreaChart3 = dao.ordersCountMonth();
-		model.addAttribute("myAreaChart3", myAreaChart3);
-		
-		List<OrderBean> myAreaChart4 = dao.ordersSumMonth();
-		model.addAttribute("myAreaChart4", myAreaChart4);
-		
-		String listjson = new Gson().toJson(myAreaChart);
-		model.addAttribute("list", listjson);
-		
-		String listjson2 = new Gson().toJson(myAreaChart2);
-		model.addAttribute("list2", listjson2);
-		
-		String listjson3 = new Gson().toJson(myAreaChart3);
-		model.addAttribute("list3", listjson3);
-		
-		String listjson4 = new Gson().toJson(myAreaChart4);
-		model.addAttribute("list4", listjson4);
-		
-		memberAdminService.recentOrder(request, response, model, vo);
-		memberAdminService.topThreeOrder(request, response, model, vo);
-		
-		System.out.println("로그인 액션 들어왔어");
-		memberSellerService.memberSellerLoginCheck(request, response, model, seller);		
+		memberSellerService.memberSellerLoginCheck(request, response, model, seller);
+		memberAdminService.adminIndexChart(request, response, model);
 		return "/adminIndex";
 	}
 	
@@ -310,23 +244,5 @@ public class MemberAdminController {
 		System.out.println("업로드 파일크기 : " + sfileUpload.getSize());
 		
 		return fileName;
-	}	
-	
-	// chart
-	@RequestMapping("/me/ad/mc")
-	@ResponseBody
-	public List<MemberBean> memberCountMonth(HttpServletRequest request, HttpServletResponse response, Model model, MemberBean vo) throws Exception {
-		memberAdminService.memberCountMonth(request, response, model);
-				
-		MemberDAO dao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		
-		List<MemberBean> myAreaChart = dao.memberCountMonth();
-		model.addAttribute("myAreaChart", myAreaChart);
-		
-		String jsondata = new Gson().toJson(myAreaChart);
-		model.addAttribute("jsondata", jsondata);
-		
-		
-		return myAreaChart;
 	}	
 }

@@ -445,7 +445,7 @@ function memberDeleteAction() {
 
 function memberIdCheckAction() {
 	var mid = document.getElementById('mid').value;
-	if (mid == null || mid == "" || mid == "admin" || mid.length < 5 || !mid.match(/^[a-zA-Z0-9]*$/)) {
+	if (mid == null || mid == "" || mid == "admin" || mid.length < 4 || !mid.match(/^[a-zA-Z0-9]*$/)) {
 		alert("아이디를 다시 입력해주세요.");
 		return false;
 	}

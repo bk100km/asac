@@ -98,7 +98,7 @@ public class MemberClientController {
 	@RequestMapping(value = "/me/cl/lO", method = RequestMethod.GET)
 	public String memberClientLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/asac/";
+		return "redirect:http://localhost:8080/";
 	}
 
 	@RequestMapping(value = "/me/cl/jo", method = RequestMethod.GET)

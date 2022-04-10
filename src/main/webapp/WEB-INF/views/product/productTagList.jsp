@@ -83,10 +83,9 @@ h3 {
 
 .card-img-top{
 
-    width: 330px; 
-    height: 400px;  
-    max-width: 100%; 
-    height:auto;
+    width: 300px; 
+    height: 370px;  
+
     margin-left:12px;
 
 }
@@ -151,9 +150,9 @@ h2{
         <section class="py-5">
             <div class="container">
       
-                        	<h2>#${param.ptag}</h2>
+                        	<h2>#${ptag}</h2>
 	                     <div class="col mb-5 productlist">
-	                        <div class="card">
+	                        <div class="prodiv">
 	                        <ul class="rf-pinwheel-tiles">
 	                             
        
@@ -162,8 +161,8 @@ h2{
 	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
 	                           <div class="as-pinwheel15-section">
 	                <div class= as-pinwheel-tile>
-	                            <a href="../cl/dt?pcode=${product.pcode}&ptag=${param.ptag}&nowPage=${param.nowPage}">
-	                            <img class="card-img-top" src="/asac/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a href="/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
+	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                            <div class="group_btn"><button type="button" class="btn_cart"><span class="glyphicon glyphicon-shopping-cart"></span></button> <!----> <!----></div>
 	                            <!-- Product details-->
@@ -188,26 +187,29 @@ h2{
         
             	
 		<div style="display: block; text-align: center;">
-	<ul class="pagination">			
+	<ul class="pagination justify-content-center">			
 		<c:if test="${paging.startPage != 1 }">
 		<li>
-			<a href="/asac/pr/cl/li?pctag=${param.ptag}&nowPage=${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+		
+			<a class="page-link" href="/pr/cl/li/pctag/${ptag}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
 			&laquo;</span></a>
 		</li>
 		</c:if>
 		<c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="p">
 			<c:choose>
 				<c:when test="${p == paging.nowPage}">
-				<li class="active">	<span>${p}<span class="sr-only">(current)</span></span></li>
+				<li class="page-item active">	<span class="page-link" >${p}<span class="sr-only">(current)</span></span></li>
 				</c:when>
 				<c:when test="${p != paging.nowPage }">
-					<li><a href="/asac/pr/cl/li?ptag=${param.ptag}&nowPage=${p}">${p}</a></li>
+					<li><a class="page-link" href="/pr/cl/li/ptag/${ptag}/${p}">${p}</a></li>
 				</c:when>
 			</c:choose>
 		</c:forEach>
 		<c:if test="${paging.endPage != paging.lastPage}">
-			<a href="/asac/pr/cl/li?ptag=${param.ptag}}&nowPage=${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+		<li class="page-item">
+			<a class="page-link" href="/pr/cl/li/ptag/${ptag}}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
       </a>
+      </li>
 		</c:if>
   	</ul>
   	</div>

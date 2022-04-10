@@ -62,7 +62,16 @@
 	
 	$(document).on("keyup", ".phoneNumber", function() { $(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); });
 </script>
-<jsp:include page="../common/sellerHeader.jsp"></jsp:include>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/sellerHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
+        	
 <div class="container">
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
@@ -161,6 +170,9 @@
 </div>
 <br><br><br>
 
-<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
+	<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
+	</div>
 </body>
 </html>
