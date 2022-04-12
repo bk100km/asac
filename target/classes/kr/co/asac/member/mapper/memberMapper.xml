@@ -64,8 +64,8 @@
 
 
 	<!-- seller -->
-	<select id="memberSellerLoginCheck" resultType="String">
-		select sid from seller where sid=#{sid} and spwd=#{spwd}
+	<select id="memberSellerLoginCheck" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller where sid=#{sid}
 	</select>
 	
 	<insert id="memberSellerJoin" parameterType="kr.co.asac.member.bean.SellerBean">

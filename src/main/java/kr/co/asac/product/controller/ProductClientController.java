@@ -2,8 +2,11 @@ package kr.co.asac.product.controller;
 
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.product.service.ProductClientService;
 
 
@@ -94,9 +99,14 @@ public class ProductClientController {
 		return "/product/productClientDetail";
 	}
 	
-	
-
-	
-	
-	
+	//Index TagList
+	@RequestMapping(value = "/pr/cl/in", method = RequestMethod.POST)
+	@ResponseBody
+	public Map <String, Object> productClientIndexTag(Model model, 
+			@RequestParam(value = "ptag", required = false, defaultValue="콩") String ptag) {
+	    List <ProductBean> productList = productClientService.productClientIndexTag(model, ptag);
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("productList", productList);
+	    return map;
+	}
 }

@@ -107,6 +107,11 @@ public class OrderClientService {
 		return memberinfo;
 	}
 	
+	public void orderClientGumaeUpdate(Model model, OrderBean order) {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		dao.orderClientGumaeUpdate(order);
+		model.addAttribute("order", order);
+	}
 	
 	public List<CartBean> cartList(String mid, CartBean cart) {
 		CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class); 

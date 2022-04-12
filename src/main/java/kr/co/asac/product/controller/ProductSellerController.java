@@ -33,13 +33,13 @@ public class ProductSellerController {
 		
 	@RequestMapping(value = "/pr/se/li", method = RequestMethod.GET)
 	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model,
-			@RequestParam(value="productSearchCategory", required = false, defaultValue = "pcode") String productSearchCategory,
-			@RequestParam(value="productSearchText", required = false, defaultValue = "") String productSearchText,
+			@RequestParam(value="productproductSearchCategory", required = false, defaultValue = "pcode") String productproductSearchCategory,
+			@RequestParam(value="productproductSearchText", required = false, defaultValue = "") String productproductSearchText,
 			@ModelAttribute(value = "productPaging") PagingBean productPaging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int productListCnt = productSellerService.productSellerListCount(request, productSearchCategory, productSearchText);
+		int productListCnt = productSellerService.productSellerListCount(request, productproductSearchCategory, productproductSearchText);
 		productPaging.pageInfo(page, range, productListCnt);
 		
 		productSellerService.productSellerList(request, response, model, productPaging);
@@ -47,20 +47,20 @@ public class ProductSellerController {
 		return "product/productSellerPage";
 	}
 	
-	@RequestMapping(value = "/pr/se/ls", method = RequestMethod.POST)
+	@RequestMapping(value = "/pr/se/sl", method = RequestMethod.POST)
 	@ResponseBody
 	public Map <String, Object> productSellerListSearch(HttpServletRequest request, Model model, 
-			@RequestParam(value = "searchCategory", required = false, defaultValue="pcode") String searchCategory,
-			@RequestParam(value = "searchText", required = false, defaultValue="") String searchText,
+			@RequestParam(value = "productSearchCategory", required = false, defaultValue="pcode") String productSearchCategory,
+			@RequestParam(value = "productSearchText", required = false, defaultValue="") String productSearchText,
 			@ModelAttribute(value = "paging") PagingBean paging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int listCnt = productSellerService.productSellerListCount(request, searchCategory, searchText);
+		int listCnt = productSellerService.productSellerListCount(request, productSearchCategory, productSearchText);
 
 		paging.pageInfo(page, range, listCnt);
 		
-		List <ProductBean> productList = productSellerService.productSellerListSearch(request, model, searchCategory, searchText, paging);
+		List <ProductBean> productList = productSellerService.productSellerListSearch(request, model, productSearchCategory, productSearchText, paging);
 		
 	    Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("paging", paging);
@@ -85,7 +85,7 @@ public class ProductSellerController {
 	
 	@RequestMapping(value = "/pr/se/up", method = RequestMethod.POST)
 	@ResponseBody
-	public void productSellerUpdate(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, Search search) throws Exception {
+	public void productSellerUpdate(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, Search productSearch) throws Exception {
 		productSellerService.productSellerUpdate(request, model, response, product);
 	}
 		
@@ -98,13 +98,13 @@ public class ProductSellerController {
 	@RequestMapping(value = "/pr/se/fu", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String productSellerFileUpload(HttpServletRequest request, Model model, 
-			MultipartFile sfileUpload) throws IOException {
+			MultipartFile pfileUpload) throws IOException {
 		
 //		String filePath = request.getSession().getServletContext().getRealPath("upload");
-		String fileName = sfileUpload.getOriginalFilename();
+		String fileName = pfileUpload.getOriginalFilename();
 	
         try {
-        	sfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+        	pfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
         } catch(Exception e) {
 
         }

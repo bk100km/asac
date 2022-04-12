@@ -32,10 +32,10 @@ public class ProductSellerService {
 	}
 	
 	
-	public int productSellerListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
+	public int productSellerListCount(HttpServletRequest request, String productSearchCategory, String productSearchText) throws Exception {
 		String id = (String) request.getSession().getAttribute("sid");
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		int listCnt = productDAO.productSellerListCount(id, searchCategory, searchText);
+		int listCnt = productDAO.productSellerListCount(id, productSearchCategory, productSearchText);
 		System.out.println("count°ª" + listCnt);
 		return listCnt;
 	}
@@ -46,10 +46,10 @@ public class ProductSellerService {
 		return product;
 	}
 	
-	public List<ProductBean> productSellerListSearch(HttpServletRequest request, Model model, @RequestParam("searchCategory") String searchCategory, @RequestParam("searchText") String searchText, @RequestParam("paging") PagingBean paging) {
+	public List<ProductBean> productSellerListSearch(HttpServletRequest request, Model model, @RequestParam("productSearchCategory") String productSearchCategory, @RequestParam("productSearchText") String productSearchText, @RequestParam("paging") PagingBean paging) {
 		String id = (String) request.getSession().getAttribute("sid");
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		List<ProductBean> productSellerListSearch = productDAO.productSellerListSearch(id, searchCategory, searchText, paging);
+		List<ProductBean> productSellerListSearch = productDAO.productSellerListSearch(id, productSearchCategory, productSearchText, paging);
 		model.addAttribute("productSellerListSearch", productSellerListSearch);
 		return productSellerListSearch;
 	}

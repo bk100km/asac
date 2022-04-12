@@ -27,7 +27,7 @@ public interface MemberDAO {
 	public MemberBean findId(MemberBean vo) throws Exception;
 	
 	// seller
-	public String memberSellerLoginCheck(SellerBean seller);
+	public SellerBean memberSellerLoginCheck(String sid);
 	public void memberSellerJoin(SellerBean seller);
 	public int sellerIdChk(SellerBean seller);
 	public SellerBean memberSellerInfo(String sid);

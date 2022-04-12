@@ -53,11 +53,6 @@ public class OrderAdminService {
 		dao.orderAdminUpdate(order);
 	}
 	
-	public void orderAdminDeliveryUpdate(OrderBean order) throws Exception {
-		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		dao.orderAdminDeliveryUpdate(order);
-	}
-	
 	public void orderAdminDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
 		dao.orderAdminDelete(ocode);

@@ -21,7 +21,7 @@
 
 	<!-- 주문번호 불러오기 -->
 	<select id="orderClientOcodeList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select ocode, OREGDATE, p.pname as pname ,count(p.pname) as count, p.pfile as pfile,sum(ototal) as total
+		select ocode, OREGDATE, p.pname as pname ,count(p.pname) as count, p.pfile as pfile,sum(ototal) as total, o.odelivery, o.oconfirmed
 		from orders o join member m on o.mid = m.mid join product p on p.pcode = o.pcode
 		where m.mid = #{mid}
 		group by o.ocode
@@ -48,6 +48,12 @@
 	<select id="memberClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
 		select * from member where mid=#{mid} 
 	</select>
+	
+	<!-- 내 결재완료를 구매완료로 수정 -->
+	<update id="orderClientGumaeUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
+		update orders set oconfirmed='구매완료'
+		where ocode=#{ocode}
+	</update>
 	
 	<!-- OrderSeller -->
 	
@@ -86,7 +92,7 @@
 	</update>
 	
 	<!-- 판매자 상품 주문 배송상태수정 -->
-	<update id="orderSellerDeliveryUpdate">
+	<update id="orderDeliveryUpdate">
 		update orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		set odelivery = #{odelivery}
 		where ocode = #{ocode} and p.pname = #{pname}
@@ -129,11 +135,6 @@
 	<update id="orderAdminUpdate" parameterType="kr.co.asac.orders.bean.OrderBean">
 		update orders
 		set oname = #{oname}, oaddrz = #{oaddrz}, oaddr = #{oaddr}, oaddrd = #{oaddrd}, ophone = #{ophone} where ocode = #{ocode}
-	</update>
-
-	<!-- 관리자 상품 주문 배송상태수정 -->
-	<update id="orderAdminDeliveryUpdate">
-		update orders set odelivery=#{odelivery} where ocode=#{ocode}
 	</update>
 	
 	<!-- 주문 취소 -->

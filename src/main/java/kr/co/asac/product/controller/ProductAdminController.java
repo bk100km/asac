@@ -53,16 +53,16 @@ public class ProductAdminController {
 	@RequestMapping(value = "/pr/ad/as", method = RequestMethod.POST)
 	@ResponseBody
 	public Map <String, Object> productAdminListSearch(HttpServletRequest request, Model model, 
-			@RequestParam(value = "searchCategory", required = false, defaultValue="pcode") String searchCategory,
-			@RequestParam(value = "searchText", required = false, defaultValue="") String searchText,
+			@RequestParam(value = "productSearchCategory", required = false, defaultValue="pcode") String productSearchCategory,
+			@RequestParam(value = "productSearchText", required = false, defaultValue="") String productSearchText,
 			@ModelAttribute(value = "paging") PagingBean paging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int listCnt = productAdminService.productAdminListCount(request, searchCategory, searchText);
+		int listCnt = productAdminService.productAdminListCount(request, productSearchCategory, productSearchText);
 		paging.pageInfo(page, range, listCnt);
 		
-		List <ProductBean> productList = productAdminService.productAdminListSearch(request, model, searchCategory, searchText, paging);
+		List <ProductBean> productList = productAdminService.productAdminListSearch(request, model, productSearchCategory, productSearchText, paging);
 		
 	    Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("paging", paging);
@@ -87,15 +87,15 @@ public class ProductAdminController {
 	@RequestMapping(value = "/pr/ad/ss", method = RequestMethod.POST)
 	@ResponseBody
 	public Map <String, Object> productSellerListSearch(HttpServletRequest request, Model model, 
-			@RequestParam(value = "searchCategory", required = false, defaultValue="pcode") String searchCategory,
-			@RequestParam(value = "searchText", required = false, defaultValue="") String searchText,
+			@RequestParam(value = "productSearchCategory", required = false, defaultValue="pcode") String productSearchCategory,
+			@RequestParam(value = "productSearchText", required = false, defaultValue="") String productSearchText,
 			@ModelAttribute(value = "paging") PagingBean paging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int listCnt = productSellerService.productSellerListCount(request, searchCategory, searchText);
+		int listCnt = productSellerService.productSellerListCount(request, productSearchCategory, productSearchText);
 		paging.pageInfo(page, range, listCnt);
-		List <ProductBean> productList = productSellerService.productSellerListSearch(request, model, searchCategory, searchText, paging);
+		List <ProductBean> productList = productSellerService.productSellerListSearch(request, model, productSearchCategory, productSearchText, paging);
 		
 	    Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("paging", paging);
@@ -121,7 +121,7 @@ public class ProductAdminController {
 	
 	@RequestMapping(value = "/pr/ad/up", method = RequestMethod.POST)
 	@ResponseBody
-	public void productAdminUpdate(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, Search search) throws Exception {
+	public void productAdminUpdate(HttpServletRequest request, HttpServletResponse response, Model model, ProductBean product, Search productSearch) throws Exception {
 		System.out.println("update" + product);
 		productAdminService.productAdminUpdate(request, model, response, product);
 	}

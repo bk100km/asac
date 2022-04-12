@@ -84,7 +84,7 @@
                 },
               title:{
               	display : true,
-              	text: '상품별 매출관리'
+              	text: '월별 총 회원관리'
               }
             
          }
@@ -150,7 +150,7 @@
                  },
                title:{
                	display : true,
-               	text: '상품별 매출관리'
+               	text: '월별 총 상품관리'
                }
              
           }
@@ -215,7 +215,7 @@
                  },
                title:{
                	display : true,
-               	text: '상품별 구매관리'
+               	text: '월별 총 구매관리'
                }
              
           }
@@ -242,7 +242,7 @@
           data: {
              labels : labelList,
              datasets : [ {
-                label : "총 구매수",
+                label : "총 매출수",
                 data : valueList,
                 backgroundColor: [
                    getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
@@ -279,7 +279,7 @@
                  },
                title:{
                	display : true,
-               	text: '상품별 구매관리'
+               	text: '월별 총 매출관리'
                }
              
           }

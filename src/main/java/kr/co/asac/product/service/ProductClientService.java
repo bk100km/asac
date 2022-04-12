@@ -163,7 +163,15 @@ public class ProductClientService {
 		model.addAttribute("nowPage",nowPage);
 		model.addAttribute("pcode",pcode);
 	    }	
+	
+	//Index TagList
+	public List<ProductBean> productClientIndexTag(Model model, String ptag) {
+		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
+		List<ProductBean> productList = productDAO.productClientIndexTag(ptag);
+		model.addAttribute("productList", productList);
+		return productList;
 	}
+}
 
 
 

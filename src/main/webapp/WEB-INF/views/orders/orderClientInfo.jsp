@@ -24,20 +24,19 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
 
-<form:form method="post" action="http://localhost:8080/or/cl/up?ocode=${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
+<form:form method="post" action="/or/cl/up/${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
 	<div class="container-fluid">
-  		<h2 style="text-align:center;">주문정보</h2>
   		<br>
-  		<h3 class="subtitle">주문 날짜 
+  		<h4>주문 날짜 
   			 <fmt:formatDate value="${orderClientInfo[0].oregdate}" pattern="yyyy-MM-dd"/>
-	    	   &nbsp;</h3>
-		<h3 class="subtitle">주문 번호 ${orderClientInfo[0].ocode}<br></h3>
+	    	   &nbsp;</h4>
+		<h4 class="subtitle">주문 번호 ${orderClientInfo[0].ocode}<br></h4>
 		<br>
 	</div>
 	<div class="container-fluid center"> 
   		<div class="row">
    		<div class="col-8">
-      		<h3>결제정보</h3>
+      		<h4>결제정보</h4>
       		<hr/>
       		<c:forEach var="orderClientInfo" items="${orderClientInfo}">
       		<div class="row">
@@ -60,11 +59,12 @@
      		<c:set var="otototal" value="${orderClientInfo.ototal}"/>
      		<c:set var="ototototal" value="${ototototal = ototototal + otototal}"/>
      		</c:forEach>
-     		<h2>총 결제 가격: ${ototototal}</h2>
+     		<h4>총 결제 가격: ${ototototal}</h4>
+     		<br/><br/><br/>
     	</div>
     	
     	<div class="col-8">
-      		<h3>배송정보</h3>
+      		<h4>배송정보</h4>
       		<hr/>
       		
       		<div class="row">
@@ -94,8 +94,19 @@
     	</div>
   		</div>
   		</form:form>
-<a href="../../or/cl/de?ocode=${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
+  		<%-- <c:choose>
+	          <c:when test="${orderClientInfo.odelivery eq '배송중'}">
+	          	<a>주문 취소</a>
+	          </c:when>
+	          <c:when test="${orderClientInfo.oconfirmed eq '구매완료'}">
+	          	<a>주문 취소</a>
+	          </c:when>
+	          <c:otherwise>
+	          	<a href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
+	          </c:otherwise>
+	   </c:choose> --%>
 
+<a href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
 <a href="http://localhost:8080/me/cl/my"><button>주문 목록으로</button></a>
 <br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />

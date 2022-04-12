@@ -224,7 +224,7 @@ body {
 }
 
 .input-form {
-	max-width: 680px;
+	width: 650px;
 	margin-top: 30px !important;
 	padding: 32px;
 	background: #fff;
@@ -284,11 +284,11 @@ body {
 					</div>
 					<div class="mb-3">
 						<label for="pw">비밀번호 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
 					</div>
 					<div class="mb-3">
 						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
 						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
 						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 					</div>
@@ -308,15 +308,15 @@ body {
 						</div><br>
 					</div>
 					<label for="mmail">이메일 <span class="text-danger">*</span></label>
-					<div class="mb-3 mail_wrap">
+					<div class="row mail_wrap">
 						<div class="col-md-9 input-group mailfloat mail_input_box">
 		            		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
 							<input type="text" class="form-control mail_input" name="mmail" id="mmail" maxlength="50" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" required>
 		            	</div>
-		            	<div class="mb-3 col-md-3">
-		            		<label>&nbsp;</label>
+		            	<div class="col-md-3">
+		            		<!-- <label>&nbsp;</label> -->
 		            		<!-- <span>인증번호 전송</span> -->
-		            		<input type="button" value="인증번호 전송" id="mail_check_button" class="btn mail_check_button"><br>
+		            		<input type="button" value="인증번호 전송" id="mail_check_button" class="btn btn-outline-secondary mail_check_button"><br>
 		            	</div>
 					</div>
 		           	<div class="clearfix"></div><br>
@@ -331,7 +331,7 @@ body {
 						</div>
 						<div class="col-md-3 mb-3">
 							<label>&nbsp;</label><br>
-							<input type="button" class="btn btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+							<input type="button" class="btn btn-outline-secondary btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</div>
 					<div class="mb-3">

@@ -136,7 +136,7 @@ body {
 						<a href="http://localhost:8080/me/cl/fI">아이디</a> |
 						<a href="http://localhost:8080/me/cl/fP">비밀번호 찾기</a>
 						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
-						<button onclick="history.back()" class="btn btn-default"> 뒤로가기</button>
+						<button onclick="history.go(-1)" class="btn btn-default"> 뒤로가기</button>
 						</div><hr>
 						<div align="center">
 							<a href="javascript:void(0)">

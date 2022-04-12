@@ -140,37 +140,65 @@ body { margin: 0;}
 function orderInfoAction(clickedOrder) {
 	var ocode = clickedOrder.getAttribute("data-ocode");
 	var pname = clickedOrder.getAttribute("data-pname");
-
+	var odelivery = clickedOrder.getAttribute("data-odelivery");
+	
     $.ajax({
         type: 'POST',
         url: './in',
-        data: {ocode:ocode, pname:pname},
+        data: {ocode:ocode, pname:pname, odelivery:odelivery},
         success: function(order) {
-            $(order).each(function(index, item) {
-                $('#ocode').prop('value',order.ocode);
-                $('#mid').prop('value',order.mid);
-                $('#mname').prop('value',order.mname);
-                $('#pname').prop('value',order.pname);
-                $('#ocount').prop('value',order.ocount);
-                $('#ototal').prop('value',order.ototal);
-                $('#oregdate').prop('value',order.oregdate);
-                $('#oname').prop('value',order.oname);
-                $('#oname').prop('readonly',false);
-                $('#oaddrz').prop('value',order.oaddrz);
-                $('#oaddr').prop('value',order.oaddr);
-                $('#oaddr').prop('readonly',false);
-                $('#oaddr').attr('onclick',"oaddrSearchAction()");
-                $('#oaddrd').prop('value',order.oaddrd);
-                $('#oaddrd').prop('readonly',false);
-                $('#ophone').prop('value',order.ophone);
-                $('#ophone').prop('readonly',false);
-                $('#ocode1').prop('value',order.ocode);
-                $('#oaddr').prop('onclick',"maddrSearchAction()");
-                $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
-                $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
-                $('#orderDeleteButton').attr('disabled',"disabled");
-            });
-					
+        	if(odelivery == "배송준비중"){
+            	$(order).each(function(index, item) {
+                	$('#ocode').prop('value',order.ocode);
+                	$('#mid').prop('value',order.mid);
+                	$('#mname').prop('value',order.mname);
+                	$('#pname').prop('value',order.pname);
+                	$('#ocount').prop('value',order.ocount);
+                	$('#ototal').prop('value',order.ototal);
+                	$('#oregdate').prop('value',order.oregdate);
+                	$('#oname').prop('value',order.oname);
+                	$('#oname').prop('readonly',false);
+                	$('#oaddrz').prop('value',order.oaddrz);
+                	$('#oaddr').prop('value',order.oaddr);
+                	$('#oaddr').prop('readonly',false);
+                	$('#oaddr').attr('onclick',"oaddrSearchAction()");
+                	$('#oaddrd').prop('value',order.oaddrd);
+                	$('#oaddrd').prop('readonly',false);
+                	$('#ophone').prop('value',order.ophone);
+                	$('#ophone').prop('readonly',false);
+                	$('#ocode1').prop('value',order.ocode);
+                	$('#oaddr').prop('onclick',"maddrSearchAction()");
+                	$('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
+                	$('#orderUpdateButton').removeAttr('disabled',"disabled");
+                	$('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
+            	});
+            } else {
+            	$(order).each(function(index, item) {
+                    $('#ocode').prop('value',order.ocode);
+                    $('#mid').prop('value',order.mid);
+                    $('#mname').prop('value',order.mname);
+                    $('#pname').prop('value',order.pname);
+                    $('#ocount').prop('value',order.ocount);
+                    $('#ototal').prop('value',order.ototal);
+                    $('#oregdate').prop('value',order.oregdate);
+                    $('#oname').prop('value',order.oname);
+                    $('#oname').prop('readonly',false);
+                    $('#oaddrz').prop('value',order.oaddrz);
+                    $('#oaddr').prop('value',order.oaddr);
+                    $('#oaddr').prop('readonly',false);
+                    $('#oaddr').attr('onclick',"oaddrSearchAction()");
+                    $('#oaddrd').prop('value',order.oaddrd);
+                    $('#oaddrd').prop('readonly',false);
+                    $('#ophone').prop('value',order.ophone);
+                    $('#ophone').prop('readonly',false);
+                    $('#ocode1').prop('value',order.ocode);
+                    $('#oaddr').prop('onclick',"maddrSearchAction()");
+                    $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
+                    $('#orderUpdateButton').attr('disabled',"disabled");
+                    $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
+                    $('#orderDeleteButton').attr('disabled',"disabled");
+	    		});
+            }
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -179,7 +207,6 @@ function orderInfoAction(clickedOrder) {
         }
     });
 }
-
 
 function orderSearchAction(clikedPage) {	
 	var searchCategory = $('#searchCategory option:selected').val();
@@ -197,27 +224,17 @@ function orderSearchAction(clikedPage) {
     		page:page},
         success: function(map) {
         	 $.each(map.orderList , function(i){
-        		 if (map.orderList[i].odelivery == '배송완료') {
-                  orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
+                  orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname + '" data-odelivery="' + map.orderList[i].odelivery +
                   					'"><td>' + map.orderList[i].ocode + 
                   					'</td><td>' + map.orderList[i].mname + 
                   					'</td><td>' + map.orderList[i].pname + 
                   					'</td><td>' + map.orderList[i].ocount +
-                  					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
-                  					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
-                  					'" data-odelivery="' + map.orderList[i].odelivery + '"' + 'checked />' +
+                  					'</td><td><select name="delivery" id="selectDeliveryInfo" class="form-control custom-select" required="required" onchange="deliveryUpdate(this.value);">' +
+                  					'<option value="" class="gibon" selected disabled>' + map.orderList[i].odelivery + '</option>' +
+                  					'<option value="배송준비중">배송준비중</option>' +
+                  					'<option value="배송중">배송중</option>' +
+                  					'<option value="배송완료">배송완료</opion>' +
                   					'</td></tr>';
-        		 } else {
-        			 orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
-   					'"><td>' + map.orderList[i].ocode + 
-   					'</td><td>' + map.orderList[i].mname + 
-   					'</td><td>' + map.orderList[i].pname + 
-   					'</td><td>' + map.orderList[i].ocount +
-   					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
-   					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
-   					'" data-odelivery="' + map.orderList[i].odelivery + '"' + ' />' +
-   					'</td></tr>';
-        		 }
 			});
         	 
         	 if (map.paging.prev) {
@@ -271,6 +288,34 @@ function orderUpdateAction() {
     });
 }
 
+function deliveryUpdate(value) {	
+	var odelivery = value;
+	var ocode = document.getElementById('ocode').value;
+	var pname = document.getElementById('pname').value;
+		
+	if(confirm("배송 상태를 수정하시겠습니까?")){
+    $.ajax({
+        type: 'POST',
+        url: './du',
+   		data: {ocode:ocode, odelivery:odelivery, pname:pname},
+        success: function() {
+			orderSearchAction();
+        	alert("수정된 주문 = " + ocode + "\n배송 상태 수정이 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    	
+    });
+	} else {
+		$('#selectDeliveryInfo option.gibon').prop("selected", true);
+		alert("배송 상태 변경이 취소되었습니다.");
+	}
+}
+
 function orderDeleteAction() {	
 	var ocode = document.getElementById('ocode').value;
     
@@ -289,62 +334,6 @@ function orderDeleteAction() {
             		"\n"+"error:"+error);
         }
     });
-}
-
-function deliveryCheckAction(checkedOrder) {
-	if(checkedOrder.getAttribute("data-odelivery") != '배송완료') {
-		if(!confirm('배송을 시작하시겠습니까?')) {
-			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = false;
-			return false;
-		} else {
-			var ocode = checkedOrder.getAttribute("data-ocode");
-			var pname = checkedOrder.getAttribute("data-pname");
-			
-		    $.ajax({
-		        type: 'POST',
-		        url: './ds',
-		        data: {ocode:ocode, odelivery:'배송완료', pname:pname},
-		        success: function() {
-		        	checkedOrder.setAttribute('data-odelivery', '배송완료');
-		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송완료";
-		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"true");
-		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송이 완료되었습니다.");
-		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
-		        },
-		        error: function(request, status, error) {
-		            console.log("code:" + request.status + 
-		            		"\n"+"message:" + request.responseText + 
-		            		"\n"+"error:"+error);
-		        }
-		    });
-		}
-	} else {
-		if(!confirm('배송을 취소하시겠습니까?')){
-			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = true;
-			return false;
-		} else {
-			var ocode = checkedOrder.getAttribute("data-ocode");
-			var pname = checkedOrder.getAttribute("data-pname");
-			
-		    $.ajax({
-		        type: 'POST',
-		        url: './ds',
-		        data: {ocode:ocode, odelivery:'배송준비중', pname:pname},
-		        success: function(order) {
-		        	checkedOrder.setAttribute('data-odelivery', '배송준비중');
-		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송준비중";
-		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"false");
-		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송상태가 변경되었습니다.");
-		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
-		        },
-		        error: function(request, status, error) {
-		            console.log("code:" + request.status + 
-		            		"\n"+"message:" + request.responseText + 
-		            		"\n"+"error:"+error);
-		        }
-		    });
-		}
-	}		
 }
 </script>
 <!-- Page Wrapper -->
@@ -395,13 +384,17 @@ function deliveryCheckAction(checkedOrder) {
 									</thead>
 									<tbody id="orderListBody">
 									<c:forEach var="order" items="${orderSellerList}">
-										<tr id="orderInfoBtn" data-ocode="${order.ocode}" data-pname="${order.pname}" onclick="orderInfoAction(this)">
+										<tr id="orderInfoBtn" data-ocode="${order.ocode}" data-pname="${order.pname}" data-odelivery="${order.odelivery}" onclick="orderInfoAction(this)">
 											<td>${order.ocode}</td>
 											<td>${order.mname}</td>
 											<td>${order.pname}</td>
 											<td>${order.ocount}</td>
-											<td><label id="${order.ocode}deliveryText">${order.odelivery}</label>
-												<input type="checkbox" id="deliveryCheckBox${order.ocode}" onchange="deliveryCheckAction(this)" data-ocode="${order.ocode}" data-odelivery="${order.odelivery}" data-pname="${order.pname}" <c:if test="${order.odelivery eq '배송완료'}">checked</c:if> />
+											<td><select name="delivery" id="selectDeliveryInfo" class="form-control custom-select" required="required" onchange="deliveryUpdate(this.value);">
+		                  						<option value="" class="gibon" selected disabled>${order.odelivery}</option>
+												<option value="배송준비중">배송준비중</option>
+												<option value="배송중">배송중</option>
+												<option value="배송완료">배송완료</option>
+		                  					</select>
 											</td>
 										</tr>
 									</c:forEach>
@@ -521,7 +514,7 @@ function deliveryCheckAction(checkedOrder) {
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼" disabled>
+						id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>				
@@ -535,8 +528,8 @@ function deliveryCheckAction(checkedOrder) {
 					<!--//상세정보패널-->
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 
 	<script>
 	function orderUpdateOk() {

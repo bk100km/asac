@@ -121,16 +121,14 @@ public class OrderAdminController {
 		orderAdminService.orderAdminUpdate(request, model, response, order);
 	}
 	
-	@RequestMapping(value = "/or/ad/da", method = RequestMethod.POST)
+	@RequestMapping(value = "/or/ad/du", method = RequestMethod.POST)
 	@ResponseBody
-	public void orderAdminDeliveryUpdate(OrderBean order) throws Exception {
-		orderAdminService.orderAdminDeliveryUpdate(order);
-	}
-	
-	@RequestMapping(value = "/or/ad/ds", method = RequestMethod.POST)
-	@ResponseBody
-	public void orderAdminSellerDeliveryUpdate(OrderBean order) throws Exception {
-		orderSellerService.orderSellerDeliveryUpdate(order);
+	public void orderDeliveryUpdate(HttpServletRequest request, @RequestParam(value = "ocode") String ocode,
+			@RequestParam(value = "odelivery") String odelivery, @RequestParam(value = "pname") String pname) throws Exception {
+		System.out.println("주문번호" + ocode);
+		System.out.println("배송상태" + odelivery);
+		System.out.println("상품명" + pname);
+		orderSellerService.orderDeliveryUpdate(ocode, odelivery, pname);
 	}
 	
 	@RequestMapping(value = "or/ad/de/ocode/{ocode}", method = RequestMethod.POST)

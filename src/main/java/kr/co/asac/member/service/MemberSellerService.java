@@ -10,12 +10,12 @@ import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.google.gson.Gson;
 
-import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.dao.MemberDAO;
 import kr.co.asac.orders.bean.OrderBean;
@@ -31,25 +31,32 @@ public class MemberSellerService {
 	public void memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
-		String sid = memberDAO.memberSellerLoginCheck(seller);
+		// 비밀번호 복호화
+		SellerBean secureSeller = memberDAO.memberSellerLoginCheck(seller.getSid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("sid", sid);
-		model.addAttribute("sid", sid);
-		
-	    if(sid == null){
-   		response.setContentType("text/html;charset=utf-8");
-	   	PrintWriter out = response.getWriter();
-	   	System.out.println("로그인 실패");
-	   	out.println("<script>");
-	   	out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.')");
-	   	out.println("history.back()");
-	   	out.println("</script>");
-	   	out.flush();		
-	    }
+		if(secureSeller == null || !encoder.matches(seller.getSpwd(), secureSeller.getSpwd())) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	System.out.println("로그인 실패");
+		   	out.println("<script>");
+		   	out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();		
+		} else {
+			HttpSession session = request.getSession();
+			session.setAttribute("sid", secureSeller.getSid());
+			model.addAttribute("sid", secureSeller.getSid());
+		}
 	}
 	public void memberSellerJoin(SellerBean seller) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		// 비밀번호 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		seller.setSpwd(encoder.encode(seller.getSpwd()));
+		
 		memberDAO.memberSellerJoin(seller);
 	}
 	public int sellerIdChk(SellerBean seller) {
@@ -57,35 +64,8 @@ public class MemberSellerService {
 		int result =memberDAO.sellerIdChk(seller);
 		return result;
 	}
-	public int sellerProductcount( int count,HttpServletRequest request) {
-		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		String sid =(String)request.getSession().getAttribute("sid");
-		HttpSession session = request.getSession();
-		session.setAttribute("sid", sid);
-		System.out.println("sid 설정 전" + request.getSession().getAttribute("sid"));
-		return memberDAO.sellerProductcount(count);
-	}
-	public int sellerOrderscount(int count) {
-		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		return memberDAO.sellerOrderscount(count);
-	}
-	public int sellerReviewcount(int count) {
-		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		return memberDAO.sellerReviewcount(count);
-	}
 	
-	public void sellerProduct(HttpServletRequest request,HttpServletResponse response, Model model) {
-		
-		MemberDAO memberdao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<OrderBean> sellerProduct = memberdao.sellerProduct();
-		model.addAttribute("sellerProduct", sellerProduct);
-		
-	}
-	public void sellermoney(HttpServletRequest request,HttpServletResponse response, Model model,ProductBean pvo) {
-		MemberDAO memberdao = sqlSessionTemplate.getMapper(MemberDAO.class);
-		List<ProductBean> sellermoney =memberdao.sellermoney();
-		model.addAttribute("sellermoney",sellermoney);
-	}
+	
 	
 	public void memberSellerInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model, String sid) throws IOException {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
@@ -109,13 +89,16 @@ public class MemberSellerService {
 	}
 	public void memberSellerUpdate(HttpServletRequest request, Model model,SellerBean seller) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		memberDAO.memberSellerUpdate(seller);	
 		
+		// 비밀번호 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		seller.setSpwd(encoder.encode(seller.getSpwd()));
+				
+		memberDAO.memberSellerUpdate(seller);	
 		model.addAttribute("seller",seller);
 	}
 	public void memberSellerDelete(Model model, SellerBean seller)  {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-
 		memberDAO.memberSellerDelete(seller);
 		
 	}

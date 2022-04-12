@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.asac.cart.bean.CartBean;
 import kr.co.asac.member.bean.MemberBean;
+import kr.co.asac.member.service.MemberClientService;
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.service.OrderClientService;
 
@@ -25,6 +26,8 @@ public class OrderClientController {
 	
 	@Autowired
 	OrderClientService orderClientService;
+	@Autowired
+	MemberClientService memberClientService;
 	
 	@ResponseBody
 	@RequestMapping(value="/or/cl/is", method = RequestMethod.POST)
@@ -59,7 +62,7 @@ public class OrderClientController {
 		return ocode;
 	}
 	
-	@RequestMapping("or/cl/su/{ocode}/{ccode}")
+	@RequestMapping("or/cl/su/{ocode}/{ccode}") 
 	public String getOrderClientSuccess(Model model, @PathVariable String ocode, @PathVariable String[] ccode,OrderBean order) {
 		 int size = ccode.length;
 	        for(int i=0; i<size; i++) {
@@ -81,16 +84,16 @@ public class OrderClientController {
 		return "orders/orderClientList";
 	}
 	
-	@RequestMapping("me/cl/in")
-	public String getOrderClientInfo(Model model, @RequestParam String ocode, OrderBean order) {
+	@RequestMapping("me/cl/in/{ocode}")
+	public String getOrderClientInfo(Model model, @PathVariable String ocode, OrderBean order) {
 		List<OrderBean> info = orderClientService.orderClientinfo(order, ocode);
 		model.addAttribute("orderClientInfo",info);
 	return "orders/orderClientInfo";
 		
 	}
 	
-	@RequestMapping("or/cl/up")
-	public  String orderClientUpdate(Model model, @RequestParam String ocode, OrderBean order) {
+	@RequestMapping("or/cl/up/{ocode}")
+	public  String orderClientUpdate(Model model, @PathVariable String ocode, OrderBean order) {
 		orderClientService.orderClientUpdate(model, order);
 		System.out.println(order);
 		List<OrderBean> update = orderClientService.orderClientinfo(order, ocode);
@@ -99,11 +102,26 @@ public class OrderClientController {
 		return "orders/orderClientInfo";
 	}
 	
-	@RequestMapping("or/cl/de")
-	public String orderClientDelete(@RequestParam String ocode) {
+	@RequestMapping("or/cl/de/{ocode}")
+	public String orderClientDelete(@PathVariable String ocode) {
 		int info = orderClientService.orderClientDelete(ocode);
 		System.out.println("delete" + ocode);
 		return "redirect:/me/cl/my";
+	}
+
+	@RequestMapping("or/cl/gu/{ocode}")
+	public  String orderClientGumaeUpdate(HttpServletRequest request, HttpSession session,Model model, @PathVariable String ocode, OrderBean order) {
+		String mid=(String) session.getAttribute("mid");
+		System.out.println("서비스들어옴");
+		orderClientService.orderClientGumaeUpdate(model, order);
+		System.out.println(order);
+		//orderClient
+		List<OrderBean> list = orderClientService.orderClientOcodeList(mid, order);
+		model.addAttribute("orderClientOrderList",list);
+		System.out.println("list" + list);
+		memberClientService.memberClientInfo(request, session, model, mid);
+
+		return "/member/memberClientMypage";
 	}
 	
 	@RequestMapping(value="ca/cl/li", method= {RequestMethod.GET, RequestMethod.POST})

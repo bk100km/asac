@@ -11,10 +11,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
-<!-- Pretend Font -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
-
 <style>
 .table-responsive {
     overflow-x: hidden;
@@ -28,14 +24,19 @@
 	display: none;
 }
 
-#searchText {
+#ordersearchText {
     float: right;
     width: 74%;
 }
 
 #leftPanel {
 	text-align: center;
+	height: 700px;
 	margin-top: 20px;
+}
+	
+#leftPanel .table-responsive {
+	height: 620px;
 }
 
 #orderInfoBtn td {
@@ -47,6 +48,7 @@ th {
 }
 
 .order-panel-default {
+	height: 950px;
 	border: 1px solid;
 	border-radius: 10px;
     border-color:  #d8e3c9;
@@ -132,41 +134,72 @@ body { margin: 0;}
 </head>
 
 <body>
+
 <script>
 <!-- 상세정보 조회 AJAX -->
 function orderInfoAction(clickedOrder) {
 	var ocode = clickedOrder.getAttribute("data-ocode");
 	var pname = clickedOrder.getAttribute("data-pname");
-
+	var odelivery = clickedOrder.getAttribute("data-odelivery");
+	
     $.ajax({
         type: 'POST',
         url: './in',
-        data: {ocode:ocode, pname:pname},
+        data: {ocode:ocode, pname:pname, odelivery:odelivery},
         success: function(order) {
-            $(order).each(function(index, item) {
-                $('#ocode').prop('value',order.ocode);
-                $('#mid').prop('value',order.mid);
-                $('#mname').prop('value',order.mname);
-                $('#pname').prop('value',order.pname);
-                $('#ocount').prop('value',order.ocount);
-                $('#ototal').prop('value',order.ototal);
-                $('#oregdate').prop('value',order.oregdate);
-                $('#oname').prop('value',order.oname);
-                $('#oname').prop('readonly',false);
-                $('#oaddrz').prop('value',order.oaddrz);
-                $('#oaddr').prop('value',order.oaddr);
-                $('#oaddr').prop('readonly',false);
-                $('#oaddr').attr('onclick',"oaddrSearchAction()");
-                $('#oaddrd').prop('value',order.oaddrd);
-                $('#oaddrd').prop('readonly',false);
-                $('#ophone').prop('value',order.ophone);
-                $('#ophone').prop('readonly',false);
-                $('#ocode1').prop('value',order.ocode);
-                $('#oaddr').prop('onclick',"maddrSearchAction()");
-                $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
-                $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
-            });
-					
+        	if(odelivery == "배송준비중"){
+            	$(order).each(function(index, item) {
+                	$('#ocode').prop('value',order.ocode);
+                	$('#mid').prop('value',order.mid);
+                	$('#mname').prop('value',order.mname);
+                	$('#pname').prop('value',order.pname);
+                	$('#ocount').prop('value',order.ocount);
+                	$('#ototal').prop('value',order.ototal);
+                	$('#oregdate').prop('value',order.oregdate);
+                	$('#oname').prop('value',order.oname);
+                	$('#oname').prop('readonly',false);
+                	$('#oaddrz').prop('value',order.oaddrz);
+                	$('#oaddr').prop('value',order.oaddr);
+                	$('#oaddr').prop('readonly',false);
+                	$('#oaddr').attr('onclick',"oaddrSearchAction()");
+                	$('#oaddrd').prop('value',order.oaddrd);
+                	$('#oaddrd').prop('readonly',false);
+                	$('#ophone').prop('value',order.ophone);
+                	$('#ophone').prop('readonly',false);
+                	$('#ocode1').prop('value',order.ocode);
+                	$('#oaddr').prop('onclick',"maddrSearchAction()");
+                	$('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
+                	$('#orderUpdateButton').removeAttr('disabled',"disabled");
+                	$('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
+                	$('#orderDeleteButton').removeAttr('disabled',"disabled");
+            	});
+            } else {
+            	$(order).each(function(index, item) {
+                    $('#ocode').prop('value',order.ocode);
+                    $('#mid').prop('value',order.mid);
+                    $('#mname').prop('value',order.mname);
+                    $('#pname').prop('value',order.pname);
+                    $('#ocount').prop('value',order.ocount);
+                    $('#ototal').prop('value',order.ototal);
+                    $('#oregdate').prop('value',order.oregdate);
+                    $('#oname').prop('value',order.oname);
+                    $('#oname').prop('readonly',false);
+                    $('#oaddrz').prop('value',order.oaddrz);
+                    $('#oaddr').prop('value',order.oaddr);
+                    $('#oaddr').prop('readonly',false);
+                    $('#oaddr').attr('onclick',"oaddrSearchAction()");
+                    $('#oaddrd').prop('value',order.oaddrd);
+                    $('#oaddrd').prop('readonly',false);
+                    $('#ophone').prop('value',order.ophone);
+                    $('#ophone').prop('readonly',false);
+                    $('#ocode1').prop('value',order.ocode);
+                    $('#oaddr').prop('onclick',"maddrSearchAction()");
+                    $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
+                    $('#orderUpdateButton').attr('disabled',"disabled");
+                    $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
+                    $('#orderDeleteButton').attr('disabled',"disabled");
+	    		});
+            }
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -178,8 +211,8 @@ function orderInfoAction(clickedOrder) {
 
 
 function orderSearchAction(clikedPage) {	
-	var searchCategory = $('#searchCategory option:selected').val();
-    var searchText = document.getElementById('searchText').value;
+	var orderSearchCategory = $('#orderSearchCategory option:selected').val();
+    var orderSearchText = document.getElementById('orderSearchText').value;
 	var orderListText = "";
 	var orderPagingText ="";
 	var page = clikedPage;
@@ -188,32 +221,18 @@ function orderSearchAction(clikedPage) {
     $.ajax({
         type: 'POST',
         url: './as',
-   		data: {searchCategory:searchCategory,
-    		searchText:searchText,
+   		data: {orderSearchCategory:orderSearchCategory,
+   			orderSearchText:orderSearchText,
     		page:page},
         success: function(map) {
         	 $.each(map.orderList , function(i){
-        		 if (map.orderList[i].odelivery == '배송완료') {
-                  orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
+                  orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname + '" data-odelivery="' + map.orderList[i].odelivery +
                   					'"><td>' + map.orderList[i].ocode + 
                   					'</td><td>' + map.orderList[i].mname + 
                   					'</td><td>' + map.orderList[i].pname + 
                   					'</td><td>' + map.orderList[i].ocount +
-                  					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
-                  					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
-                  					'" data-odelivery="' + map.orderList[i].odelivery + '"' + 'checked />' +
+                  					'</td><td>' + map.orderList[i].odelivery +
                   					'</td></tr>';
-        		 } else {
-        			 orderListText += '<tr id="orderInfoBtn" onclick="orderInfoAction(this)" data-ocode="' + map.orderList[i].ocode + '" data-pname="' + map.orderList[i].pname +
-   					'"><td>' + map.orderList[i].ocode + 
-   					'</td><td>' + map.orderList[i].mname + 
-   					'</td><td>' + map.orderList[i].pname + 
-   					'</td><td>' + map.orderList[i].ocount +
-   					'</td><td><label id="' + map.orderList[i].ocode + 'deliveryText">' + map.orderList[i].odelivery + '</label>' +
-   					'<input type="checkbox" id="deliveryCheckBox" onchange="deliveryCheckAction(this)" data-ocode="' + map.orderList[i].ocode +
-   					'" data-odelivery="' + map.orderList[i].odelivery + '"' + ' />' +
-   					'</td></tr>';
-        		 }
 			});
         	 
         	 if (map.paging.prev) {
@@ -267,6 +286,34 @@ function orderUpdateAction() {
     });
 }
 
+function deliveryUpdate(value) {	
+	var odelivery = value;
+	var ocode = document.getElementById('ocode').value;
+	var pname = document.getElementById('pname').value;
+		
+	if(confirm("배송 상태를 수정하시겠습니까?")){
+    $.ajax({
+        type: 'POST',
+        url: './du',
+   		data: {ocode:ocode, odelivery:odelivery, pname:pname},
+        success: function() {
+			orderSearchAction();
+        	alert("수정된 주문 = " + ocode + "\n배송 상태 수정이 완료되었습니다.");
+				
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    	
+    });
+	} else {
+		$('#selectDeliveryInfo option.gibon').prop("selected", true);
+		alert("배송 상태 변경이 취소되었습니다.");
+	}
+}
+
 function orderDeleteAction() {	
 	var ocode = document.getElementById('ocode').value;
     
@@ -286,86 +333,32 @@ function orderDeleteAction() {
         }
     });
 }
-
-function deliveryCheckAction(checkedOrder) {
-	if(checkedOrder.getAttribute("data-odelivery") != '배송완료') {
-		if(!confirm('정말로 배송이 완료되었습니까?')) {
-			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = false;
-			return false;
-		} else {
-			var ocode = checkedOrder.getAttribute("data-ocode");
-		    $.ajax({
-		        type: 'POST',
-		        url: './da',
-		        data: {ocode:ocode, odelivery:'배송완료'},
-		        success: function() {
-		        	checkedOrder.setAttribute('data-odelivery', '배송완료');
-		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송완료";
-		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"true");
-		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송이 완료되었습니다.");
-		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
-		        },
-		        error: function(request, status, error) {
-		            console.log("code:" + request.status + 
-		            		"\n"+"message:" + request.responseText + 
-		            		"\n"+"error:"+error);
-		        }
-		    });
-		}
-	} else {
-		if(!confirm('배송상태를 변경하시겠습니까?')){
-			document.getElementById("deliveryCheckBox" + checkedOrder.getAttribute('data-ocode')).checked = true;
-			return false;
-		} else {
-			var ocode = checkedOrder.getAttribute("data-ocode");
-		    $.ajax({
-		        type: 'POST',
-		        url: './da',
-		        data: {ocode:ocode, odelivery:'배송준비중'},
-		        success: function(order) {
-		        	checkedOrder.setAttribute('data-odelivery', '배송준비중');
-		        	document.getElementById(checkedOrder.getAttribute("data-ocode") + "deliveryText").innerText = "배송준비중";
-		        	document.getElementById('orderUpdateButton').setAttribute('disabled',"false");
-		        	alert(checkedOrder.getAttribute("data-ocode") + " 주문의 배송상태가 변경되었습니다.");
-		        	orderSearchAction(document.getElementsByClassName("orderActivePage")[0].value);
-		        },
-		        error: function(request, status, error) {
-		            console.log("code:" + request.status + 
-		            		"\n"+"message:" + request.responseText + 
-		            		"\n"+"error:"+error);
-		        }
-		    });
-		}
-	}		
-}
 </script>
-<!-- Page Wrapper -->
-<div id="wrapper">
-<header>
-<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
-</header>
-<!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
-<!-- Main Content -->
-<div id="content">
-<!-- Topbar -->
-<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
 <section id="orderList">
 			<div class="row">
 				<div class="col-lg-6">
-					<!--좌우분할 6:6-->
-					<!--주문 관리//-->
-					<div class="panel order-panel-default left-order-panel-default">
+					<!--좌우분할 5:7-->
+					<!--일반회원 관리//-->
+					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="input-group">
-										<select id="searchCategory" name="searchCategory" class="btn btn-default btn-md">
+										<select id="orderSearchCategory" name="orderSearchCategory" class="btn btn-default btn-md">
 											<option value="pname">상품명</option>
 											<option value="oname">주문자명</option>
 											<option value="mid">주문자아이디</option>
 										</select>
-										<input class="form-control input-sm" id="searchText" type="text"
+										<input class="form-control input-sm" id="orderSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
 											<input type="button" class="btn btn-primary btn-sm" id="orderSearchButton" value="검색" onclick="orderSearchAction()">
 										</span>
@@ -387,14 +380,12 @@ function deliveryCheckAction(checkedOrder) {
 									</thead>
 									<tbody id="orderListBody">
 									<c:forEach var="order" items="${orderAdminList}">
-										<tr id="orderInfoBtn" data-ocode="${order.ocode}" data-pname="${order.pname}" onclick="orderInfoAction(this)">
+										<tr id="orderInfoBtn" data-ocode="${order.ocode}" data-pname="${order.pname}" data-odelivery="${order.odelivery}" onclick="orderInfoAction(this)">
 											<td>${order.ocode}</td>
 											<td>${order.mname}</td>
 											<td>${order.pname}</td>
 											<td>${order.ocount}</td>
-											<td><label id="${order.ocode}deliveryText">${order.odelivery}</label>
-												<input type="checkbox" id="deliveryCheckBox${order.ocode}" onchange="deliveryCheckAction(this)" data-ocode="${order.ocode}" data-odelivery="${order.odelivery}" <c:if test="${order.odelivery eq '배송완료'}">checked</c:if> />
-											</td>
+											<td>${order.odelivery}</td>
 										</tr>
 									</c:forEach>
 									</tbody>
@@ -424,7 +415,7 @@ function deliveryCheckAction(checkedOrder) {
 					<!--좌우분할 5:7-->
 					<!--상세정보패널//-->
 					<div class="panel panel-default">
-						<div class="panel-heading" id="panel-heading-right">주문 상세 정보</div>
+						<div class="panel-heading">상세정보패널</div>
 						<div class="panel-body">
 							<div class="table-responsive">
 		<div class="input-form-backgroud row">
@@ -508,12 +499,10 @@ function deliveryCheckAction(checkedOrder) {
 					<div class="mb-4"></div>
 					<div class="row" id="orderButtonZone">
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="orderUpdateButton" value="주문 수정" title="주문 수정 버튼">
+						<input type="button" class="btn btn-default btn-lg btn-block" id="orderUpdateButton" value="주문 수정" title="주문 수정 버튼">
 						</div>
 						<div class="col-md-6 mb-3">
-						<input type="button" class="btn btn-default btn-lg btn-block" 
-						id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
+						<input type="button" class="btn btn-default btn-lg btn-block" id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
 						</div>		
 						<hr class="mb-4">
 						<br>				
@@ -527,7 +516,6 @@ function deliveryCheckAction(checkedOrder) {
 					<!--//상세정보패널-->
 				</div>
 			</div>
-		</div>
 	</section>
 
 	<script>
@@ -565,6 +553,7 @@ function deliveryCheckAction(checkedOrder) {
 	    	})();
 	}    	
 	</script>
+	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
 </div>
 </div>

@@ -37,7 +37,6 @@ public class Interceptor implements HandlerInterceptor {
 			response.sendRedirect(request.getContextPath() + "/me/ad/lo");
 			return false;
 		}
-		
 		System.out.println("관리자 로그인 interceptor, 인증결과 = true");
 		return true;
 	}

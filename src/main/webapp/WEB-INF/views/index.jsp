@@ -3,6 +3,7 @@
 <%
 	String mid = (String)session.getAttribute("mid");
 	String sid = (String)session.getAttribute("sid");
+	request.setAttribute("mid", mid);
 	System.out.println("헤더에서 mid 값 = " + mid);
 %>
 <!DOCTYPE html>
@@ -124,11 +125,19 @@ h1 {
 	display: inline-block;
 }
 
+.ftco-animate {
+    opacity: 1;
+    visibility: unset;
+}
+
+#productCount{text-align: center;}
+
 </style>
 
 <script type="text/javascript">
 function pcateChange(value) {
 	var pcate = value;
+	
 	$('#selectPnameInfo option').each(function() {
 		var pname = $(this).attr('class');
 		if (pcate == pname) {
@@ -150,61 +159,125 @@ function pcateChange(value) {
 		}
 	});
 }
+
 function pnameChange(value) {
 	var pname = value;
-	var pcode = $('#selectPnameInfo option.' + pname + '.pcode').val();
-	var pcate = $('#selectPnameInfo option.' + pname + '.pcate').val();
-	var price = $('#selectPnameInfo option.' + pname + '.price').val();
+	var pcode = $('#selectPnameInfo option:selected').attr('value1');
+	var pcate = $('#selectPnameInfo option:selected').attr('value2');
+	var pprice = $('#selectPnameInfo option:selected').attr('value3');
+	
 	if (pname != "") {
-		$('#rcount').val("1");
-		$('#result').text("1");
-		$('#rcountbox').css('display', '-webkit-inline-box');
-		$('#price').text(price);
-		$('#onePrice').val(price);
-		$('#pricesum').text(price);
-		$('#totalprice').val(price);
+		document.getElementById("productPrice").innerHTML = pprice + "&nbsp;원";
+		document.getElementById("productCount").innerHTML = "1";
+		document.getElementById("productTotal").innerHTML = pprice + "&nbsp;원";
+		$('#proPrice').val(pprice);
+		$('#proCount').val("1");
+		$('#proTotal').val(pprice);
 		$('#pcode').val(pcode);
 	} else {
 	}
 }
+
 function pageInit() {
-	$('#optionBox').css('display', 'none');
-	$('#price').text("");
-	$('#pricesum').text("");
-	$('#onePrice').val("");
-	$('#result').text("1");
-	$('#rcount').val("1");
-	$('#totalprice').text("");
-	$('#totalprice').val("");
+	document.getElementById("productPrice").innerHTML = "상품을 선택하세요.";
+	document.getElementById("productCount").innerHTML = "1";
+	document.getElementById("productTotal").innerHTML = "상품을 선택하세요.";
+	$('#proPrice').val("");
+	$('#proCount').val("1");
+	$('#proTotal').val("");
+	$('#pcode').val("");
 }
 
 function count(type) {
 
-	const resultElement = document.getElementById('result');
-	const priceElement = document.getElementById('price');
-	const resultpriceElement = document.getElementById('pricesum');
+	const countElement = document.getElementById('productCount');
+	const priceElement = document.getElementById('productPrice');
+	const totalPriceElement = document.getElementById('productTotal');
 
-	let number = resultElement.innerText.replace(/,/g, '');
+	let count = countElement.innerText.replace(/,/g, '');
 	let price = priceElement.innerText.replace(/,/g, '');
-	let totalprice = resultpriceElement.innerText.replace(/,/g, '');
+	let totalPrice = totalPriceElement.innerText.replace(/,/g, '');
 
 	if (type === 'plus') {
-		if (number < 5)
-			number = parseInt(number) + 1;
-		if (totalprice < (price * 5))
-			totalprice = parseInt(totalprice) + parseInt(price);
+		if (count < 5){
+			count = parseInt(count) + 1;
+			
+			if (parseInt(totalPrice) < (parseInt(price) * 5)){
+			totalPrice = parseInt(totalPrice) + parseInt(price);
+			
+			document.getElementById("productCount").innerHTML = count;
+			document.getElementById("productTotal").innerHTML = totalPrice + "&nbsp;원";
+
+			$('#proCount').val(count);
+			$('#proTotal').val(totalPrice);
+			}
+		}
 	}
 	if (type === 'minus') {
-		if (number > 1)
-			number = parseInt(number) - 1;
-		if (parseInt(totalprice) > parseInt(price))
-			totalprice = totalprice - parseInt(price);
-	}
+		if (count > 1){
+			count = parseInt(count) - 1;
+			
+			if (parseInt(totalPrice) > parseInt(price)){
+			totalPrice = parseInt(totalPrice) - parseInt(price);
+			
+			document.getElementById("productCount").innerHTML = count;
+			document.getElementById("productTotal").innerHTML = totalPrice + "&nbsp;원";
 
-	resultElement.innerText = number;
-	document.getElementById('rcount').setAttribute('value', number);
-	resultpriceElement.innerText = totalprice;
-	document.getElementById('totalprice').setAttribute('value', totalprice);
+			$('#proCount').val(count);
+			$('#proTotal').val(totalPrice);
+			}
+		}
+	}
+}
+
+//TagList
+function productIndexTag(clickedPtag) {	
+	var ptag = clickedPtag.getAttribute("data-ptag");
+	var productIndexTagText = "";
+    
+    $.ajax({
+        type: 'POST',
+        url: '/pr/cl/in',
+   		data: {ptag:ptag},
+        success: function(map) {
+        	$.each(map.productList , function(i){
+                productIndexTagText += 
+				'<div class="col-md-6 col-lg-3 ftco">' + 
+					'<div class="product">' + 
+						'<a href="#" class="img-prod"><img class="img-fluid"' + 
+							'src="/resources/image/product/' + map.productList[i].pfile + '"' + 
+							'alt="Colorlib Template"> </a>' + 
+						'<div class="text py-3 pb-4 px-3 text-center">' + 
+							'<h3>' + 
+								'<a href="#">' + map.productList[i].pname + '</a>' + 
+							'</h3>' + 
+							'<div class="d-flex">' + 
+								'<div class="pricing">' + 
+									'<p class="price">' + 
+										'<span class="price-sale">' + map.productList[i].pprice + '</span>' +  
+									'</p>' + 
+								'</div>' + 
+							'</div>' + 
+							'<div class="bottom-area d-flex px-3">' + 
+								'<div class="m-auto d-flex">' + 
+									'<a href="#"' + 
+										'class="buy-now d-flex justify-content-center align-items-center mx-1">' + 
+										'<span><i class="ion-ios-cart"></i></span>' + 
+									'</a>' + 
+								'</div>' + 
+							'</div>' + 
+						'</div>' + 
+					'</div>' + 
+				'</div>';
+           });
+        	document.getElementById("indexPtagListZone").innerHTML = productIndexTagText;
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
 }
 </script>
 
@@ -261,52 +334,52 @@ function count(type) {
 					<div class="col-md-12 tagZone" id="tagZone">
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">콩</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="콩">콩</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">다이어트</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="다이어트">다이어트</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">비타민</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="비타민">비타민</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">채소</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="채소">채소</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">과일</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="과일">과일</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">과자</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="과자">과자</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">빵</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="빵">빵</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">드링크</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="드링크">드링크</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">파스타</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="파스타">파스타</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#">잼</a>
+								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="잼">잼</a>
 							</div>
 						</div>
 					</div>
@@ -314,14 +387,13 @@ function count(type) {
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-				<c:forEach var="product" items="${proClientListlist}">
+			<div class="row" id="indexPtagListZone">
+				<c:forEach var="product" items="${productList}">
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
 						<a href="#" class="img-prod"><img class="img-fluid"
 							src="/resources/image/product/${product.pfile}"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
+							alt="Colorlib Template"> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
 							<h3>
 								<a href="#">${product.pname}</a>
@@ -345,205 +417,6 @@ function count(type) {
 					</div>
 				</div>
 				</c:forEach>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-2.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">백두산 딸기</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>30,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-3.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">조선 완두콩</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>23,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-4.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">적적할 땐 적양배추</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>23,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-5.jpg"
-							alt="Colorlib Template"> <span class="status">30%</span>
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">생글생글 토마토</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span class="mr-2 price-dc">13,000원</span><span
-											class="price-sale">9,100원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-6.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">싱싱한 브로콜리</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>30,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-7.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">바니바니 당근</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>42,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-3 ftco-animate">
-					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/bootstrap/vegefoods-master/images/product-8.jpg"
-							alt="Colorlib Template">
-							<div class="overlay"></div> </a>
-						<div class="text py-3 pb-4 px-3 text-center">
-							<h3>
-								<a href="#">명장의 과채주스</a>
-							</h3>
-							<div class="d-flex">
-								<div class="pricing">
-									<p class="price">
-										<span>57,000원</span>
-									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</section>
@@ -553,9 +426,8 @@ function count(type) {
     <section class="ftco-section">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-xl-7 ftco-animate">
-				<form action="#" class="billing-form">
-					<h3 class="mb-4 billing-heading" id="quickOrderMenu">빠른 주문</h3>
+          <div class="col-xl-7 ftco-animate billing-form">
+				<h3 class="mb-4 billing-heading" id="quickOrderMenu">빠른 주문</h3>
 	          	<div class="row align-items-end">
                 <div class="w-100"></div>
 		            <div class="col-md-12">
@@ -584,53 +456,52 @@ function count(type) {
 		                  <select name="pname" id="selectPnameInfo" class="form-control custom-select" required="required" onchange="pnameChange(this.value);">
 		                  	<option value="" class="gibon" selected>상품 선택</option>
 		                  	<c:forEach var="product" items="${orderProductList}">
-		                  		<option value="${product.pcode}" class="${product.pname} pcode"	hidden>
-								<option value="${product.pname}" class="${product.pcate}" hidden>${product.pname}</option>
-								<option value="${product.pcate}" class="${product.pname} pcate"	hidden>
-								<option value="${product.pprice}" class="${product.pname} price" hidden>
+								<option value="${product.pname}" value1="${product.pcode}" value2="${product.pcate}" value3="${product.pprice}" class="${product.pcate}" hidden>${product.pname}</option>
 		                    </c:forEach>
 		                  </select>
 		                </div>
 		            	</div>
 		            </div>
 	            </div>
-	          </form><!-- END -->
-					</div>
-					<div class="col-xl-5">
+			</div>
+			<div class="col-xl-5">
 	          <div class="row mt-5 pt-3">
 	          	<div class="col-md-12 d-flex mb-5">
 	          		<div class="cart-detail cart-total p-3 p-md-4">
+	          			<form name="orderFast" method="post" class="billing-form">
 	          			<h3 class="billing-heading mb-4">주문내용</h3>
-	          			<p class="d-flex">
-	          				<div id="rcountbox">
+	          			<div id="rcountbox">
+	          				<p class="d-flex">
 		    						<span>단가</span>
-		    						<span id="price" style="display:none">${productList.price}원</span>
+		    						<span id="productPrice">상품을 선택하세요.</span>
+		    						<input type="hidden" name="proPrice" id="proPrice">
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>수량</span>
-		    						<span style="display:block; width:inherit;">
+		    						<span style="display:flex; width:inherit;">
 		    							<button id="omb" class="btn mbutton" type="button" onclick='count("minus")'>-</button>
-											<span id='result'>1</span>
+											<span id="productCount"></span>
 										<button id="opb" class="btn pbutton" type="button" onclick='count("plus")'>+</button>
-										<input type="hidden" name="rcount" value="1" id="rcount">
+										<input type="hidden" name="pcount" id="proCount">
 									</span>
 		    					</p>
 		    					<hr>
 		    					<p class="d-flex total-price">
 		    						<span>합계 금액</span>
-		    						<span id="pricesum" style="display:none">15,000원</span>
-		    						<input type="hidden" id="onePrice" name="price" value="">
-									<input type="hidden" name="totalprice" value="" id="totalprice">
-									<input type="hidden" name="pcode" value="" id="pcode">
+		    						<span id="productTotal">상품을 선택하세요.</span>
+									<input type="hidden" name="proTotal" id="proTotal">
+									<input type="hidden" name="pcode" id="pcode">
+									<input type="hidden" name="mid" id="mid" value="${mid}">
 		    					</p>
-		    					<p><button type="submit" class="btn btn-primary py-3 px-4">주문하기</button></p>
+		    					<p><button type="submit" class="btn btn-primary py-3 px-4" onclick="javascript: orderFast.action='http://localhost:8080/ca/cl/in'">주문하기</button></p>
 							</div>
+						</form>
 					</div>
 	          	</div>
 	          </div>
           </div> <!-- .col-md-8 -->
         </div>
-      </div>
+      </div><!-- END -->
     </section> <!-- .section -->	
 
 	<section class="ftco-section">

@@ -29,9 +29,9 @@ public class ProductAdminService {
 	}
 	
 	
-	public int productAdminListCount(HttpServletRequest request, String searchCategory, String searchText) throws Exception {
+	public int productAdminListCount(HttpServletRequest request, String productSearchCategory, String productSearchText) throws Exception {
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		int listCnt = productDAO.productAdminListCount(searchCategory, searchText);
+		int listCnt = productDAO.productAdminListCount(productSearchCategory, productSearchText);
 		return listCnt;
 	}
 	
@@ -41,9 +41,9 @@ public class ProductAdminService {
 		return product;
 	}
 	
-	public List<ProductBean> productAdminListSearch(HttpServletRequest request, Model model, @RequestParam("searchCategory") String searchCategory, @RequestParam("searchText") String searchText, @RequestParam("paging") PagingBean paging) {
+	public List<ProductBean> productAdminListSearch(HttpServletRequest request, Model model, @RequestParam("productSearchCategory") String productSearchCategory, @RequestParam("productSearchText") String productSearchText, @RequestParam("paging") PagingBean paging) {
 		ProductDAO productDAO = sqlSessionTemplate.getMapper(ProductDAO.class);
-		List<ProductBean> productAdminListSearch = productDAO.productAdminListSearch(searchCategory, searchText, paging);
+		List<ProductBean> productAdminListSearch = productDAO.productAdminListSearch(productSearchCategory, productSearchText, paging);
 		model.addAttribute("productAdminListSearch", productAdminListSearch);
 		return productAdminListSearch;
 	}

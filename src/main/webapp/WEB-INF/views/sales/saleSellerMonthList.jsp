@@ -77,7 +77,7 @@
 				}],
 					yAxes: [{
 						ticks: {
-						stepSize: 10000,
+						stepSize: 50000,
 						min:0
 						},
 						display: true,
@@ -390,7 +390,7 @@ $(function() {
 				<tbody>
 				  <c:forEach var="sale" items="${saleSellerMonthList}" varStatus="status">
 						<tr class="line">
-							<td>${sale.month}</td>
+							<td>${sale.month} 월</td>
 							<td>
 								<c:choose>
 								<c:when test="${saleSellerMonthConfirmList[status.index].count eq null}">0</c:when>

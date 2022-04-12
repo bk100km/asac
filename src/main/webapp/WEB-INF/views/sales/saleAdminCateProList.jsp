@@ -75,7 +75,7 @@
 				}],
 					yAxes: [{
 						ticks: {
-						stepSize: 10000,
+						stepSize: 50000,
 						min:0
 						},
 						display: true,

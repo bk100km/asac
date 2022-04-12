@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.member.service.MemberSellerService;
-import kr.co.asac.orders.bean.OrderBean;
 
 @Controller
 public class MemberSellerController {
@@ -122,11 +121,12 @@ public class MemberSellerController {
 		memberSellerService.memberSellerInfo(request, response, session, model, sid);
 		return "/member/memberSellerInfo";
 	}
-	@RequestMapping(value="/me/se/de" , method= RequestMethod.POST )
-	@ResponseBody
-	public void memberSellerDelete(Model model ,SellerBean seller){
+	
+	@RequestMapping(value="/me/se/de" , method= RequestMethod.GET)
+	public String memberSellerDelete(Model model ,SellerBean seller){
 		
-		System.out.println("AJAX를 통한 seller 보냄 = " + seller);
 		memberSellerService.memberSellerDelete(model, seller);
+		
+		return "/member/memberSellerDelete";
 	}
 }

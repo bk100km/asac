@@ -13,6 +13,7 @@
 <script>   
 
 
+
 function btnActive(clicked_id)  {
 	
 	
@@ -96,9 +97,45 @@ function fileUpdate(){
        }
    });
 }
+function cartAction() {
+
+	 if("${mid}"== ""){
+			alert("로그인하세요.");
+			$("#mid").focus();
+			event.stiplmmediatePropagation();
+			}
+		
+	var cart = $("form[name=productDetail]").serialize();
+    
+    $.ajax({
+        type: 'POST',
+        url: '/ca/cl/in',
+   		data: cart,
+        success: function() {   
+      	
+        	cartincheck();
+	    }
+        ,
+        error: function(request, status, error) {
+            console.log("code:" + request.status + 
+            		"\n"+"message:" + request.responseText + 
+            		"\n"+"error:"+error);
+        }
+    });
+}
 
 
-		  
+function cartincheck() {
+
+
+	if("${cart.pcount}" > "0"){ 
+	  
+		alert('장바구니에 담겨져있는 상품입니다!');
+	
+	}else{
+		alert('상품이 장바구니에 담겼습니다!');
+ }
+}
 </script>
 <style>
 .container {
@@ -342,8 +379,9 @@ function fileUpdate(){
 							<div class="colum-10">
 								<button class="btn" type="submit" onclick="">바로 구매</button>
 								&nbsp;
-								<button class="btn" type="submit"
-									onclick="javascript: productDetail.action='http://localhost:8080/ca/cl/in'">장바구니</button>
+								<button class="btn" type="button"
+									onclick="cartAction()">장바구니</button>
+									<input name="url" type="hidden" >
     							</c:when>
 							</c:choose>
 								<div>

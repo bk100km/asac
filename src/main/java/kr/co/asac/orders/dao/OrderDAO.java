@@ -25,6 +25,8 @@ public interface OrderDAO {
 	public int orderClientDelete(String ocode);
 	
 	public MemberBean memberClientInfo(String mid);
+	
+	public void orderClientGumaeUpdate(OrderBean order);
 
 	// orderSeller
 	
@@ -40,7 +42,7 @@ public interface OrderDAO {
 	
 	public void orderSellerDelete(String ocode);
 	
-	public void orderSellerDeliveryUpdate(OrderBean order);
+	public void orderDeliveryUpdate(@Param("ocode") String ocode, @Param("odelivery") String odelivery, @Param("pname") String pname);
 	
 	// orderAdmin
 	
@@ -55,8 +57,6 @@ public interface OrderDAO {
 	public void orderAdminUpdate(OrderBean order);
 	
 	public void orderAdminDelete(String ocode);
-	
-	public void orderAdminDeliveryUpdate(OrderBean order);
 	
 	public List<ProductBean> orderProductList();
 }

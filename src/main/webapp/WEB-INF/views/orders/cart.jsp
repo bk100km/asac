@@ -24,7 +24,7 @@
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
-					<th scope="col"><input id="allCheck" type="checkbox" name="allCheck"/></th>
+					<th scope="col"><input id="allCheck" type="checkbox" name="allCheck" onchange="ototalChange(this.value);"/></th>
   					<th scope="col">상품이미지</th>
 					<th scope="col">상품명</th>
 					<th scope="col">가격</th>
@@ -37,10 +37,10 @@
 				<tbody>
 					<tr>
 						<td>
-						<input type="checkbox" id="ccode" name="check" value="${cart.ccode}" />
+						<input type="checkbox" id="ccode" name="check" value="${cart.ccode}" value1="${cart.pprice * cart.pcount}" onchange="ototalChange(this.value);"/>
 						<input name="ccode" type="hidden" value="${cart.ccode}" />
 						<input name="sid" type="hidden" value="${cart.sid}" /></td>
-						<td>${cart.pfile}</td>
+						<td><img class="card-img-to imgpadding" src="/resources/image/product/${cart.pfile}" style="width:60px; height:60px;" title="${cart.pname}" <%-- alt="${order.pcontent}" --%> /></td>
 						<td>
 						<input name="pcode" type="hidden" value="${cart.pcode}" />
 						<input name="pname" type="hidden" value="${cart.pname}" />${cart.pname}</td>
@@ -48,7 +48,8 @@
 						<td>
 						<input name="pcount" type="number" min="1" max="20"value="${cart.pcount}" style="max-width: 4rem" />
 						<button class="btn btn-outline-info" type="submit" onclick="javascript: form.action='./up'">변경</button></td>
-						<td><fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" /></td>
+						<td><fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" />
+						<input type="hidden" name="ototal" value="${cart.pprice * cart.pcount}"/></td>
 					</tr>
 				</tbody>
 				</form>	
@@ -91,41 +92,16 @@
         	</div>
         	</form>
 		
-		<h3 style ="text-align: center;" id="ototaltt">
-		상품총액 
-		<c:forEach var="cart" items="${cartList}">
-			<c:set var="ototal" value="${cart.pcount * cart.pprice}"/>
-			<input type="hidden" name="ototal" id="ototal" value="${ototal}" />
-		<%-- 	<c:set var="carttotal" value="${carttotal = carttotal + ototal}"/> --%>
-		</c:forEach> 
-		<input type="hidden" name="carttotal" id="carttotal" value="${carttotal}" />	
-		</h3><div id="carttotal">${carttotal}</div>
+		<h3 style ="text-align: center;">
+		상품총액 <span id="carttotal">0</span> 원<input type="hidden" name="carttotalPrice" id="carttotalPrice">
+	
+		
+		</h3>
 		<br><br><br>
      	<button class="btn btn-outline-info" id="kakaopay" type="button">결제하기</button>
      	</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script>
-	$(function(){
-		var chkObj = document.getElementsByName("check");
-		var rowCnt = chkObj.length;
-		
-		$("input[name='allCheck']").click(function(){
-			var chk_listArr = $("input[name='check']");
-			for (var i=0; i<chk_listArr.length; i++){
-				chk_listArr[i].checked = this.checked;
-			}
-		});
-		$("input[name='check']").click(function(){
-			if($("input[name='check']:checked").length == rowCnt){
-				$("input[name='allCheck']")[0].checked = true;
-			}
-			else{
-				$("input[name='allCheck']")[0].checked = false;
-			}
-			
-		});
-	});
-
 	$("#kakaopay").click(function () {
 		
 		/* var valueArr = new Array();
@@ -142,6 +118,9 @@
 	    			ccode.push(list[i].value);
 	    		};
 	        }
+		if (ccode.length == 0){
+	    	alert("주문하실 상품을 선택해주세요.");
+	    }
 		console.log(ccode);		
 		
 		var pnamecheckedarr = new Array();
@@ -174,7 +153,7 @@
 		var oaddrz2 = ${memberInfo.maddrz}; 
 		console.log(oaddrz2);
 		
-		var carttotal = ${carttotal};
+		
 
 		var mid = $("#mid").val();
 		console.log(mid);
@@ -246,7 +225,7 @@
 	    		};
 	        }
 		console.log(ototalarr);
-		
+		var carttotall = carttotal.innerHTML;
 		//${ototototal = ototototal + otototal} 전체 토탈 구하는 거
 
 		
@@ -268,7 +247,7 @@
 			// 결제창에서 보여질 이름	
 			// name: '주문명 : ${auction.a_title}',
 			// 위와같이 model에 담은 정보를 넣어 쓸수도 있습니다.
-			amount: carttotal ,
+			amount: carttotall ,
 			// amount: ${bid.b_bid},
 			// 가격 
 			buyer_name: onameprint ,
@@ -344,21 +323,6 @@
 				else{
 					$("input[name='allCheck']")[0].checked = false;
 				}
-				
-				var ototalcheckedarr = new Array();
-				$('input[name=ototal]').each(function() {
-					ototalcheckedarr.push($(this).val());
-				});
-				
-				const carttotal = 0;
-				var list = $("input[name='check']");
-				for(var i = 0; i < list.length; i++){
-			        if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
-			        	carttotal = carttotal + ototalcheckedarr[i];
-			    		};
-			        }
-				$('div#carttotal').text(carttotal);
-				$('input#carttotal').attr('value', carttotal);
 			});
 		});
 		function deleteValue(){
@@ -409,6 +373,31 @@
 		});
 		
 		
+</script>
+<script>
+function ototalChange(value) {
+	var ototalvalue = value;
+	var ototal = new Array();
+	var carttotal = Number("0");
+	var list = $("input[name='check']");
+	
+	for(var i=0; i < list.length;i++){
+		
+		if(list[i].checked){ //선택되어 있으면 배열에 값을 저장함
+			ototal[i] = $(list[i]).attr('value1');
+		}	
+		
+		console.log(ototal);
+			 if(isNaN(ototal[i])){
+				ototal[i] = 0;
+			} 
+			carttotal = carttotal + Number(ototal[i]);
+			document.getElementById("carttotal").innerHTML = carttotal;	
+			$('#carttotalPrice').val(carttotal);
+	}
+	
+
+}
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>

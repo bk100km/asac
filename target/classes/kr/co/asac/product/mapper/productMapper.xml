@@ -94,7 +94,7 @@
 		
 		<select id="productListDetail" resultType="kr.co.asac.product.bean.ProductBean">
 		
-		select * from Product where PCODE=#{pcode}
+		select * from product where PCODE=#{pcode}
 		
 		</select>	
 	
@@ -121,5 +121,10 @@
 		
 			</otherwise>
 		</choose>
+	</select>
+	
+	<!-- Index TagList -->
+	<select id="productClientIndexTag"   parameterType="String" resultType="kr.co.asac.product.bean.ProductBean">
+		select * from product where PTAG=#{ptag}  order by pcode desc limit 8
 	</select>
 </mapper>

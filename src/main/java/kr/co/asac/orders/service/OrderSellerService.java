@@ -59,9 +59,9 @@ public class OrderSellerService {
 		dao.orderSellerUpdate(order);
 	}
 	
-	public void orderSellerDeliveryUpdate(OrderBean order) throws Exception {
+	public void orderDeliveryUpdate(String ocode, String odelivery, String pname) throws Exception {
 		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
-		dao.orderSellerDeliveryUpdate(order);
+		dao.orderDeliveryUpdate(ocode, odelivery, pname);
 	}
 	
 	public void orderSellerDelete(HttpServletRequest request, Model model, HttpServletResponse response, String ocode) throws Exception {

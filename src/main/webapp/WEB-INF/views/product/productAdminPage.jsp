@@ -27,7 +27,7 @@
 	display: none;
 }
 
-#SearchButtonHidden {
+#productSearchButtonHidden {
 	display: none;
 }
 
@@ -35,7 +35,7 @@
 	display: none;
 }
 
-#SearchText {
+#productSearchText {
     float: right;
 }
 
@@ -107,7 +107,7 @@ th {
     font-family: Pretendard;
 }
 
-#searchCategory {
+#productSearchCategory {
 	border: none;
 	color: #72815d;
     font-weight: 700;
@@ -122,7 +122,7 @@ option {
 	padding: 15px;
 }
 
-#SearchButton {
+#productSearchButton {
 	border: none;
 	color: #72815d;	
     font-size: 1.1rem;
@@ -228,8 +228,8 @@ function productInfoAction(clickedproduct) {
 
 
 function productSearchAction(clickedPage) {	
-	var searchCategory = $('#searchCategory option:selected').val();
-    var searchText = document.getElementById('searchText').value;
+	var productSearchCategory = $('#productSearchCategory option:selected').val();
+    var productSearchText = document.getElementById('productSearchText').value;
 	var productListText = "";
 	var productPagingText ="";
 	var page = clickedPage;
@@ -238,8 +238,8 @@ function productSearchAction(clickedPage) {
     $.ajax({
         type: 'POST',
         url: './as',
-   		data: {searchCategory:searchCategory,
-    		searchText:searchText,
+   		data: {productSearchCategory:productSearchCategory,
+    		productSearchText:productSearchText,
     		page:page},
         success: function(map) {
         	 $.each(map.productList , function(i){
@@ -300,7 +300,7 @@ function productInsertForm() {
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',false);
             $('#pfile').prop('value',"");
-            $('#pfile').prop('readonly',false);
+            $('#pfile').prop('readonly',true);
             $('#pfileUploadButton').prop('disabled',false);
             $('#pcontent').prop('value',"");
             $('#pcontent').prop('readonly',false);
@@ -506,15 +506,15 @@ function pfileUploadAction() {
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="input-group">
-										<select id="searchCategory" name="searchCategory" class="btn btn-default btn-md">
+										<select id="productSearchCategory" name="productSearchCategory" class="btn btn-default btn-md">
 											<option value="pname">상품명</option>
 											<option value="pcate">카테고리</option>
 											<option value="ptag">태그명</option>											
 											<option value="sid">판매자아이디</option>
 										</select>
-										<input class="form-control input-sm" id="searchText" type="text"
+										<input class="form-control input-sm" id="productSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-default btn-md" id="SearchButton" value="검색" onclick="productSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
 										</span>
 									</div>
 								</div>

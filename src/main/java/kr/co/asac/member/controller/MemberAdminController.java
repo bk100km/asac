@@ -133,7 +133,6 @@ public class MemberAdminController {
 		
 		int listCnt = memberAdminService.memberAdminClientCount(searchCategory, searchText);
 		paging.pageInfo(page, range, listCnt);
-		System.out.println("컨트롤러에서 paging 값은 = " + paging);
 		
 	    List <MemberBean> memberList;
 		memberList = memberAdminService.memberAdminClientSearch(request, model, searchCategory, searchText, paging);

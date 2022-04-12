@@ -42,7 +42,9 @@ import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.service.MemberClientService;
 import kr.co.asac.member.service.NaverLoginBO;
 import kr.co.asac.orders.bean.OrderBean;
+import kr.co.asac.orders.service.OrderAdminService;
 import kr.co.asac.orders.service.OrderClientService;
+import kr.co.asac.product.service.ProductClientService;
 
 @Controller
 public class MemberClientController {
@@ -63,6 +65,12 @@ public class MemberClientController {
 	@Autowired
 	private MemberClientService memberClientService;
 
+	@Autowired
+	private OrderAdminService orderAdminService;
+	
+	@Autowired
+	private ProductClientService productClientService;
+
 	private static final Logger logger = LoggerFactory.getLogger(MemberClientController.class);
 
 	@Autowired
@@ -70,7 +78,9 @@ public class MemberClientController {
 
 	// common mapping
 	@RequestMapping("/")
-	public String memberClientIndex() {
+	public String memberClientIndex(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		orderAdminService.orderProductList(request, response, model);
+		productClientService.productClientIndexTag(model, "콩");
 		return "index";
 	}
 
@@ -91,6 +101,7 @@ public class MemberClientController {
 	public String memberClientLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model,
 			MemberBean member) throws Exception {
 		memberClientService.memberClientLoginCheck(request, response, model, member);
+		orderAdminService.orderProductList(request, response, model);
 		System.out.println(member);
 		return "index";
 	}

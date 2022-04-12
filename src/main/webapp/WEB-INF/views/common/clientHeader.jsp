@@ -366,7 +366,7 @@
 	</header>
 	
 	<script src="/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
-	<script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
+	<!-- <script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script> 얘 때문에 스크롤 안됨-->
 	<script src="/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
 	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
 	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
