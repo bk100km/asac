@@ -204,7 +204,6 @@ function productInfoAction(clickedproduct) {
                 $('#pprice').prop('value',product.pprice);
                 $('#pprice').prop('readonly',false);
                 $('#pcate').prop('value',product.pcate);
-                $('#pcate').prop('readonly',false);
                 $('#ptag').prop('value',product.ptag);
                 $('#ptag').prop('readonly',false);
                 $('#pfile').prop('value',product.pfile);
@@ -215,6 +214,7 @@ function productInfoAction(clickedproduct) {
                 $('#sid').prop('value',product.sid);
                 $('#productUpdateButton').attr('onclick',"productUpdateOk()");
                 $('#productDeleteButton').attr('onclick',"productDeleteOk()");
+                $('#productRActionButton').attr('onclick',"productRActionOk()");
            });
 					
         },
@@ -297,7 +297,6 @@ function productInsertForm() {
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',false);
             $('#pcate').prop('value',"");
-            $('#pcate').prop('readonly',false);
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',false);
             $('#pfile').prop('value',"");
@@ -333,7 +332,7 @@ function productInsertForm() {
 function productInsertCancel() {
 	var productInsertCancelText = '';
 	var productInsertFormIdZoneText = '';
-    $.ajax({
+	$.ajax({
         success: function() {
         	
         	$('#productInfoDetail').prop('action',"./up");
@@ -344,7 +343,6 @@ function productInsertCancel() {
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',true);
             $('#pcate').prop('value',"");
-            $('#pcate').prop('readonly',true);
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',true);
             $('#pfile').prop('value',"");
@@ -374,8 +372,8 @@ function productInsertCancel() {
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
-			'id="productInsertButton" value="리뷰보기"' + 
-			'onclick="location.href=`/pr/cl/dt/`" title="리뷰보기 버튼">' +
+			'id="productRActionButton" value="리뷰보기"' + 
+			'title="리뷰보기 버튼">' +
 			'</div>';
 
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
@@ -488,6 +486,13 @@ function pfileUploadAction() {
             		"\n"+"error:"+error);
         }
     });
+}
+
+function productRAction() {	
+	var pcode = document.getElementById('pcode').value;
+	
+	location.href="/pr/cl/dt/" + pcode;
+    
 }
 
 </script>
@@ -604,10 +609,16 @@ function pfileUploadAction() {
 							maxlength="6" required readonly>
 					</div>	
 					<div class="mb-1 input-group-sm">
-						<label for="pcate">카테고리 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control"  name="pcate" id="pcate" value="${product.pcate}"
-							placeholder="카테고리" pattern="^[가-힣]+$" 
-							maxlength="20" required readonly>
+						<label for="pcate">카테고리 <span class="text-danger">*</span></label>
+						<select	class="form-control" name="pcate" id="pcate" required>
+							<option value="" selected>카테고리 선택</option>
+							<option value="농산물류">농산물류</option>
+							<option value="간편식류">간편식류</option>
+							<option value="콩고기류">콩고기류</option>
+							<option value="음료류">음료류</option>
+							<option value="양념소스류">양념소스류</option>
+							<option value="생활용품류">생활용품류</option>
+						</select>
 					</div>
 					<div class="mb-1 input-group-sm">
 						<label for="ptag">태그명 <span class="text-danger">*</span></label> <input type="text"
@@ -670,7 +681,7 @@ function pfileUploadAction() {
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-md btn-block" 
-						id="productReviewButton" value="리뷰보기" title="리뷰보기 버튼">
+						id="productRActionButton" value="리뷰보기" title="리뷰보기 버튼">
 						</div>								
 					</div>	
 				</form>
@@ -711,6 +722,14 @@ function pfileUploadAction() {
 		}
 	}
     
+	function productRActionOk() {
+		if(!confirm('리뷰페이지로 이동하시겠습니까?')){
+			return false;
+		} else {
+			productRAction();
+		}
+	}
+	
 	</script>
 	
 	</div>

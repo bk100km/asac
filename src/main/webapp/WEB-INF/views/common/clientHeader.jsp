@@ -75,7 +75,7 @@
 	padding-left: 1em;
 	padding-right: 2em;
 	margin: auto;
-	color: #82ae46;
+	color: #74bf0f;
 }
 }
 
@@ -85,7 +85,7 @@
 	font-family: Pretendard;
 	padding-left: 1em;
 	padding-right: 2em;
-	color: #82ae46;
+	color: #74bf0f;
 }
 }
 
@@ -95,7 +95,7 @@
 	font-family: Pretendard;
 	padding-left: 1em;
 	padding-right: 2em;
-	color: #82ae46;
+	color: #74bf0f;
 }
 }
 
@@ -105,7 +105,7 @@
 	font-family: Pretendard;
 	padding-left: 1em;
 	padding-right: 1em;
-	color: #82ae46;
+	color: #74bf0f;
 }
 }
 
@@ -117,7 +117,7 @@
 	padding-right: 1em;
 	padding-top: 0;
 	background: white;
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 }
 
@@ -129,7 +129,7 @@
 	padding-right: 1em;
 	padding-top: 0;
 	background: white;
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 }
 
@@ -141,7 +141,7 @@
 	padding-right: 2em;
 	padding-top: 0;
 	background: white;
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 }
 
@@ -153,7 +153,7 @@
 	padding-right: 0.8em;
 	padding-top: 0;
 	background: white;
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 }
 
@@ -195,7 +195,7 @@
 @media ( min-width : 1400px) {
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
 	margin: -4rem 0 0;
-	background: #82ae46;
+	background: #74bf0f;
 	border-radius: 5px;
 	left: -60px;
 	padding: 0;
@@ -205,7 +205,7 @@
 @media ( max-width : 1399px) {
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
 	margin: -3rem 0 0;
-	background: #82ae46;
+	background: #74bf0f;
 	border-radius: 5px;
 	left: -70px;
 	padding: 0;
@@ -223,7 +223,7 @@
 
 .ftco-navbar-light.scrolled .navbar-nav>.nav-item .dropdown-menu {
 	margin: 0rem 0 0;
-	background: #82ae46;
+	background: #74bf0f;
 	border-radius: 5px;
 	left: -60px;
 	padding: 0;
@@ -242,7 +242,7 @@
 }
 
 .ftco-navbar-light.scrolled .navbar-nav>.nav-item.cta>a:hover {
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 
 .ftco-navbar-light.scrolled .navbar-nav>.nav-item>.nav-link {
@@ -250,7 +250,7 @@
 }
 
 .ftco-navbar-light.scrolled .navbar-nav>.nav-item>.nav-link:hover {
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 
 .ftco-navbar-light.scrolled .navbar-brand {
@@ -258,7 +258,7 @@
 }
 
 .ftco-navbar-light.scrolled .navbar-brand:hover {
-	color: #82ae46 !important;
+	color: #74bf0f !important;
 }
 
 .topper .text {
@@ -266,7 +266,11 @@
 }
 
 </style>
-
+<script>
+function cartlogin(){
+	location.href="/ca/cl/li";
+}
+</script>
 </head>
 <body>
 	<header>
@@ -330,7 +334,7 @@
 							} else {
 						%>
 						<li class="nav-item cta cta-colored"><a
-							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
+							onclick="cartlogin()" class="nav-link"
 							id="borderNavCart"><span class="icon-shopping_cart"></span></a></li>
 						<li class="nav-item cta cta-colored"><a
 							href="<%= request.getContextPath() %>/me/cl/lO" class="nav-link"

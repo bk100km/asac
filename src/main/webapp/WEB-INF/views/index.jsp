@@ -518,7 +518,7 @@ function productIndexTag(clickedPtag) {
 		<div class="container">
 			<div class="row no-gutters ftco-services">
 				<div
-					class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+					class="col-6 col-md-3 text-center d-flex align-self-stretch ftco-animate">
 					<div class="media block-6 services mb-md-0 mb-4">
 						<div
 							class="icon bg-color-1 active d-flex justify-content-center align-items-center mb-2">
@@ -531,7 +531,7 @@ function productIndexTag(clickedPtag) {
 					</div>
 				</div>
 				<div
-					class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+					class="col-6 col-md-3 text-center d-flex align-self-stretch ftco-animate">
 					<div class="media block-6 services mb-md-0 mb-4">
 						<div
 							class="icon bg-color-2 d-flex justify-content-center align-items-center mb-2">
@@ -544,7 +544,7 @@ function productIndexTag(clickedPtag) {
 					</div>
 				</div>
 				<div
-					class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+					class="col-6 col-md-3 text-center d-flex align-self-stretch ftco-animate">
 					<div class="media block-6 services mb-md-0 mb-4">
 						<div
 							class="icon bg-color-3 d-flex justify-content-center align-items-center mb-2">
@@ -557,7 +557,7 @@ function productIndexTag(clickedPtag) {
 					</div>
 				</div>
 				<div
-					class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+					class="col-6 col-md-3 text-center d-flex align-self-stretch ftco-animate">
 					<div class="media block-6 services mb-md-0 mb-4">
 						<div
 							class="icon bg-color-4 d-flex justify-content-center align-items-center mb-2">

@@ -98,12 +98,12 @@ function fileUpdate(){
    });
 }
 function cartAction() {
-
+	
 	 if("${mid}"== ""){
 			alert("로그인하세요.");
-			location.href='/me/cl/lo';
-			/* $("#mid").focus();
-			event.stiplmmediatePropagation(); */
+			window.location.href = "/me/cl/lo";
+			$("#mid").focus();
+			event.stiplmmediatePropagation();
 			}
 		
 	var cart = $("form[name=productDetail]").serialize();
@@ -216,9 +216,9 @@ $('.btn_gotop').click(function(){
 	line-height: 26px;
 	text-align: center;
 	vertical-align: top;
-	border: 1px solid #82ae46 !important;
+	border: 1px solid #74bf0f !important;
 	border-radius: 26px;
-	background-color: #82ae46 !important;
+	background-color: #74bf0f !important;
 	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
 	color: #fff;
 	font-weight: 500;

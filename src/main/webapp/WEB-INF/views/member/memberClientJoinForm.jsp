@@ -183,8 +183,9 @@
 	        
 	        if(email==''){
 	        	alert("이메일을 입력해주세요.");
-	        }else if(validEmailCheck(email)==false){
+	        }else if(mailFormCheck(email)==false){
 	        	alert('올바른 이메일 주소를 입력해주세요.');
+	        	$('.mail_input').focus();
 	        }else{
 	        	$.ajax({
 		            type:"GET",
@@ -199,10 +200,11 @@
 		        });
 	        }
 	        
-	        function validEmailCheck(email){
-	        	alert(email);
-	            return (email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i)!=null);
-	        }
+	        /* 입력 이메일 형식 유효성 검사 */
+	        function mailFormCheck(email){
+	           var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	           return form.test(email);
+	       }
 	    });
 	    
 	    /* 인증번호 비교 */
@@ -310,10 +312,10 @@ body {
 
 	
 	<jsp:include page="../common/clientHeader.jsp" />
+	<h2 align="center" class="mb-3">회원가입</h2>
 	<div class="container">
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
-				<h4 class="mb-3">회원가입</h4>
 				<form class="validation-form" method="post" action="./jA" onsubmit="return checkAll()" name="form">
 					<div class="mb-3">
 						<label for="mid">아이디 <span class="text-danger">*</span></label>

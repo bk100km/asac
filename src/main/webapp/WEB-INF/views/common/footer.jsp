@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
 <head>
+<style>
+@media ( max-width : 768px) {
+p {
+    font-size: small;
+}
+}
+</style>
 </head>
 <body>
 

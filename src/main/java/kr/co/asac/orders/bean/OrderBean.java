@@ -279,9 +279,11 @@ public class OrderBean {
 	public String toString() {
 		return "OrderBean [ocode=" + ocode + ", sid=" + sid + ", mid=" + mid + ", pcode=" + pcode + ", ocount=" + ocount
 				+ ", oname=" + oname + ", oaddrz=" + oaddrz + ", oaddr=" + oaddr + ", oaddrd=" + oaddrd + ", ophone="
-				+ ophone + ", ototal=" + ototal + ", omessage=" + omessage + ", oregdate=" + oregdate + ", pname="
-				+ pname + ", pprice=" + pprice + ", mname=" + mname + ", maddrz=" + maddrz + ", maddr=" + maddr
-				+ ", maddrd=" + maddrd + ", mphone=" + mphone + "]";
+				+ ophone + ", ototal=" + ototal + ", omessage=" + omessage + ", odelivery=" + odelivery
+				+ ", oconfirmed=" + oconfirmed + ", oregdate=" + oregdate + ", pname=" + pname + ", pprice=" + pprice
+				+ ", mname=" + mname + ", maddrz=" + maddrz + ", maddr=" + maddr + ", maddrd=" + maddrd + ", mphone="
+				+ mphone + ", pfile=" + pfile + ", daterange=" + daterange + ", count=" + count + ", week=" + week
+				+ ", month=" + month + ", total=" + total + ", date=" + date + ", pcate=" + pcate + "]";
 	}
 
 }

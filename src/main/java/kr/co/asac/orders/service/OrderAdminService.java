@@ -1,10 +1,13 @@
 package kr.co.asac.orders.service;
 
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,27 +70,62 @@ public class OrderAdminService {
 		model.addAttribute("orderProductList", orderProductList);
 		System.out.println(orderProductList);
 	}
-	
-    public void cartInsert(CartBean cart, HttpServletResponse response, String mid) throws Exception {
-    	CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);
-    	List<CartBean> pcodelist = dao.cartClientPcode(mid);
-		String pcode = pcodelist.toString();
-		String cartpcode = cart.pcode;
-		boolean isContainsPcode = pcode.contains(cartpcode);
-		response.setContentType("text/html;charset=utf-8");
-		PrintWriter out = response.getWriter();
-		if (isContainsPcode == true) {
-			out.println("<script>");
-		   	out.println("alert('장바구니에 담겨져있는 상품입니다!')");
+    
+    public void cartResetInsert(CartBean cart, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	CartDAO cartDAO = sqlSessionTemplate.getMapper(CartDAO.class);
+    	OrderDAO orderDAO = sqlSessionTemplate.getMapper(OrderDAO.class);
+
+    	HttpSession session = request.getSession(); 
+		String mid = (String)session.getAttribute("mid");
+		
+		if (mid == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("location.href='../../me/cl/lo';");
 		   	out.println("</script>");
 		   	out.flush();
-		}else {
-		System.out.println("참이어야해" + isContainsPcode);
-    	dao.cartInsert(cart);
-    	out.println("<script>");
-	   	out.println("alert('상품이 장바구니에 담겼습니다!')");
-	   	out.println("</script>");
-	   	out.flush();
 		}
+		else {
+			orderDAO.orderCartReset(mid);
+	    	cartDAO.cartInsert(cart);
+		}
+    }
+    
+    public String orderClientInsert(String sid, String mid, String pcode, String ocount, String oname,
+			String oaddrz, String oaddr, String oaddrd, String ophone,  String ototal, String omessage) {
+		System.out.println("서비스 들어옴");
+		OrderBean order = new OrderBean();
+			order.setMid(mid);
+			order.setOname(oname);
+			order.setOaddrz(oaddrz);
+			order.setOaddr(oaddr);
+			order.setOaddrd(oaddrd);
+			order.setOphone(ophone);
+			order.setOmessage(omessage);
+			
+			Calendar cal = Calendar.getInstance();
+			int year = cal.get(Calendar.YEAR);
+			String date = year + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1) 
+					 + new DecimalFormat("00").format(cal.get(Calendar.DATE));
+			String dateNum = "";
+			
+			for(int i =1;i <= 6 ; i++) {
+				dateNum += (int)(Math.random()*10);
+			}
+			
+			String ocode = date + "_" + dateNum;
+			
+			order.setOcode(ocode);
+			order.setSid(sid);
+			order.setPcode(pcode);
+			order.setOcount(Integer.parseInt(ocount));
+			order.setOtotal(Integer.parseInt(ototal));
+				
+			OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+			dao.orderClientInsert(order);
+			
+			return ocode;
     }
 }

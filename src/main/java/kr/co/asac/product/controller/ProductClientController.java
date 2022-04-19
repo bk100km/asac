@@ -28,31 +28,31 @@ import kr.co.asac.product.service.ProductClientService;
 public class ProductClientController {
 	@Autowired
 	private ProductClientService productClientService;
-	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
+	// �꽕�젙�뙆�씪�뿉 鍮덉쑝濡� �벑濡앸릺�뿀湲� �븣臾몄뿉 �깮�꽦�옄�굹 Setter �뾾�씠 �옄�룞�쑝濡� 二쇱엯
 
 	@RequestMapping(value = {
-			//카테고리 선택
+			//移댄뀒怨좊━ �꽑�깮
 			"/pr/cl/li/{pcate}/{nowPage}",
-			//검색했을때
+			//寃��깋�뻽�쓣�븣
 			
-			//검색하고 페이지 이동
+			//寃��깋�븯怨� �럹�씠吏� �씠�룞
 			"/pr/cl/li/{pcate}/items/{items}/text/{text}/{nowPage}",	
-			//카테고리에서 페이지 이동
+			//移댄뀒怨좊━�뿉�꽌 �럹�씠吏� �씠�룞
 
-			//ptag리스트
+			//ptag由ъ뒪�듃
 			"/pr/cl/li/ptag/{ptag}/{nowPage}"
-			//ptag리스트 페이지 이동
+			//ptag由ъ뒪�듃 �럹�씠吏� �씠�룞
 			
 			//4
 			
-			//=--------여기서부터는 상세페이지
-			//검색하지 않고 들어와서 상세페이지 볼때 
+			//=--------�뿬湲곗꽌遺��꽣�뒗 �긽�꽭�럹�씠吏�
+			//寃��깋�븯吏� �븡怨� �뱾�뼱���꽌 �긽�꽭�럹�씠吏� 蹂쇰븣 
 			
-			//검색하고 들어와서 상세피이지 볼떼
+			//寃��깋�븯怨� �뱾�뼱���꽌 �긽�꽭�뵾�씠吏� 蹂쇰뼹
 			
-			//검색하고 페이지번호누르고 상세페이지
+			//寃��깋�븯怨� �럹�씠吏�踰덊샇�늻瑜닿퀬 �긽�꽭�럹�씠吏�
 			
-			//페이지 번호 누르고 상세페이지 볼때 
+			//�럹�씠吏� 踰덊샇 �늻瑜닿퀬 �긽�꽭�럹�씠吏� 蹂쇰븣 
 			
 			//X3   12 
 			
@@ -65,7 +65,7 @@ public class ProductClientController {
 			) throws Exception {
 		
 		model.addAttribute("pcate", pcate);
-		System.out.println("컨트롤러에서 값 = " + text);
+		System.out.println("而⑦듃濡ㅻ윭�뿉�꽌 媛� = " + text);
 		productClientService.productClientList(model,pcate,text,items,ptag,nowPage,cntPerPage);
 		if (ptag == null || ptag == "") {
 		return "/product/productClientList";
@@ -78,7 +78,7 @@ public class ProductClientController {
 	
 	
 	
-	@RequestMapping(value = { "/pr/cl/dt/{pcode}/{nowPage}","/pr/cl/dt/{pcode}/ptag/{ptag}/{nowPage}","/pr/cl/dt/{pcode}/{nowPage}/{reviewNowPage}",
+	@RequestMapping(value = { "/pr/cl/dt/{pcode}","/pr/cl/dt/{pcode}/{nowPage}","/pr/cl/dt/{pcode}/ptag/{ptag}/{nowPage}","/pr/cl/dt/{pcode}/{nowPage}/{reviewNowPage}",
 			                  "/pr/cl/dt/{pcode}/items/{items}/text/{text}/{nowPage}/{reviewNowPage}","/pr/cl/dt/{pcode}/items/{items}/text/{text}/{nowPage}" }
 
 			)
@@ -103,7 +103,7 @@ public class ProductClientController {
 	@RequestMapping(value = "/pr/cl/in", method = RequestMethod.POST)
 	@ResponseBody
 	public Map <String, Object> productClientIndexTag(Model model, 
-			@RequestParam(value = "ptag", required = false, defaultValue="콩") String ptag) {
+			@RequestParam(value = "ptag", required = false, defaultValue="肄�") String ptag) {
 	    List <ProductBean> productList = productClientService.productClientIndexTag(model, ptag);
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("productList", productList);

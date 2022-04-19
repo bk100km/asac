@@ -36,7 +36,7 @@ if (sid == null || !sid.equals("admin")) {
 
 <style>
 .bg-gradient-success {
-	background-color: #82ae46;
+	background-color: #74bf0f;
 	background-image: none;
 }
 

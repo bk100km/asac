@@ -19,6 +19,7 @@
 		$("#btnLogin").click(function(){
 			var sid=$("#sid").val();
 			var spwd=$("#spwd").val();
+				
 			if(sid == ""){
 				alert("아이디를 입력하세요.");
 				$("#sid").focus();
@@ -34,10 +35,48 @@
 				$("#sid").focus();
 				return;
 			}
-			document.getElementById("loginForm").action="lA"
-			document.getElementById("loginForm").submit();
+			
+			
+			checkSok();
+			
+			
+			//	document.getElementById("loginForm").action;
+			//	document.getElementById("loginForm").submit();
+			
 		});
+			
+	
 	});
+	
+	function checkSok() {
+		var sid = $('#sid').val(); //id값이 "id"인 입력란의 값을 저장
+		var spwd=$("#spwd").val();
+		$.ajax({
+			url : './so', //Controller에서 인식할 주소
+			type : 'post', //POST 방식으로 전달
+			data : {
+				sid : sid
+			},
+			success : function(seller) {
+			//	alert(seller.sok);
+				if (seller.sok == 'N') {
+					
+					alert("승인되지 않은 아이디 입니다. \n관리자 승인 후 이용하세요");
+					
+					
+				} else if(seller.sok=='Y') { 
+					document.getElementById("loginForm").action="lA"
+					document.getElementById("loginForm").submit();
+					
+				} else {
+					alert("존재하지 않는 아이디입니다.");
+				}
+ 			},
+ 			error : function() {
+ 				alert("에러입니다");
+			}
+		});
+	};
 </script>
 
 <style>
@@ -75,12 +114,12 @@ body {
 	font-size: 80px;
 	font-weight: 600;
 	font-family: tahoma;
-	color: #82ae46;
+	color: #74bf0f;
 	
 }
 .logo:hover{
 	text-decoration:none !important;
-	color: #82ae46;
+	color: #74bf0f;
 }
 </style>
 
@@ -101,6 +140,7 @@ body {
 					<div style="margin-bottom: 12px" class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 						<form:input path="sid" id="sid" type="text" class="form-control" name="sid" placeholder="아이디" data-toggle="tooltip" data-placement="top" title="아이디 입력란"  />
+				
 					</div>
 					<label>비밀번호</label> 
 					<div style="margin-bottom: 12px" class="input-group">

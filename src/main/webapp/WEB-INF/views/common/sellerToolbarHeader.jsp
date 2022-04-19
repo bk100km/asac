@@ -33,7 +33,7 @@
 			class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
 			id="ftco-navbar">
 			<div class="container" id="headerContainer">
-				<a class="navbar-brand" href="<%= request.getContextPath() %>/me/ad/in">ASAC</a>
+				<a class="navbar-brand" href="<%= request.getContextPath() %>/me/se/in">ASAC</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#ftco-nav" aria-controls="ftco-nav"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -44,31 +44,31 @@
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/or/ad/li"
+							href="<%= request.getContextPath() %>/or/se/li"
 							class="nav-link">주문관리</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/ad/al"
+							href="<%= request.getContextPath() %>/pr/se/al"
 							class="nav-link">상품관리</a></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown04"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">매출관리</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown04">
 								<a class="dropdown-item"
-									href="<%= request.getContextPath() %>/sa/ad/dy">날짜별 매출</a> <a
+									href="<%= request.getContextPath() %>/sa/se/dy">날짜별 매출</a> <a
 									class="dropdown-item"
-									href="<%= request.getContextPath() %>/sa/ad/ct">상품별 매출</a> <a
+									href="<%= request.getContextPath() %>/sa/se/ct">상품별 매출</a> <a
 									class="dropdown-item"
-									href="<%= request.getContextPath() %>/sa/ad/sl">판매자별 매출</a>
+									href="<%= request.getContextPath() %>/sa/se/sl">판매자별 매출</a>
 							</div>
 						</li>	
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/me/ad/lC"
+							href="<%= request.getContextPath() %>/me/se/lC"
 							class="nav-link">일반회원 관리</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/me/ad/lS"
+							href="<%= request.getContextPath() %>/me/se/lS"
 							class="nav-link">판매자 관리</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/me/ad/lO"
+							href="<%= request.getContextPath() %>/me/se/lO"
 							class="nav-link">로그아웃</a></li>
 					</ul>
 				</div>

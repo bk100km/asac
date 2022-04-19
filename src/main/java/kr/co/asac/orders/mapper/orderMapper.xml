@@ -148,4 +148,8 @@
 		select * from product
 	</select>
 	
+	<delete id="orderCartReset">
+		delete from cart where mid = #{mid}
+	</delete>
+	
 </mapper>

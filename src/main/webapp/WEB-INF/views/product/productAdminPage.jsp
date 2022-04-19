@@ -191,12 +191,31 @@ function pfilePreview() {
 <!-- 상세정보 조회 AJAX -->
 function productInfoAction(clickedproduct) {
 	var pcode = clickedproduct.getAttribute("data-pcode");
+	var pfileZoneText = "";
 	
     $.ajax({
         type: 'POST',
         url: './if',
         data: {pcode:pcode},
         success: function(product) {
+        	
+            pfileZoneText +=  
+				'<div class="row">' +
+				'<div class="col-md-9 mb-1 input-group-sm">' +
+					'<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
+						'class="form-control" name="pfile" id="pfile" placeholder=".png, .jpg" value="' + pfile + '"' +
+						'maxlength="10" required readonly>' +
+				'</div>' +
+				'<div class="col-md-3 mb-1">' +
+					'<input type="file" accept="image/jpeg"' +
+						'class="form-control" name = "pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">' +
+					'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
+					'<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+				'</div>' +
+				'</div>' + 
+				'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기&nbsp; </a>';
+            document.getElementById("pfileZone").innerHTML = pfileZoneText;       	
+        	
             $(product).each(function(index, item) {
                 $('#pcode').prop('value',product.pcode);
                 $('#pname').prop('value',product.pname);
@@ -204,7 +223,7 @@ function productInfoAction(clickedproduct) {
                 $('#pprice').prop('value',product.pprice);
                 $('#pprice').prop('readonly',false);
                 $('#pcate').prop('value',product.pcate);
-                $('#pcate').prop('readonly',false);
+                $('#pcate').prop('disabled',true);
                 $('#ptag').prop('value',product.ptag);
                 $('#ptag').prop('readonly',false);
                 $('#pfile').prop('value',product.pfile);
@@ -216,6 +235,7 @@ function productInfoAction(clickedproduct) {
                 $('#sid').prop('readonly',true);
                 $('#productUpdateButton').attr('onclick',"productUpdateOk()");
                 $('#productDeleteButton').attr('onclick',"productDeleteOk()");
+                $('#productRActionButton').attr('onclick',"productRActionOk()");
             });
 					
         },
@@ -286,19 +306,39 @@ function productInsertForm() {
 	var productInsertFormText = '';
 	var productInsertFormIdZoneText = '';
 	var today = new Date();
-    $.ajax({
+	var pcate = $('#pcate option:selected').val();
+	
+	$.ajax({
         success: function() {
         	
         	$('#productInfoDetail').prop('action',"productInsertAction()");
-        	$('#pcode').prop('value',"");
-            $('#pcode').prop('readonly',false);
+        	$('#pcode').prop('readonly',false);
             $('#pname').prop('value',"");
             $('#pname').prop('readonly',false);
-            $('#pname').prop('required',true);
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',false);
-            $('#pcate').prop('value',"");
-            $('#pcate').prop('readonly',false);
+            $('#pcate').prop('value',pcate);
+            $('#pcate').prop('disabled',false);
+            $("#pcate").change(function() {
+            $("#pcate option:selected").each(function() {
+            $("#pcate").val($(this).val());
+
+            if ($(this).val() == "농산물류") {
+                $('#pcode').prop('value', 'N');
+            } else if ($(this).val() == "간편식류") {
+            	$('#pcode').prop('value', 'G');
+            } else if ($(this).val() == "콩고기류") {
+        		$('#pcode').prop('value', 'K');
+            } else if ($(this).val() == "양념소스류") {
+            	$('#pcode').prop('value', 'Y');
+            } else if ($(this).val() == "음료류") {
+            	$('#pcode').prop('value', 'U');
+            } else if ($(this).val() == "생활용품류") {
+            	$('#pcode').prop('value', 'S');
+            }
+            });
+            }); 
+            
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',false);
             $('#pfile').prop('value',"");
@@ -345,7 +385,7 @@ function productInsertCancel() {
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',true);
             $('#pcate').prop('value',"");
-            $('#pcate').prop('readonly',true);
+            $('#pcate').prop('disabled',true);
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',true);
             $('#pfile').prop('value',"");
@@ -375,10 +415,10 @@ function productInsertCancel() {
 			'</div>' +
 			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
-			'id="productInsertButton" value="리뷰보기"' + 
-			'onclick="location.href=`/pr/cl/dt/`" title="리뷰보기 버튼">' +
+			'id="productRActionButton" value="리뷰보기"' + 
+			'title="리뷰보기 버튼">' +
 			'</div>';
-
+			
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
         },
         error: function(request, status, error) {
@@ -491,6 +531,13 @@ function pfileUploadAction() {
     });
 }
 
+function productRAction() {	
+	var pcode = document.getElementById('pcode').value;
+	
+	location.href="/pr/cl/dt/" + pcode;
+    
+}
+
 </script>
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -586,6 +633,19 @@ function pfileUploadAction() {
 				<form class="productInfoDetail" id= "productInfoDetail" name="productInfoDetail" method="post">
 				
 					<div class="mb-1 input-group-sm">
+						<label for="pcate">카테고리 <span class="text-danger">*</span></label>
+						<select	class="form-control" name="pcate" id="pcate" disabled>
+							<option value="" selected>카테고리 선택</option>
+							<option value="농산물류">농산물류</option>
+							<option value="간편식류">간편식류</option>
+							<option value="콩고기류">콩고기류</option>
+							<option value="음료류">음료류</option>
+							<option value="양념소스류">양념소스류</option>
+							<option value="생활용품류">생활용품류</option>
+						</select>
+					</div>
+				
+					<div class="mb-1 input-group-sm">
 					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
 						<input type="text"
 							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
@@ -604,14 +664,9 @@ function pfileUploadAction() {
 							placeholder="가격" pattern="^[0-9]+$" 
 							maxlength="6" required readonly>
 					</div>	
+
 					<div class="mb-1 input-group-sm">
-						<label for="pcate">카테고리 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control"  name="pcate" id="pcate" value="${product.pcate}"
-							placeholder="카테고리" pattern="^[가-힣]+$" 
-							maxlength="20" required readonly>
-					</div>
-					<div class="mb-1 input-group-sm">
-						<label for="ptag">태그명 <span class="text-danger">*</span></label> <input type="text"
+						<label for="ptag">태그명 <span class="text-danger">*</span><span style="font-size:10pt"> &nbsp; ex) 콩, 다이어트, 과일, 채소, 빵···</span></label> <input type="text"
 							class="form-control"  name="ptag" id="ptag" value="${product.ptag}"
 							placeholder="태그명" pattern="^[가-힣]+$" 
 							maxlength="13" required readonly>
@@ -671,8 +726,8 @@ function pfileUploadAction() {
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-md btn-block" 
-						value="리뷰보기" onclick="location.href='/pr/cl/dt/'" title="리뷰보기 버튼">
-						</div>						
+						id="productRActionButton" value="리뷰보기" title="리뷰보기 버튼">
+						</div>					
 					</div>	
 				</form>
 			</div>
@@ -709,6 +764,14 @@ function pfileUploadAction() {
 			return false;
 		} else {
 			productInsertAction();
+		}
+	}
+	
+	function productRActionOk() {
+		if(!confirm('리뷰페이지로 이동하시겠습니까?')){
+			return false;
+		} else {
+			productRAction();
 		}
 	}
     

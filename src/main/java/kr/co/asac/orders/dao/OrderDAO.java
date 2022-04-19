@@ -59,4 +59,6 @@ public interface OrderDAO {
 	public void orderAdminDelete(String ocode);
 	
 	public List<ProductBean> orderProductList();
+	
+	public void orderCartReset(String mid);
 }

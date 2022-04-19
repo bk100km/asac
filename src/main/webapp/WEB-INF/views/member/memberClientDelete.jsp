@@ -78,6 +78,7 @@ $(document).ready(function(){
 				<h3 class="mb-3">회원탈퇴</h3>
 				<hr class="mb-4">
 				<input type="hidden" id="mid" name="mid" value="${member.mid}"/>
+				<input type="hidden" id="oconfirmed" name="oconfirmed" value="${orderClientOrderList.oconfirmed}"/>
 				<div class="mb-3">
 					<label for="mpwd">비밀번호</label>
 					<input type="password" class="form-control" name="mpwd" id="mpwd" required /><br>

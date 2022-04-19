@@ -213,7 +213,7 @@ background: linear-gradient(to top right);
 				</div>
 				<div class="col-md-3 mb-3">
 					<label>&nbsp;</label><br>
-					<input type="button" class="btn" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
+					<input type="button" class="btn btn-outline-secondary" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
 				</div>
 			</div><br>
 			<div class="mb-3">
@@ -231,9 +231,11 @@ background: linear-gradient(to top right);
 			</div>
 			<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 			<br><br>
-			<input type="submit" class="btn" value="수정하기">
-			<input type="submit" class="btn" value="뒤로가기" onclick="history.go(-1)">
-			<input type="button" class="btn" value="탈퇴하기" onclick="location.href='./de'">
+			<div align="center" class="mb-3">
+				<input type="submit" class="btn btn-outline-secondary" value="수정하기">&nbsp;&nbsp;&nbsp;
+				<input type="submit" class="btn btn-outline-secondary" value="뒤로가기" onclick="history.go(-1)">&nbsp;&nbsp;&nbsp;
+				<input type="button" class="btn btn-outline-secondary" value="탈퇴하기" onclick="location.href='./de'">
+			</div>
 			</form>
 		</div>
 	</div>

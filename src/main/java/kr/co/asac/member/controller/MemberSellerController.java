@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,9 +35,7 @@ public class MemberSellerController {
 		memberSellerService.sellerIndexChart(request, response, model);		
 		return "sellerIndex";
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/me/se/lo", method = RequestMethod.GET)
 	public String memberSellerLoginForm(@ModelAttribute("seller") SellerBean seller) {
 		return "/member/memberSellerLoginForm";
@@ -52,10 +51,18 @@ public class MemberSellerController {
 		return "sellerIndex";
 	}
 	
+	@RequestMapping(value ="/me/se/so", method=RequestMethod.POST)
+	@ResponseBody
+	public SellerBean sellerIdOk(@RequestParam(value="sid") String sid,
+			Model model,HttpServletRequest request, HttpServletResponse response) {		
+		SellerBean seller = memberSellerService.sellerIdOk(sid,model, request, response);
+		return seller;
+	}
+	
 	@RequestMapping(value = "/me/se/lO", method = RequestMethod.GET)
 	public String memberSellerLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/";
+		return "redirect:/me/se/lo";
 	}
 	
 	@RequestMapping(value = "/me/se/jo", method = RequestMethod.GET)
@@ -131,9 +138,9 @@ public class MemberSellerController {
 	}
 	@RequestMapping(value="/me/se/dC" , method = RequestMethod.POST)
 	public String memberSellerDelete(SellerBean seller , HttpSession session) {
-		memberSellerService.memberSellerDelete(seller);
+		memberSellerService.memberSellerDelete(session,seller);
 		session.invalidate();
-		return "redirect:/";
+		return "redirect:/me/se/lo";
 	}
 	
 	@RequestMapping(value="/me/se/dP" , method = RequestMethod.POST)

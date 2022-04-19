@@ -5,9 +5,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -103,12 +105,7 @@ public class MemberClientController {
 		memberClientService.memberClientLoginCheck(request, response, model, member);
 		orderAdminService.orderProductList(request, response, model);
 		System.out.println(member);
-		
-		// Referer
-		System.out.println("컨트롤러에서 Referer 값 = " + member.getReferer());
-		System.out.println(member.getReferer().substring(21));
-		
-//		return "index";
+		System.out.println(member.getReferer());
 		return "redirect:" + member.getReferer();
 	}
 
@@ -157,7 +154,9 @@ public class MemberClientController {
 
 	@RequestMapping(value = "/me/cl/my", method = RequestMethod.GET)
 	public String memberClientMypage(HttpServletRequest request, HttpSession session, Model model, OrderBean order) {
+		System.out.println("mid값 찍었니 my1");
 		String mid=(String) session.getAttribute("mid");
+		System.out.println("mid값 찍었니 my2" + mid);
 		
 		//orderClient
 		List<OrderBean> list = orderClientService.orderClientList(mid, order);
@@ -183,11 +182,31 @@ public class MemberClientController {
 	}
 
 	@RequestMapping(value = "/me/cl/dC", method = RequestMethod.POST)
-	public String memberClientDelete(MemberBean vo, OrderBean order, HttpSession session, RedirectAttributes rttr) {
-		memberClientService.memberClientDelete(session, vo);
-		memberClientService.orderBackupInsert(session, order);
-		session.invalidate();
-		return "redirect:/";
+	public void memberClientDelete(MemberBean vo, OrderBean order, Model model, HttpSession session, RedirectAttributes rttr, @RequestParam("oconfirmed") String oconfirmed, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String mid = (String) session.getAttribute("mid");
+		List<OrderBean> ocodelist = orderClientService.orderClientOcodeList(mid, order);
+		model.addAttribute("orderClientOrderList",ocodelist);
+		if(ocodelist != null) {
+			for(int j=0; j < ocodelist.size(); j++) {
+				OrderBean str = ocodelist.get(j);
+				if(!str.getOconfirmed().equals("구매완료")) {
+					response.setContentType("text/html; charset=utf-8");
+					PrintWriter out = response.getWriter();
+					out.println("<script>");
+					out.println("alert('구매 완료 후 탈퇴하세요.')");
+					out.println("location.href='/me/cl/my'");
+					out.println("</script>");
+					out.flush();
+					return;
+				} else {
+				}
+			}
+			memberClientService.orderBackupInsert(session, order);
+			memberClientService.memberClientDelete(session, vo, response);
+		} else {
+			memberClientService.orderBackupInsert(session, order);
+			memberClientService.memberClientDelete(session, vo, response);
+		}
 	}
 
 	@RequestMapping(value = "/me/cl/dP", method = RequestMethod.POST)

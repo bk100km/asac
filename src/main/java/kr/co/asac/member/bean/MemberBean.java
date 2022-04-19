@@ -11,8 +11,8 @@ public class MemberBean {
 	private String maddrz;
 	private String mmail;
 	private String mregdate;
-	private String referer;
 	private String month;
+	private String referer;
 	
 	//referer
 	public String getReferer() {

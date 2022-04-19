@@ -51,7 +51,7 @@
 }
  
 .sgenderLabel input[type="radio"]:checked + span {
-    background-color: #82ae46;
+    background-color: #74bf0f;
     color: #ffffff;
 }
 

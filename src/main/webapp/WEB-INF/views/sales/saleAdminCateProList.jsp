@@ -196,7 +196,7 @@ $(function() {
 <section id="listForm">
 
 <div class="table-title">
-	<h1 class="mainTitle">매출 통계</h1></div>
+	<h1 class="mainTitle"> ${pcate} 매출 통계</h1></div>
 
 <div class="wrap">
 	<h4 class="jemok">리스트</h4>

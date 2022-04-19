@@ -2,7 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-	String referer = request.getHeader("Referer");
+	String referer = (String)request.getHeader("REFERER");
+	System.out.println(referer);
 %>
 <!DOCTYPE html>
 <html>
@@ -111,10 +112,10 @@ body {
 
 <div><br><br><br></div>
 <div class="container">
+	<h1 align="center">로그인</h1>
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				<h2>ASAC 일반사용자 로그인</h2><hr>
 				<c:choose>
 					<c:when test="${mid != null}">
 						<h2>네이버 아이디 로그인 성공하셨습니다!!</h2>
@@ -138,8 +139,8 @@ body {
 						</div>
 						<a href="<%= request.getContextPath() %>/me/cl/fI">아이디</a> |
 						<a href="<%= request.getContextPath() %>/me/cl/fP">비밀번호 찾기</a>
-						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
-						<button onclick="history.go(-1)" class="btn btn-default"> 뒤로가기</button>
+						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>
+							<a href="<%= request.getContextPath() %>/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
 						</div><hr>
 						<div align="center">
 							<a href="javascript:void(0)">
@@ -151,10 +152,7 @@ body {
 						<div id="naver_id_login" style="text-align:center"><a href="${url}">
 							<img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/></a></div>
 						<br>
-						<div align="center">
-							<a href="<%= request.getContextPath() %>/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
-						</div>
-						<form:input type="hidden" id="referer" name="referer" path="referer" value="<%=referer%>" />
+						<input type="hidden" path="referer" name="referer" id="referer" value="<%=referer%>" />
 						</form:form>
 					</c:otherwise>
 				</c:choose>

@@ -15,10 +15,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>Insert title here</title>
 <style>
-	.inline{display:inline;}
-	.center{<!--background-color:#fff8ff;-->}
-	.yellow{background-color: #C0FA6C; padding:20px;}  
-	.white{background-color: #ffffff; padding:20px;}
+	.inline{display:inline; }
+	.color{color:#808080;}
+	.center{text-align:center; margin: 0px auto;}
+	.right{text-align:right;}
+	.yellow{background-color: #74bf0f; padding:20px; color:white;}  
+	.white{background-color: #ffffff; padding:20px; }
 	.btn {
 	display: inline-block;
 	min-width: 112px;
@@ -27,30 +29,33 @@
 	line-height: 26px;
 	text-align: center;
 	vertical-align: top;
-	border: 1px solid #82ae46 !important;
+	border: 1px solid #74bf0f !important;
 	border-radius: 26px;
-	background-color: #82ae46 !important;
+	background-color: #74bf0f !important;
 	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
-	color: #fff;
+	color: #000000;
 	font-weight: 500;
-}
+	}
+	.bigdiv{
+	margin: 0 auto;
+	}
+	
 </style>
 </head> 
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
-
+<div>
 <form:form method="post" action="/or/cl/up/${orderClientInfo[0].ocode}" modelAttribute="orderClientInfo">
-	<div class="container-fluid">
-  		<br>
-  		<h4>주문 날짜 
-  			 <fmt:formatDate value="${orderClientInfo[0].oregdate}" pattern="yyyy-MM-dd"/>
-	    	   &nbsp;</h4>
-		<h4 class="inline">주문 번호 ${orderClientInfo[0].ocode}<br></h4>
-		<br>
+	<div class="container-fluid center">
+  		<br/>
+  		<h4 class="inline color">주문 날짜 
+  			 <h4 class="inline"><fmt:formatDate value="${orderClientInfo[0].oregdate}" pattern="yyyy-MM-dd"/>
+	    	   &nbsp;</h4></h4><br/>
+		<h4 class="inline color">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;주문 번호 <h4 class="inline">${orderClientInfo[0].ocode}<br/></h4></h4>
+		<br/>
 	</div>
-	<div class="container-fluid center"> 
-  		<div class="row">
-   		<div class="col-8">
+	<div class="container-fluid"> 
+   		<div class="col-8 bigdiv">
       		<h4>결제정보</h4>
       		
       		<c:forEach var="orderClientInfo" items="${orderClientInfo}">
@@ -62,10 +67,8 @@
         	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.pprice}" pattern="#,###,###원"/></div>
         	
         	<div class="col-4 yellow">상품 수량  </div>
-        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ocount}" /></div>
+        	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ocount}" />개</div>
         	
-        	<div class="col-4 yellow">상품 번호  </div>
-        	<div class="col-8 white">${orderClientInfo.pcode}</div>
         	
         	<div class="col-4 yellow">총 가격  </div>
         	<div class="col-8 white"><fmt:formatNumber value="${orderClientInfo.ototal}" pattern="#,###,###원"/> </div>
@@ -74,11 +77,9 @@
      		<c:set var="otototal" value="${orderClientInfo.ototal}"/>
      		<c:set var="ototototal" value="${ototototal = ototototal + otototal}"/>
      		</c:forEach>
-     		<h4>총 결제 가격: ${ototototal}</h4>
+     		<h4>총 결제 가격 <fmt:formatNumber value="${ototototal}" pattern="#,###,###원"/></h4>
      		<br/><br/><br/>
-    	</div>
     	
-    	<div class="col-8">
       		<h4>배송정보</h4>
       		<hr/>
       		<c:choose>
@@ -148,40 +149,35 @@
 	        	
 	        	<div class="col-4 yellow">요청사항  </div>
 	        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" /></div>
-	        	<input type="submit" value="변경사항 적용">
 	     		</div>
+	     		<br/>
+	     		<input class="btn" type="submit" value="배송지 변경사항 적용">
      		</c:otherwise>
      		</c:choose>
+     		<br/><br/>
+     		<div class="right">
+			<a href="/me/cl/my">주문 목록으로</a> &nbsp; ||
+			<c:choose>
+			<c:when test="${orderClientInfo[0].odelivery eq '배송중'}">
+			<p class="inline">주문 취소불가</p>
+			</c:when>
+			<c:when test="${orderClientInfo[0].odelivery eq '배송완료'}">
+			<p class="inline">주문 취소불가</p>
+			</c:when>
+			<c:otherwise>
+			<a class="inline" href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">&nbsp; 주문 취소</a>
+			</c:otherwise>
+			</c:choose>
+			</div>
+			<br/>
      	</div>
-     		<hr/>
     	</div>
-  		</div>
+
   		</form:form>
-  		<%-- <c:choose>
-	          <c:when test="${orderClientInfo.odelivery eq '배송중'}">
-	          	<a>주문 취소</a>
-	          </c:when>
-	          <c:when test="${orderClientInfo.oconfirmed eq '구매완료'}">
-	          	<a>주문 취소</a>
-	          </c:when>
-	          <c:otherwise>
-	          	<a href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
-	          </c:otherwise>
-	   </c:choose> --%>
-<br/>
-<a href="/me/cl/my"><button class="btn">주문 목록으로</button> </a> &nbsp;
-<c:choose>
-<c:when test="${orderClientInfo[0].odelivery eq '배송중'}">
-<p class="inline">주문 취소불가</p>
-</c:when>
-<c:when test="${orderClientInfo[0].odelivery eq '배송완료'}">
-<p class="inline">주문 취소불가</p>
-</c:when>
-<c:otherwise>
-<a class="inline" href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
-</c:otherwise>
-</c:choose>
-<br/>
+  		<br/>
+
+  		</div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>

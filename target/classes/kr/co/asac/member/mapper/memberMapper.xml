@@ -77,6 +77,15 @@
 		select * from seller where sid=#{sid}
 	</select>
 	
+	<select id="sellerIdOk" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller where sid=#{sid}
+	</select>		
+	
+	<select id="sellerIdChk" resultType="int">
+		select count(*) from seller
+		where sid = #{sid}
+	</select>
+	
 	<insert id="memberSellerJoin" parameterType="kr.co.asac.member.bean.SellerBean">
 		insert into seller (sid, spwd ,sname , sbirth , sphone, saddr, saddrd, saddrz , smail ,scompany, snumber, sfile)
 		values (#{sid}, #{spwd} ,#{sname} , #{sbirth} , #{sphone}, #{saddr}, #{saddrd}, #{saddrz} , #{smail} ,#{scompany}, #{snumber}, #{sfile})
@@ -91,7 +100,7 @@
 	</update>
 	
 	<delete id="memberSellerDelete">
-		delete from seller where sid=#{sid} and spwd=#{spwd}
+		delete from seller where sid=#{sid}
 	</delete>
 	
 	<select id="memberSellerDelPwc" resultType="kr.co.asac.member.bean.SellerBean">

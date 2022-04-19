@@ -32,9 +32,10 @@ public interface MemberDAO {
 	public SellerBean memberSellerLoginCheck(String sid);
 	public void memberSellerJoin(SellerBean seller);
 	public int sellerIdChk(SellerBean seller);
+	public SellerBean sellerIdOk(String sid);
 	public SellerBean memberSellerInfo(String sid);
 	public void memberSellerUpdate(SellerBean seller);
-	public void memberSellerDelete(SellerBean seller);
+	public void memberSellerDelete(SellerBean seller, @Param("sid") String sid);
 	public SellerBean memberSellerDelPwc(String sid);
 	
 	// admin	

@@ -46,7 +46,7 @@
 <style>
 body {
 	font-family: Pretendard !important;
-	color: #223800;
+	color: #74bf0f;
 }
 .alert-info {
     color: #31708f;
@@ -55,8 +55,8 @@ body {
 }
 .btn-default {
     color: #fff !important;
-    background-color: #223800!important;
-    border-color: #223800!important;
+    background-color: #74bf0f!important;
+    border-color: #74bf0f!important;
 }
 .btn-default:hover {
     color: #1e1a1b !important;
@@ -100,7 +100,7 @@ h2 {
 		<h1>ASAC</h1>
 	</div>
 	<div>
-	<h2>판매자회원 로그인</h2>
+	<h2>관리자 로그인</h2>
 	</div>
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">

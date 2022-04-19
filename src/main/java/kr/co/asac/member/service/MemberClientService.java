@@ -143,16 +143,23 @@ public class MemberClientService {
 		model.addAttribute("member", member);
 	}
 	
-	public void memberClientDelete(HttpSession session, MemberBean vo) {
+	public void memberClientDelete(HttpSession session, MemberBean vo, HttpServletResponse response) throws Exception {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		// 비밀번호 복호화
-		
 		MemberBean secureMember = memberDAO.memberClientLoginCheck(vo.getMid());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String mid = (String) session.getAttribute("mid");
-		
 		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) {
 			memberDAO.memberClientDelete(vo, mid);
+			session.invalidate();
+			response.setContentType("text/html; charset=utf-8");
+			System.out.println("딜리트 이후 mid값은" + mid);
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('탈퇴가 완료되었습니다.')");
+			out.println("location.href='/'");
+			out.println("</script>");
+			out.flush();
 		}
 	}
 	

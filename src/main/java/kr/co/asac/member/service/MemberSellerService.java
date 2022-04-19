@@ -50,6 +50,13 @@ public class MemberSellerService {
 			model.addAttribute("sid", secureSeller.getSid());
 		}
 	}
+	public SellerBean sellerIdOk(String sid,Model model,HttpServletRequest request,HttpServletResponse response) {
+		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
+		SellerBean seller=memberDAO.sellerIdOk(sid);
+		model.addAttribute("seller",seller);
+		return seller;
+		
+	}
 	public void memberSellerJoin(SellerBean seller) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		
@@ -97,14 +104,15 @@ public class MemberSellerService {
 		memberDAO.memberSellerUpdate(seller);	
 		model.addAttribute("seller",seller);
 	}
-	public void memberSellerDelete(SellerBean seller) {
+	public void memberSellerDelete(HttpSession session,SellerBean seller) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		
 		SellerBean secureMember = memberDAO.memberSellerLoginCheck(seller.getSid());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String sid = (String) session.getAttribute("sid");
 		
 		if(secureMember !=null && encoder.matches(seller.getSpwd(), secureMember.getSpwd())) {
-			memberDAO.memberSellerDelete(seller);
+			memberDAO.memberSellerDelete(seller,sid);
 		}
 	}
 	public int memberSellerDelPwc(SellerBean seller) {

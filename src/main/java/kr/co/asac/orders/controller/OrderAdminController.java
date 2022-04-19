@@ -1,6 +1,5 @@
 package kr.co.asac.orders.controller;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,15 +23,11 @@ import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.orders.service.OrderAdminService;
 import kr.co.asac.orders.service.OrderClientService;
-import kr.co.asac.orders.service.OrderSellerService;
 import kr.co.asac.utils.PagingBean;
 import kr.co.asac.utils.Search;
 
 @Controller
 public class OrderAdminController {
-
-	@Autowired
-	private OrderSellerService orderSellerService;
 
 	@Autowired
 	private OrderAdminService orderAdminService;
@@ -83,8 +78,6 @@ public class OrderAdminController {
 	@RequestMapping(value = "/or/ad/in", method = RequestMethod.POST)
 	@ResponseBody
 	public OrderBean orderAdminInfo(Model model, @RequestParam("ocode") String ocode, @RequestParam("pname") String pname) {
-		System.out.println("info" + ocode);
-		System.out.println("info1" + pname);
 		OrderBean order = orderAdminService.orderAdminInfo(model, ocode, pname);
 		return order;
 	}
@@ -92,7 +85,6 @@ public class OrderAdminController {
 	@RequestMapping(value = "/or/ad/up", method = RequestMethod.POST)
 	@ResponseBody
 	public void orderAdminUpdate(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, Search search) throws Exception {
-		System.out.println("update" + order);
 		orderAdminService.orderAdminUpdate(request, model, response, order);
 	}
 	
@@ -102,28 +94,35 @@ public class OrderAdminController {
 		orderAdminService.orderAdminDelete(request, model, response, ocode);
 	}
 	
-	@RequestMapping("/ca/cl/fi")
+	@RequestMapping("/ca/cl/fl")
 	public String CartInsert(HttpServletRequest request, HttpServletResponse response, Model model, CartBean cart, MemberBean member) throws Exception {
-		HttpSession session = request.getSession(); 
+		orderAdminService.cartResetInsert(cart, request, response);
+		
+    	HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
 		
-		if (mid == null) {
-			response.setContentType("text/html;charset=utf-8");
-		   	PrintWriter out = response.getWriter();
-		   	out.println("<script>");
-		   	out.println("alert('로그인 후 이용해주세요.')");
-		   	out.println("location.href='../../me/cl/lo';");
-		   	out.println("</script>");
-		   	out.flush();
-		}
-		else {
-			orderAdminService.cartInsert(cart, response, mid);
-			model.addAttribute("cart", cart);
-			List<CartBean> cartlist = orderClientService.cartList(mid, cart);
-			model.addAttribute("cartList",cartlist);
-			MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
-			model.addAttribute("memberInfo",memberinfo);
-	    }
-		return "orders/cart";
+		model.addAttribute("cart", cart);
+		List<CartBean> cartlist = orderClientService.cartList(mid, cart);
+		model.addAttribute("cartList",cartlist);
+		MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
+		model.addAttribute("memberInfo",memberinfo);
+		return "orders/orderFast";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/or/cl/fi", method = RequestMethod.POST)
+	public String orderClientInsert(HttpServletRequest request, Model model, 
+			@RequestParam(value="sid", required = false) String sid, 
+			@RequestParam(value="pcode", required = false) String pcode, @RequestParam(value="ocount", required = false) String ocount, 
+			@RequestParam(value="oname", required = false) String oname, @RequestParam(value="oaddrz", required = false) String oaddrz, 
+			@RequestParam(value="oaddr", required = false) String oaddr, @RequestParam(value="oaddrd", required = false) String oaddrd, 
+			@RequestParam(value="ophone", required = false) String ophone,  @RequestParam(value="ototal", required = false) String ototal,
+			@RequestParam(value="omessage", required = false) String omessage ) throws Exception {
+		
+		HttpSession session = request.getSession(); 
+		String mid = (String)session.getAttribute("mid");
+		String ocode = orderAdminService.orderClientInsert(sid, mid, pcode, ocount,oname, oaddrz,oaddr, 
+				oaddrd,ophone,ototal, omessage);
+		return ocode;
 	}
 }

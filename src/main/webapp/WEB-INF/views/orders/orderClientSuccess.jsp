@@ -76,12 +76,9 @@
 	        	</tr>
 	        	<tr>
 		        	<th>상품 수량   &nbsp;&nbsp;</th>
-		        	<td><fmt:formatNumber value="${orderClientInfo.ocount}" /></td>
+		        	<td><fmt:formatNumber value="${orderClientInfo.ocount}" />개</td>
 	        	</tr>
-	        	<tr>
-		        	<th>상품 번호  &nbsp;&nbsp; </th>
-		        	<td>${orderClientInfo.pcode}</td>
-	        	</tr>
+	        	
 	        	<tr>
 		        	<th>총 가격  &nbsp;&nbsp; </th>
 		        	<td><fmt:formatNumber value="${orderClientInfo.ototal}" pattern="#,###,###원"/></td>
@@ -93,7 +90,7 @@
      		<c:set var="otototal" value="${orderClientInfo.ototal}"/>
      		<c:set var="ototototal" value="${ototototal = ototototal + otototal}"/>
      		</c:forEach>
-     		<h4 class="rightalign">총 결제 가격: ${ototototal}</h4>
+     		<h4 class="rightalign">총 결제 가격 <fmt:formatNumber value="${ototototal}" pattern="#,###,###원"/> </h4>
      		<div class="rightalign"><a href="/me/cl/in/${orderClientInfo[0].ocode}">배송정보수정</a> &nbsp; &nbsp; || &nbsp; &nbsp;
 			<a href="<%= request.getContextPath() %>/me/cl/my">주문 목록으로</a></div>
     	</div>

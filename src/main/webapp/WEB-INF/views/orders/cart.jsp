@@ -3,6 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+	String mid = (String) session.getAttribute("mid");
+		if (mid == null) {
+			out.println("<script>");
+			out.println("location.href='/me/cl/lo';");
+			out.println("</script>");
+		}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,12 +34,15 @@
 	line-height: 26px;
 	text-align: center;
 	vertical-align: top;
-	border: 1px solid #82ae46 !important;
+	border: 1px solid #74bf0f !important;
 	border-radius: 26px;
-	background-color: #82ae46 !important;
+	background-color: #74bf0f !important;
 	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
 	color: #fff;
 	font-weight: 500;
+}
+.break{
+word-break:keep-all;
 }
 
 </style>
@@ -42,21 +54,24 @@
 		<h2>장바구니</h2>
 		<br/><br/>
 		<h3>상품 정보</h3>
-
-		<table class="table">
+		<c:choose>
+		<c:when test="${fn:length(cartList) < 1}">
+		<br/>
+		장바구니에 담긴 상품이 없습니다.
+		</c:when>
+		<c:when test="${fn:length(cartList) >= 1}">
+		<table class="table" style="min-width: 300px !important;">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col"><input id="allCheck" type="checkbox" name="allCheck" onchange="ototalChange(this.value);"/></th>
-  					<th scope="col">상품이미지</th>
+  					<th scope="col" class="break">상품이미지</th>
 					<th scope="col">상품명</th>
 					<th scope="col">가격</th>
 					<th scope="col">수량</th>
-					<th scope="col">총가격</th>
+					<th scope="col" class="break">총가격</th>
 				</tr>
 			</thead>
 			<c:forEach var="cart" items="${cartList}">
-			<c:choose>
-			<c:when test="${fn:length(cartList) ne null}">
 				<form id="form" name="form" method="post">
 				<tbody>
 					<tr>
@@ -65,7 +80,7 @@
 						<input name="ccode" type="hidden" value="${cart.ccode}" />
 						<input name="sid" type="hidden" value="${cart.sid}" /></td>
 						<td><img class="card-img-to imgpadding" src="/resources/image/product/${cart.pfile}" style="width:60px; height:60px;" title="${cart.pname}" <%-- alt="${order.pcontent}" --%> /></td>
-						<td>
+						<td class="break">
 						<input name="pcode" type="hidden" value="${cart.pcode}" />
 						<input name="pname" type="hidden" value="${cart.pname}" />${cart.pname}</td>
 						<td><fmt:formatNumber value="${cart.pprice}" pattern="#,###,###원" /></td>
@@ -77,31 +92,24 @@
 					</tr>
 				</tbody>
 				</form>	
-			</c:when>
-			<c:when test="${fn:length(cartList) eq null}">
-				<tbody>
-					<tr>
-						<td colspan="7">상품이 없습니다</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</c:when>
-			</c:choose>
 			</c:forEach>
 		</table>
-		
+		</c:when>
+		</c:choose>
 		<!-- 삭제 -->
 <!-- 		<form action="./ds" method="post" id="delAction"> -->
 <!-- 		<input type="hidden" name="valueArr" id="cnoArray"/> -->
 <!-- 		</form> -->
 		<br/>
+		<c:choose>
+		<c:when test="${fn:length(cartList) < 1}">
+		
+		</c:when>
+		<c:when test="${fn:length(cartList) >= 1}">
 		<input type="button" value="선택삭제" class="btn" onclick="deleteValue();">
 		<button type="button" class="btn" id="btnDelete">장바구니 비우기</button>
+		</c:when>
+		</c:choose>
 		<br><br><br>
       		<h3>배송지 정보</h3>
       		<hr/>
@@ -434,7 +442,7 @@ function ototalChange(value) {
 				ototal[i] = 0;
 			} 
 			carttotal = carttotal + Number(ototal[i]);
-			document.getElementById("carttotal").innerHTML = carttotal;	
+			document.getElementById("carttotal").innerHTML = carttotal.toLocaleString();	
 			$('#carttotalPrice').val(carttotal);
 	}
 	
