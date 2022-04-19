@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){ 
@@ -41,7 +41,7 @@
 			valueList.push(d.total);
 		}
 		for (var i = 0; i < jDataConfirm.length; i++) {
-			 var t = jDataConfirm[i];
+			var t = jDataConfirm[i];
 			valueConfirmList.push(t.total);
 		}
           
@@ -77,7 +77,7 @@
 				}],
 					yAxes: [{
 						ticks: {
-						stepSize: 10000,
+						stepSize: 50000,
 						min:0
 						},
 						display: true,
@@ -99,216 +99,28 @@
 	}
       
 </script>
-<style>
-body {
-	color: #566787;
-	background: #f5f5f5;
-	font-family: 'Varela Round', sans-serif;
-	font-size: 13px;
-}
-.table-responsive {
-    margin: 30px 0;
-}
-.table-wrapper {
-	background: #fff;
-	padding: 20px 25px;
-	border-radius: 3px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.05);
-}
-.table-wrapper .btn {
-	float: right;
-	color: #333;
-	background-color: #fff;
-	border-radius: 3px;
-	border: none;
-	outline: none !important;
-	margin-left: 10px;
-}
-.table-wrapper .btn:hover {
-	color: #333;
-	background: #f2f2f2;
-}
-.table-wrapper .btn.btn-primary {
-	color: #fff;
-	background: #03A9F4;
-}
-.table-wrapper .btn.btn-primary:hover {
-	background: #03a3e7;
-}
-
-.show-entries select.form-control {        
-	width: 80px;
-	margin: 0 5px;
-}
-
-.table-title {	
-	padding: 16px 25px;
-	margin: -20px -25px 10px;
-}
-.table-title h2 {
-	margin: 5px 0 0;
-	font-size: 24px;
-}
-
-.table-filter .filter-group {
-	float: right;
-}
-.table-filter input, .table-filter select {
-	height: 34px;
-	border-radius: 3px;
-	border-color: #ddd;
-	box-shadow: none;
-}
-.table-filter {
-	padding: 5px 0 10px;
-}
-
-.table-filter .btn {
-	height: 34px;
-	font-size: 13px;
-	border: none;
-}
-
-.table-filter .btn i {
-	float: left;
-	font-size: 21px;
-	margin-right: 5px;
-}
-.table-filter .btn span {
-	float: left;
-	margin-top: 2px;
-}
-.table-filter label {
-	font-weight: normal;
-}
-.table-filter select, .table-filter input {
-	display: inline-block;
-	margin-left: 5px;
-}
-.table-filter input {
-	width: 150px;
-	display: inline-block;
-}
-.filter-group select.form-control {
-	width: 110px;
-}
-.filter-icon {
-	float: right;
-	margin-top: 7px;
-}
-.filter-icon i {
-	font-size: 18px;
-	opacity: 0.7;
-}	
-table.table tr th, table.table tr td {
-	border-color: #e9e9e9;
-	padding: 12px 15px;
-	vertical-align: middle;
-}
-table.table tr th:first-child {
-	width: 60px;
-}
-table.table tr th:last-child {
-	width: 80px;
-}
-table.table-striped tbody tr:nth-of-type(odd) {
-	background-color: #fcfcfc;
-}
-table.table-striped.table-hover tbody tr:hover {
-	background: #f5f5f5;
-}
-table.table th i {
-	font-size: 13px;
-	margin: 0 5px;
-	cursor: pointer;
-}	
-table.table td a {
-	font-weight: bold;
-	color: #566787;
-	display: inline-block;
-	text-decoration: none;
-}
-table.table td a:hover {
-	color: #2196F3;
-}
-table.table td a.view {        
-	width: 30px;
-	height: 30px;
-	color: #2196F3;
-	border: 2px solid;
-	border-radius: 30px;
-	text-align: center;
-}
-table.table td a.view i {
-	font-size: 22px;
-	margin: 2px 0 0 1px;
-}   
-table.table .avatar {
-	border-radius: 50%;
-	vertical-align: middle;
-	margin-right: 10px;
-}
-.status {
-	font-size: 30px;
-	margin: 2px 2px 0 0;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 10px;
-}
-.text-success {
-	color: #10c469;
-}
-.text-info {
-	color: #62c9e8;
-}
-.text-warning {
-	color: #FFC107;
-}
-.text-danger {
-	color: #ff5b5b;
-}
-.pagination {
-    float: center;
-    margin: 0 0 5px;
-}
-.pagination li a {
-    border: none !important;
-    font-size: 13px;
-    min-width: 30px;
-    min-height: 30px;
-    padding: 0 10px;
-    color: #999;
-    margin: 0 2px;
-    line-height: 30px;
-    border-radius: 30px !important;
-    text-align: center;
-}
-.pagination li a:hover {
-    color: #666;
-}	
-.pagination li.active a {
-    background: #03A9F4;
-}
-.pagination li.active a:hover {        
-    background: #0397d6;
-}
-.pagination li.disabled i {
-    color: #ccc;
-}
-.pagination li i {
-    font-size: 16px;
-    padding-top: 6px
-}
-.hint-text {
-	float: left;
-	margin-top: 10px;
-	font-size: 13px;
-}
+<style type="text/css">
+body { font-family: ‘SUIT’, 'GulimChe';	color: #72815D;}
+.tabclass{text-align:left; border-bottom:1px solid #005000; margin-bottom:20px;}
 #topBtn { position: fixed; top: 300px; right: 20px; z-index: 99; display: inline-block; width: 75px; height: 30px;
-	border-radius: 15px; line-height: 30px; text-align: center; text-decoration: none; background: #008000;	opacity: 0.7; color: #fff;}
-#listForm {flex: 1;  width:80%; margin:auto; text-align: center;}
-.mainTitle { font-family: ‘SUIT’; text-align: center; font-weight:900;}
+	border-radius: 15px; line-height: 30px; text-align: center; text-decoration: none; background: #72815D;	opacity: 0.7; color: #fff;}
+th, td {border-bottom: 5px 20px; solid #dee2e6;}
+.btde {font-size:1.5rem; font-family: ‘SUIT’;}
+.line {border-bottom:2px solid #72815D; border-top:2px solid #72815D; font-weight:900; color:#72815D;}
+#listForm {flex: 1; width:80%; margin:auto; text-align: center;}
+.wrap { display: flex; min-height: 100vh; flex-direction: column; }
+.nobr { text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
+table {table-layout: fixed;position: relative;width:100%; }
+.table td {vertical-align:middle;}
+.jemok {margin:20px; font-family: ‘SUIT’; text-align: center; font-size: 4em; font-weight:900;}
+#btnRes { font-size:1.5rem; font-family: ‘SUIT’; border: 3px solid #72815D; background-color: #72815D; color: #FFFFFF; font-weight: bold;}
+#btnUse { font-size:1.5rem; font-family: ‘SUIT’; color: #72815D; font-weight: bold;}
 
+@media only screen and (max-width:768px) {
+		#listForm {width:90%;}
+		.jemok {margin:20px; font-family: ‘SUIT’; text-align: center; font-size: 3em; font-weight:900;}
+		#content { overflow: hidden; font-size:1em;}	
+	}
 </style>
 <script type="text/javascript">
 
@@ -322,6 +134,34 @@ $(function() {
 	});
 });
 
+$(window).ready(function() {
+	var win = $(this);
+	if (win.width() < 450) {
+		$('td.hide').css('display', 'none');
+		$('td.show').css('width', '100%');
+		$('td').css('height', '40px');
+	} else {
+		$('td.hide').css('display', 'table-cell');
+		$('td').css('width', '100%');
+	}
+});
+
+$(window).on(
+		'resize',
+		function() {
+			var win = $(this);
+			if (win.width() < 450) {
+				$('td.hide').css('display', 'none');
+				$('td.show').css('width', '100%');
+				$('td').css('height', '40px');
+			}else if (win.width() <= 750) {
+				$('td.hide').css('display', 'none');
+				$('td.show').css('width', '30%');
+			} else {
+				$('td.hide').css('display', 'table-cell');
+				$('td').css('width', '100%');
+			}
+		});
 $(function() {
 	$('#topBtn').hide();
 	$(window).scroll(function() {
@@ -352,74 +192,58 @@ $(function() {
 <div id="content">
 <!-- Topbar -->
 <jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
-<section id="listForm">
-<div class="table-title">
-	<h1 class="mainTitle">매출 통계(날짜)</h1></div>
-<div>
 
-</div>
-<div class="container-xl">
-    <div id="wrapper">
-		<div id="page-wrapper">
-			<div class="row">
-			
-	<div class="col-lg-6">
-	<div class="panel panel-default">		
-    <div class="table-responsive">
-        <div class="table-wrapper">
-            <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead>
+<section id="listForm">
+
+<div class="table-title">
+	<h1 class="mainTitle">매출 통계</h1></div>
+
+<div class="wrap">
+	<h4 class="jemok">리스트</h4>
+	<div id="rListArea">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
 					<tr class="line">
-						<td>상품명</td>
-						<td>구매완료수</td>
-						<td>총 주문수</td>
-						<td>구매완료 금액</td>
-						<td>총 주문금액</td>
+						<td class="show">상품명</td>
+						<td class="hide">정산 상품</td>
+						<td class="hide">전체 상품</td>
+						<td class="show">정산 금액</td>
+						<td class="show">전체 금액</td>
 					</tr>
 				</thead>
 				<tbody>
 				  <c:forEach var="sale" items="${saleSellerProductList}" varStatus="status">
-						<tr class="line">
-							<td>${sale.pname}</td>
-							<td>
+						<tr>
+							<td class="show">${sale.pname}</td>
+							<td class="hide">
 								<c:choose>
 								<c:when test="${saleSellerProductConfirmList[status.index].count eq null}">0</c:when>
 								<c:when test="${saleSellerProductConfirmList[status.index].count ne null}">${saleSellerProductConfirmList[status.index].count}</c:when>
 								</c:choose></td>
-							<td>${sale.count}</td>
-							<td>
-								<c:choose>
+							<td class="hide">${sale.count}</td>
+							<td class="show"><c:choose>
 								<c:when test="${saleSellerProductConfirmList[status.index].total eq null}">0원</c:when>
-								<c:when test="${saleSellerProductConfirmList[status.index].total ne null}"><fmt:formatNumber value="${saleSellerProductConfirmList[status.index].total}" pattern="#,###"/>원</c:when>
+								<c:when test="${saleSellerProductConfirmList[status.index].total ne null}"><fmt:formatNumber value="${saleSellerProductConfirmList[status.index].total}" pattern="#,###,###"/>원</c:when>
 								</c:choose></td>
-							<td><fmt:formatNumber value="${sale.total}" pattern="#,###"/>원</td>
+							<td class="show"><fmt:formatNumber value="${sale.total}" pattern="#,###,###"/>원</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
-			</div>
-        </div>
+		</div>
+	</div>
+	
+	<div>
+	<h4 class="jemok">차트</h4>
+    	<canvas id="chart"></canvas>
     </div>
-    </div>
-    </div>
-    
-    
-    <div class="col-lg-6">
-    	<div class="panel panel-default">
-    		<canvas id="chart"></canvas>
-		</div>	
-    </div>
-      
-    		</div>
-    	</div>
-    </div>        
 </div>
 </section>
-</div>
 <footer>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
 </footer>
+</div>
 </div>
 </div>
 </body>

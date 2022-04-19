@@ -97,9 +97,28 @@ public class MemberSellerService {
 		memberDAO.memberSellerUpdate(seller);	
 		model.addAttribute("seller",seller);
 	}
-	public void memberSellerDelete(Model model, SellerBean seller)  {
-		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		memberDAO.memberSellerDelete(seller);
+	public void memberSellerDelete(SellerBean seller) {
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		
+		SellerBean secureMember = memberDAO.memberSellerLoginCheck(seller.getSid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(secureMember !=null && encoder.matches(seller.getSpwd(), secureMember.getSpwd())) {
+			memberDAO.memberSellerDelete(seller);
+		}
+	}
+	public int memberSellerDelPwc(SellerBean seller) {
+		int result = 0;
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+			
+		SellerBean secureMember = memberDAO.memberSellerDelPwc(seller.getSid());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(secureMember !=null && encoder.matches(seller.getSpwd(), secureMember.getSpwd())) {
+			result=1;
+		}
+		
+		return result;
 		
 	}
 	

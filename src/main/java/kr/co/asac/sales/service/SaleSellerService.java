@@ -39,42 +39,6 @@ public class SaleSellerService {
 		model.addAttribute("saleSellerDayConfirmList", saleSellerDayConfirmList);
 	}
 	
-	public void saleSellerDateList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		List<OrderBean> saleSellerDateList = dao.saleSellerDateList(id);
-		List<OrderBean> saleSellerDateConfirmList = dao.saleSellerDateConfirmList(id);
-		
-		String jsondateList = new Gson().toJson(saleSellerDateList);
-		String jsondateConfirmList = new Gson().toJson(saleSellerDateConfirmList);
-		
-		model.addAttribute("seldateList", jsondateList);
-		model.addAttribute("seldateConfirmList", jsondateConfirmList);
-		
-		model.addAttribute("saleSellerDateList", saleSellerDateList);
-		model.addAttribute("saleSellerDateConfirmList", saleSellerDateConfirmList);
-	}
-	
-	public void saleSellerWeekList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		String id = (String) request.getSession().getAttribute("sid");
-
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		List<OrderBean> saleSellerWeekList = dao.saleSellerWeekList(id);
-		List<OrderBean> saleSellerWeekConfirmList = dao.saleSellerWeekConfirmList(id);
-		
-		String jsonweekList = new Gson().toJson(saleSellerWeekList);
-		String jsonweekConfirmList = new Gson().toJson(saleSellerWeekConfirmList);
-		
-		model.addAttribute("selweekList", jsonweekList);
-		model.addAttribute("selweekConfirmList", jsonweekConfirmList);
-		
-		model.addAttribute("saleSellerWeekList", saleSellerWeekList);
-		model.addAttribute("saleSellerWeekConfirmList", saleSellerWeekConfirmList);
-	}
-	
 	public void saleSellerMonthList(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		String id = (String) request.getSession().getAttribute("sid");
 

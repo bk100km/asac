@@ -11,16 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.sales.service.SaleAdminService;
-import kr.co.asac.sales.service.SaleSellerService;
 
 @Controller
 public class SaleAdminController {
 
 	@Autowired
 	private SaleAdminService saleAdminService;
-	
-	@Autowired
-	private SaleSellerService saleSellerService;
 	
 	@RequestMapping("/sa/ad")
 	public String getsaleAdminIndex(Model model) {
@@ -31,18 +27,6 @@ public class SaleAdminController {
 	public String saleAdminDayList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
 		saleAdminService.saleAdminDayList(request, response, model);
 		return "sales/saleAdminDayList";
-	}
-
-	@RequestMapping("/sa/ad/dt")
-	public String saleAdminDateList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleAdminService.saleAdminDateList(request, response, model);
-		return "sales/saleAdminDateList";
-	}
-	
-	@RequestMapping("/sa/ad/we")
-	public String saleAdminWeekList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleAdminService.saleAdminWeekList(request, response, model);
-		return "sales/saleAdminWeekList";
 	}
 	
 	@RequestMapping("/sa/ad/mo")
@@ -67,41 +51,5 @@ public class SaleAdminController {
 	public String saleAdminCateProductList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @PathVariable("pcate") String pcate) throws Exception {
 		saleAdminService.saleAdminCateProductList(request, response, order, model, pcate);
 		return "sales/saleAdminCateProList";
-	}
-	
-	@RequestMapping("/sa/ad/sy")
-	public String saleAdminSellerDayList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerDayList(request, response, model);
-		return "sales/saleAdminSellerDayList";
-	}
-	
-	@RequestMapping("/sa/ad/st")
-	public String saleAdminSellerDateList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerDateList(request, response, model);
-		return "sales/saleAdminSellerDateList";
-	}
-	
-	@RequestMapping("/sa/ad/se")
-	public String saleAdminSellerWeekList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerWeekList(request, response, model);
-		return "sales/saleAdminSellerWeekList";
-	}
-	
-	@RequestMapping("/sa/ad/so")
-	public String saleAdminSellerMonthList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerMonthList(request, response, model);
-		return "sales/saleAdminSellerMonthList";
-	}
-	
-	@RequestMapping("/sa/ad/at")
-	public String saleAdminSellerCateList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleAdminService.saleAdminSellerCateList(request, response, order, model);
-		return "sales/saleAdminSellerCateList";
-	}
-	
-	@RequestMapping("/sa/ad/ap/pcate/{pcate}")
-	public String saleAdminSellerCateProductList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order, @PathVariable("pcate") String pcate) throws Exception {
-		saleAdminService.saleAdminSellerCateProductList(request, response, order, model, pcate);
-		return "sales/saleAdminSellerCateProList";
 	}
 }

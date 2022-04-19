@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	String referer = request.getHeader("Referer");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +43,7 @@
   function kakaoLogin() {
 
     $.ajax({
-        url: 'http://localhost:8080/me/cl/lo/getKakaoAuthUrl',
+        url: '<%= request.getContextPath() %>/me/cl/lo/getKakaoAuthUrl',
         type: 'get',
         async: false,
         dataType: 'text',
@@ -117,7 +120,7 @@ body {
 						<h2>네이버 아이디 로그인 성공하셨습니다!!</h2>
 						<h3>'${mid}' 님 환영합니다!</h3>
 						<h3>
-							<a href="http://localhost:8080/logout">로그아웃</a>
+							<a href="<%= request.getContextPath() %>/logout">로그아웃</a>
 						</h3>
 					</c:when>
 					<c:otherwise>
@@ -133,8 +136,8 @@ body {
 							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 							<form:input path="mpwd" id="mpwd" type="password" class="form-control" name="mpwd" placeholder="비밀번호" data-toggle="tooltip" data-placement="top" title="비밀번호 입력란"  />
 						</div>
-						<a href="http://localhost:8080/me/cl/fI">아이디</a> |
-						<a href="http://localhost:8080/me/cl/fP">비밀번호 찾기</a>
+						<a href="<%= request.getContextPath() %>/me/cl/fI">아이디</a> |
+						<a href="<%= request.getContextPath() %>/me/cl/fP">비밀번호 찾기</a>
 						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
 						<button onclick="history.go(-1)" class="btn btn-default"> 뒤로가기</button>
 						</div><hr>
@@ -149,8 +152,9 @@ body {
 							<img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/></a></div>
 						<br>
 						<div align="center">
-							<a href="http://localhost:8080/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
+							<a href="<%= request.getContextPath() %>/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
 						</div>
+						<form:input type="hidden" id="referer" name="referer" path="referer" value="<%=referer%>" />
 						</form:form>
 					</c:otherwise>
 				</c:choose>

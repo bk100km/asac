@@ -28,6 +28,9 @@
 	          <c:when test="${order.odelivery eq '배송중'}">
 	          	<th><a>주문 취소</a></th>
 	          </c:when>
+	          <c:when test="${order.odelivery eq '배송완료'}">
+	          	<th><a>주문 취소</a></th>
+	          </c:when>
 	          <c:when test="${order.oconfirmed eq '구매완료'}">
 	          	<th><a>주문 취소</a></th>
 	          </c:when>

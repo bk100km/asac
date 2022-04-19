@@ -55,18 +55,20 @@ public class MemberSellerController {
 	@RequestMapping(value = "/me/se/lO", method = RequestMethod.GET)
 	public String memberSellerLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/me/se/jo", method = RequestMethod.GET)
 	public String memberSellerJoin() {
-		return "/member/memberSellerjoinFrom";
+		return "/member/memberSellerjoinForm";
 	}
+	
 	@RequestMapping(value = "/me/se/jo", method = RequestMethod.POST)
 	
 	public void memberSellerJoin(SellerBean seller) {
 		memberSellerService.memberSellerJoin(seller);
 	}
+	
 	@RequestMapping(value = "/me/se/sF", method = RequestMethod.POST,produces="application/text;charset=utf-8")
 	@ResponseBody
 	public String memberSellerFileUpload(HttpServletRequest request, 
@@ -123,10 +125,22 @@ public class MemberSellerController {
 	}
 	
 	@RequestMapping(value="/me/se/de" , method= RequestMethod.GET)
-	public String memberSellerDelete(Model model ,SellerBean seller){
-		
-		memberSellerService.memberSellerDelete(model, seller);
+	public String memberSellerDeleteView(){
 		
 		return "/member/memberSellerDelete";
+	}
+	@RequestMapping(value="/me/se/dC" , method = RequestMethod.POST)
+	public String memberSellerDelete(SellerBean seller , HttpSession session) {
+		memberSellerService.memberSellerDelete(seller);
+		session.invalidate();
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/me/se/dP" , method = RequestMethod.POST)
+	@ResponseBody
+	public int memberSellerDelPwc(SellerBean seller) {
+		int result =memberSellerService.memberSellerDelPwc(seller);
+		System.out.println(result);
+		return result;
 	}
 }

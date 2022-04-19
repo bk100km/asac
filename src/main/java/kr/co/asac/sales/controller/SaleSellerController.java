@@ -27,18 +27,6 @@ public class SaleSellerController {
 		saleSellerService.saleSellerDayList(request, response, model);
 		return "sales/saleSellerDayList";
 	}
-
-	@RequestMapping("/sa/se/dt")
-	public String saleSellerDateList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerDateList(request, response, model);
-		return "sales/saleSellerDateList";
-	}
-	
-	@RequestMapping("/sa/se/we")
-	public String saleSellerWeekList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {
-		saleSellerService.saleSellerWeekList(request, response, model);
-		return "sales/saleSellerWeekList";
-	}
 	
 	@RequestMapping("/sa/se/mo")
 	public String saleSellerMonthList(HttpServletRequest request, HttpServletResponse response, Model model, OrderBean order) throws Exception {

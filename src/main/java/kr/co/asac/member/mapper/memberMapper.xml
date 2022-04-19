@@ -24,6 +24,11 @@
 		where mid = #{mid}
 	</select>
 	
+	<select id="memberEmailChk" resultType="int">
+		select count(*) from member
+		where mmail = #{mmail}
+	</select>
+	
 	<select id="memberClientInfo" resultType="kr.co.asac.member.bean.MemberBean">
 		select mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail from member where mid=#{mid}
 	</select>
@@ -35,7 +40,7 @@
 	</update>
 	
 	<delete id="memberClientDelete">
-		delete from member where mid=#{mid} and mpwd=#{mpwd}
+		delete from member where mid=#{mid}
 	</delete>
 	
 	<select id="memberClientDelPwC" resultType="kr.co.asac.member.bean.MemberBean">
@@ -50,6 +55,10 @@
 	<insert id="memberClientKakao" parameterType="kr.co.asac.member.bean.MemberBean">
 		insert into member (mid, mpwd, mname, mbirth, mphone, maddr, maddrd, maddrz, mmail)
 		value (#{mid}, #{mpwd}, #{mname}, #{mbirth}, replace(#{mphone}, '-', ''), #{maddr}, #{maddrd}, #{maddrz}, #{mmail})
+	</insert>
+	
+	<insert id="orderClientBackupInsert" parameterType="kr.co.asac.orders.bean.OrderBean">
+		insert into orders_backup select * from orders where mid=#{mid}
 	</insert>
 	
 	<!-- 비밀번호 변경 -->
@@ -73,11 +82,6 @@
 		values (#{sid}, #{spwd} ,#{sname} , #{sbirth} , #{sphone}, #{saddr}, #{saddrd}, #{saddrz} , #{smail} ,#{scompany}, #{snumber}, #{sfile})
 	</insert>
 	
-	<select id="sellerIdChk" resultType="int">
-		select count(*) from seller
-		where sid = #{sid}
-	</select>
-	
 	<select resultType="kr.co.asac.member.bean.SellerBean" id="memberSellerInfo">
 		select * from seller where sid=#{sid} 
 	</select>
@@ -86,28 +90,12 @@
 		update seller set spwd=#{spwd},sphone=#{sphone} ,saddr=#{saddr},saddrz=#{saddrz},saddrd=#{saddrd}, smail=#{smail} where sid=#{sid}
 	</update>
 	
-	<delete id="memberSellerDelete" parameterType="kr.co.asac.member.bean.SellerBean">
+	<delete id="memberSellerDelete">
 		delete from seller where sid=#{sid} and spwd=#{spwd}
 	</delete>
 	
-	<select id="sellerProductcount" resultType="int">
-		 select count(*) from product where sid=#{sid}
-	</select>
-	
-	<select id="sellerOrderscount" resultType="int">
-		select count(*) from orders o join seller s on o.sid = s.sid where s.sid=#{sid}
-	</select>
-	
-	<select id="sellerReviewcount" resultType="int">
-		select count(*) from review r join seller s on r.sid = s.sid where s.sid=#{sid}
-	</select>
-	
-	<select id="sellerProduct" resultType="kr.co.asac.member.bean.SellerBean">
-		select pcode,count(*) as total from orders where sid=#{sid} group by pcode;
-	</select>
-	
-	<select id="sellermoney" resultType="kr.co.asac.member.bean.SellerBean">	
-		select sum(pprice) as price from product p join seller s on p.sid = s.sid where s.sid=#{sid};
+	<select id="memberSellerDelPwc" resultType="kr.co.asac.member.bean.SellerBean">
+		select * from seller where sid=#{sid}
 	</select>
 	
 	<!-- admin -->	

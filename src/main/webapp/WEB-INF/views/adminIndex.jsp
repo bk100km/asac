@@ -8,7 +8,8 @@
 	<!-- 제이쿼리 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- chart.js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>	
+	
 	<script>
 	$(document).ready(function(){ 
 		getRandomColor();
@@ -293,7 +294,7 @@
 		<jsp:include page="./common/adminHeader.jsp" />
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
+		
             <!-- Main Content -->
             <div id="content">
 
@@ -457,7 +458,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
 </body>
 
 </html>

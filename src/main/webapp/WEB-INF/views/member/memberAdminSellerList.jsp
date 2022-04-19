@@ -169,10 +169,17 @@ option {
 	height: 34px;
 }
 
+#page-wrapper {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
 </style>
 </head>
 
-<body>
+<body id="page-top">
 
 <script>
 
@@ -311,7 +318,7 @@ function sellerSearchAction(clikedPage) {
     	     }
     		 if (map.paging.next) {
     		 	sellerPagingText +=
-    		 	'<li class="page-item"><a class="page-link" href="#" onclick="sellerSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="sellerSearchAction(' + map.paging.endPage + ')">다음</a></li>';
         	 }
         	document.getElementById("sellerListBody").innerHTML = sellerListText;
         	document.getElementById("sellerPagingZone").innerHTML = sellerPagingText;
@@ -624,9 +631,16 @@ function sfileUploadAction() {
 
 </script>
 
-<br>
-	<div id="wrapper">
-
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
+        	
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-6">
@@ -704,7 +718,7 @@ function sfileUploadAction() {
 						<div class="panel-heading" id="panel-heading-right"> &nbsp;상세정보패널</div>
 						<div class="panel-body">
 									<div class="overlay overlayFade" id="overlayFade">
-										<img src="/asac/resources/upload/d.jpg" alt="img" class="image">
+										<img src="/resources/upload/d.jpg" alt="img" class="image">
 									</div>
 							<div class="table-responsive" id="sellerFormTable">
 		<div class="input-form-backgroud row">
@@ -857,6 +871,10 @@ function sfileUploadAction() {
 				</div>
 			</div>
 		</div>
+	
+	</div>
+	<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
 	</div>
 	
 	<script>

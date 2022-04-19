@@ -8356,7 +8356,7 @@ h1, h2, h3, h4, h5,
         background: #b3b3b3; }
   .owl-carousel.home-slider {
     position: relative;
-    height: 650px;
+    height: 480px;
     z-index: 0; }
     .owl-carousel.home-slider .slider-item {
       background-size: cover;
@@ -9183,7 +9183,7 @@ textarea.form-control {
   font-size: 24px; }
 
 .ftco-section {
-  padding: 6em 0;
+  padding: 2em 0;
   position: relative; }
 
 .ftco-no-pt {

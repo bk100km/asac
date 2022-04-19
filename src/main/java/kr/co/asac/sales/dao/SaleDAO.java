@@ -2,8 +2,6 @@ package kr.co.asac.sales.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import kr.co.asac.orders.bean.OrderBean;
 
 public interface SaleDAO {
@@ -13,14 +11,6 @@ public interface SaleDAO {
 	public List<OrderBean> saleSellerDayList(String id);
 	
 	public List<OrderBean> saleSellerDayConfirmList(String id);
-	
-	public List<OrderBean> saleSellerDateList(String id);
-	
-	public List<OrderBean> saleSellerDateConfirmList(String id);
-	
-	public List<OrderBean> saleSellerWeekList(String id);
-	
-	public List<OrderBean> saleSellerWeekConfirmList(String id);
 	
 	public List<OrderBean> saleSellerMonthList(String id);
 	
@@ -35,14 +25,6 @@ public interface SaleDAO {
 	public List<OrderBean> saleAdminDayList();
 	
 	public List<OrderBean> saleAdminDayConfirmList();
-	
-	public List<OrderBean> saleAdminDateList();
-	
-	public List<OrderBean> saleAdminDateConfirmList();
-	
-	public List<OrderBean> saleAdminWeekList();
-	
-	public List<OrderBean> saleAdminWeekConfirmList();
 	
 	public List<OrderBean> saleAdminMonthList();
 	
@@ -59,13 +41,5 @@ public interface SaleDAO {
 	public List<OrderBean> saleAdminCateProductList(String pcate);
 	
 	public List<OrderBean> saleAdminCateProductConfirmList(String pcate);
-	
-	public List<OrderBean> saleAdminSellerCateList(@Param("id") String id, @Param("pcate") String pcate);
-
-	public List<OrderBean> saleAdminSellerCateConfirmList(@Param("id") String id, @Param("pcate") String pcate);
-		
-	public List<OrderBean> saleAdminSellerCateProductList(@Param("id") String id, @Param("pcate") String pcate);
-
-	public List<OrderBean> saleAdminSellerCateProductConfirmList(@Param("id") String id, @Param("pcate") String pcate);
 
 }

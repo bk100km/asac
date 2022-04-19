@@ -34,9 +34,9 @@
 					$('#mid').focus();
 					$('#submit').attr("disabled", true);
 				} 
-			},
-			error : function() {
-				alert("에러입니다");
+// 			},
+// 			error : function() {
+// 				alert("에러입니다");
 			}
 		});
 	};
@@ -256,8 +256,8 @@ sfileUploadButtonLabel {
 					<div class="mb-3">
 						<label for="sphone">전화번호 <span class="text-danger">*</span></label>
 						<div class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i>(010)</span>
-							<input type="tel" class="form-control phoneNumber" maxlength="8" pattern=".{8}" placeholder="전화번호(8자리)" name="sphone" id="sphone" required /><br>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span>
+							<input type="tel" class="form-control phoneNumber" maxlength="11" pattern=".{11}" placeholder="전화번호" name="sphone" id="sphone" required /><br>
 						</div><br>
 					</div>
 					<div class="mb-3">

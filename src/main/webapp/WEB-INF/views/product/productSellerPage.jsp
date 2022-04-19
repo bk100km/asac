@@ -215,7 +215,7 @@ function productInfoAction(clickedproduct) {
                 $('#sid').prop('value',product.sid);
                 $('#productUpdateButton').attr('onclick',"productUpdateOk()");
                 $('#productDeleteButton').attr('onclick',"productDeleteOk()");
-            });
+           });
 					
         },
         error: function(request, status, error) {
@@ -285,9 +285,10 @@ function productInsertForm() {
 	var productInsertFormText = '';
 	var productInsertFormIdZoneText = '';
 	var today = new Date();
+	var sid = '<%=(String)session.getAttribute("sid")%>';
+		
     $.ajax({
         success: function() {
-        	
         	$('#productInfoDetail').prop('action',"productInsertAction()");
         	$('#pcode').prop('value',"");
             $('#pcode').prop('readonly',false);
@@ -305,8 +306,8 @@ function productInsertForm() {
             $('#pcontent').prop('value',"");
             $('#pcontent').prop('readonly',false);
             $('#pregdate').prop('value', today.toLocaleDateString());
-            $('#sid').prop('value',"");
-            $('#sid').prop('readonly',false);
+            $('#sid').prop('value',sid);
+            $('#sid').prop('readonly',true);
         	 
         	productInsertFormText = '<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
@@ -366,10 +367,16 @@ function productInsertCancel() {
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>' +
-			'<div class="col-md-12 mb-3">' +
+			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productInsertButton" value="상품추가"' + 
-			'onclick="productInsertForm()" title="상품추가 버튼">';
+			'onclick="productInsertForm()" title="상품추가 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
+			'id="productInsertButton" value="리뷰보기"' + 
+			'onclick="location.href=`/pr/cl/dt/`" title="리뷰보기 버튼">' +
+			'</div>';
 
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
         },
@@ -656,11 +663,15 @@ function pfileUploadAction() {
 						</div>		
 						<hr class="mb-4">
 						<br>
-						<div class="col-md-12 mb-3">
+						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productInsertButton" value="상품추가" 
 						onclick="productInsertForm()" title="상품추가 버튼">
-						</div>						
+						</div>
+						<div class="col-md-6 mb-3">
+						<input type="button" class="btn btn-default btn-md btn-block" 
+						id="productReviewButton" value="리뷰보기" title="리뷰보기 버튼">
+						</div>								
 					</div>	
 				</form>
 			</div>

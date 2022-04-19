@@ -4,6 +4,8 @@
 <%
 	String mid = (String) session.getAttribute("mid");
 	System.out.println("헤더에서 mid 값 = " + mid);
+	String referer = request.getHeader("Referer");
+	System.out.println("헤더에서 Referer 값 = " + referer);
 %>
 
 <head>
@@ -200,7 +202,7 @@
 }
 }
 
-@media ( max-width : 1023px) {
+@media ( max-width : 1399px) {
 .ftco-navbar-light .navbar-nav>.nav-item .dropdown-menu {
 	margin: -3rem 0 0;
 	background: #82ae46;
@@ -268,26 +270,6 @@
 </head>
 <body>
 	<header>
-		<div class="py-1 bg-primary">
-			<div class="container" id="headerContainer">
-				<div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
-					<div class="col-lg-12 d-block">
-						<div class="row d-flex">
-							<div class="col-md pr-4 d-flex topper align-items-center">
-								<div class="icon mr-2 d-flex justify-content-center align-items-center">
-									<span class="icon-paper-plane"></span>
-								</div>
-								<span class="text">bk100km_@naver.com</span>
-							</div>
-							<div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-								<span class="text">ASAC Vegan Market</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<nav
 			class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
 			id="ftco-navbar">
@@ -325,7 +307,7 @@
 						%>
 						<li class="nav-item cta cta-colored"><a
 							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
-							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
+							id="borderNavCart"><span class="icon-shopping_cart"></span></a></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown04"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;로그인</a>
@@ -349,7 +331,7 @@
 						%>
 						<li class="nav-item cta cta-colored"><a
 							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
-							id="borderNavCart"><span class="icon-shopping_cart"></span>&nbsp;[0]</a></li>
+							id="borderNavCart"><span class="icon-shopping_cart"></span></a></li>
 						<li class="nav-item cta cta-colored"><a
 							href="<%= request.getContextPath() %>/me/cl/lO" class="nav-link"
 							id="borderNavLogin"><span class="icon-sign-out"></span>&nbsp;로그아웃</a></li>

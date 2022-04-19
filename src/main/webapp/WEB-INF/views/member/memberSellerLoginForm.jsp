@@ -68,18 +68,34 @@ body {
 .modalButton {
 	display: none;
 }
-
+.title{
+	text-align : center;
+}
+.logo{
+	font-size: 80px;
+	font-weight: 600;
+	font-family: tahoma;
+	color: #82ae46;
+	
+}
+.logo:hover{
+	text-decoration:none !important;
+	color: #82ae46;
+}
 </style>
 
 </head>
 <body>
 
 <div><br><br><br><br><br><br><br><br><br><br><br></div>
+<div class=title>
+<a class="logo" href="<%= request.getContextPath() %>/">ASAC</a>
+</div>
+<h2 align="center">판매자 로그인</h2>
 <div class="container">
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				<h2>ASAC 중간관리자 로그인</h2><hr>
 				<form:form id="loginForm" class="loginForm" action="lA" method="post" modelAttribute="seller">
 					<label>아이디</label> 
 					<div style="margin-bottom: 12px" class="input-group">
@@ -92,7 +108,7 @@ body {
 						<form:input path="spwd" id="spwd" type="password" class="form-control" name="spwd" placeholder="비밀번호" data-toggle="tooltip" data-placement="top" title="비밀번호 입력란"  />
 					</div>
 					<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
-					<button onclick="history.back()" class="btn btn-default"> 뒤로가기</button>
+					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/jo'" class="btn btn-default" >회원가입</button>
 					</div><hr>
 				</form:form>
 			</div>

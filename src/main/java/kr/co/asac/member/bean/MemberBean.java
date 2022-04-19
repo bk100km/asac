@@ -11,8 +11,17 @@ public class MemberBean {
 	private String maddrz;
 	private String mmail;
 	private String mregdate;
-	
+	private String referer;
 	private String month;
+	
+	//referer
+	public String getReferer() {
+		return referer;
+	}
+	public void setReferer(String referer) {
+		this.referer = referer;
+	}
+
 	private int count;
 	
 	public String getMid() {

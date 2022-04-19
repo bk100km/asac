@@ -11,20 +11,22 @@ import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.product.bean.ProductBean;
 
 public interface MemberDAO {
-
+	
 	// client
 	public MemberBean memberClientLoginCheck(String mid);
 	public void memberJoin(MemberBean member);
 	public int memberIdChk(MemberBean member);
+	public int memberEmailChk(MemberBean member);
 	public MemberBean memberInfo(String mid);
 	public MemberBean memberClientInfo(String mid);
 	public void memberClientUpdate(MemberBean member);
-	public void memberClientDelete(MemberBean vo);
+	public void memberClientDelete(MemberBean vo, @Param("mid") String mid);
 	public MemberBean memberClientDelPwC(String mid);
 	public void memberClientNaver(MemberBean member);
 	public void memberClientKakao(MemberBean member);
 	public int updatePw(MemberBean vo) throws Exception;
 	public MemberBean findId(MemberBean vo) throws Exception;
+	public void orderClientBackupInsert(OrderBean order, @Param("mid") String mid);
 	
 	// seller
 	public SellerBean memberSellerLoginCheck(String sid);
@@ -33,11 +35,7 @@ public interface MemberDAO {
 	public SellerBean memberSellerInfo(String sid);
 	public void memberSellerUpdate(SellerBean seller);
 	public void memberSellerDelete(SellerBean seller);
-	public int sellerProductcount(int count);
-	public int sellerOrderscount(int count);
-	public int sellerReviewcount(int count);
-	public List<OrderBean> sellerProduct();
-	public List<ProductBean> sellermoney();
+	public SellerBean memberSellerDelPwc(String sid);
 	
 	// admin	
 	public int memberAdminClientCount(@Param("searchCategory") String searchCategory, @Param("searchText") String searchText);

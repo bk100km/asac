@@ -121,10 +121,15 @@ option {
 	height: 34px;
 }
 
+#page-wrapper {
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
 </style>
 </head>
 
-<body>
+<body id="page-top">
 
 <script>
 <!-- 상세정보 조회 AJAX -->
@@ -184,6 +189,11 @@ function memberSearchAction(clikedPage) {
 	var memberListText = "";
 	var memberPagingText = "";
 	var page = clikedPage;
+// 	var range = 1;
+// 	if (clikedPage % 5 == 0) {
+// 		range = 
+// 	}
+// 	var range = parseInt(clikedPage / 5) + 1;
 	var step = 0;
     
     $.ajax({
@@ -212,7 +222,7 @@ function memberSearchAction(clikedPage) {
     	     }
     		 if (map.paging.next) {
     		 	memberPagingText +=
-    		 	'<li class="page-item"><a class="page-link" href="#" onclick="memberSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="memberSearchAction(' + map.paging.endPage + ')">다음</a></li>';
         	 }
         	document.getElementById("memberListBody").innerHTML = memberListText;
         	document.getElementById("memberPagingZone").innerHTML = memberPagingText;
@@ -471,8 +481,15 @@ function memberIdCheckAction() {
 }
 </script>
 
-<br>
-	<div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
 
 		<div id="page-wrapper">
 			<div class="row">
@@ -671,6 +688,10 @@ function memberIdCheckAction() {
 				</div>
 			</div>
 		</div>
+	
+	</div>
+	<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
 	</div>
 
 	

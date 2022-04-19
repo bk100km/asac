@@ -101,8 +101,9 @@ function cartAction() {
 
 	 if("${mid}"== ""){
 			alert("로그인하세요.");
-			$("#mid").focus();
-			event.stiplmmediatePropagation();
+			location.href='/me/cl/lo';
+			/* $("#mid").focus();
+			event.stiplmmediatePropagation(); */
 			}
 		
 	var cart = $("form[name=productDetail]").serialize();
@@ -112,7 +113,8 @@ function cartAction() {
         url: '/ca/cl/in',
    		data: cart,
         success: function() {   
-      	
+      		
+    
         	cartincheck();
 	    }
         ,
@@ -127,8 +129,8 @@ function cartAction() {
 
 function cartincheck() {
 
-
-	if("${cart.pcount}" > "0"){ 
+	history.go(0);
+	if("${isContainsPcode}" == "true"){ 
 	  
 		alert('장바구니에 담겨져있는 상품입니다!');
 	
@@ -136,6 +138,20 @@ function cartincheck() {
 		alert('상품이 장바구니에 담겼습니다!');
  }
 }
+
+
+$(window).scroll(function(){
+	if ($(this).scrollTop() > 300){
+		$('.btn_gotop').show();
+	} else{
+		$('.btn_gotop').hide();
+	}
+});
+$('.btn_gotop').click(function(){
+	$('html, body').animate({scrollTop:0},400);
+	return false;
+});
+
 </script>
 <style>
 .container {
@@ -189,6 +205,7 @@ function cartincheck() {
 .content {
 	float: right;
 	text-align: right;
+	color: black !important;
 }
 
 .btn {
@@ -257,10 +274,9 @@ function cartincheck() {
 	vertical-align: top;
 }
 .NFNlCQC2mv {
-    position: absolute;
-
-    right: 73%;
-   
+    position:relative;
+	left: 5%
+   	
 }
 .NFNlCQC2mv ._2Q0vrZJNK1 {
     display: inline-block;
@@ -300,27 +316,61 @@ function cartincheck() {
 	font-weight: 500;
 }
 .tbox{
-	margin-left: 50%;
-	
+	margin:10px;
 
 
 
 }
 .imgbox{
-	float: left;
 
 }
+.img-fluid{
+	max-width:100% !important;
+    margin:20px;
+	
+
+}
+
+
+.btn_gotop {
+	display:none;
+	position:fixed;
+	bottom:30px; 
+	right:30px; / 
+	z-index:999;
+	border:1px solid #ccc;
+	outline:none;
+	background-color:white;
+	color:#333;
+	cursor:pointer;
+	padding:15px 20px;
+	border-radius:100%;
+}
+
+
+
 </style>
 
 
 </head>
 <body>
 
+<a href="#" class="btn_gotop">
+  <span class="glyphicon glyphicon-chevron-up">top
+
+  </span>
+</a>
 
 	<c:set var="id" value="${aid}" />
 	<c:choose>
 		<c:when test="${id != null}">
-			<jsp:include page="../common/sellerHeader.jsp" flush="false" />
+			    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/sellerHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        	
 
 
 		</c:when>
@@ -329,24 +379,42 @@ function cartincheck() {
 
 		</c:otherwise>
 	</c:choose>
+	<c:choose>
+		<c:when test="${aid != null}">
+      <!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
+</c:when></c:choose>
 
 
-
-
-
-	<section class="py-5" id="py-5">
 		<div class="container">
-			<div class="column large-4 small-12">
-				<div class="row gx-4 gx-lg-5 align-items-center">
-					<div class="column large-7 large-offset-1">
+					<div  class="row" >
+					<div class="col-md-12 col-lg-6">
 						<div class="imgbox">
 							<img src="/resources/image/product/${proDetail.pfile}"
-								width="450" height="450" title="${proDetail.pname}"
+								class="img-fluid" title="${proDetail.pname}"
 								alt="${proDetail.pcontent}" />
+								
+							
+								<div class="NFNlCQC2mv">
+						<c:choose>	
+							<c:when test="${totalreview != ''}">
+											<div class="_2Q0vrZJNK1"><span class="_2lJgrD1cyO">리뷰수</span>
+				<a href="#scrollspyHeading2" role="button"><strong class="_2pgHN-ntx6">${totalreview}&nbsp;&nbsp;&nbsp;</strong></a></div><div class="_2Q0vrZJNK1">
+				<span class="_2lJgrD1cyO"> 사용자 총 평점 </span><strong class="_2pgHN-ntx6">${average}<span class="_1RFxMQxpZW"><span class="blind"> /</span></span>5.0 </strong></div>
+						</c:when>
+						<c:otherwise>
+						
+						<span>아직 작성된 리뷰가 없습니다.</span>
+						</c:otherwise>
+						
+						</c:choose>
+						</div>	
+								
+						</div>
 						</div>
 
 					
-					
+					<div class="col-md-12 col-lg-6">
 					<div class="tbox">
 						<span class="name">${proDetail.pname}</span>
 						<form name="productDetail" method="post">
@@ -393,7 +461,7 @@ function cartincheck() {
 										</c:when>
 										<c:when test="${aid != null}">
 											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/pr/se/la'">
+												onclick="location.href='/pr/se/li'">
 										</c:when>
 										<c:when test="${items != null}">
 											<input class="btn content" type="button" value="상품목록"
@@ -405,26 +473,16 @@ function cartincheck() {
 
 										</c:otherwise>
 									</c:choose>
+									
 								</div>
-						
+				
 							</div>
-							<div class="NFNlCQC2mv">
-						<c:choose>	
-							<c:when test="${totalreview != ''}">
-											<div class="_2Q0vrZJNK1"><span class="_2lJgrD1cyO">리뷰수</span>
-				<a href="#scrollspyHeading2" role="button"><strong class="_2pgHN-ntx6">${totalreview}&nbsp;&nbsp;&nbsp;</strong></a></div><div class="_2Q0vrZJNK1">
-				<span class="_2lJgrD1cyO"> 사용자 총 평점 </span><strong class="_2pgHN-ntx6"> 5.0 <span class="_1RFxMQxpZW"><span class="blind"> /</span></span> ${average}</strong></div>
-						</c:when>
-						<c:otherwise>
-						
-						<span>아직 작성된 리뷰가 없습니다.</span>
-						</c:otherwise>
-						
-						</c:choose>
-						</div>
+							</div>
+							
 						</form>
+					
+					</div>      
 					</div>
-
 
 
 					<br /> <br />
@@ -433,7 +491,7 @@ function cartincheck() {
 					<br />
 					<br />
 
-
+					
 
 
 
@@ -444,9 +502,24 @@ function cartincheck() {
 
    <jsp:include page="./reviewList.jsp" flush="false" />
 
-
-
+<c:choose>
+		<c:when test="${aid != null}">
+      	</div>
 	<jsp:include page="../common/footer.jsp" flush="false" />
+	
+	
+	
+	</div>
+	</div>
+</c:when>
+	<c:otherwise>
+	
+	<jsp:include page="../common/footer.jsp" flush="false" />
+	
+	</c:otherwise>
+</c:choose>
+
+
 
 </body>
 

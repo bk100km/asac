@@ -33,13 +33,13 @@ public class ProductSellerController {
 		
 	@RequestMapping(value = "/pr/se/li", method = RequestMethod.GET)
 	public String productSellerList(HttpServletRequest request, HttpServletResponse response, Model model,
-			@RequestParam(value="productproductSearchCategory", required = false, defaultValue = "pcode") String productproductSearchCategory,
-			@RequestParam(value="productproductSearchText", required = false, defaultValue = "") String productproductSearchText,
+			@RequestParam(value="productSearchCategory", required = false, defaultValue = "pcode") String productSearchCategory,
+			@RequestParam(value="productSearchText", required = false, defaultValue = "") String productSearchText,
 			@ModelAttribute(value = "productPaging") PagingBean productPaging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int productListCnt = productSellerService.productSellerListCount(request, productproductSearchCategory, productproductSearchText);
+		int productListCnt = productSellerService.productSellerListCount(request, productSearchCategory, productSearchText);
 		productPaging.pageInfo(page, range, productListCnt);
 		
 		productSellerService.productSellerList(request, response, model, productPaging);

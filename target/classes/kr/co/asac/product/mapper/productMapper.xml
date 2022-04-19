@@ -12,11 +12,11 @@
 		</select>
 
 		<select id="productSellerListCount" resultType="int">
-		select count(*) as listCnt from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') and sid = #{id} 
+		select count(*) as listCnt from product where ${productSearchCategory} like CONCAT('%', #{productSearchText}, '%') and sid = #{id} 
 		</select>
 
 		<select id="productSellerListSearch" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') and sid = #{id}
+		select * from product where ${productSearchCategory} like CONCAT('%', #{productSearchText}, '%') and sid = #{id}
 		order by pcode asc limit #{paging.startList}, #{paging.listSize} 
 		</select>
 
@@ -45,11 +45,11 @@
 		</select>
 
 		<select id="productAdminListCount" resultType="int">
-		select count(*) as listCnt from product where ${searchCategory} like CONCAT('%', #{searchText}, '%') 
+		select count(*) as listCnt from product where ${productSearchCategory} like CONCAT('%', #{productSearchText}, '%') 
 		</select>
 
 		<select id="productAdminListSearch" resultType="kr.co.asac.product.bean.ProductBean">
-		select * from product where ${searchCategory} like CONCAT('%', #{searchText}, '%')
+		select * from product where ${productSearchCategory} like CONCAT('%', #{productSearchText}, '%')
 		order by pcode asc limit #{paging.startList}, #{paging.listSize} </select>
 
 		<select id="productAdminInfo" resultType="kr.co.asac.product.bean.ProductBean">

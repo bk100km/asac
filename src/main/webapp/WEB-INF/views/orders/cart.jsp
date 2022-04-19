@@ -2,25 +2,47 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <title>장바구니</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
+ 
+<style>
+.btn {
+	display: inline-block;
+	min-width: 112px;
+	padding: 11px 31px;
+	font-size: 16px;
+	line-height: 26px;
+	text-align: center;
+	vertical-align: top;
+	border: 1px solid #82ae46 !important;
+	border-radius: 26px;
+	background-color: #82ae46 !important;
+	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
+	color: #fff;
+	font-weight: 500;
+}
 
-<jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
+</style>
+
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
 	<div class="container">
 		<h2>장바구니</h2>
-		<br><br><br>
+		<br/><br/>
 		<h3>상품 정보</h3>
-      		<hr/>
+
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -33,6 +55,8 @@
 				</tr>
 			</thead>
 			<c:forEach var="cart" items="${cartList}">
+			<c:choose>
+			<c:when test="${fn:length(cartList) ne null}">
 				<form id="form" name="form" method="post">
 				<tbody>
 					<tr>
@@ -44,15 +68,30 @@
 						<td>
 						<input name="pcode" type="hidden" value="${cart.pcode}" />
 						<input name="pname" type="hidden" value="${cart.pname}" />${cart.pname}</td>
-						<td>${cart.pprice}</td>
+						<td><fmt:formatNumber value="${cart.pprice}" pattern="#,###,###원" /></td>
 						<td>
 						<input name="pcount" type="number" min="1" max="20"value="${cart.pcount}" style="max-width: 4rem" />
-						<button class="btn btn-outline-info" type="submit" onclick="javascript: form.action='./up'">변경</button></td>
+						<button  type="submit" onclick="javascript: form.action='./up'">변경</button></td>
 						<td><fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" />
 						<input type="hidden" name="ototal" value="${cart.pprice * cart.pcount}"/></td>
 					</tr>
 				</tbody>
 				</form>	
+			</c:when>
+			<c:when test="${fn:length(cartList) eq null}">
+				<tbody>
+					<tr>
+						<td colspan="7">상품이 없습니다</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</c:when>
+			</c:choose>
 			</c:forEach>
 		</table>
 		
@@ -60,9 +99,9 @@
 <!-- 		<form action="./ds" method="post" id="delAction"> -->
 <!-- 		<input type="hidden" name="valueArr" id="cnoArray"/> -->
 <!-- 		</form> -->
-		
-		<input type="button" value="선택삭제" class="btn btn-outline-info" onclick="deleteValue();">
-		<button type="button" class="btn btn-outline-info" id="btnDelete">장바구니 비우기</button>
+		<br/>
+		<input type="button" value="선택삭제" class="btn" onclick="deleteValue();">
+		<button type="button" class="btn" id="btnDelete">장바구니 비우기</button>
 		<br><br><br>
       		<h3>배송지 정보</h3>
       		<hr/>
@@ -73,8 +112,8 @@
         	<div><input type="text"name="oname" id="oname" value="${memberInfo.mname}" required/></div>
         		
         	<div>우편번호  </div>
-        	<div><input type="text" name="oaddrz" id="oaddrz" value="${memberInfo.maddrz}" readonly required/>
-        	<button class="btn btn-outline-info" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
+        	<div><input type="text" name="oaddrz" id="oaddrz" value="${memberInfo.maddrz}" readonly required/> &nbsp;
+        	<button class="btn" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
         	
         	<div>주소  </div>
         	<div><input type="text" name="oaddr" id="oaddr" value="${memberInfo.maddr}" readonly required/></div>
@@ -92,14 +131,17 @@
         	</div>
         	</form>
 		
+		<br/>
+		<br/>
 		<h3 style ="text-align: center;">
 		상품총액 <span id="carttotal">0</span> 원<input type="hidden" name="carttotalPrice" id="carttotalPrice">
 	
 		
 		</h3>
-		<br><br><br>
-     	<button class="btn btn-outline-info" id="kakaopay" type="button">결제하기</button>
+		<br/><br/>
+     	<button style ="text-align: center;" class="btn" id="kakaopay" type="button">결제하기</button>
      	</div>
+     	<br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script>
 	$("#kakaopay").click(function () {

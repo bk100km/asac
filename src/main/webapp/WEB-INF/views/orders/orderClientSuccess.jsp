@@ -95,7 +95,7 @@
      		</c:forEach>
      		<h4 class="rightalign">총 결제 가격: ${ototototal}</h4>
      		<div class="rightalign"><a href="/me/cl/in/${orderClientInfo[0].ocode}">배송정보수정</a> &nbsp; &nbsp; || &nbsp; &nbsp;
-			<a href="http://localhost:8080/me/cl/my">주문 목록으로</a></div>
+			<a href="<%= request.getContextPath() %>/me/cl/my">주문 목록으로</a></div>
     	</div>
   		</div>
 <br/>

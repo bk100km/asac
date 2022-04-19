@@ -37,7 +37,7 @@
 <style>
 h1 {
 	font-family: "Amatic SC", Pretendard !important;
-	font-size: 5vw !important;
+	font-size: 4.8vw !important;
 	font-weight: 600 !important;
 }
 
@@ -71,8 +71,20 @@ h1 {
 	height: 500px;
 }
 
+@media ( max-width : 991px) {
+.owl-carousel.home-slider {
+	height: 400px !important;
+}
+}
+
 .owl-carousel .owl-stage-outer {
 	height: 500px;
+}
+
+@media ( max-width : 991px) {
+.owl-carousel .owl-stage-outer {
+	height: 400px;
+}
 }
 
 #quickOrderMenu {
@@ -254,7 +266,7 @@ function productIndexTag(clickedPtag) {
 							'<div class="d-flex">' + 
 								'<div class="pricing">' + 
 									'<p class="price">' + 
-										'<span class="price-sale">' + map.productList[i].pprice + '</span>' +  
+										'<span class="price-sale">' + map.productList[i].pprice + '원</span>' +  
 									'</p>' + 
 								'</div>' + 
 							'</div>' + 
@@ -323,7 +335,7 @@ function productIndexTag(clickedPtag) {
 		</div>
 	</section>
 
-	<section class="ftco-section">
+	<section class="ftco-section" name="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center mb-3 pb-3">
 				<div class="col-md-12 heading-section text-center ftco-animate">
@@ -331,55 +343,55 @@ function productIndexTag(clickedPtag) {
 					<h2 class="mb-4">베스트 상품</h2>
 
 					<!-- TagZone -->
-					<div class="col-md-12 tagZone" id="tagZone">
+					<div class="col-md-12 tagZone" id="tagZone" name="tagZone">
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="콩">콩</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="콩">콩</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="다이어트">다이어트</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="다이어트">다이어트</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="비타민">비타민</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="비타민">비타민</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="채소">채소</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="채소">채소</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="과일">과일</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="과일">과일</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="과자">과자</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="과자">과자</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="빵">빵</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="빵">빵</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="드링크">드링크</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="드링크">드링크</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="파스타">파스타</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="파스타">파스타</a>
 							</div>
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#" onclick="productIndexTag(this)" data-ptag="잼">잼</a>
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="잼">잼</a>
 							</div>
 						</div>
 					</div>
@@ -401,7 +413,7 @@ function productIndexTag(clickedPtag) {
 							<div class="d-flex">
 								<div class="pricing">
 									<p class="price">
-										<span class="price-sale">${product.pprice}</span>
+										<span class="price-sale">${product.pprice}원</span>
 									</p>
 								</div>
 							</div>
@@ -420,8 +432,6 @@ function productIndexTag(clickedPtag) {
 			</div>
 		</div>
 	</section>
-	
-	<hr>
 	
     <section class="ftco-section">
       <div class="container">
@@ -493,7 +503,7 @@ function productIndexTag(clickedPtag) {
 									<input type="hidden" name="pcode" id="pcode">
 									<input type="hidden" name="mid" id="mid" value="${mid}">
 		    					</p>
-		    					<p><button type="submit" class="btn btn-primary py-3 px-4" onclick="javascript: orderFast.action='http://localhost:8080/ca/cl/in'">주문하기</button></p>
+		    					<p><button type="submit" class="btn btn-primary py-3 px-4" onclick="javascript: orderFast.action='/ca/cl/fi'">주문하기</button></p>
 							</div>
 						</form>
 					</div>
@@ -562,7 +572,7 @@ function productIndexTag(clickedPtag) {
 			</div>
 		</div>
 	</section>
-
+	<br><br><br>
 	<jsp:include page="common/footer.jsp"></jsp:include>
 
 	<!-- loader -->
@@ -577,7 +587,6 @@ function productIndexTag(clickedPtag) {
 	<script src="/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
 	<script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>
 	<script src="/resources/bootstrap/vegefoods-master/js/popper.min.js"></script>
-	<script	src="/resources/bootstrap/vegefoods-master/js/bootstrap.min.js"></script>
 	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.easing.1.3.js"></script>
 	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.waypoints.min.js"></script>
 	<script	src="/resources/bootstrap/vegefoods-master/js/jquery.stellar.min.js"></script>

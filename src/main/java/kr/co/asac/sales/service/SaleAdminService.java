@@ -37,38 +37,6 @@ public class SaleAdminService {
 		model.addAttribute("saleAdminDayConfirmList", saleAdminDayConfirmList);
 	}
 	
-	public void saleAdminDateList(HttpServletRequest request, HttpServletResponse response, Model model)	throws Exception {
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		List<OrderBean> saleAdminDateList = dao.saleAdminDateList();
-		List<OrderBean> saleAdminDateConfirmList = dao.saleAdminDateConfirmList();
-		
-		String jsondateList = new Gson().toJson(saleAdminDateList);
-		String jsondateConfirmList = new Gson().toJson(saleAdminDateConfirmList);
-		
-		model.addAttribute("addateList", jsondateList);
-		model.addAttribute("addateConfirmList", jsondateConfirmList);
-		
-		model.addAttribute("saleAdminDateList", saleAdminDateList);
-		model.addAttribute("saleAdminDateConfirmList", saleAdminDateConfirmList);
-	}
-	
-	public void saleAdminWeekList(HttpServletRequest request, HttpServletResponse response, Model model)	throws Exception {
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		List<OrderBean> saleAdminWeekList = dao.saleAdminWeekList();
-		List<OrderBean> saleAdminWeekConfirmList = dao.saleAdminWeekConfirmList();
-		
-		String jsonweekList = new Gson().toJson(saleAdminWeekList);
-		String jsonweekConfirmList = new Gson().toJson(saleAdminWeekConfirmList);
-		
-		model.addAttribute("adweekList", jsonweekList);
-		model.addAttribute("adweekConfirmList", jsonweekConfirmList);
-		
-		model.addAttribute("saleAdminWeekList", saleAdminWeekList);
-		model.addAttribute("saleAdminWeekConfirmList", saleAdminWeekConfirmList);
-	}
-	
 	public void saleAdminMonthList(HttpServletRequest request, HttpServletResponse response, Model model)	throws Exception {
 		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
 		
@@ -85,7 +53,6 @@ public class SaleAdminService {
 		model.addAttribute("saleAdminMonthConfirmList", saleAdminMonthConfirmList);
 	}
 	
-	//여기부터 해야함
 	public void saleAdminSellerList(HttpServletRequest request, HttpServletResponse response, Model model)	throws Exception {
 		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
 		
@@ -134,43 +101,5 @@ public class SaleAdminService {
 		
 		model.addAttribute("saleAdminCateProductList", saleAdminCateProductList);
 		model.addAttribute("saleAdminCateProductConfirmList", saleAdminCateProductConfirmList);
-	}
-
-	public void saleAdminSellerCateList(HttpServletRequest request, HttpServletResponse response, OrderBean order, Model model) throws Exception {
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		String id = (String) request.getSession().getAttribute("sid");
-		String pcate = (String) request.getParameter("pcate");		
-		
-		List<OrderBean> saleAdminSellerCateList = dao.saleAdminSellerCateList(id, pcate);
-		List<OrderBean> saleAdminSellerCateConfirmList = dao.saleAdminSellerCateConfirmList(id, pcate);
-		
-		String jsonSellerCateList = new Gson().toJson(saleAdminSellerCateList);
-		String jsonSellerCateConfirmList = new Gson().toJson(saleAdminSellerCateConfirmList);
-		
-		model.addAttribute("adSellerCateList", jsonSellerCateList);
-		model.addAttribute("adSellerCateConfirmList", jsonSellerCateConfirmList);
-		
-		model.addAttribute("saleAdminSellerCateList", saleAdminSellerCateList);
-		model.addAttribute("saleAdminCateProductConfirmList", saleAdminSellerCateConfirmList);
-	}
-
-	public void saleAdminSellerCateProductList(HttpServletRequest request, HttpServletResponse response, OrderBean order, Model model, String pcate) throws Exception {
-		SaleDAO dao = sqlSessionTemplate.getMapper(SaleDAO.class);
-		
-		String id = (String) request.getSession().getAttribute("sid");
-		System.out.println("pcate??"+pcate);
-		
-		List<OrderBean> saleAdminSellerCateProductList = dao.saleAdminSellerCateProductList(id, pcate);
-		List<OrderBean> saleAdminSellerCateProductConfirmList = dao.saleAdminSellerCateProductConfirmList(id, pcate);
-		
-		String jsonSellerCateProductList = new Gson().toJson(saleAdminSellerCateProductList);
-		String jsonSellerCateProductConfirmList = new Gson().toJson(saleAdminSellerCateProductConfirmList);
-		
-		model.addAttribute("adcateProductList", jsonSellerCateProductList);
-		model.addAttribute("adcateProductConfirmList", jsonSellerCateProductConfirmList);
-		
-		model.addAttribute("saleAdminSellerCateProductList", saleAdminSellerCateProductList);
-		model.addAttribute("saleAdminSellerCateProductConfirmList", saleAdminSellerCateProductConfirmList);
 	}
 }

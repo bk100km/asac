@@ -37,6 +37,32 @@
 			}
 		});
 	};
+	
+	function checkEmail() {
+		var mmail = $('#mmail').val(); //id값이 "id"인 입력란의 값을 저장
+		$.ajax({
+			url : './eC', //Controller에서 인식할 주소
+			type : 'post', //POST 방식으로 전달
+			data : {
+				mmail : mmail
+			},
+			success : function(result) {
+				if (result != 1) { //result가 1이 아니면(=0일 경우) -> 사용 가능한 아이디 
+					$('.email_ok').css("display", "inline-block");
+					$('.email_already').css("display", "none");
+					$('#mail_check_button').attr("disabled", false);
+				} else { // result가 1일 경우 -> 이미 존재하는 아이디
+					$('.email_already').css("display", "inline-block");
+					$('.email_ok').css("display", "none");
+					$('#mmail').focus();
+					$('#mail_check_button').attr("disabled", true);
+				} 
+			},
+			error : function() {
+				alert("에러입니다");
+			}
+		});
+	};
 
 	$(function() {
 		//비밀번호 확인
@@ -157,17 +183,25 @@
 	        
 	        if(email==''){
 	        	alert("이메일을 입력해주세요.");
+	        }else if(validEmailCheck(email)==false){
+	        	alert('올바른 이메일 주소를 입력해주세요.');
 	        }else{
 	        	$.ajax({
 		            type:"GET",
-		            url:"http://localhost:8080/mailCheck?email=" + email,
+		            url:"<%= request.getContextPath() %>/mailCheck?email=" + email,
 		            success:function(data){
 		            	//console.log("data : " + data);
 		            	 checkBox.attr("disabled",false);
 		            	 boxWrap.attr("id", "mail_check_input_box_true");
 		            	 code = data;
+		            	 alert("이메일을 전송했습니다.");
 		            }
 		        });
+	        }
+	        
+	        function validEmailCheck(email){
+	        	alert(email);
+	            return (email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i)!=null);
 	        }
 	    });
 	    
@@ -200,6 +234,16 @@
 }
 
 .id_already {
+	color: red;
+	display: none;
+}
+
+.email_ok {
+	color: #6A82FB;
+	display: none;
+}
+
+.email_already {
 	color: red;
 	display: none;
 }
@@ -276,7 +320,7 @@ body {
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 							<input type="text" class="form-control" id="mid" name="mid" oninput="checkId()" maxlength="10" onkeyup="this.value=this.value.replace(/[^a-zA-Z-_0-9]/g,'');" placeholder="영문 소문자와 숫자만 입력가능" required>
-						</div><br>
+						</div>
 						<div>
 							<span class="id_ok"><p>사용 가능한 아이디입니다.</p></span>
 							<span class="id_already"><p>이미 사용중인 아이디입니다.</p></span>
@@ -288,7 +332,7 @@ body {
 					</div>
 					<div class="mb-3">
 						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required>
 						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
 						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 					</div>
@@ -311,7 +355,7 @@ body {
 					<div class="row mail_wrap">
 						<div class="col-md-9 input-group mailfloat mail_input_box">
 		            		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-							<input type="text" class="form-control mail_input" name="mmail" id="mmail" maxlength="50" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" required>
+							<input type="text" class="form-control mail_input" name="mmail" id="mmail" maxlength="50" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" oninput="checkEmail()" required>
 		            	</div>
 		            	<div class="col-md-3">
 		            		<!-- <label>&nbsp;</label> -->
@@ -319,7 +363,11 @@ body {
 		            		<input type="button" value="인증번호 전송" id="mail_check_button" class="btn btn-outline-secondary mail_check_button"><br>
 		            	</div>
 					</div>
-		           	<div class="clearfix"></div><br>
+					<div class="mb-3">
+						<span class="email_ok"><p>사용 가능한 이메일입니다.</p></span>
+						<span class="email_already"><p>이미 사용중인 이메일입니다.</p></span>
+					</div>
+		           	<div class="clearfix"></div>
 					<div class="mb-3 mail_check_wrap mail_check_input_box" id="mail_check_input_box_false">
 						<input type="text" class="form-control mail_check_input" disabled="disabled" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="인증번호를 입력해주세요" required>
 						<span id="mail_check_input_box_warn"></span>
@@ -331,7 +379,7 @@ body {
 						</div>
 						<div class="col-md-3 mb-3">
 							<label>&nbsp;</label><br>
-							<input type="button" class="btn btn-outline-secondary btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+							<input type="submit" class="btn btn-outline-secondary btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</div>
 					<div class="mb-3">

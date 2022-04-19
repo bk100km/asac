@@ -161,7 +161,7 @@ function del() {
 					
 					<div><button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
 					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/in'" class="btn btn-default"> 메인으로</button>
-					<button type="button" onclick="del()" class="btn btn-default" >탈퇴하기</button>
+					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/de'" class="btn btn-default" >탈퇴하기</button>
 					
 		</div>
 		</div>

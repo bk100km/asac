@@ -53,10 +53,10 @@ li {
 
 
 
-.as-pinwheel15-section  {
+.container {
   
 
-    margin-top: 30px;
+    margin-top: 10px;
     text-align:center;
   
 }
@@ -72,7 +72,8 @@ li {
 
 
 }
-h3 {
+h3 {	
+	margin-top:18px !important;
 	text-align : center;
 
 
@@ -86,7 +87,7 @@ h3 {
 
 .card-img-top{
 
-    width: 300px; 
+    width: 100px; 
     height: 370px;  
 
     margin-left:12px;
@@ -122,15 +123,16 @@ h3 {
 
 }
 .searchdiv{
-	margin-left:60%;
-	margin-bottom:2%;
+
+
+	margin-bottom:5%;
 
 
 }
 
 .searchform{
-	width:100%;
-	height:100%;
+	magin-left:60%;
+
 
 }
 
@@ -142,12 +144,36 @@ h3 {
 .pagination{
 	color:black !important;
 }
+
+
+.text {
+    width: 100%;
+}
+@media (max-width: 768px){
+
+.row{
+ margin-bottom:20px;
+ 
+ width:350px;
+ 
+}
+.productlist{
+
+	margin-left:55px !important;
+}
+
+
+}
+
+
      </style>
     </head>
     <body>
     <jsp:include page="../common/clientHeader.jsp" flush="false" />
   
         <!-- Section-->	
+        
+       <h3>${pcate}</h3>
         <section class="py-5">
             <div class="container">
             
@@ -163,34 +189,36 @@ h3 {
 						<input type="hidden" id="pcate" name="pcate" value="${param.pcate}"/>
 						</div>
 		</form>
-      
-                        	<h3> ${param.pcate}</h3>
-	                     <div class="col mb-5 productlist">
-	                        <div class="prodiv">
-	                        <ul class="rf-pinwheel-tiles">
+      			
+                        	
+	                   
+	                        </div>
+	                        
 
-	                        <c:forEach var="product" items="${proClientListlist}">
+	                      
 	                            <!-- Product image-->
-	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
-	                           <div class="as-pinwheel15-section">
-	                <div class= as-pinwheel-tile>
-	                
+	                             
+	                           <div class="container productlist">
+	                <div class="row" >
+	                <c:forEach var="product" items="${proClientListlist}">
+	                	<div class="col-md-6 col-lg-4">
 	                		<c:choose>
 		                    <c:when test="${param.items != null}">
-	                            <a href="/pr/cl/dt/${product.pcode}/items/${param.items}/text/${param.text}/${paging.nowPage}">
-	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/items/${param.items}/text/${param.text}/${paging.nowPage}">
+	                            <img class="card-img-top img-fluid" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                              </c:when>
 	                            <c:otherwise>
-	                            <a href="/pr/cl/dt/${product.pcode}/${paging.nowPage}">
-	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/${paging.nowPage}">
+	                            <img class="card-img-top img-fluid" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                            </c:otherwise>
 	                          
 	                            </c:choose>
-	                            <div class="group_btn"><button type="button" class="btn_cart"><span class="glyphicon glyphicon-shopping-cart"></span></button> <!----> <!----></div>
+	               
+	                            
 	                            <!-- Product details-->
-	                            <div class="card-body p-4">
+	                            <div class="card-body">
 	                                <div class="text-center">
 	                                    <!-- Product name-->
 	                                    <h5 class="fw-bolder">${product.pname}</h5>
@@ -198,16 +226,16 @@ h3 {
 	                                    <fmt:formatNumber value="${product.pprice}" pattern="#,###,###원"/>
 	                                </div>
 	                                </div>
+	                                </div>
+	                                    </c:forEach>
 	                            </div>
 	                            </div>
-	                            </li>
-	                             </c:forEach>
+	                        
+	                       
+	                         
 	                            <!-- Product actions-->
-	                          </ul>
-	                        </div>
-	                    </div>
-                   
-                </div>
+	                         
+	         
         
             	
 		<div style="display: block; text-align: center;">

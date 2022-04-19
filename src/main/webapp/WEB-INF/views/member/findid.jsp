@@ -22,7 +22,7 @@
 	        	$("#mname").focus();
 	        }
 			$.ajax({
-				url : "http://localhost:8080//me/cl/fI",
+				url : "<%= request.getContextPath() %>/me/cl/fI",
 				type : "POST",
 				data : {
 					name : $("#mname").val(),

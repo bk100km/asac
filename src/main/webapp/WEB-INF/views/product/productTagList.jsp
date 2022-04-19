@@ -130,17 +130,30 @@ h2{
 	text-align: center;
 	vertical-align: top;
 	border-radius: 100px;
-
 	background-color:#dcdcdc !important;
 	opacity: 0.3;
 	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
 	
 	font-weight: 500;
 	
-	margin-left:520px;
+	margin-left:45%;
 	
 }
+@media (max-width: 768px){
 
+.row{
+ margin-bottom:20px;
+ 
+ width:350px;
+ 
+}
+.productlist{
+
+	margin-left:20px !important;
+}
+
+
+}
      </style>
     </head>
     <body>
@@ -153,18 +166,24 @@ h2{
                         	<h2>#${ptag}</h2>
 	                     <div class="col mb-5 productlist">
 	                        <div class="prodiv">
-	                        <ul class="rf-pinwheel-tiles">
+	                  
 	                             
+	                             
+	                             
+	                             
+	                     <div class="container productlist">
+	                         <div class="row" >
        
 	                        <c:forEach var="product" items="${proClientListlist}">
+	                        
+	                        <div class="col-md-6 col-lg-4">
 	                            <!-- Product image-->
-	                            <li class="rf-pinwheel-item column large-4" data-autom="pinwheel15-tile3">
-	                           <div class="as-pinwheel15-section">
-	                <div class= as-pinwheel-tile>
-	                            <a href="/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
-	                            <img class="card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                         
+	    
+	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
+	                            <img class="img-fluid card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
-	                            <div class="group_btn"><button type="button" class="btn_cart"><span class="glyphicon glyphicon-shopping-cart"></span></button> <!----> <!----></div>
+	                           
 	                            <!-- Product details-->
 	                            <div class="card-body p-4">
 	                                <div class="text-center">
@@ -174,14 +193,17 @@ h2{
 	                                    <fmt:formatNumber value="${product.pprice}" pattern="#,###,###원"/>
 	                                </div>
 	                                </div>
-	                            </div>
-	                            </div>
-	                            </li>
+	                                </div>
+	                           
+	                            
 	                             </c:forEach>
 	                            <!-- Product actions-->
-	                          </ul>
+	                          
+	                            </div>
+	                            </div>
+	                        
 	                        </div>
-	                    </div>
+	         
                    
                 </div>
         

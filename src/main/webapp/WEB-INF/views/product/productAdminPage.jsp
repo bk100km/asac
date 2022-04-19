@@ -213,6 +213,7 @@ function productInfoAction(clickedproduct) {
                 $('#pcontent').prop('readonly',false);
                 $('#pregdate').prop('value',product.pregdate);
                 $('#sid').prop('value',product.sid);
+                $('#sid').prop('readonly',true);
                 $('#productUpdateButton').attr('onclick',"productUpdateOk()");
                 $('#productDeleteButton').attr('onclick',"productDeleteOk()");
             });
@@ -293,6 +294,7 @@ function productInsertForm() {
             $('#pcode').prop('readonly',false);
             $('#pname').prop('value',"");
             $('#pname').prop('readonly',false);
+            $('#pname').prop('required',true);
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',false);
             $('#pcate').prop('value',"");
@@ -366,10 +368,16 @@ function productInsertCancel() {
 			'</div>' +		
 			'<hr class="mb-4">' +
 			'<br>' +
-			'<div class="col-md-12 mb-3">' +
+			'<div class="col-md-6 mb-3">' +
 			'<input type="button" class="btn btn-default btn-md btn-block"' + 
 			'id="productInsertButton" value="상품추가"' + 
-			'onclick="productInsertForm()" title="상품추가 버튼">';
+			'onclick="productInsertForm()" title="상품추가 버튼">' +
+			'</div>' +
+			'<div class="col-md-6 mb-3">' +
+			'<input type="button" class="btn btn-default btn-md btn-block"' + 
+			'id="productInsertButton" value="리뷰보기"' + 
+			'onclick="location.href=`/pr/cl/dt/`" title="리뷰보기 버튼">' +
+			'</div>';
 
 			 document.getElementById("productButtonZone").innerHTML = productInsertCancelText;
         },
@@ -656,10 +664,14 @@ function pfileUploadAction() {
 						</div>		
 						<hr class="mb-4">
 						<br>
-						<div class="col-md-12 mb-3">
+						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productInsertButton" value="상품추가" 
 						onclick="productInsertForm()" title="상품추가 버튼">
+						</div>
+						<div class="col-md-6 mb-3">
+						<input type="button" class="btn btn-default btn-md btn-block" 
+						value="리뷰보기" onclick="location.href='/pr/cl/dt/'" title="리뷰보기 버튼">
 						</div>						
 					</div>	
 				</form>

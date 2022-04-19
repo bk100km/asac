@@ -103,13 +103,19 @@ public class MemberClientController {
 		memberClientService.memberClientLoginCheck(request, response, model, member);
 		orderAdminService.orderProductList(request, response, model);
 		System.out.println(member);
-		return "index";
+		
+		// Referer
+		System.out.println("컨트롤러에서 Referer 값 = " + member.getReferer());
+		System.out.println(member.getReferer().substring(21));
+		
+//		return "index";
+		return "redirect:" + member.getReferer();
 	}
 
 	@RequestMapping(value = "/me/cl/lO", method = RequestMethod.GET)
 	public String memberClientLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/me/cl/jo", method = RequestMethod.GET)
@@ -136,6 +142,15 @@ public class MemberClientController {
 	public int memberIdChk(MemberBean member) {
 		System.out.println("들어왔니");
 		int result = memberClientService.memberIdChk(member);
+		System.out.println(result + "는?");
+		return result;
+	}
+	
+	@RequestMapping(value = "/me/cl/eC", method = RequestMethod.POST)
+	@ResponseBody
+	public int memberEmailChk(MemberBean member) {
+		System.out.println("들어왔니");
+		int result = memberClientService.memberEmailChk(member);
 		System.out.println(result + "는?");
 		return result;
 	}
@@ -168,8 +183,9 @@ public class MemberClientController {
 	}
 
 	@RequestMapping(value = "/me/cl/dC", method = RequestMethod.POST)
-	public String memberClientDelete(MemberBean vo, HttpSession session, RedirectAttributes rttr) {
-		memberClientService.memberClientDelete(vo);
+	public String memberClientDelete(MemberBean vo, OrderBean order, HttpSession session, RedirectAttributes rttr) {
+		memberClientService.memberClientDelete(session, vo);
+		memberClientService.orderBackupInsert(session, order);
 		session.invalidate();
 		return "redirect:/";
 	}
@@ -224,7 +240,7 @@ public class MemberClientController {
 	@RequestMapping(value = "/me/cl/lo/getKakaoAuthUrl")
 	public @ResponseBody String getKakaoAuthUrl(HttpServletRequest request) throws Exception {
 		String reqUrl = "https://kauth.kakao.com/oauth/authorize" + "?client_id=346850b56c865f9b968ddbb705b5d969"
-				+ "&redirect_uri=http://localhost:8080/asac/me/cl/lo/kakao" + "&response_type=code";
+				+ "&redirect_uri=http://www.asac.gq/me/cl/lo/kakao" + "&response_type=code";
 
 		return reqUrl;
 	}
@@ -263,7 +279,7 @@ public class MemberClientController {
 		
 		System.out.println(kakaoInfo);
 
-		return "redirect:http://localhost:8080/asac/me/cl/my"; // 본인 원하는 경로 설정
+		return "redirect:/me/cl/my"; // 본인 원하는 경로 설정
 	}
 
 	// 토큰발급
@@ -286,7 +302,7 @@ public class MemberClientController {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=346850b56c865f9b968ddbb705b5d969"); // 본인이 발급받은 key
-			sb.append("&redirect_uri=http://localhost:8080/asac/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
+			sb.append("&redirect_uri=http://www.asac.gq/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();
@@ -434,7 +450,7 @@ public class MemberClientController {
 		session.setAttribute("mid", member.getMid()); // 세션 생성
 		model.addAttribute("result", apiResult);
 		// test
-		return "redirect:http://localhost:8080/asac/me/cl/my";
+		return "redirect:/me/cl/my";
 	}
 	
 	@RequestMapping(value = "/me/cl/fP", method = RequestMethod.GET)

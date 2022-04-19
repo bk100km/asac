@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.member.dao.MemberDAO;
+import kr.co.asac.orders.bean.OrderBean;
 
 @Service
 public class MemberClientService {
@@ -96,6 +97,13 @@ public class MemberClientService {
 		return result;
 	}
 	
+	public int memberEmailChk(MemberBean member) {
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		int result = memberDAO.memberEmailChk(member);
+		System.out.println(result);
+		return result;
+	}
+	
 	public void memberClientInfo(HttpServletRequest request, HttpSession session, Model model, String mid) {
 		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
 		MemberBean member = memberDAO.memberClientInfo(mid);
@@ -135,16 +143,24 @@ public class MemberClientService {
 		model.addAttribute("member", member);
 	}
 	
-	public void memberClientDelete(MemberBean vo) {
+	public void memberClientDelete(HttpSession session, MemberBean vo) {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
-		
 		// 비밀번호 복호화
+		
 		MemberBean secureMember = memberDAO.memberClientLoginCheck(vo.getMid());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String mid = (String) session.getAttribute("mid");
 		
-		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) { 
-		memberDAO.memberClientDelete(vo);
+		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) {
+			memberDAO.memberClientDelete(vo, mid);
 		}
+	}
+	
+	public void orderBackupInsert(HttpSession session, OrderBean order) {
+		MemberDAO memberDAO = sqlSessionTemplate.getMapper(MemberDAO.class);
+		String mid = (String) session.getAttribute("mid");
+		System.out.println("mid" + mid);
+		memberDAO.orderClientBackupInsert(order, mid);
 	}
 	
 	public int memberClientDelPwC(MemberBean vo) {

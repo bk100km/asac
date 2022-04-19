@@ -81,7 +81,7 @@
 						<label for="sid">아이디 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-							<input type="text" class="form-control" id="sid" name="sid" value="${seller.sname}" readonly>
+							<input type="text" class="form-control" id="sid" name="sid" value="${seller.sid}" readonly>
 						
 						
 						</div><br>
@@ -101,7 +101,7 @@
 						<label for="sphone">전화번호 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
-							<input type="tel" class="form-control phoneNumber" value="${seller.sphone}"  /><br>
+							<input type="tel" class="form-control phoneNumber" name="sphone" value="${seller.sphone}"  /><br>
 						</div><br>
 					</div>
 					<div class="mb-3">

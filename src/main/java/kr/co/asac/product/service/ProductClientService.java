@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import kr.co.asac.cart.bean.CartBean;
+import kr.co.asac.cart.dao.CartDAO;
 import kr.co.asac.member.bean.SellerBean;
 import kr.co.asac.product.bean.ProductBean;
 import kr.co.asac.product.dao.ProductDAO;
@@ -87,8 +89,12 @@ public class ProductClientService {
 		
 		String mid = (String)session.getAttribute("mid");
 		
-
-	
+		CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);
+    	List<CartBean> pcodelist = dao.cartClientPcode(mid);
+    	String cartCode = pcodelist.toString();
+    	boolean isContainsPcode = cartCode.contains(pcode);
+    	
+    	model.addAttribute("isContainsPcode", isContainsPcode);
 		
 		if(mid == null) {
 			mid = request.getParameter("aid");

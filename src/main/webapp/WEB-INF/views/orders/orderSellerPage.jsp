@@ -192,7 +192,6 @@ function orderInfoAction(clickedOrder) {
                     $('#ophone').prop('value',order.ophone);
                     $('#ophone').prop('readonly',false);
                     $('#ocode1').prop('value',order.ocode);
-                    $('#oaddr').prop('onclick',"maddrSearchAction()");
                     $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
                     $('#orderUpdateButton').attr('disabled',"disabled");
                     $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
@@ -557,6 +556,7 @@ function orderDeleteAction() {
 		            oncomplete: function(data) { //선택시 입력값 세팅
 	            		document.getElementById("oaddrz").value = data.zonecode; // 우편번호 넣기
 	                	document.getElementById("oaddr").value = data.address; // 주소 넣기
+	                	document.querySelector("input[name=oaddrd]").value = "";
 	                	document.querySelector("input[name=oaddrd]").focus(); //상세입력 포커싱
 	            	}
 	        	}).open();

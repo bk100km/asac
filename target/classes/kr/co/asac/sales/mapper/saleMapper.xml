@@ -52,39 +52,6 @@
 		group by date(oregdate)
 	</select>
 	
-	<!-- 구매완료 일별 Data -->
-	<select id="saleAdminDateConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select date(oregdate) as date
-		, count(ocode) as Count
-		, sum(p.pprice) as Total
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where date_format(oregdate,"%Y%m%d") and oconfirmed='구매완료'
-		group by date(oregdate)
-	</select>
-	
-	<!-- 주별 Data -->
-	<select id="saleAdminWeekList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select week(oregdate) as week
-        , count(ocode) as Count
-		, sum(p.pprice) as Total
-		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
-		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		GROUP BY YEARWEEK(oregdate)
-	</select>
-	
-	<!-- 구매완료 주별 Data -->
-	<select id="saleAdminWeekConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select week(oregdate) as week
-        , count(ocode) as Count
-		, sum(p.pprice) as Total
-		, CONCAT(DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(1-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e'), ' - '    
-		, DATE_FORMAT(DATE_ADD(oregdate, INTERVAL(7-DAYOFWEEK(oregdate)) DAY),'%Y-%m-%e')) AS DateRange
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where oconfirmed='구매완료'
-		GROUP BY YEARWEEK(oregdate)
-	</select>
-	
 	<!-- 월별 Data -->
 	<select id="saleAdminMonthList" resultType="kr.co.asac.orders.bean.OrderBean">
 		select month(oregdate) as month
@@ -149,6 +116,7 @@
 		, sum(p.pprice) as Total
 		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where p.pcate = #{pcate}
+		group by p.pname
 	</select>
 	
 	<!-- 구매완료 카테고리별 상품 Data -->
@@ -158,44 +126,7 @@
 		, sum(p.pprice) as Total
 		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where p.pcate = #{pcate} and oconfirmed='구매완료'
-	</select>
-	
-	<!-- 카테고리별 본인 Data -->
-	<select id="saleAdminSellerCateList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select p.pcate
-		, count(ocode) as Count
-		, sum(p.pprice) as Total
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where s.sid = #{id}
-		group by p.pcate
-	</select>
-	
-	<!-- 구매완료 카테고리별 본인 Data -->
-	<select id="saleAdminSellerCateConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select p.pcate
-		, count(ocode) as Count
-		, sum(p.pprice) as Total
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where s.sid = #{id} and oconfirmed='구매완료'
-		group by p.pcate
-	</select>
-	
-	<!-- 카테고리별 상품 본인 Data -->
-	<select id="saleAdminSellerCateProductList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select p.pname
-		, count(ocode) as Count
-		, sum(p.pprice) as Total
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where s.sid = #{id} and p.pcate = #{pcate}
-	</select>
-	
-	<!-- 구매완료 카테고리별 상품 본인 Data -->
-	<select id="saleAdminSellerCateProductConfirmList" resultType="kr.co.asac.orders.bean.OrderBean">
-		select p.pname
-		, count(ocode) as Count
-		, sum(p.pprice) as Total
-		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
-		where s.sid = #{id} and p.pcate = #{pcate} and oconfirmed='구매완료'
+		group by p.pname
 	</select>
 	
 	<!-- SaleSeller -->
@@ -304,6 +235,7 @@
 		, sum(p.pprice) as Total
 		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where s.sid = #{id}
+		group by p.pname
 	</select>
 	
 	<!-- 구매완료 본인 상품 Data -->
@@ -313,6 +245,6 @@
 		, sum(p.pprice) as Total
 		from orders o join member m on o.mid = m.mid join seller s on o.sid = s.sid join product p on o.pcode = p.pcode
 		where s.sid = #{id} and oconfirmed='구매완료'
+		group by p.pname
 	</select>
-	
 </mapper>

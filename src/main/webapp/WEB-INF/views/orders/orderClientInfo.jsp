@@ -15,10 +15,25 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>Insert title here</title>
 <style>
-	.subtitle{display:inline;}
+	.inline{display:inline;}
 	.center{<!--background-color:#fff8ff;-->}
 	.yellow{background-color: #C0FA6C; padding:20px;}  
 	.white{background-color: #ffffff; padding:20px;}
+	.btn {
+	display: inline-block;
+	min-width: 112px;
+	padding: 11px 31px;
+	font-size: 16px;
+	line-height: 26px;
+	text-align: center;
+	vertical-align: top;
+	border: 1px solid #82ae46 !important;
+	border-radius: 26px;
+	background-color: #82ae46 !important;
+	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
+	color: #fff;
+	font-weight: 500;
+}
 </style>
 </head> 
 <body>
@@ -30,14 +45,14 @@
   		<h4>주문 날짜 
   			 <fmt:formatDate value="${orderClientInfo[0].oregdate}" pattern="yyyy-MM-dd"/>
 	    	   &nbsp;</h4>
-		<h4 class="subtitle">주문 번호 ${orderClientInfo[0].ocode}<br></h4>
+		<h4 class="inline">주문 번호 ${orderClientInfo[0].ocode}<br></h4>
 		<br>
 	</div>
 	<div class="container-fluid center"> 
   		<div class="row">
    		<div class="col-8">
       		<h4>결제정보</h4>
-      		<hr/>
+      		
       		<c:forEach var="orderClientInfo" items="${orderClientInfo}">
       		<div class="row">
         	<div class="col-4 yellow">상품 이름  </div>
@@ -66,29 +81,77 @@
     	<div class="col-8">
       		<h4>배송정보</h4>
       		<hr/>
-      		
-      		<div class="row">
-        	<div class="col-4 yellow">이름  </div>
-        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo[0].oname}" required/></div>
-        		
-        	<div class="col-4 yellow">우편번호  </div>
-        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo[0].oaddrz}" readonly required/>
-        	<button type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
-        	
-        	<div class="col-4 yellow">주소  </div>
-        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo[0].oaddr}" readonly required/></div>
-        	
-        	<div class="col-4 yellow">상세주소  </div>
-        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo[0].oaddrd}" required/></div>
-        	
-        	<div class="col-4 yellow">전화번호  </div>
-        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo[0].ophone}" required/></div>
-        	
-        	<div class="col-4 yellow">요청사항  </div>
-        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" /></div>
-        	<input type="submit" value="변경사항 적용">
-     		</div>
-     		
+      		<c:choose>
+     		<c:when test="${orderClientInfo[0].odelivery eq '배송중'}">
+	      		<div class="row">
+	        	<div class="col-4 yellow">이름  </div>
+	        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo[0].oname}" readonly required/></div>
+	        		
+	        	<div class="col-4 yellow">우편번호  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo[0].oaddrz}" readonly required/>
+	        	<button class="btn" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
+	        	
+	        	<div class="col-4 yellow">주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo[0].oaddr}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">상세주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo[0].oaddrd}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">전화번호  </div>
+	        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo[0].ophone}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">요청사항  </div>
+	        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" readonly/></div>
+	        	
+	     		</div>
+     		</c:when>
+     		<c:when test="${orderClientInfo[0].odelivery eq '배송완료'}">
+	      		<div class="row">
+	        	<div class="col-4 yellow">이름  </div>
+	        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo[0].oname}" readonly required/></div>
+	        		
+	        	<div class="col-4 yellow">우편번호  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo[0].oaddrz}" readonly required/>
+	        	<button class="btn" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
+	        	
+	        	<div class="col-4 yellow">주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo[0].oaddr}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">상세주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo[0].oaddrd}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">전화번호  </div>
+	        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo[0].ophone}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">요청사항  </div>
+	        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" readonly/></div>
+	        	
+	     		</div>
+     		</c:when>
+     		<c:otherwise>
+	      		<div class="row">
+	        	<div class="col-4 yellow">이름  </div>
+	        	<div class="col-8 white"><input type="text"name="oname" id="oname" value="${orderClientInfo[0].oname}" required/></div>
+	        		
+	        	<div class="col-4 yellow">우편번호  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrz" id="oaddrz" value="${orderClientInfo[0].oaddrz}" readonly required/>
+	        	<button type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
+	        	
+	        	<div class="col-4 yellow">주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddr" id="oaddr" value="${orderClientInfo[0].oaddr}" readonly required/></div>
+	        	
+	        	<div class="col-4 yellow">상세주소  </div>
+	        	<div class="col-8 white"><input type="text" name="oaddrd" id="oaddrd" value="${orderClientInfo[0].oaddrd}" required/></div>
+	        	
+	        	<div class="col-4 yellow">전화번호  </div>
+	        	<div class="col-8 white"><input type="text" name="ophone" id="ophone" value="${orderClientInfo[0].ophone}" required/></div>
+	        	
+	        	<div class="col-4 yellow">요청사항  </div>
+	        	<div class="col-8 white"><input type="text" name="omessage" id="omessage" value="${orderClientInfo[0].omessage}" /></div>
+	        	<input type="submit" value="변경사항 적용">
+	     		</div>
+     		</c:otherwise>
+     		</c:choose>
      	</div>
      		<hr/>
     	</div>
@@ -105,9 +168,19 @@
 	          	<a href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
 	          </c:otherwise>
 	   </c:choose> --%>
-
-<a href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
-<a href="http://localhost:8080/me/cl/my"><button>주문 목록으로</button></a>
+<br/>
+<a href="/me/cl/my"><button class="btn">주문 목록으로</button> </a> &nbsp;
+<c:choose>
+<c:when test="${orderClientInfo[0].odelivery eq '배송중'}">
+<p class="inline">주문 취소불가</p>
+</c:when>
+<c:when test="${orderClientInfo[0].odelivery eq '배송완료'}">
+<p class="inline">주문 취소불가</p>
+</c:when>
+<c:otherwise>
+<a class="inline" href="/or/cl/de/${orderClientInfo[0].ocode}" onclick="return confirm('주문을 취소 하시겠습니까?');">주문 취소</a>
+</c:otherwise>
+</c:choose>
 <br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

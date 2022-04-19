@@ -156,11 +156,11 @@ background: linear-gradient(to top right);
 					</div>
 					<div class="mb-3">
 						<label for="pw">비밀번호</label><br>
-						<input type="password" class="form-control" name="mpwd" id="pw" value="${member.mpwd }" placeholder="영문/숫자/특수문자(!@#$%^*+=-)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
 					</div>
 					<div class="mb-3">
 						<label for="pw2">비밀번호 확인 </label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자/특수문자(!@#$^_)를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[!@#$^_])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
 						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
 						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 					</div>

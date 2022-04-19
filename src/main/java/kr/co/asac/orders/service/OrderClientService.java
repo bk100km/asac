@@ -121,31 +121,27 @@ public class OrderClientService {
 	}
 	
 	
-    public void cartInsert(CartBean cart,HttpServletResponse response, String mid) throws Exception {
+    public String cartInsert(CartBean cart,HttpServletResponse response, String mid) throws Exception {
     	CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);
     	System.out.println("서비스"+cart);
     	List<CartBean> pcodelist = dao.cartClientPcode(mid);
 		System.out.println("이녀석" + pcodelist);
-		
+		String boo;
 		String pcode = pcodelist.toString();
 		String cartpcode = cart.pcode;
 		boolean isContainsPcode = pcode.contains(cartpcode);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		if (isContainsPcode == true) {
-			out.println("<script>");
-		   	out.println("alert('장바구니에 담겨져있는 상품입니다!')");
-		   	out.println("</script>");
-		   	out.flush();
+			
+		   	boo=null;
 		}else {
 		System.out.println("참이어야해" + isContainsPcode);
     	dao.cartInsert(cart);
-    	out.println("<script>");
-	   	out.println("alert('상품이 장바구니에 담겼습니다!')");
-	   	out.println("</script>");
-	   	out.flush();
-		}
     	
+    	boo = "11";
+		}
+    	return boo;
     }
     
     public void cartUpdate(HttpServletRequest request, Model model, CartBean cart) {

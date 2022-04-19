@@ -57,37 +57,39 @@ public class MemberAdminController {
 	@RequestMapping(value = "/me/ad/lO", method = RequestMethod.GET)
 	public String memberAdminLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:http://localhost:8080/";
+		return "redirect:/";
 	}
 	
-	@RequestMapping(value = "/me/ad/if", method = RequestMethod.GET)
-	public String memberAdminInfo(HttpServletRequest request,HttpServletResponse response, HttpSession session, Model model) throws IOException {
-		String sid = (String) session.getAttribute("sid");
-		memberSellerService.memberSellerInfo(request,response, session, model, sid);
-		return "member/memberAdminInfo";
-	}	
-	
-	@RequestMapping(value = "/me/ad/li", method = RequestMethod.GET)
-	public String memberAdminListTab(Model model,
+	@RequestMapping(value = "/me/ad/lC", method = RequestMethod.GET)
+	public String memberAdminClientList(Model model,
 			@RequestParam(value="MemberSearchCategory", required = false, defaultValue = "mid") String memberSearchCategory,
 			@RequestParam(value="MemberSearchText", required = false, defaultValue = "") String memberSearchText,
 			@ModelAttribute(value = "memberPaging") PagingBean memberPaging,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
+		
+		int memberListCnt = memberAdminService.memberAdminClientCount(memberSearchCategory, memberSearchText);
+		memberPaging.pageInfo(page, range, memberListCnt);
+		System.out.println("컨트롤러에서 memberPaging 값은 = " + memberPaging);
+		
+		memberAdminService.memberAdminClientList(model, memberPaging);
+		return "member/memberAdminClientList";
+	}
+	
+	@RequestMapping(value = "/me/ad/lS", method = RequestMethod.GET)
+	public String memberAdminSellerList(Model model,
 			@RequestParam(value="sellerSearchCategory", required = false, defaultValue = "sid") String sellerSearchCategory, 
 			@RequestParam(value = "sellerSearchText", required = false, defaultValue = "") String sellerSearchText,
 			@ModelAttribute(value = "sellerPaging") PagingBean sellerPaging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int memberListCnt = memberAdminService.memberAdminClientCount(memberSearchCategory, memberSearchText);
 		int sellerListCnt = memberAdminService.memberAdminSellerCount(sellerSearchCategory, sellerSearchText);
-		memberPaging.pageInfo(page, range, memberListCnt);
 		sellerPaging.pageInfo(page, range, sellerListCnt);
-		System.out.println("컨트롤러에서 memberPaging 값은 = " + memberPaging);
 		System.out.println("컨트롤러에서 sellerPaging 값은 = " + sellerPaging);
 		
-		memberAdminService.memberAdminClientList(model, memberPaging);
 		memberAdminService.memberAdminSellerList(model, sellerPaging);
-		return "member/memberAdminListTab";
+		return "member/memberAdminSellerList";
 	}
 	
 	// adminClient
@@ -141,6 +143,7 @@ public class MemberAdminController {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("paging", paging);
 	    map.put("memberList", memberList);
+		System.out.println("컨트롤러에서 memberPaging 값은 = " + paging);
 	    return map;
 	}	
 	
@@ -231,14 +234,13 @@ public class MemberAdminController {
 //		String filePath = request.getSession().getServletContext().getRealPath("upload");
 		String fileName = sfileUpload.getOriginalFilename();
 		System.out.println("fileName값은 = " + fileName);
-		
         try {
-        	sfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\upload\\" + fileName));
+        	sfileUpload.transferTo(new File(request.getSession().getServletContext().getRealPath("/resources/memberUpload") + "/" +  fileName));
         } catch(Exception e) {
             System.out.println("업로드 오류");
         }
         System.out.println("업로드 완료");
-        System.out.println("업로드 파일경로 : " + "C:\\asac\\asac\\src\\main\\webapp\\resources\\upload\\");
+        System.out.println("업로드 파일경로 : " + request.getSession().getServletContext().getRealPath("/resources/memberUpload"));
 		System.out.println("업로드 파일이름 : " + fileName);
 		System.out.println("업로드 파일크기 : " + sfileUpload.getSize());
 		
