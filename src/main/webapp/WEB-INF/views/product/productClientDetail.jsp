@@ -152,6 +152,39 @@ $('.btn_gotop').click(function(){
 	return false;
 });
 
+function directAction() {
+	
+	 if("${mid}"== ""){
+			alert("로그인하세요.");
+			window.location.href = "/me/cl/lo";
+			$("#mid").focus();
+			event.stiplmmediatePropagation();
+			}
+		
+	var cart = $("form[name=productDetail]").serialize();
+  
+  $.ajax({
+      type: 'POST',
+      url: '/ca/cl/in',
+ 		data: cart,
+      success: function() {   
+    		
+   	   window.location.href = "/ca/cl/lf";
+	    }
+      ,
+      error: function(request, status, error) {
+          console.log("code:" + request.status + 
+          		"\n"+"message:" + request.responseText + 
+          		"\n"+"error:"+error);
+      }
+  });
+}
+
+
+
+
+
+
 </script>
 <style>
 .container {
@@ -361,36 +394,14 @@ $('.btn_gotop').click(function(){
   </span>
 </a>
 
-	<c:set var="id" value="${aid}" />
-	<c:choose>
-		<c:when test="${id != null}">
-			    <!-- Page Wrapper -->
-    <div id="wrapper">
-	<jsp:include page="../common/sellerHeader.jsp"></jsp:include>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        	
-
-
-		</c:when>
-		<c:otherwise>
 			<jsp:include page="../common/clientHeader.jsp" flush="false" />
-
-		</c:otherwise>
-	</c:choose>
-	<c:choose>
-		<c:when test="${aid != null}">
-      <!-- Topbar -->
-        	<jsp:include page="../common/toolbarHeader.jsp" />
-</c:when></c:choose>
 
 
 		<div class="container">
 					<div  class="row" >
 					<div class="col-md-12 col-lg-6">
 						<div class="imgbox">
-							<img src="/resources/image/product/${proDetail.pfile}"
+							<img src="/resources/productUpload/${proDetail.pfile}"
 								class="img-fluid" title="${proDetail.pname}"
 								alt="${proDetail.pcontent}" />
 								
@@ -429,8 +440,7 @@ $('.btn_gotop').click(function(){
 								<hr /></hr>	
 								
 								
-						<c:choose>
-							<c:when test="${aid == null}">
+				
 							<span class="text-center me-2">구매 수량</span><input type="number"
 								class="content form-control text-center" id="pcount"
 								name="pcount" type="number" min="1" max="30" value="1"
@@ -442,34 +452,35 @@ $('.btn_gotop').click(function(){
 								onkeyup="inputNumberFormat(this);" disabled />
 							<hr /></hr>
 						
-								<a class="atag btn-default" href="http://localhost:8080/pr/cl/li/ptag/${proDetail.ptag}/1" role="button" ><span>#${proDetail.ptag}</span></a>
+								<a class="atag btn-default" href="<%= request.getContextPath() %>/pr/cl/li/ptag/${proDetail.ptag}/1" role="button" ><span>#${proDetail.ptag}</span></a>
 					
 							<div class="colum-10">
-								<button class="btn" type="submit" onclick="">바로 구매</button>
+								<button class="btn" type="button" onclick="directAction()">바로 구매</button>
 								&nbsp;
 								<button class="btn" type="button"
 									onclick="cartAction()">장바구니</button>
 									<input name="url" type="hidden" >
-    							</c:when>
-							</c:choose>
+    					
 								<div>
 						
 									<c:choose>
 										<c:when test="${!empty ptag}">
 												<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/pr/cl/li/ptag/${ptag}/${nowPage}'">
+												onclick="location.href='<%= request.getContextPath() %>/pr/cl/li/ptag/${ptag}/${nowPage}'">
 										</c:when>
-										<c:when test="${aid != null}">
-											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/pr/se/li'">
-										</c:when>
+								
 										<c:when test="${items != null}">
 											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/pr/cl/li/${proDetail.pcate}/items/${items}/text/${text}/${nowPage}'">
+												onclick="location.href='<%= request.getContextPath() %>/pr/cl/li/${proDetail.pcate}/items/${items}/text/${text}/${nowPage}'">
 										</c:when>
+										<c:when test="${nowPage == null}">
+											<input class="btn content" type="button" value="상품목록"
+												onclick="location.href='<%= request.getContextPath() %>/'">
+										</c:when>
+								
 										<c:otherwise>
 											<input class="btn content" type="button" value="상품목록"
-												onclick="location.href='/pr/cl/li/${proDetail.pcate}/${nowPage}'">
+												onclick="location.href='<%= request.getContextPath() %>/pr/cl/li/${proDetail.pcate}/${nowPage}'">
 
 										</c:otherwise>
 									</c:choose>
@@ -502,22 +513,19 @@ $('.btn_gotop').click(function(){
 
    <jsp:include page="./reviewList.jsp" flush="false" />
 
-<c:choose>
-		<c:when test="${aid != null}">
+
       	</div>
-	<jsp:include page="../common/footer.jsp" flush="false" />
+
 	
 	
 	
 	</div>
 	</div>
-</c:when>
-	<c:otherwise>
+
 	
 	<jsp:include page="../common/footer.jsp" flush="false" />
 	
-	</c:otherwise>
-</c:choose>
+
 
 
 

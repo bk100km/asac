@@ -150,9 +150,9 @@ public class MemberSellerService {
 		String listjson4 = new Gson().toJson(ordersSumMonthChart);
 		model.addAttribute("list4", listjson4);
 
-		List<OrderBean> recentOrder = dao.recentOrder();
+		List<OrderBean> recentOrder = dao.sellerRecentOrder(sid);
 		model.addAttribute("recentOrder", recentOrder);
-		List<ProductBean> topThreeOrder = dao.topThreeOrder();
+		List<ProductBean> topThreeOrder = dao.sellerTopThreeOrder(sid);
 		model.addAttribute("topThreeOrder", topThreeOrder);
 	}
 	

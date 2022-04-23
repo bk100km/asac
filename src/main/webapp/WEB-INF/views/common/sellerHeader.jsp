@@ -17,7 +17,8 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -46,10 +47,15 @@
 .sidebar .sidebar-heading {
     color: #436414 !important;
 }
+@media ( max-width : 991px) {
+.sidebar {
+	display: none;
+}
+}
 </style>
 </head>
 <body>
-	<header>
+	
 		<!-- Sidebar -->
 		<ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion "
 			id="accordionSidebar">
@@ -114,7 +120,7 @@
 			</div>
 		</ul>
 		<!-- End of Sidebar -->
-	</header>
+	
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="/resources/bootstrap/adminIndex/vendor/jquery/jquery.min.js"></script>

@@ -42,13 +42,13 @@ public class OrderAdminController {
 	
 	@RequestMapping(value = "/or/ad/li", method = RequestMethod.GET)
 	public String orderAdminList(HttpServletRequest request, HttpServletResponse response, Model model,
-			@RequestParam(value="orderSearchCategory", required = false, defaultValue = "pname") String orderSearchCategory,
-			@RequestParam(value="orderSearchText", required = false, defaultValue = "") String orderSearchText,
+			@RequestParam(value="searchCategory", required = false, defaultValue = "pname") String searchCategory,
+			@RequestParam(value="searchText", required = false, defaultValue = "") String searchText,
 			@ModelAttribute(value = "orderPaging") PagingBean orderPaging,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
 			@RequestParam(value = "range", required = false, defaultValue = "1") int range) throws Exception {
 		
-		int orderListCnt = orderAdminService.orderAdminListCount(request, orderSearchCategory, orderSearchText);
+		int orderListCnt = orderAdminService.orderAdminListCount(request, searchCategory, searchText);
 		orderPaging.pageInfo(page, range, orderListCnt);
 		
 		orderAdminService.orderAdminList(request, response, model, orderPaging);
@@ -95,14 +95,14 @@ public class OrderAdminController {
 	}
 	
 	@RequestMapping("/ca/cl/fl")
-	public String CartInsert(HttpServletRequest request, HttpServletResponse response, Model model, CartBean cart, MemberBean member) throws Exception {
-		orderAdminService.cartResetInsert(cart, request, response);
+	public String orderFast(HttpServletRequest request, HttpServletResponse response, Model model, CartBean cart, MemberBean member) throws Exception {
+		orderAdminService.orderFast(cart, request, response);
 		
     	HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
 		
 		model.addAttribute("cart", cart);
-		List<CartBean> cartlist = orderClientService.cartList(mid, cart);
+		List<CartBean> cartlist = orderAdminService.FastList(mid, cart, model);
 		model.addAttribute("cartList",cartlist);
 		MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
 		model.addAttribute("memberInfo",memberinfo);
@@ -121,8 +121,18 @@ public class OrderAdminController {
 		
 		HttpSession session = request.getSession(); 
 		String mid = (String)session.getAttribute("mid");
-		String ocode = orderAdminService.orderClientInsert(sid, mid, pcode, ocount,oname, oaddrz,oaddr, 
-				oaddrd,ophone,ototal, omessage);
+		String ocode = orderAdminService.orderClientInsert(sid, mid, pcode, ocount, oname, oaddrz, oaddr, oaddrd,ophone,ototal, omessage);
 		return ocode;
+	}
+	
+	@RequestMapping(value="/ca/cl/fu", method = RequestMethod.POST)
+	public String CartUpdate(HttpServletRequest request, HttpSession session, Model model, CartBean cart, MemberBean member) {
+		orderClientService.cartUpdate(request, model, cart);
+		String mid=(String) session.getAttribute("mid");
+		List<CartBean> cartlist = orderAdminService.FastList(mid, cart, model);
+		model.addAttribute("cartList",cartlist);
+		MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
+		model.addAttribute("memberInfo",memberinfo);
+		return "orders/orderFast";
 	}
 }

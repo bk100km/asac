@@ -63,6 +63,21 @@
 			}
 		});
 	};
+	
+	function joinBtn() {
+		var mid = $('#mid').val();
+		var mpwd = $('#mpwd').val();
+		var mname = $('#mname').val();
+		var mbirth = $('#mbirth').val();
+		var mphone = $('#mphone').val();
+		var mmail = $('#mmail').val();
+		var maddrz = $('#sample4_postcode').val();
+		var maddr = $('#sample4_roadAddress').val();
+		var maddrd = $('#sample4_detailAddress').val();
+		if(mid !='' && mpwd != '' && mname != '' && mbirth != '' && mphone != ''&& mmail != '' && maddrz != '' && maddr != '' && maddrd != ''){
+			alert("회원가입이 완료 되었습니다.");
+		}
+	};
 
 	$(function() {
 		//비밀번호 확인
@@ -270,7 +285,7 @@ body {
 }
 
 .input-form {
-	width: 650px;
+	width: 600px;
 	margin-top: 30px !important;
 	padding: 32px;
 	background: #fff;
@@ -298,6 +313,7 @@ body {
 .correct{
     color : green;
 }
+
 .incorrect{
     color : red;
 }
@@ -306,52 +322,64 @@ body {
     outline: 0;
 }
 
+.join1{
+	font-weight: 600;
+}
+
+#pw{
+	font-size: 17px;
+}
+
+#pw2{
+	font-size: 17px;
+}
+
 </style>
 </head>
 <body>
 
 	
 	<jsp:include page="../common/clientHeader.jsp" />
-	<h2 align="center" class="mb-3">회원가입</h2>
+	<h2 align="center" class="mb-3 join1">회원가입</h2>
 	<div class="container">
 		<div class="input-form-background row">
 			<div class="input-form mx-auto my-auto">
 				<form class="validation-form" method="post" action="./jA" onsubmit="return checkAll()" name="form">
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="mid">아이디 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 							<input type="text" class="form-control" id="mid" name="mid" oninput="checkId()" maxlength="10" onkeyup="this.value=this.value.replace(/[^a-zA-Z-_0-9]/g,'');" placeholder="영문 소문자와 숫자만 입력가능" required>
 						</div>
 						<div>
-							<span class="id_ok"><p>사용 가능한 아이디입니다.</p></span>
-							<span class="id_already"><p>이미 사용중인 아이디입니다.</p></span>
+							<span class="id_ok">사용 가능한 아이디입니다.</span>
+							<span class="id_already">이미 사용중인 아이디입니다.</span>
 						</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="pw">비밀번호 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자 포함 4~16자 입력" pattern="^([a-z0-9_]){4,16}$" minlength="4" maxlength="16" required>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required>
-						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
-						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자 포함 4~16자 입력" pattern="^([a-z0-9_]){4,16}$" minlength="4" maxlength="16" required>
+						<span class="pw_ok">비밀번호가 일치합니다.</span>
+						<span class="pw_nok">비밀번호가 일치하지 않습니다.</span>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="mname">이름 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="mname" id="mname" placeholder="홍길동" pattern="^[가-힣]+$" maxlength="4"  required><br>
+						<input type="text" class="form-control" name="mname" id="mname" placeholder="홍길동" pattern="^[가-힣]+$" maxlength="4"  required>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="mbirth">생년월일 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control birth" name="mbirth" id="mbirth" placeholder="예) 910101-1****** " maxlength="14" onkeyup="birth_keyup(this)" required><br>
+						<input type="text" class="form-control birth" name="mbirth" id="mbirth" placeholder="예) 910101-1****** " maxlength="14" onkeyup="birth_keyup(this)" required>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="mphone">전화번호 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span>
 							<input type="tel" class="form-control phoneNumber" name="mphone" id="mphone" placeholder="010-1234-1234" maxlength="13" required>
-						</div><br>
+						</div>
 					</div>
 					<label for="mmail">이메일 <span class="text-danger">*</span></label>
 					<div class="row mail_wrap">
@@ -365,51 +393,51 @@ body {
 		            		<input type="button" value="인증번호 전송" id="mail_check_button" class="btn btn-outline-secondary mail_check_button"><br>
 		            	</div>
 					</div>
-					<div class="mb-3">
-						<span class="email_ok"><p>사용 가능한 이메일입니다.</p></span>
-						<span class="email_already"><p>이미 사용중인 이메일입니다.</p></span>
+					<div class="mb-2">
+						<span class="email_ok">사용 가능한 이메일입니다.</span>
+						<span class="email_already">이미 사용중인 이메일입니다.</span>
 					</div>
 		           	<div class="clearfix"></div>
-					<div class="mb-3 mail_check_wrap mail_check_input_box" id="mail_check_input_box_false">
+					<div class="mb-2 mail_check_wrap mail_check_input_box" id="mail_check_input_box_false">
 						<input type="text" class="form-control mail_check_input" disabled="disabled" maxlength="6" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');" placeholder="인증번호를 입력해주세요" required>
 						<span id="mail_check_input_box_warn"></span>
-					</div><br>
+					</div>
 					<div class="row">
-						<div class="col-md-9 mb-3">
+						<div class="col-md-9 mb-2">
 							<label for="sample4_postcode">우편번호 <span class="text-danger">*</span></label>
-							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="maddrz" readonly required><br>
+							<input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호" name="maddrz" readonly required>
 						</div>
-						<div class="col-md-3 mb-3">
-							<label>&nbsp;</label><br>
-							<input type="submit" class="btn btn-outline-secondary btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+						<div class="col-md-3 mb-2">
+							<label>&nbsp;</label>
+							<input type="button" class="btn btn-outline-secondary btn_sample4_postcode" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
 						</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sample4_roadAddress">도로명주소</label>
 						<input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" name="maddr" readonly required>
-						<p><span id="guide" style="color: #999; display: none"></span><p>
+						<span id="guide" style="color: #999; display: none"></span>
 					</div>
 					<input type="hidden" class="form-control" id="sample4_jibunAddress" placeholder="지번주소" required>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sample4_detailAddress">상세주소</label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" name="maddrd" required><br>
+							<input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" name="maddrd" required>
 						</div>
 					</div>
-					<input type="hidden" class="form-control" id="sample4_extraAddress" placeholder="참고항목"><br><br>
+					<input type="hidden" class="form-control" id="sample4_extraAddress" placeholder="참고항목">
 					<!-- 
 						<hr class="mb-4">
 						우편번호 : <input type = "text" name="maddr"><br>
 						주소 : <input type = "text" name="maddrd"><br>
 						상세주소 : <input type = "text" name="maddrz"><br> -->
 					<div class="mb-4"></div>
-				<input type="submit" id="submit" class="join_button btn btn-primary btn-lg btn-block" value="가입하기"><br>
+				<input type="submit" id="submit" class="join_button btn btn-primary btn-lg btn-block" onclick="joinBtn()" value="가입하기">
 				</form>
 			</div>
 		</div>
 	</div>
-	<br><br>
+	<br>
 	<jsp:include page="../common/footer.jsp" />
 
 </body>

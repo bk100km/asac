@@ -169,17 +169,46 @@ public class MemberClientController {
 	}
 
 	@RequestMapping(value = "/me/cl/up", method = RequestMethod.POST)
-	public String memberClientInfo(HttpServletRequest request, HttpSession session, Model model, MemberBean member) {
-		memberClientService.memberClientUpdate(request, model, member);
+	public String memberClientInfo(HttpServletRequest request, HttpSession session, Model model, MemberBean member, HttpServletResponse response) throws Exception {
+		memberClientService.memberClientUpdate(request, model, member, response);
 		String mid = (String) session.getAttribute("mid");
 		memberClientService.memberClientInfo(request, session, model, mid);
-		return "/member/memberClientMypage";
+		return "redirect:/me/cl/my";
 	}
 
 	@RequestMapping(value = "/me/cl/de", method = RequestMethod.GET)
 	public String memberDeleteView() {
 		return "/member/memberClientDelete";
 	}
+	
+	@RequestMapping(value = "/me/cl/dk", method = RequestMethod.GET)
+	public void memberClientDeleteKN(MemberBean vo, OrderBean order, Model model, HttpSession session, RedirectAttributes rttr, @RequestParam(value="oconfirmed", required=false) String oconfirmed, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String mid = (String) session.getAttribute("mid");
+		System.out.println("delete하는 mid값은? ===> " + mid);
+		List<OrderBean> ocodelist = orderClientService.orderClientOcodeList(mid, order);
+		model.addAttribute("orderClientOrderList",ocodelist);
+		if(ocodelist != null) {
+			for(int j=0; j < ocodelist.size(); j++) {
+				OrderBean str = ocodelist.get(j);
+				if(!str.getOconfirmed().equals("구매완료")) {
+					response.setContentType("text/html; charset=utf-8");
+					PrintWriter out = response.getWriter();
+					out.println("<script>");
+					out.println("alert('구매 완료 후 탈퇴하세요.')");
+					out.println("location.href='/me/cl/my'");
+					out.println("</script>");
+					out.flush();
+					return;
+				} else {
+				}
+			}
+			memberClientService.orderBackupInsert(session, order);
+			memberClientService.memberClientDelete(session, vo, response);
+		} else {
+			memberClientService.orderBackupInsert(session, order);
+			memberClientService.memberClientDelete(session, vo, response);
+		}
+	}	
 
 	@RequestMapping(value = "/me/cl/dC", method = RequestMethod.POST)
 	public void memberClientDelete(MemberBean vo, OrderBean order, Model model, HttpSession session, RedirectAttributes rttr, @RequestParam("oconfirmed") String oconfirmed, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -259,7 +288,7 @@ public class MemberClientController {
 	@RequestMapping(value = "/me/cl/lo/getKakaoAuthUrl")
 	public @ResponseBody String getKakaoAuthUrl(HttpServletRequest request) throws Exception {
 		String reqUrl = "https://kauth.kakao.com/oauth/authorize" + "?client_id=346850b56c865f9b968ddbb705b5d969"
-				+ "&redirect_uri=http://www.asac.gq/me/cl/lo/kakao" + "&response_type=code";
+				+ "&redirect_uri=http://localhost:8080/me/cl/lo/kakao" + "&response_type=code";
 
 		return reqUrl;
 	}
@@ -321,7 +350,7 @@ public class MemberClientController {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=346850b56c865f9b968ddbb705b5d969"); // 본인이 발급받은 key
-			sb.append("&redirect_uri=http://www.asac.gq/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
+			sb.append("&redirect_uri=http://localhost:8080/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();
@@ -447,7 +476,8 @@ public class MemberClientController {
 		// response의 nickname값 파싱
 		
 		member.initMember();
-		member.setMid((String) response_obj.get("id"));
+		member.setMid("n@" + (String) response_obj.get("id"));
+		System.out.println("네이버 로그인 아이디 "+member);
 		
 		if ((String) response_obj.get("email") != null) {
 			member.setMmail((String) response_obj.get("email"));
@@ -467,7 +497,6 @@ public class MemberClientController {
 		
 		// 4.파싱 닉네임 세션으로 저장
 		session.setAttribute("mid", member.getMid()); // 세션 생성
-		model.addAttribute("result", apiResult);
 		// test
 		return "redirect:/me/cl/my";
 	}

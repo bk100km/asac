@@ -180,8 +180,8 @@ h2{
 	                            <!-- Product image-->
 	                         
 	    
-	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
-	                            <img class="img-fluid card-img-top" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a class="img-prod" href="<%= request.getContextPath() %>/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
+	                            <img class="img-fluid card-img-top" src="/resources/productUpload/${proDetail.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                           
 	                            <!-- Product details-->
@@ -213,7 +213,7 @@ h2{
 		<c:if test="${paging.startPage != 1 }">
 		<li>
 		
-			<a class="page-link" href="/pr/cl/li/pctag/${ptag}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+			<a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/pctag/${ptag}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
 			&laquo;</span></a>
 		</li>
 		</c:if>
@@ -229,7 +229,7 @@ h2{
 		</c:forEach>
 		<c:if test="${paging.endPage != paging.lastPage}">
 		<li class="page-item">
-			<a class="page-link" href="/pr/cl/li/ptag/${ptag}}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+			<a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/ptag/${ptag}}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
       </a>
       </li>
 		</c:if>

@@ -58,7 +58,7 @@
 }
 
 #productInfoBtn td {
-	line-height: 21px;
+	line-height: 28px;
 }
 
 th {
@@ -85,7 +85,7 @@ th {
 }
 
 .product-panel-default {
-	height: 950px;
+	height: 807px;
 	border: 1px solid;
 	border-radius: 10px;
     border-color:  #d8e3c9;
@@ -111,7 +111,6 @@ th {
 	border: none;
 	color: #72815d;
     font-weight: 700;
-}
 }
 
 option {
@@ -169,10 +168,19 @@ option {
 .nav-tabs > .active {
 	background: #b8d590;
 }
+
+#page-wrapper {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+
 </style>
 </head>
 
-<body>
+<body id="page-top">
 <script>
 
 //pfilePreview
@@ -202,15 +210,15 @@ function productInfoAction(clickedproduct) {
             pfileZoneText +=  
 				'<div class="row">' +
 				'<div class="col-md-9 mb-1 input-group-sm">' +
-					'<label for="pfile">증명서류 <span class="text-danger">*</span></label> <input type="text"' +
-						'class="form-control" name="pfile" id="pfile" placeholder=".png, .jpg" value="' + pfile + '"' +
+					'<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"' +
+						'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
 						'maxlength="10" required readonly>' +
 				'</div>' +
 				'<div class="col-md-3 mb-1">' +
 					'<input type="file" accept="image/jpeg"' +
-						'class="form-control" name = "pfileUpload" id="pfileUpload" value="파일등록" onchange="pfileUploadAction()">' +
+						'class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">' +
 					'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
-					'<input type="button" class="form-control" name = "pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+					'<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
 				'</div>' +
 				'</div>' + 
 				'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기&nbsp; </a>';
@@ -222,7 +230,7 @@ function productInfoAction(clickedproduct) {
                 $('#pname').prop('readonly',false);
                 $('#pprice').prop('value',product.pprice);
                 $('#pprice').prop('readonly',false);
-                $('#pcate').prop('value',product.pcate);
+                $('#pcate').prop('value', product.pcate);
                 $('#pcate').prop('disabled',true);
                 $('#ptag').prop('value',product.ptag);
                 $('#ptag').prop('readonly',false);
@@ -359,7 +367,7 @@ function productInsertForm() {
 			'id="productInsertBackButton" value="뒤로가기" onclick="productInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
-			'<br>';
+			'<br><br><br><br><br>';
 			document.getElementById("productButtonZone").innerHTML = productInsertFormText;
 			
         },
@@ -463,6 +471,7 @@ function productUpdateAction() {
         success: function() {
         	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
         	alert("수정이 완료되었습니다.");
+        	$('#pcate').prop('disabled',true);	
 				
         },
         error: function(request, status, error) {
@@ -510,7 +519,7 @@ function pfileUploadAction() {
 			'<div class="row">' +
 			'<div class="col-md-9 input-group-sm">' +
 				'<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"' +
-					'class="form-control" name="pfile" id="pfile" placeholder=".png, .jpg" value="' + pfile + '"' +
+					'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
 					'maxlength="11" required readonly>' +
 			'</div>' +
 			'<div class="col-md-3">' +
@@ -539,18 +548,17 @@ function productRAction() {
 }
 
 </script>
-<!-- Page Wrapper -->
-<div id="wrapper">
-<header>
-<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
-</header>
-<!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
-<!-- Main Content -->
-<div id="content">
-<!-- Topbar -->
-<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
-
+<br>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+        	<!-- Topbar -->
+        	<jsp:include page="../common/toolbarHeader.jsp" />
+        	
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-6">
@@ -624,9 +632,11 @@ function productRAction() {
 					<div class="panel product-panel-default">
 						<div class="panel-heading" id="panel-heading-right">상품 상세 정보</div>
 						<div class="panel-body">
+						<c:forEach var="product" items="${productAdminList}">
 						<div class="overlay overlayFade" id="overlayFade">
-							<img src="/resources/image/product/무화과잼.jpg" alt="img" class="image">
+							<img src="/resources/productUpload/${product.pfile}" alt="img" class="image">
 						</div>
+						</c:forEach>
 							<div class="table-responsive" id="productFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
@@ -646,7 +656,7 @@ function productRAction() {
 					</div>
 				
 					<div class="mb-1 input-group-sm">
-					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
+					<label for="pcode">상품코드 <span class="text-danger">*</span><span style="font-size:10pt"> &nbsp; ex) N001, G001, K001···</span></label> 
 						<input type="text"
 							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
 							placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$" 
@@ -675,11 +685,11 @@ function productRAction() {
 					<div class="row">
 					<div class="col-md-9 input-group-sm">
 						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value=""
+							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="${product.pfile}"
 							maxlength="10" required readonly>
 					</div>
 					<div class="col-md-3">
-						<input type="file" accept="image/*"
+						<input type="file" accept="image/jpeg"
 							class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">
 						<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>
 						<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById('pfileUpload').click()" disabled>							
@@ -747,6 +757,7 @@ function productRAction() {
 		if(!confirm('정말 수정하시겠습니까?')){
 			return false;
 		} else {
+			$("select[name=pcate]").removeAttr('disabled');
 			productUpdateAction();
 		}
 	}
@@ -783,5 +794,9 @@ function productRAction() {
 </footer>
 </div>
 </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 </body>
 </html>

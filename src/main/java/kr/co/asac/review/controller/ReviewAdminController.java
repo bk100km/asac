@@ -44,16 +44,30 @@ public class ReviewAdminController {
 		
 		HttpSession session = request.getSession(); 
 	
-		String aid = (String)session.getAttribute("sid");
-		
+		String sid = (String)session.getAttribute("sid");
+		String aid = (String)session.getAttribute("aid");
 	
 	
 
 		model.addAttribute("nowcode", nowcode);
-		model.addAttribute("aid", aid);
+		model.addAttribute("aid", sid);
 		
-		return	"redirect:/pr/cl/dt/"+ nowcode;
+		
+
+		
+		
+		if(sid != null) {
+			return "redirect:/pr/se/dt/"+ nowcode;
+			}
+		else if(aid == "admin") {
+
+			return "redirect:/pr/ad/dt/"+ nowcode;
+			}
+		else {
+			return "redirect:/pr/cl/dt/"+ nowcode;
+		}
 	}
+	
 	
 	@RequestMapping(value = "/re/ad/de/{nowcode}/{rnum}",  method = RequestMethod.GET)
 	public String ReviewDelete (HttpServletRequest request, Model model, @PathVariable(required = false) String nowcode, 
@@ -67,18 +81,27 @@ public class ReviewAdminController {
 		
 		HttpSession session = request.getSession(); 
 	
-		String aid = (String)session.getAttribute("sid");
+		
 		String pcode =request.getParameter("pcode");
 	
-		
+		String sid = (String)session.getAttribute("sid");
+		String aid = (String)session.getAttribute("aid");
 
 		model.addAttribute("pcode", pcode);
-		model.addAttribute("aid", aid);
+		model.addAttribute("aid", sid);
 		
-		return "redirect:/pr/cl/dt";
-	}
+		if(sid != null) {
+			return "redirect:/pr/se/dt/"+ nowcode;
+			}
+		else if(aid == "admin") {
+
+			return "redirect:/pr/ad/dt/"+ nowcode;
+			}
+		else {
+			return "redirect:/pr/cl/dt/"+ nowcode;
+		}
 	
 }		
 
-	
+}	
 

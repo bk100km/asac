@@ -68,7 +68,7 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="findId" resultType="kr.co.asac.member.bean.MemberBean">
-		select * from member where mname = #{mname} and mmail = #{mmail} and mphone = #{mphone}
+		select mid, mpwd, mname, mbirth, replace(mphone,'-','') mphone, maddr, maddrd, maddrz, mmail from member where mname = #{mname} and mmail = #{mmail} and mphone = #{mphone}
 	</select>
 
 
@@ -203,10 +203,9 @@
 	
 	<select id="sellerOrdersSumMonth" resultType="kr.co.asac.member.bean.SellerBean">
 		select concat(month(oregdate),'월') as month
-		, sum(pprice) as count 
+		, sum(ototal) as count 
 		from orders
-		join product on orders.pcode = product.pcode
-		where product.sid = #{sid} 
+		where sid = #{sid} 
 		group by month(oregdate);
 	</select>
 	
@@ -214,7 +213,7 @@
 		select mid, pname, oregdate
 		from orders
 		join product on orders.pcode=product.pcode
-		where product.sid = #{sid}
+		where orders.sid = #{sid}
 		order by oregdate desc limit 3;
 	</select>
 	
@@ -222,7 +221,7 @@
 		select count(pname) cnt
 		, pname, pcate, ptag from orders
 		join product on orders.pcode=product.pcode
-		where product.sid = #{sid} 
+		where orders.sid = #{sid} 
 		group by pname 
 		order by cnt desc limit 3;
 	</select>

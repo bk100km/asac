@@ -37,9 +37,17 @@ background: linear-gradient(to top right);
 	margin: auto;
 	float: unset;
 }	
+
+.btn-default{
+	width:190px;
+	position: relative;
+	
+}
+
+
 </style>
 </head>
-<body>
+<body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
 		<jsp:include page="../common/sellerHeader.jsp" />
@@ -48,88 +56,88 @@ background: linear-gradient(to top right);
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                <jsp:include page="../common/toolbarHeader.jsp" />
-	
+                <jsp:include page="../common/sellerToolbarHeader.jsp" />
+	<h2 align ="center">내 정보</h2>
 	<div class="container">
 	<div class="input-form-background">
 	<div class="input-form ">
 			
-			<h2>내 정보</h2>
 			
-					<div class="mb-3">
+			
+					<div class="mb-2">
 						<label for="sname">이름 </label>
 						<input type="text" class="form-control"  value="${seller.sname}" readonly/>
 					</div>
 					
-						<div class="mb-3">
+						<div class="mb-2">
 						<label for="sid">아이디 </label>
 						<input type="text" class="form-control"  value="${seller.sid}" readonly/>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sbirth">생년월일 </label>
 						<input type="text" class="form-control"  value="${seller.sbirth}" name="sbirth" id="sbirth" readonly />
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sbirth">전화번호 </label>
 						<input type="text" class="form-control"  value="${seller.sphone}" name="sphone" id="sphone" readonly />
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="smail">이메일</label>
 						<input type="text" class="form-control"  value="${seller.smail}" readonly/>
 					</div>		
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="scompany">회사명 </label>
 						
 		            		
 							<input type="text" class="form-control"  name="scompany" id="scompany" value="${seller.scompany}"  readonly/>
 		            	
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="snumber">사업자번호 </label>
 						
 		            		
 							<input type="text" class="form-control" maxlength="9" name="snumber" id="snumber" value=" ${seller.snumber }" readonly />
 		            	
 					</div>
-					<div >
+					<div class="mb-2">
 						<label for="sfile">증명서류</label>
 						
 		            		
-							<input type="text" class="form-control" name="sfile" id="sfile" value="${seller.sfile }" readonly /><br>
+							<input type="text" class="form-control" name="sfile" id="sfile" value="${seller.sfile }" readonly />
 		            	
 					</div>
-					<div >
+					<div class="mb-2" >
 						<label for="sok">승인여부 </label>
 						
 		            		
-							<input type="text" class="form-control" name="sok" id="sok" value="${seller.sok}"  readonly /><br>
+							<input type="text" class="form-control" name="sok" id="sok" value="${seller.sok}"  readonly />
 		            	
-					</div>
-					<div>
+					</div >
+					<div class="mb-2">
 						<label for="sregdate">가입날짜 </label>
 					    		
-							<input type="text" class="form-control" name="sregdate" id="sregdate" value="${seller.sregdate}"  readonly/><br>
+							<input type="text" class="form-control" name="sregdate" id="sregdate" value="${seller.sregdate}"  readonly/>
 					</div>
-					<div>
+					<div class="mb-2">
 						<label for="saddrz">우편번호 </label>
 					    		
-							<input type="text" class="form-control" name="saddrz" id="saddrz" value="${seller.saddrz}"  readonly/><br>
+							<input type="text" class="form-control" name="saddrz" id="saddrz" value="${seller.saddrz}"  readonly/>
 					</div>
-					<div>
+					<div class="mb-2">
 						<label for="saddr">도로명주소 </label>
 					    		
-							<input type="text" class="form-control" name="ssaddre" id="ssaddr" value="${seller.saddr}"  readonly/><br>
-					</div>
-					<div>
+							<input type="text" class="form-control" name="ssaddre" id="ssaddr" value="${seller.saddr}"  readonly/>
+					</div >
+					<div class="mb-2">
 						<label for="saddrd">상세주소 </label>
 					    		
 							<input type="text" class="form-control" name="saddrd" id="saddrd" value="${seller.saddrd}"  readonly/><br>
 					</div>
-					
+					<div align="center">
 					<div><button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/up'" class="btn btn-default">수정하기</button> &nbsp;
-					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/in'" class="btn btn-default"> 메인으로</button>
+					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/in'" class="btn btn-default"> 메인으로</button>  &nbsp;
 					<button type="button" onclick="location.href='<%= request.getContextPath() %>/me/se/de'" class="btn btn-default" >탈퇴하기</button>
-					
+					</div>
 		</div>
 		</div>
 		</div>
@@ -144,5 +152,11 @@ background: linear-gradient(to top right);
 </div>
 </div>
 </div>
+
+	<!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    
 </body>
 </html>

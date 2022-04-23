@@ -1,16 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>주문 내역</title>
+<title>ASAC 비건마켓</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!-- Pretend Font -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
+
 <style>
 .table-responsive {
     overflow-x: hidden;
@@ -24,9 +29,8 @@
 	display: none;
 }
 
-#ordersearchText {
+#searchText {
     float: right;
-    width: 74%;
 }
 
 #leftPanel {
@@ -36,7 +40,7 @@
 }
 	
 #leftPanel .table-responsive {
-	height: 620px;
+	height: 800px;
 }
 
 #orderInfoBtn td {
@@ -56,7 +60,7 @@ th {
 }
 
 .left-order-panel-default {
-	height: 760px;
+	height: 950px;
 }
 
 .panel-heading {
@@ -91,50 +95,19 @@ option {
     font-size: 1.1rem;
     font-weight: 600;
 }
-body { margin: 0;}
 
-#orderList {
-	width: 85%;  
-	margin: 0 auto; 
-	margin-top: 50px;
+#panel-heading-right {
+	padding: 4px;
 }
 
 #page-wrapper {
-	width: 90%;
-	margin: auto;
-	margin-top: 30px;
-	height: 1000px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 100px;
+	padding-right: 100px;
 }
 
-.nav-tabs {
-	font-size: 20px;
-}
-
-.nav-tabs > li {
-	margin-left: 10px;
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background: #d8e3c9;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-
-.nav-tabs > li > a{
-	color: #85976d;
-	font-family: Pretendard;
-	text-decoration: none;
-}
-
-.nav-tabs > .active {
-	background: #b8d590;
-}
 </style>
-</head>
-
-<body>
-
 <script>
 <!-- 상세정보 조회 AJAX -->
 function orderInfoAction(clickedOrder) {
@@ -209,8 +182,8 @@ function orderInfoAction(clickedOrder) {
 
 
 function orderSearchAction(clikedPage) {	
-	var orderSearchCategory = $('#orderSearchCategory option:selected').val();
-    var orderSearchText = document.getElementById('orderSearchText').value;
+	var searchCategory = $('#searchCategory option:selected').val();
+    var searchText = document.getElementById('searchText').value;
 	var orderListText = "";
 	var orderPagingText ="";
 	var page = clikedPage;
@@ -219,8 +192,8 @@ function orderSearchAction(clikedPage) {
     $.ajax({
         type: 'POST',
         url: './ls',
-   		data: {orderSearchCategory:orderSearchCategory,
-   			orderSearchText:orderSearchText,
+   		data: {searchCategory:searchCategory,
+    		searchText:searchText,
     		page:page},
         success: function(map) {
         	 $.each(map.orderList , function(i){
@@ -243,7 +216,7 @@ function orderSearchAction(clikedPage) {
     	     }
     		 if (map.paging.next) {
     		 	orderPagingText +=
-    		 	'<li class="page-item"><a class="page-link" href="#" onclick="orderSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="orderSearchAction(' + map.paging.endPage + ')">다음</a></li>';
         	 }
     		document.getElementById("orderListBody").innerHTML = orderListText;
         	document.getElementById("orderPagingZone").innerHTML = orderPagingText;
@@ -284,34 +257,6 @@ function orderUpdateAction() {
     });
 }
 
-function deliveryUpdate(value) {	
-	var odelivery = value;
-	var ocode = document.getElementById('ocode').value;
-	var pname = document.getElementById('pname').value;
-		
-	if(confirm("배송 상태를 수정하시겠습니까?")){
-    $.ajax({
-        type: 'POST',
-        url: './du',
-   		data: {ocode:ocode, odelivery:odelivery, pname:pname},
-        success: function() {
-			orderSearchAction();
-        	alert("수정된 주문 = " + ocode + "\n배송 상태 수정이 완료되었습니다.");
-				
-        },
-        error: function(request, status, error) {
-            console.log("code:" + request.status + 
-            		"\n"+"message:" + request.responseText + 
-            		"\n"+"error:"+error);
-        }
-    	
-    });
-	} else {
-		$('#selectDeliveryInfo option.gibon').prop("selected", true);
-		alert("배송 상태 변경이 취소되었습니다.");
-	}
-}
-
 function orderDeleteAction() {	
 	var ocode = document.getElementById('ocode').value;
     
@@ -332,41 +277,46 @@ function orderDeleteAction() {
     });
 }
 </script>
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+<header>
+<jsp:include page="/WEB-INF/views/common/adminHeader.jsp"></jsp:include>
+</header>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
         	<!-- Topbar -->
-        	<jsp:include page="../common/toolbarHeader.jsp" />
-<section id="orderList">
+        	<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
+        	
+		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-6">
-					<!--좌우분할 5:7-->
+					<!--좌우분할-->
 					<!--일반회원 관리//-->
-					<div class="panel panel-default">
+					<div class="panel order-panel-default left-order-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="input-group">
-										<select id="orderSearchCategory" name="orderSearchCategory" class="btn btn-default btn-md">
+										<select id="searchCategory" name="searchCategory" class="btn btn-default btn-md">
 											<option value="pname">상품명</option>
 											<option value="oname">주문자명</option>
 											<option value="mid">주문자아이디</option>
 										</select>
-										<input class="form-control input-sm" id="orderSearchText" type="text"
+										<input class="form-control input-sm" id="searchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-primary btn-sm" id="orderSearchButton" value="검색" onclick="orderSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="orderSearchButton" value="검색" onclick="orderSearchAction(1)">
 										</span>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="panel-body">
+						<div class="panel-body" id="leftPanel">
 							<div class="table-responsive">
-								<table id="orderListTable" class="table table-striped table-bordered table-hover">
+								<table class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>주문번호</th>
@@ -377,7 +327,7 @@ function orderDeleteAction() {
 										</tr>
 									</thead>
 									<tbody id="orderListBody">
-									<c:forEach var="order" items="${orderAdminList}">
+									<c:forEach items="${orderAdminList}" var="order">
 										<tr id="orderInfoBtn" data-ocode="${order.ocode}" data-pname="${order.pname}" data-odelivery="${order.odelivery}" onclick="orderInfoAction(this)">
 											<td>${order.ocode}</td>
 											<td>${order.mname}</td>
@@ -410,88 +360,90 @@ function orderDeleteAction() {
 					<!--//일반회원관리 -->
 				</div>
 				<div class="col-lg-6">
-					<!--좌우분할 5:7-->
+					<!--좌우분할-->
 					<!--상세정보패널//-->
-					<div class="panel panel-default">
-						<div class="panel-heading">상세정보패널</div>
+					<div class="panel order-panel-default">
+						<div class="panel-heading" id="panel-heading-right">&nbsp;주문 상세 정보</div>
 						<div class="panel-body">
-							<div class="table-responsive">
+							<div class="table-responsive" id="orderFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
-				
-					<div class="mb-3" id="orderIdZone">
-						<label for="ocode">주문번호 <span class="text-danger">*</span></label> 
-						<div class="input-group">
-						<input type="text" class="form-control" name="ocode1" id="ocode1" value="${order.ocode}"
-							placeholder="주문번호" readonly>
-						</div>
+					<div class="mb1" id="orderIdZone">
+					<label for="ocode">주문번호</label>
+					<div class="input-group input-group-sm mb-1">
+						<input type="text" class="form-control" name="ocode1" id="ocode1" value="${order.ocode}" placeholder="주문번호" readonly>
 					</div>
-					<div class="mb-3">
-						<label for="mid">고객 ID <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="mid" id="mid" value="${order.mid}"
-							placeholder="고객 ID" required readonly>
-					</div>
-					<div class="mb-3">
-						<label for="mname">고객 이름 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="mname" id="mname" value="${order.mname}"
-							placeholder="고객 이름" required readonly>
-					</div>
-					<div class="mb-3">
-						<label for="pname">상품명 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="pname" id="pname" value="${order.pname}"
-							placeholder="상품명" required readonly>
-					</div>
-					<div class="mb-3">
-						<label for="ocount">수량 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="ocount" id="ocount" value="${order.ocount}"
-							placeholder="수량" required readonly>
-					</div>
-					<div class="mb-3">
-						<label for="ototal">총 가격 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="ototal" id="ototal" value="${order.ototal}"
-							placeholder="수량" required readonly>
-					</div>
-					<div class="mb-3">
-						<label for="oregdate">주문날짜<span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="oregdate" id="oregdate" value="${order.oregdate}"
-							placeholder="수량" required readonly>
-					</div>
-										
-					<form class="orderUpdate" id="orderUpdate" name="orderUpdate" method="post">
-					<div class="mb-3">
-						<label for="oname">받는 사람 <span class="text-danger">*</span></label>
-						<input type="text" class="form-control" name="oname" id="oname" value="${order.oname}"
-							placeholder="받는 사람" required readonly>
-					</div>
-					<div class="mb-3"></div>
-					<div class="row">
-						<div class="col-md-4 mb-3">
-							<label for="oaddrz">우편번호 </label>
-							<input type="text" class="form-control" name="oaddrz" id="oaddrz" value="${order.oaddrz}"
-								placeholder="우편번호" required readonly>
-						</div>
-						<div class="col-md-8 mb-3">
-							<label for="oaddr">주소 <span class="text-danger">*</span></label>
-							<input type="text" class="form-control" name="oaddr" id="oaddr" value="${order.oaddr}"
-								placeholder="주소" required readonly>
-						</div>
-					</div>
-					<label for="oaddrd">상세주소 <span class="text-danger">*</span><span class="text-muted"></span></label>
-					<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-					<input type="text" class="form-control" name="oaddrd" id="oaddrd" value="${order.oaddrd}"
-							placeholder="상세주소" required readonly>
 					</div>
 					
-					<label for="ophone">연락처 <span class="text-danger">*</span></label> 
+					<div class="mb-1 input-group-sm">
+						<label for="mid">고객 ID <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="mid" id="mid" value="${order.mid}" placeholder="고객 ID" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="mname">고객 이름 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="mname" id="mname" value="${order.mname}" placeholder="고객 이름" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="pname">상품명 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="pname" id="pname" value="${order.pname}" placeholder="상품명" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="ocount">수량 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="ocount" id="ocount" value="${order.ocount}" placeholder="수량" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="ototal">총 가격 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="ototal" id="ototal" value="${order.ototal}" placeholder="수량" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="oregdate">주문날짜<span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="oregdate" id="oregdate" value="${order.oregdate}"	placeholder="수량" required readonly>
+					</div>
+					
+					
+					<form class="orderUpdate" id="orderUpdate" name="orderUpdate" method="post">
+					<div class="mb-1 input-group-sm">
+						<label for="oname">받는 사람 <span class="text-danger">*</span></label>
+						<input type="text" class="form-control" name="oname" id="oname" value="${order.oname}" placeholder="받는 사람" required readonly>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-4 mb-1 input-group-sm">
+							<label for="saddrz">우편번호 </label><input type="text"
+								class="form-control" name = "oaddrz" id="oaddrz" value=""
+								placeholder="우편번호" maxlength="7" required readonly>
+						</div>
+						<div class="col-md-8 mb-1 input-group-sm">
+							<label for="saddr">주소 <span class="text-danger">*</span></label> <input type="text"
+								class="form-control" name = "oaddr" id="oaddr" value=""
+								placeholder="여기를 클릭해주세요" required>
+						</div>
+					</div>
+					<label for="saddrd">상세주소 <span class="text-danger">*</span><span class="text-muted"></span></label>
+					<div class="input-group input-group-sm mb-1">
+					<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fa solid fa-house-chimney"></i></span>
+					</div>		
+					<input type="text" class="form-control" name="oaddrd" id="oaddrd" value=""
+							placeholder="상세주소를 입력해주세요." maxlength="50" required readonly>
+					</div>
+					
+					<div class="mb-1 input-group-sm">
+						<label for="scompany">연락처<span class="text-danger">*</span></label> 
 					<div class="input-group">
 		            <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
 						<input type="text" class="form-control" name="ophone" id="ophone" value="${order.ophone}"
 							placeholder="전화번호 입력" required readonly>
 						<input type="hidden" class="form-control" name="ocode" id="ocode" value="${order.ocode}"
-							placeholder="수량" required readonly>
+							placeholder="주문번호" required readonly>
 					</div>
-				</form>						
+					</div>
+				</form>		
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
@@ -501,11 +453,8 @@ function orderDeleteAction() {
 						</div>
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-lg btn-block" id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
-						</div>		
-						<hr class="mb-4">
-						<br>				
-					</div>	
-				
+						</div>			
+					</div>
 			</div>
 		</div>
 							</div>
@@ -514,8 +463,13 @@ function orderDeleteAction() {
 					<!--//상세정보패널-->
 				</div>
 			</div>
-	</section>
-
+		</div>
+	
+	</div>
+	<jsp:include page="../common/footer.jsp"></jsp:include>
+	</div>
+	</div>
+	
 	<script>
 	function orderUpdateOk() {
 		if(!confirm('정말로 수정하시겠습니까?')){
@@ -537,6 +491,7 @@ function orderDeleteAction() {
 	}
     
 	</script>
+	
 	<!-- 다음 주소찾기 API -->
 	<script>
 	function oaddrSearchAction() {
@@ -552,9 +507,9 @@ function orderDeleteAction() {
 	    	})();
 	}    	
 	</script>
-	</div>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
-</div>
-</div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>		
 </body>
 </html>

@@ -8,8 +8,7 @@
 	<!-- 제이쿼리 -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- chart.js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>	
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 	<script>
 	$(document).ready(function(){ 
 		getRandomColor();
@@ -51,9 +50,30 @@
                label : "총 회원수",
                data : valueList,
                backgroundColor: [
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+            	   'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)'
                ],
                borderWidth: 2,
                borderRadius: 2,
@@ -110,16 +130,37 @@
        }
       
       new Chart(document.getElementById("myAreaChart2"), {
-          type: "polarArea",
+          type: "pie",
           data: {
              labels : labelList,
              datasets : [ {
                 label : "총 상품수",
                 data : valueList,
                 backgroundColor: [
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)'
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -181,10 +222,34 @@
                 label : "총 구매수",
                 data : valueList,
                 backgroundColor: [
-                	"#ffffff"
+                	'rgba(249, 232, 235, 0.5)'
                 ],
                 borderColor:[
-                	getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)'
+                	
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -246,9 +311,30 @@
                 label : "총 매출수",
                 data : valueList,
                 backgroundColor: [
-                   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)',
+                	'rgba(255, 99, 132, 0.5)', 
+                	'rgba(54, 162, 235, 0.5)', 
+                	'rgba(255, 206, 86, 0.5)', 
+                	'rgba(75, 192, 192, 0.5)', 
+                	'rgba(153, 102, 255, 0.5)', 
+                	'rgba(255, 159, 64, 0.5)'
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -265,7 +351,7 @@
                 }],
                 yAxes: [{
                    ticks: {
-                      stepSize: 5,
+                      stepSize: 50000,
                       min:0
                    },
                    display: true,
@@ -287,14 +373,34 @@
        });
   }
 	</script>
+<style>
+	table{
+		table-layout: fixed;
+	}
+	
+	td{
+		overflow: hidden;
+		text-overflow: ellipsis; 
+		white-space: nowrap;
+	}
+	
+	@media only screen and (max-width:768px) {
+		#wrapper {width:100%; overflow: hidden; font-size:1em;}
+		.col1 {
+		    display: none;
+		    visibility: hidden;
+		    width: 0%;
+		}
+	}
+</style>
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-		<jsp:include page="./common/adminHeader.jsp" />
+	<jsp:include page="./common/adminHeader.jsp" />
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-		
+
             <!-- Main Content -->
             <div id="content">
 
@@ -319,13 +425,13 @@
 	                                           		<tr>
 	                                            		<td>고객명</td>
 	                                            		<td>상품명</td>
-	                                            		<td>주문 날짜</td>
+	                                            		<td class="col1">주문 날짜</td>
 	                                           		</tr>
                                             		<c:forEach items="${recentOrder }" var="orders">
                                             		<tr>
                                             			<td>${orders.mid }</td>
                                             			<td>${orders.pname }</td>
-                                            			<td><fmt:formatDate value="${orders.oregdate }" pattern="yyyy-MM-dd"/></td>
+                                            			<td class="col1"><fmt:formatDate value="${orders.oregdate }" pattern="yyyy-MM-dd"/></td>
                                             		</tr>
                                             		
                                             		</c:forEach>
@@ -350,19 +456,19 @@
                                             <div class="h8 mb-0 font-weight-bold text-gray-800">
 	                                            <table class="table table-hover">
 	                                           		<tr>
-	                                            		<td>Top3</td>
+	                                            		<td class="col1">Top3</td>
 	                                            		<td>판매수</td>
 	                                            		<td>상품명</td>
-	                                            		<td>카테고리</td>
-	                                            		<td>상품 태그</td>
+	                                            		<td class="col1">카테고리</td>
+	                                            		<td class="col1">상품 태그</td>
 	                                           		</tr>
                                             		<c:forEach items="${topThreeOrder}" var="top" varStatus="status">
                                             		<tr>
-                                            			<td>${status.count}</td>
+                                            			<td class="col1">${status.count}</td>
                                             			<td>${top.cnt }</td>
                                             			<td>${top.pname }</td>
-                                            			<td>${top.pcate }</td>
-                                            			<td>${top.ptag }</td>
+                                            			<td class="col1">${top.pcate }</td>
+                                            			<td class="col1">${top.ptag }</td>
                                             		</tr>
                                             		</c:forEach>
                                             	</table>
@@ -416,7 +522,7 @@
                             <!-- Bar Chart -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">총 상품수(월별)</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">총 구매수(월별)</h6>
                                 </div>
                                 <div class="card-body">
                                 	<canvas id="myAreaChart3"></canvas>
@@ -458,6 +564,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
 </body>
 
 </html>

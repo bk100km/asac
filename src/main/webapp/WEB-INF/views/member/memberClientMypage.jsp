@@ -18,6 +18,26 @@ body { margin: 0;}
 	margin-top: 50px;
 }
 
+.mypageDiv li {
+	width: 100px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #74bf0f;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin-left: 10px;
+	text-align: center;
+}
+.mypageDiv li a {
+	color: white;
+	font-size: 16px;
+}
+.mypageDiv ul .active {
+	background-color: #558d0b;
+}
+
 </style>
 
 </head>

@@ -4,8 +4,16 @@
 <%
 	String mid = (String) session.getAttribute("mid");
 	System.out.println("헤더에서 mid 값 = " + mid);
-	String referer = request.getHeader("Referer");
-	System.out.println("헤더에서 Referer 값 = " + referer);
+	
+	if (request.getHeader("Referer") != null) {
+		String referer = request.getHeader("Referer");
+		System.out.println("헤더에서 Referer 값 = " + referer);
+		if (!referer.equals(request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/me/cl/jo") &&
+			!referer.equals(request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/me/cl/lo") &&
+			!referer.equals(request.getRequestURL().toString().replace(request.getRequestURI(),"") + "/ca/cl/fl")) {
+			session.setAttribute("referer", referer);
+		}
+	}
 %>
 
 <head>
@@ -266,11 +274,6 @@
 }
 
 </style>
-<script>
-function cartlogin(){
-	location.href="/ca/cl/li";
-}
-</script>
 </head>
 <body>
 	<header>
@@ -309,9 +312,6 @@ function cartlogin(){
 						<%
 							if (mid == null) {
 						%>
-						<li class="nav-item cta cta-colored"><a
-							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
-							id="borderNavCart"><span class="icon-shopping_cart"></span></a></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown04"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&nbsp;로그인</a>
@@ -334,7 +334,7 @@ function cartlogin(){
 							} else {
 						%>
 						<li class="nav-item cta cta-colored"><a
-							onclick="cartlogin()" class="nav-link"
+							href="<%= request.getContextPath() %>/ca/cl/li" class="nav-link"
 							id="borderNavCart"><span class="icon-shopping_cart"></span></a></li>
 						<li class="nav-item cta cta-colored"><a
 							href="<%= request.getContextPath() %>/me/cl/lO" class="nav-link"

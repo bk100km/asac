@@ -83,6 +83,22 @@ $(function() {
 	})
 });
 
+/* function updateBtn() {
+	var pw = $('#pw').val();
+	var pw2 = $('#pw2').val();
+	var mname = $('#mname').val();
+	var mbirth = $('#mbirth').val();
+	var mphone = $('#mphone').val();
+	var maddrz = $('#sample4_postcode').val();
+	var maddr = $('#sample4_roadAddress').val();
+	var maddrd = $('#sample4_detailAddress').val();
+	if(pw !='' && pw2 != '' && mname != '' && mphone != '' && maddrz != '' && maddr != '' && maddrd != ''){
+		alert("수정이 완료 되었습니다.1");
+	}else if(mname != '' && mbirth != '' && mphone != '' && maddrz != '' && maddr != '' && maddrd != ''){
+		alert("수정이 완료 되었습니다.2");
+	}
+}; */
+
 $(document).on("keyup", ".phoneNumber", function() { 
 	$(this).val( 
 		$(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") 
@@ -101,6 +117,12 @@ function birth_keyup(obj){
 	    }
 	}
 
+function removeCheck() {
+	 if (confirm("정말 삭제하시겠습니까?")){    //확인
+		 location.href= './dk';
+	 }
+}
+
 </script>
 <style type="text/css">
 .pw_ok {
@@ -113,7 +135,7 @@ function birth_keyup(obj){
 	display: none;
 }
 
-input[readonly] { outline:none; background-color: #e2e2e2; }
+input[readonly] { outline:none; background-color: #e2e2e2 !important; }
 	
 body {
 min-height: 100vh;
@@ -125,7 +147,7 @@ background: linear-gradient(to top right);
 }	
 
 .input-form {
-	max-width: 680px;
+	max-width: 600px;
 	margin-top: 30px !important;
 	padding: 32px;
 	background: #fff;
@@ -137,7 +159,16 @@ background: linear-gradient(to top right);
 	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	margin: auto;
 	float: unset;
-}	
+}
+
+#pw{
+	font-size: 17px;
+}
+
+#pw2{
+	font-size: 17px;
+}
+
 </style>
 </head>
 <body>
@@ -147,26 +178,26 @@ background: linear-gradient(to top right);
 			<form action="./up" class="validation-form" method="post">
 			<c:set var="mid" value="${member.mid }" />
 				<c:if test="${mid.length() <= 10 }">
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="mid">아이디</label>
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 							<input type="text" class="form-control" name="mid" value="${member.mid }" readonly>
-						</div><br>
+						</div>
 					</div>
-					<div class="mb-3">
-						<label for="pw">비밀번호</label><br>
-						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16" required><br>
+					<div class="mb-2">
+						<label for="pw">비밀번호</label>
+						<input type="password" class="form-control" name="mpwd" id="pw" placeholder="영문/숫자 포함 4~16자 입력" pattern="^([a-z0-9_]){4,16}$" minlength="4" maxlength="16" required>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="pw2">비밀번호 확인 </label>
-						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자를 포함하여 8~16자로 입력해야합니다." pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$" minlength="8" maxlength="16"><br>
-						<span class="pw_ok"><p>비밀번호가 일치합니다.</p></span>
-						<span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
+						<input type="password" class="form-control" name="mpwd2" id="pw2" placeholder="영문/숫자 포함 4~16자 입력" pattern="^([a-z0-9_]){4,16}$" minlength="4" maxlength="16" required>
+						<span class="pw_ok">비밀번호가 일치합니다.</span>
+						<span class="pw_nok">비밀번호가 일치하지 않습니다.</span>
 					</div>
 				</c:if>
 			<c:set var="mid" value="${mid }" />
-				<c:if test="${mid.length() >= 10 }">
+				<c:if test="${fn:contains(mid, 'n@') }">
 					<input type="hidden" class="form-control" name="mid" value="${mid }" readonly>
 					<input type="hidden" class="form-control" name="mpwd" value="${member.mpwd }" id="pw">
 				</c:if>
@@ -175,71 +206,82 @@ background: linear-gradient(to top right);
 					<input type="hidden" class="form-control" name="mid" value="${mid }" readonly>
 					<input type="hidden" class="form-control" name="mpwd" value="${member.mpwd }" id="pw">
 				</c:if>
-			<div class="mb-3">
-				<label for="mname">이름</label><br>
-				<input type="text" class="form-control" name="mname" value= "${member.mname }" required><br>
+			<div class="mb-2">
+				<label for="mname">이름</label>
+				<input type="text" class="form-control" name="mname" id="mname" value= "${member.mname }" required>
 			</div>
 			<c:set var="mbirth" value="${member.mbirth }" />
 			<c:if test="${mbirth != '' }">
-				<div class="mb-3">
-					<label for="mbirth">생년월일</label><br>
-					<input type="text" class="form-control birth" name="mbirth" value="${member.mbirth.substring(2) }" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
+				<div class="mb-2">
+					<label for="mbirth">생년월일</label>
+					<input type="text" class="form-control birth" id="mbirth" name="mbirth" value="${member.mbirth.substring(2) }" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required>
 				</div>
 			</c:if>
 			<c:if test="${mbirth == '' }">
-				<div class="mb-3">
-					<label for="mbirth">생년월일</label><br>
-					<input type="text" class="form-control birth" name="mbirth" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required><br>
+				<div class="mb-2">
+					<label for="mbirth">생년월일</label>
+					<input type="text" class="form-control birth" id="mbirth" name="mbirth" placeholder="예) 910101-1****** " onkeyup="birth_keyup(this)" maxlength="14" required>
 				</div>
 			</c:if>
-			<div class="mb-3">
+			<div class="mb-2">
 				<label for="mphone">전화번호</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span>
-					<input type="text" class="form-control phoneNumber" name="mphone" value="${member.mphone }" placeholder="010-1234-1234" pattern="\d{3}-\d{3,4}-\d{4}" maxlength="11" required>
-				</div><br>
+					<input type="text" class="form-control phoneNumber" id="mphone" name="mphone" value="${member.mphone }" placeholder="010-1234-1234" maxlength="13" required>
+				</div>
 			</div>
-			<div class="mb-3">
+			<div class="mb-2">
 				<label for="mmail">이메일</label>
 				<div class="input-group">
 	           		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-	           		<input type="text" class="form-control" name="mmail" value="${member.mmail }" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" required>
-	           	</div><br>
+	           		<input type="text" class="form-control" name="mmail" value="${member.mmail }" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+-]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$" readonly>
+	           	</div>
 		    </div>
 			<div class="row">
-				<div class="col-md-9 mb-3">
-					<label for="sample4_postcode">우편번호</label><br>
+				<div class="col-md-9 mb-2">
+					<label for="sample4_postcode">우편번호</label>
 					<input type="text" class="form-control" name="maddrz" id="sample4_postcode" placeholder="우편번호" value="${member.maddrz }" readonly>
 				</div>
-				<div class="col-md-3 mb-3">
-					<label>&nbsp;</label><br>
+				<div class="col-md-3 mb-2">
+					<label>&nbsp;</label>
 					<input type="button" class="btn btn-outline-secondary" onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
 				</div>
-			</div><br>
-			<div class="mb-3">
-				<label for="sample4_roadAddress">도로명주소</label><br>
-				<input type="text" class="form-control" name="maddr" id="sample4_roadAddress" placeholder="도로명주소" value="${member.maddr }" readonly required><br>
+			</div>
+			<div class="mb-2">
+				<label for="sample4_roadAddress">도로명주소</label>
+				<input type="text" class="form-control" name="maddr" id="sample4_roadAddress" placeholder="도로명주소" value="${member.maddr }" readonly required>
 				<span id="guide" style="color:#999;display:none"></span>
 			</div>
 			<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
-			<div class="mb-3">
+			<div class="mb-2">
 				<label for="sample4_detailAddress">상세주소</label>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>	
-					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" value="${member.maddrd }" required><br>
+					<input type="text" class="form-control" name="maddrd" id="sample4_detailAddress" placeholder="상세주소를 입력하세요" value="${member.maddrd }" required>
 				</div>
 			</div>
 			<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
-			<br><br>
-			<div align="center" class="mb-3">
-				<input type="submit" class="btn btn-outline-secondary" value="수정하기">&nbsp;&nbsp;&nbsp;
+			<div class="mb-4"></div>
+			<div align="center" >
+				<input type="submit" class="btn btn-outline-secondary" value="수정하기" onclick="updateBtn()">&nbsp;&nbsp;&nbsp;
 				<input type="submit" class="btn btn-outline-secondary" value="뒤로가기" onclick="history.go(-1)">&nbsp;&nbsp;&nbsp;
-				<input type="button" class="btn btn-outline-secondary" value="탈퇴하기" onclick="location.href='./de'">
+				<c:set var="mid" value="${mid }" />
+					<c:if test="${mid.length() <= 10 }">
+						<input type="button" class="btn btn-outline-secondary" value="탈퇴하기" onclick="location.href='./de'">
+					</c:if>
+				<c:set var="mid" value="${mid }" />
+					<c:if test="${fn:contains(mid, 'n@') }">
+						<input type="button" class="btn btn-outline-secondary" value="탈퇴하기" onclick="removeCheck()">
+					</c:if>
+				<c:set var="mid" value="${mid }" />
+					<c:if test="${fn:contains(mid, 'k@') }">
+						<input type="button" class="btn btn-outline-secondary" value="탈퇴하기" onclick="removeCheck()">
+					</c:if>
 			</div>
 			</form>
 		</div>
 	</div>
 </div>
-<br><br>
+<br>
 </body>
 </html>

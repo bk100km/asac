@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.co.asac.cart.bean.CartBean;
 import kr.co.asac.member.bean.MemberBean;
 import kr.co.asac.orders.bean.OrderBean;
 import kr.co.asac.product.bean.ProductBean;
@@ -60,5 +61,5 @@ public interface OrderDAO {
 	
 	public List<ProductBean> orderProductList();
 	
-	public void orderCartReset(String mid);
+	public List<CartBean> orderFastCartList(String mid);
 }

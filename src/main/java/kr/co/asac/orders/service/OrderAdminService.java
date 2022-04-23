@@ -71,7 +71,7 @@ public class OrderAdminService {
 		System.out.println(orderProductList);
 	}
     
-    public void cartResetInsert(CartBean cart, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void orderFast(CartBean cart, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	CartDAO cartDAO = sqlSessionTemplate.getMapper(CartDAO.class);
     	OrderDAO orderDAO = sqlSessionTemplate.getMapper(OrderDAO.class);
 
@@ -88,10 +88,18 @@ public class OrderAdminService {
 		   	out.flush();
 		}
 		else {
-			orderDAO.orderCartReset(mid);
+			orderDAO.orderFastCartList(mid);
 	    	cartDAO.cartInsert(cart);
 		}
     }
+    
+	public List<CartBean> FastList(String mid, CartBean cart, Model model) {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		List<CartBean> cartlist = dao.orderFastCartList(mid);
+		model.addAttribute("cartlist", cartlist);
+		System.out.println(cartlist);
+		return cartlist;
+	}
     
     public String orderClientInsert(String sid, String mid, String pcode, String ocount, String oname,
 			String oaddrz, String oaddr, String oaddrd, String ophone,  String ototal, String omessage) {

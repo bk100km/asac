@@ -341,18 +341,28 @@ width:17% !important;
 
 										<td>${review.mid}</td>
 
-										<td class="date">${review.rdate}</td>
+										<td class="date"><fmt:formatDate value="${review.rdate}" pattern="yyyy-MM-dd"/></td>
 
 
 									</tr>
 									<tr style="display: none;" id="${review.rnum}test">
-
+								<c:choose>
+									<c:when test="${review.rfile != ''}">
 										<td colspan="2"><img
 											src="/resources/image/product/${review.rfile}"
 											width="100" height="100" alt="${review.rfile}">
 											${review.rcontent}</td>
+										</c:when>
+										<c:otherwise>
+										
+											<td colspan="2">
+											${review.rcontent}</td>
 
-
+										</c:otherwise>
+										
+										
+										</c:choose>
+									
 									</tr>
 
 
@@ -502,13 +512,12 @@ width:17% !important;
 							<br />
 							<c:choose>
 		                    <c:when test="${items != null}">
-							<form
-								action="/re/cl/wr/${pcode}/items/${items}/text/${text}/${nowPage}"
+							<form action="/re/cl/wr/${pcode}/items/${items}/text/${text}/${nowPage}/${paging.reviewNowPage}"
 								method="post" id="writeform" name="writeform">
 							</c:when>
 							<c:otherwise>
 								<form
-								action="/re/cl/wr/${pcode}/${nowPage}"
+								action="/re/cl/wr/${pcode}/${nowPage}/${paging.reviewNowPage}"
 								method="post" id="writeform" name="writeform">
 								</c:otherwise>
 							</c:choose>
@@ -565,12 +574,12 @@ width:17% !important;
 							<c:choose>
 		                    <c:when test="${items != null}">
 							<form
-								action="/re/cl/up/${pcode}/items/${items}/text/${text}/${nowPage}"
+								action="/re/cl/up/${pcode}/items/${items}/text/${text}/${nowPage}/${paging.reviewNowPage}"
 								method="post" id="updateform" name="updateform">
 							</c:when>
 							<c:otherwise>
 								<form
-								action="/re/cl/up/${pcode}/${nowPage}"
+								action="/re/cl/up/${pcode}/${nowPage}/${paging.reviewNowPage}"
 								method="post" id="updateform" name="updateform">
 								</c:otherwise>
 							</c:choose>

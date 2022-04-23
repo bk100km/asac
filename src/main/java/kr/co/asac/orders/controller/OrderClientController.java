@@ -1,5 +1,7 @@
 package kr.co.asac.orders.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,12 +95,21 @@ public class OrderClientController {
 	}
 	
 	@RequestMapping("or/cl/up/{ocode}")
-	public  String orderClientUpdate(Model model, @PathVariable String ocode, OrderBean order) {
+	public  String orderClientUpdate(HttpServletResponse response, Model model, @PathVariable String ocode, OrderBean order) throws IOException {
 		orderClientService.orderClientUpdate(model, order);
 		System.out.println(order);
 		List<OrderBean> update = orderClientService.orderClientinfo(order, ocode);
 		System.out.println("2" + update);
+		response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+
+			out.println("<script language='javascript'>");
+			out.println("alert('배송지 수정이 완료되었습니다.')");
+			out.println("</script>");
+
+			out.flush();
 		model.addAttribute("orderClientInfo", update);
+		
 		return "orders/orderClientInfo";
 	}
 	
@@ -107,6 +118,31 @@ public class OrderClientController {
 		int info = orderClientService.orderClientDelete(ocode);
 		System.out.println("delete" + ocode);
 		return "redirect:/me/cl/my";
+	}
+	
+	@RequestMapping(value="or/cl/or/{pcodearr}/{ocountarr}", method= {RequestMethod.GET, RequestMethod.POST})
+	public String OrderClientOrder(HttpServletRequest request, Model model, CartBean cart,  MemberBean member, @PathVariable("pcodearr") String pcodearr, @PathVariable("ocountarr") String ocountarr) {
+		HttpSession session = request.getSession(); 
+		String mid = (String)session.getAttribute("mid");
+		
+		List<CartBean> cartlist = orderClientService.cartList(mid, cart);
+		model.addAttribute("cartlist",cartlist);
+		MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
+		
+		String[] pcodearrr = pcodearr.split(",");
+		for (int i = 0; i < pcodearrr.length; i++) {
+			System.out.println("어휴"+pcodearrr[i]);
+		}
+
+		String[] ocountarrr = ocountarr.split(",");
+		
+		model.addAttribute("pcodearrr", pcodearrr);
+		model.addAttribute("ocountarrr", ocountarrr);
+		System.out.println("pp"+ pcodearrr);
+		System.out.println("oo"+ ocountarrr);
+		model.addAttribute("memberInfo",memberinfo);
+		System.out.println("m " + memberinfo);
+		return "orders/orderClientOrder";
 	}
 
 	@RequestMapping("or/cl/gu/{ocode}")
@@ -135,6 +171,18 @@ public class OrderClientController {
 		System.out.println("m " + memberinfo);
 		return "orders/cart";
 	}
+	
+	@RequestMapping(value="ca/cl/lf", method= {RequestMethod.GET, RequestMethod.POST})
+	public String FastList(HttpServletRequest request, Model model, CartBean cart,  MemberBean member) {
+		HttpSession session = request.getSession(); 
+		String mid = (String)session.getAttribute("mid");
+		List<CartBean> cartlist = orderClientService.FastList(mid, cart, model);
+		model.addAttribute("cartList",cartlist);
+		MemberBean memberinfo = orderClientService.memberClientInfo(mid, member);
+		model.addAttribute("memberInfo",memberinfo);
+		System.out.println("m " + memberinfo);
+		return "orders/orderFast";
+	}	
 	
 	@RequestMapping("/ca/cl/in")
 	public String CartInsert(HttpServletRequest request, HttpServletResponse response, Model model, CartBean cart) throws Exception {

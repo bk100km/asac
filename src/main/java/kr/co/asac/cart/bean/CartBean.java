@@ -1,5 +1,7 @@
 package kr.co.asac.cart.bean;
 
+import java.util.Date;
+
 public class CartBean {
 	public int ccode;
 	public String mid;
@@ -9,6 +11,7 @@ public class CartBean {
 	public int pcount;
 	public String pfile;
 	public String sid;
+	private Date oregdate;
 
 	
 	public int getCcode() {
@@ -64,6 +67,14 @@ public class CartBean {
 	}
 	public void setSid(String sid) {
 		this.sid = sid;
+	}
+	
+	
+	public Date getOregdate() {
+		return oregdate;
+	}
+	public void setOregdate(Date oregdate) {
+		this.oregdate = oregdate;
 	}
 	@Override
 	public String toString() {

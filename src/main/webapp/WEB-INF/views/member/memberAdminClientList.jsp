@@ -693,7 +693,11 @@ function memberIdCheckAction() {
 	<jsp:include page="../common/footer.jsp"></jsp:include>
 	</div>
 	</div>
-
+	
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 	
 	<script>
 

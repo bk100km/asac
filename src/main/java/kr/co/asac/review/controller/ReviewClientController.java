@@ -4,6 +4,7 @@ package kr.co.asac.review.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,27 +32,28 @@ public class ReviewClientController {
 	private ReviewClientService reviewClientService;
 	// 설정파일에 빈으로 등록되었기 때문에 생성자나 Setter 없이 자동으로 주입
 
-	@RequestMapping(value = { "/re/cl/wr/{nowcode}/items/{items}/text/{text}/{nowPage}","/re/cl/wr/{nowcode}/{nowPage}"},  method = RequestMethod.POST)
+	@RequestMapping(value = { "/re/cl/wr/{nowcode}/items/{items}/text/{text}/{nowPage}/{reviewNowPage}","/re/cl/wr/{nowcode}/{nowPage}/{reviewNowPage}"},  method = RequestMethod.POST)
 	public String ReviewInsert (HttpServletRequest request,ReviewBean review, Model model,
 			@PathVariable(required = false) String nowcode,	@PathVariable(required = false) String text,
-			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage
-			) throws Exception {
+			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage,
+			@PathVariable(required = false) String reviewNowPage) throws Exception {
 	
-
+		
 		reviewClientService.reviewInsert(review); 
 		
 
 		
-		HttpSession session = request.getSession(); 
-		String mid = (String)session.getAttribute("mid");
-		model.addAttribute("mid", mid);
+		
+	
 		
 
+	
 		if (text == null || text == "") {
-			System.out.println("여기야?1");
-		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage;
+
+		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage +"/"+reviewNowPage;
 		}else {	
-		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage;
+		text = URLEncoder.encode(text, "UTF-8");
+		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage+"/"+reviewNowPage;
 	}
 		
 	}
@@ -80,29 +82,21 @@ public class ReviewClientController {
 			
 			return fileName;
 		}	
-	@RequestMapping(value = { "/re/cl/up/{nowcode}/items/{items}/text/{text}/{nowPage}","/re/cl/up/{nowcode}/{nowPage}"},  method = RequestMethod.POST)
+	@RequestMapping(value = { "/re/cl/up/{nowcode}/items/{items}/text/{text}/{nowPage}/{reviewNowPage}","/re/cl/up/{nowcode}/{nowPage}/{reviewNowPage}"},  method = RequestMethod.POST)
 	public String ReviewUpdate (HttpServletRequest request,ReviewBean review, Model model,
 			@PathVariable(required = false) String nowcode,	@PathVariable(required = false) String text,
-			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage
-			) throws Exception {
+			@PathVariable(required = false) String items,  @PathVariable(required = false) String nowPage,
+			@PathVariable(required = false) String reviewNowPage) throws Exception {
 	
 	
 		
-		reviewClientService.reviewUpdate(request); 
-		
+		reviewClientService.reviewUpdate(request, model, nowcode); 
 
-		
-		HttpSession session = request.getSession(); 
-		String mid = (String)session.getAttribute("mid");
-		
-		model.addAttribute("nowcode", nowcode);
-		model.addAttribute("mid", mid);
-	
 		if (text == null || text == "") {
 			System.out.println("여기야?1");
-		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage;
+		return	"redirect:/pr/cl/dt/"+ nowcode +"/"+nowPage+"/"+reviewNowPage;
 		}else {	
-		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage;
+		return "redirect:/pr/cl/dt/"+ nowcode +"/items/"+items+"/text/"+text+"/"+nowPage+"/"+reviewNowPage;
 	}
 	}
 	

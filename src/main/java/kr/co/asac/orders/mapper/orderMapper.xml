@@ -152,4 +152,11 @@
 		delete from cart where mid = #{mid}
 	</delete>
 	
+	<select id="orderFastCartList" resultType="kr.co.asac.cart.bean.CartBean">
+		select * from cart c join member m on c.mid = m.mid join product p on p.pcode = c.pcode
+		where m.mid = #{mid}
+		order by cregdate desc
+		limit 1 offset 0
+	</select>	
+	
 </mapper>

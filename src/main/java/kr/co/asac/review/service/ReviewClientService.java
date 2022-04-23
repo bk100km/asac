@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.asac.review.bean.ReviewBean;
@@ -27,7 +28,7 @@ public class ReviewClientService {
 		reviewDAO.reviewInsert(review);
 		
 	}
-	public void reviewUpdate(HttpServletRequest request) {
+	public void reviewUpdate(HttpServletRequest request,  Model model, String nowcode) {
 		ReviewDAO reviewDAO = sqlSessionTemplate.getMapper(ReviewDAO.class);
 	
 	
@@ -44,11 +45,9 @@ public class ReviewClientService {
 		reviewBean.setRcontent(request.getParameter("revisecontent"));
 		reviewBean.setRfile(request.getParameter("rfile"));
 		
-		
-		
-		
 
 		reviewDAO.reviewUpdate(reviewBean);
+		model.addAttribute("nowcode", nowcode);
 	}	
 		
 		

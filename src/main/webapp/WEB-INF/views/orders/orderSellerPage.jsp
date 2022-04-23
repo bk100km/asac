@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>	
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 
 <!DOCTYPE html>
@@ -9,9 +8,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ASAC 비건마켓</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<!-- Pretend Font -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" class="svelte-p5qu1m" data-svelte="svelte-1yifjfe">
 
 <style>
 .table-responsive {
@@ -30,39 +33,6 @@
     float: right;
 }
 
-.sgenderLabel input[type="radio"] {
-    display: none;
-}
- 
-.sgenderLabel input[type="radio"] + span {
-	border-radius: 5px;
-	width: 88px;
-    height: 33px;
-    display: inline-block;
-    padding: 4px 10px;
-    border: 1px solid #dfdfdf;
-    background-color: #ffffff;
-    text-align: center;
-    cursor: pointer;
-}
- 
-.sgenderLabel input[type="radio"]:checked + span {
-    background-color: #74bf0f;
-    color: #ffffff;
-}
-
-#sellerIdCheckLabel {
-	margin-top:14px;
-}
-
-#sfileUploadButtonLabel {
-	margin-top:14px;
-}
-
-#sfileUpload {
-	display: none;
-}
-
 #leftPanel {
 	text-align: center;
 	height: 700px;
@@ -70,10 +40,10 @@
 }
 	
 #leftPanel .table-responsive {
-	height: 620px;
+	height: 800px;
 }
 
-#sellerInfoBtn td {
+#orderInfoBtn td {
 	line-height: 21px;
 }
 
@@ -81,26 +51,7 @@ th {
     text-align: center;
 }
 
-/* Overlay */
-.image {
-	display: block;
-	width: auto;
-	height:100%;
-}
-.overlay {
-	position: absolute;
-	transition: all .3s ease;
-	opacity: 0;
-}
-.overlayFade {
-	height: 100%;
-	width:100%;
-	top: 0;
-	left: 0;
-	opacity: 0;
-}
-
-.seller-panel-default {
+.order-panel-default {
 	height: 950px;
 	border: 1px solid;
 	border-radius: 10px;
@@ -108,8 +59,8 @@ th {
     border-width: 2px;
 }
 
-.left-seller-panel-default {
-	height: 760px;
+.left-order-panel-default {
+	height: 950px;
 }
 
 .panel-heading {
@@ -147,22 +98,6 @@ option {
 
 #panel-heading-right {
 	padding: 4px;
-}
-
-#sfileUploadButton {
-	height: 34px;
-}
-
-#sfilePreview {
-	font-size: 15px;
-	float: right;
-	color: #85976d;
-    font-weight: 600;
-    font-family: 'Pretendard';
-}
-
-#sellerIdCheckButton {
-	height: 34px;
 }
 
 #page-wrapper {
@@ -205,31 +140,31 @@ function orderInfoAction(clickedOrder) {
                 	$('#ophone').prop('value',order.ophone);
                 	$('#ophone').prop('readonly',false);
                 	$('#ocode1').prop('value',order.ocode);
-                	$('#oaddr').prop('onclick',"maddrSearchAction()");
                 	$('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
                 	$('#orderUpdateButton').removeAttr('disabled',"disabled");
                 	$('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
+                	$('#orderDeleteButton').removeAttr('disabled',"disabled");
             	});
             } else {
             	$(order).each(function(index, item) {
-                    $('#ocode').prop('value',order.ocode);
-                    $('#mid').prop('value',order.mid);
-                    $('#mname').prop('value',order.mname);
-                    $('#pname').prop('value',order.pname);
-                    $('#ocount').prop('value',order.ocount);
-                    $('#ototal').prop('value',order.ototal);
-                    $('#oregdate').prop('value',order.oregdate);
-                    $('#oname').prop('value',order.oname);
-                    $('#oname').prop('readonly',false);
-                    $('#oaddrz').prop('value',order.oaddrz);
-                    $('#oaddr').prop('value',order.oaddr);
-                    $('#oaddr').prop('readonly',false);
-                    $('#oaddr').attr('onclick',"oaddrSearchAction()");
-                    $('#oaddrd').prop('value',order.oaddrd);
-                    $('#oaddrd').prop('readonly',false);
-                    $('#ophone').prop('value',order.ophone);
-                    $('#ophone').prop('readonly',false);
-                    $('#ocode1').prop('value',order.ocode);
+                	$('#ocode').prop('value',order.ocode);
+                	$('#mid').prop('value',order.mid);
+                	$('#mname').prop('value',order.mname);
+                	$('#pname').prop('value',order.pname);
+                	$('#ocount').prop('value',order.ocount);
+                	$('#ototal').prop('value',order.ototal);
+                	$('#oregdate').prop('value',order.oregdate);
+                	$('#oname').prop('value',order.oname);
+                	$('#oname').prop('readonly',false);
+                	$('#oaddrz').prop('value',order.oaddrz);
+                	$('#oaddr').prop('value',order.oaddr);
+                	$('#oaddr').prop('readonly',false);
+                	$('#oaddr').attr('onclick',"oaddrSearchAction()");
+                	$('#oaddrd').prop('value',order.oaddrd);
+                	$('#oaddrd').prop('readonly',false);
+                	$('#ophone').prop('value',order.ophone);
+                	$('#ophone').prop('readonly',false);
+                	$('#ocode1').prop('value',order.ocode);
                     $('#orderUpdateButton').attr('onclick',"orderUpdateOk()");
                     $('#orderUpdateButton').attr('disabled',"disabled");
                     $('#orderDeleteButton').attr('onclick',"orderDeleteOk()");
@@ -285,7 +220,7 @@ function orderSearchAction(clikedPage) {
     	     }
     		 if (map.paging.next) {
     		 	orderPagingText +=
-    		 	'<li class="page-item"><a class="page-link" href="#" onclick="orderSearchAction(' + map.paging.endPage + ')">다음</a></li>/li>';
+    		 	'<li class="page-item"><a class="page-link" href="#" onclick="orderSearchAction(' + map.paging.endPage + ')">다음</a></li>';
         	 }
     		document.getElementById("orderListBody").innerHTML = orderListText;
         	document.getElementById("orderPagingZone").innerHTML = orderPagingText;
@@ -393,7 +328,7 @@ function orderDeleteAction() {
 				<div class="col-lg-6">
 					<!--좌우분할-->
 					<!--일반회원 관리//-->
-					<div class="panel seller-panel-default left-seller-panel-default">
+					<div class="panel order-panel-default left-order-panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-12">
@@ -466,7 +401,7 @@ function orderDeleteAction() {
 				<div class="col-lg-6">
 					<!--좌우분할-->
 					<!--상세정보패널//-->
-					<div class="panel seller-panel-default">
+					<div class="panel order-panel-default">
 						<div class="panel-heading" id="panel-heading-right">&nbsp;주문 상세 정보</div>
 						<div class="panel-body">
 							<div class="table-responsive" id="orderFormTable">
@@ -519,13 +454,13 @@ function orderDeleteAction() {
 					<div class="row">
 						<div class="col-md-4 mb-1 input-group-sm">
 							<label for="saddrz">우편번호 </label><input type="text"
-								class="form-control" name = "saddrz" id="saddrz" value=""
+								class="form-control" name = "oaddrz" id="oaddrz" value=""
 								placeholder="우편번호" maxlength="7" required readonly>
 						</div>
 						<div class="col-md-8 mb-1 input-group-sm">
 							<label for="saddr">주소 <span class="text-danger">*</span></label> <input type="text"
-								class="form-control" name = "saddr" id="saddr" value=""
-								placeholder="여기를 클릭해주세요" required readonly>
+								class="form-control" name = "oaddr" id="oaddr" value=""
+								placeholder="여기를 클릭해주세요" required>
 						</div>
 					</div>
 					<label for="saddrd">상세주소 <span class="text-danger">*</span><span class="text-muted"></span></label>
@@ -533,7 +468,7 @@ function orderDeleteAction() {
 					<div class="input-group-prepend">
 					<span class="input-group-text"><i class="fa solid fa-house-chimney"></i></span>
 					</div>		
-					<input type="text" class="form-control" name="saddrd" id="saddrd" value=""
+					<input type="text" class="form-control" name="oaddrd" id="oaddrd" value=""
 							placeholder="상세주소를 입력해주세요." maxlength="50" required readonly>
 					</div>
 					
@@ -547,7 +482,7 @@ function orderDeleteAction() {
 							placeholder="주문번호" required readonly>
 					</div>
 					</div>
-						
+				</form>		
 					<div class="mb-4"></div>
 					<hr class="mb-4">
 					<div class="mb-4"></div>
@@ -559,7 +494,6 @@ function orderDeleteAction() {
 						<input type="button" class="btn btn-default btn-lg btn-block" id="orderDeleteButton" value="주문 취소" title="주문 취소 버튼">
 						</div>			
 					</div>
-				</form>
 			</div>
 		</div>
 							</div>
@@ -576,106 +510,47 @@ function orderDeleteAction() {
 	</div>
 	
 	<script>
-	function sokCheckAction(checkedSeller) {
-		if(checkedSeller.getAttribute("data-sok") != 'Y') {
-			if(!confirm('정말로 승인하시겠습니까?')) {
-				document.getElementById("sokCheckBox" + checkedSeller.getAttribute('data-sid')).checked = false;
-				return false;
-			} else {
-				var sid = checkedSeller.getAttribute("data-sid");
-			    $.ajax({
-			        type: 'POST',
-			        url: './sc',
-			        data: {sid:sid, sok:'Y'},
-			        success: function() {
-			        	checkedSeller.setAttribute('data-sok', 'Y');
-			        	document.getElementById(checkedSeller.getAttribute("data-sid") + "sokText").innerText = "Y";
-			        	alert(checkedSeller.getAttribute("data-sid") + " 계정의 가입승인이 완료되었습니다.");
-			        },
-			        error: function(request, status, error) {
-			            console.log("code:" + request.status + 
-			            		"\n"+"message:" + request.responseText + 
-			            		"\n"+"error:"+error);
-			        }
-			    });
-			}
-		} else {
-			if(!confirm('정말로 취소하시겠습니까?')){
-				document.getElementById("sokCheckBox" + checkedSeller.getAttribute('data-sid')).checked = true;
-				return false;
-			} else {
-				var sid = checkedSeller.getAttribute("data-sid");
-			    $.ajax({
-			        type: 'POST',
-			        url: './sc',
-			        data: {sid:sid, sok:'N'},
-			        success: function(seller) {
-			        	checkedSeller.setAttribute('data-sok', 'N');
-			        	document.getElementById(checkedSeller.getAttribute("data-sid") + "sokText").innerText = "N";
-			        	alert(checkedSeller.getAttribute("data-sid") + " 계정의 가입승인이 취소되었습니다.");
-			        },
-			        error: function(request, status, error) {
-			            console.log("code:" + request.status + 
-			            		"\n"+"message:" + request.responseText + 
-			            		"\n"+"error:"+error);
-			        }
-			    });
-			}
-		}		
-	}
-	
-	function sellerUpdateOk() {
+	function orderUpdateOk() {
 		if(!confirm('정말로 수정하시겠습니까?')){
 			return false;
 		} else {
-			sellerUpdateAction();
+			orderUpdateAction();
 		}
 	}
 	
-	function sellerDeleteOk(){
+	function orderDeleteOk(){
 		
-		var sid = document.getElementById('sid').value;
+		var ocode = document.getElementById('ocode').value;
 		
-		if(!confirm('삭제할 ID = ' + sid + '\n정말로 삭제하시겠습니까?')){
+		if(!confirm('취소한 주문번호  = ' + ocode + '\n정말로 취소하시겠습니까?')){
 			return false;
 		} else {
-			sellerDeleteAction();
+			orderDeleteAction();
 		}
 	}
-	
-	function sellerInsertOk() {
-		var sellerIdCheck = document.getElementById('sellerIdCheck').value;
-		
-		if(!confirm('정말로 추가하시겠습니까?')){
-			return false;
-		} else {
-			if(sellerIdCheck == "N"){
-				alert("아이디 중복확인을 클릭해주세요.");
-				return false;
-			}
-			sellerInsertAction();
-		}
-	}    
-	
-	function sellerIdChange() {
-      	document.getElementById('sellerIdCheck').value = "N";
-    }
+    
 	</script>
 	
-	<!-- 카카오 주소찾기 API -->
+	<!-- 다음 주소찾기 API -->
 	<script>
-	function saddrSearchAction() {
-	    window.onload = (function() {
+	function oaddrSearchAction() {
+    	window.onload = (function(){
 	        	new daum.Postcode({
 		            oncomplete: function(data) { //선택시 입력값 세팅
-	            		document.getElementById("saddrz").value = data.zonecode; // 우편번호 넣기
-	                	document.getElementById("saddr").value = data.address; // 주소 넣기
-	                	document.querySelector("input[name=saddrd]").focus(); //상세입력 포커싱
+	            		document.getElementById("oaddrz").value = data.zonecode; // 우편번호 넣기
+	                	document.getElementById("oaddr").value = data.address; // 주소 넣기
+	                	document.querySelector("input[name=oaddrd]").value = "";
+	                	document.querySelector("input[name=oaddrd]").focus(); //상세입력 포커싱
 	            	}
 	        	}).open();
-		})();
-    }
+	    	})();
+	}    	
 	</script>
+	
+	<!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 		
 </body>
 </html>

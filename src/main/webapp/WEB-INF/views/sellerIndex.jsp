@@ -48,9 +48,30 @@
                label : "총 회원수",
                data : valueList,
                backgroundColor: [
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+            	   'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)'
                ],
                borderWidth: 2,
                borderRadius: 2,
@@ -114,9 +135,30 @@
                 label : "총 상품수",
                 data : valueList,
                 backgroundColor: [
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-             	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)'
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -181,7 +223,30 @@
                 	"#ffffff"
                 ],
                 borderColor:[
-                	getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)'
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -243,9 +308,30 @@
                 label : "월간 매출액",
                 data : valueList,
                 backgroundColor: [
-                   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor(),
-              	   getRandomColor(), getRandomColor(), getRandomColor(), getRandomColor()
+                	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)',
+	               	'rgba(255, 99, 132, 0.5)', 
+	               	'rgba(54, 162, 235, 0.5)', 
+	               	'rgba(255, 206, 86, 0.5)', 
+	               	'rgba(75, 192, 192, 0.5)', 
+	               	'rgba(153, 102, 255, 0.5)', 
+	               	'rgba(255, 159, 64, 0.5)'
                 ],
                 borderWidth: 2,
                 borderRadius: 2,
@@ -262,7 +348,7 @@
                 }],
                 yAxes: [{
                    ticks: {
-                      stepSize: 5,
+                      stepSize: 5000,
                       min:0
                    },
                    display: true,
@@ -296,7 +382,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <jsp:include page="./common/toolbarHeader.jsp" />
+                <jsp:include page="./common/sellerToolbarHeader.jsp" />
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">

@@ -58,7 +58,7 @@
 }
 
 #productInfoBtn td {
-	line-height: 21px;
+	line-height: 28px;
 }
 
 th {
@@ -85,7 +85,7 @@ th {
 }
 
 .product-panel-default {
-	height: 950px;
+	height: 807px;
 	border: 1px solid;
 	border-radius: 10px;
     border-color:  #d8e3c9;
@@ -111,7 +111,6 @@ th {
 	border: none;
 	color: #72815d;
     font-weight: 700;
-}
 }
 
 option {
@@ -169,10 +168,18 @@ option {
 .nav-tabs > .active {
 	background: #b8d590;
 }
+
+#page-wrapper {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
 </style>
 </head>
 
-<body>
+<body id="page-top">
 <script>
 
 //pfilePreview
@@ -191,33 +198,54 @@ function pfilePreview() {
 <!-- 상세정보 조회 AJAX -->
 function productInfoAction(clickedproduct) {
 	var pcode = clickedproduct.getAttribute("data-pcode");
+	var pfileZoneText = "";
 	
     $.ajax({
         type: 'POST',
         url: './if',
         data: {pcode:pcode},
         success: function(product) {
-            $(product).each(function(index, item) {
-                $('#pcode').prop('value',product.pcode);
-                $('#pname').prop('value',product.pname);
-                $('#pname').prop('readonly',false);
-                $('#pprice').prop('value',product.pprice);
-                $('#pprice').prop('readonly',false);
-                $('#pcate').prop('value',product.pcate);
-                $('#ptag').prop('value',product.ptag);
-                $('#ptag').prop('readonly',false);
-                $('#pfile').prop('value',product.pfile);
-                $('#pfileUploadButton').prop('disabled',false);
-                $('#pcontent').prop('value',product.pcontent);
-                $('#pcontent').prop('readonly',false);
-                $('#pregdate').prop('value',product.pregdate);
-                $('#sid').prop('value',product.sid);
-                $('#productUpdateButton').attr('onclick',"productUpdateOk()");
-                $('#productDeleteButton').attr('onclick',"productDeleteOk()");
-                $('#productRActionButton').attr('onclick',"productRActionOk()");
-           });
-					
-        },
+        	
+        	 pfileZoneText +=  
+ 				'<div class="row">' +
+ 				'<div class="col-md-9 mb-1 input-group-sm">' +
+ 					'<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"' +
+ 						'class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="' + pfile + '"' +
+ 						'maxlength="10" required readonly>' +
+ 				'</div>' +
+ 				'<div class="col-md-3 mb-1">' +
+ 					'<input type="file" accept="image/jpeg"' +
+ 						'class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">' +
+ 					'<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>' +
+ 					'<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById(`pfileUpload`).click()">' +							
+ 				'</div>' +
+ 				'</div>' + 
+ 				'<a href="javascript:pfilePreview()" id="pfilePreview"> 미리보기&nbsp; </a>';
+             document.getElementById("pfileZone").innerHTML = pfileZoneText;     
+        	
+             $(product).each(function(index, item) {
+                 $('#pcode').prop('value',product.pcode);
+                 $('#pname').prop('value',product.pname);
+                 $('#pname').prop('readonly',false);
+                 $('#pprice').prop('value',product.pprice);
+                 $('#pprice').prop('readonly',false);
+                 $('#pcate').prop('value', product.pcate);
+                 $('#pcate').prop('disabled',true);
+                 $('#ptag').prop('value',product.ptag);
+                 $('#ptag').prop('readonly',false);
+                 $('#pfile').prop('value',product.pfile);
+                 $('#pfileUploadButton').prop('disabled',false);
+                 $('#pcontent').prop('value',product.pcontent);
+                 $('#pcontent').prop('readonly',false);
+                 $('#pregdate').prop('value',product.pregdate);
+                 $('#sid').prop('value',product.sid);
+                 $('#sid').prop('readonly',true);
+                 $('#productUpdateButton').attr('onclick',"productUpdateOk()");
+                 $('#productDeleteButton').attr('onclick',"productDeleteOk()");
+                 $('#productRActionButton').attr('onclick',"productRActionOk()");
+             });
+            	 
+         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
@@ -286,17 +314,38 @@ function productInsertForm() {
 	var productInsertFormIdZoneText = '';
 	var today = new Date();
 	var sid = '<%=(String)session.getAttribute("sid")%>';
+	var pcate = $('#pcate option:selected').val();
 		
     $.ajax({
         success: function() {
         	$('#productInfoDetail').prop('action',"productInsertAction()");
-        	$('#pcode').prop('value',"");
-            $('#pcode').prop('readonly',false);
+        	$('#pcode').prop('readonly',false);
             $('#pname').prop('value',"");
             $('#pname').prop('readonly',false);
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',false);
-            $('#pcate').prop('value',"");
+            $('#pcate').prop('value',pcate);
+            $('#pcate').prop('disabled',false);
+            $("#pcate").change(function() {
+            $("#pcate option:selected").each(function() {
+            $("#pcate").val($(this).val());
+
+            if ($(this).val() == "농산물류") {
+                $('#pcode').prop('value', 'N');
+            } else if ($(this).val() == "간편식류") {
+            	$('#pcode').prop('value', 'G');
+            } else if ($(this).val() == "콩고기류") {
+        		$('#pcode').prop('value', 'K');
+            } else if ($(this).val() == "양념소스류") {
+            	$('#pcode').prop('value', 'Y');
+            } else if ($(this).val() == "음료류") {
+            	$('#pcode').prop('value', 'U');
+            } else if ($(this).val() == "생활용품류") {
+            	$('#pcode').prop('value', 'S');
+            }
+            });
+            }); 
+            
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',false);
             $('#pfile').prop('value',"");
@@ -317,7 +366,7 @@ function productInsertForm() {
 			'id="productInsertBackButton" value="뒤로가기" onclick="productInsertCancel()" title="뒤로가기 버튼">' +
 			'</div>' +		
 			'<hr class="mb-4">' +
-			'<br>';
+			'<br><br><br><br><br>';
 			document.getElementById("productButtonZone").innerHTML = productInsertFormText;
 			
         },
@@ -332,7 +381,7 @@ function productInsertForm() {
 function productInsertCancel() {
 	var productInsertCancelText = '';
 	var productInsertFormIdZoneText = '';
-	$.ajax({
+    $.ajax({
         success: function() {
         	
         	$('#productInfoDetail').prop('action',"./up");
@@ -343,6 +392,7 @@ function productInsertCancel() {
             $('#pprice').prop('value',"");
             $('#pprice').prop('readonly',true);
             $('#pcate').prop('value',"");
+            $('#pcate').prop('disabled',true);
             $('#ptag').prop('value',"");
             $('#ptag').prop('readonly',true);
             $('#pfile').prop('value',"");
@@ -396,7 +446,7 @@ function productInsertAction() {
         url: './in',
    		data: product,
         success: function() {
-        	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
+          	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
         	alert("추가한 상품 = " + pname + "\n추가가 완료되었습니다.");
         	productInsertCancel();
         },
@@ -418,9 +468,10 @@ function productUpdateAction() {
         url: './up',
    		data: product,
         success: function() {
+        	
         	productSearchAction(document.getElementsByClassName("productActivePage")[0].value);
         	alert("수정이 완료되었습니다.");
-				
+        	$('#pcate').prop('disabled',true);			
         },
         error: function(request, status, error) {
             console.log("code:" + request.status + 
@@ -428,6 +479,7 @@ function productUpdateAction() {
             		"\n"+"error:"+error);
         }
     });
+    
 }
 
 function productDeleteAction() {	
@@ -581,16 +633,31 @@ function productRAction() {
 					<div class="panel product-panel-default">
 						<div class="panel-heading" id="panel-heading-right">상품 상세 정보</div>
 						<div class="panel-body">
+						<c:forEach var="product" items="${productSellerList}">
 						<div class="overlay overlayFade" id="overlayFade">
-							<img src="/resources/image/product/무화과잼.jpg" alt="img" class="image">
+							<img src="/resources/productUpload/${product.pfile}" alt="img" class="image">
 						</div>
+						</c:forEach>
 							<div class="table-responsive" id="productFormTable">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<form class="productInfoDetail" id= "productInfoDetail" name="productInfoDetail" method="post">
 				
 					<div class="mb-1 input-group-sm">
-					<label for="pcode">상품코드 <span class="text-danger">*</span></label> 
+						<label for="pcate">카테고리 <span class="text-danger">*</span></label>
+						<select	class="form-control" name="pcate" id="pcate" disabled>
+							<option value="" selected>카테고리 선택</option>
+							<option value="농산물류">농산물류</option>
+							<option value="간편식류">간편식류</option>
+							<option value="콩고기류">콩고기류</option>
+							<option value="음료류">음료류</option>
+							<option value="양념소스류">양념소스류</option>
+							<option value="생활용품류">생활용품류</option>
+						</select>
+					</div>
+				
+					<div class="mb-1 input-group-sm">
+					<label for="pcode">상품코드 <span class="text-danger">*</span><span style="font-size:10pt"> &nbsp; ex) N001, G001, K001···</span></label> 
 						<input type="text"
 							class="form-control" name="pcode" id="pcode" value="${product.pcode}"
 							placeholder="상품코드" pattern="^[A-Z0-9_]{3,20}$" 
@@ -608,20 +675,9 @@ function productRAction() {
 							placeholder="가격" pattern="^[0-9]+$" 
 							maxlength="6" required readonly>
 					</div>	
+
 					<div class="mb-1 input-group-sm">
-						<label for="pcate">카테고리 <span class="text-danger">*</span></label>
-						<select	class="form-control" name="pcate" id="pcate" required>
-							<option value="" selected>카테고리 선택</option>
-							<option value="농산물류">농산물류</option>
-							<option value="간편식류">간편식류</option>
-							<option value="콩고기류">콩고기류</option>
-							<option value="음료류">음료류</option>
-							<option value="양념소스류">양념소스류</option>
-							<option value="생활용품류">생활용품류</option>
-						</select>
-					</div>
-					<div class="mb-1 input-group-sm">
-						<label for="ptag">태그명 <span class="text-danger">*</span></label> <input type="text"
+						<label for="ptag">태그명 <span class="text-danger">*</span><span style="font-size:10pt"> &nbsp; ex) 콩, 다이어트, 과일, 채소, 빵···</span></label> <input type="text"
 							class="form-control"  name="ptag" id="ptag" value="${product.ptag}"
 							placeholder="태그명" pattern="^[가-힣]+$" 
 							maxlength="13" required readonly>
@@ -630,11 +686,11 @@ function productRAction() {
 					<div class="row">
 					<div class="col-md-9 input-group-sm">
 						<label for="pfile">상품사진 <span class="text-danger">*</span></label> <input type="text"
-							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value=""
+							class="form-control" name="pfile" id="pfile" placeholder="상품사진" value="${product.pfile}"
 							maxlength="10" required readonly>
 					</div>
 					<div class="col-md-3">
-						<input type="file" accept="image/*"
+						<input type="file" accept="image/jpeg"
 							class="form-control" name="pfileUpload" id="pfileUpload" value="사진등록" onchange="pfileUploadAction()">
 						<label for="pfileUploadButton" id="pfileUploadButtonLabel"></label>
 						<input type="button" class="form-control" name="pfileUploadButton" id="pfileUploadButton" value="사진등록" onclick="document.getElementById('pfileUpload').click()" disabled>							
@@ -682,7 +738,7 @@ function productRAction() {
 						<div class="col-md-6 mb-3">
 						<input type="button" class="btn btn-default btn-md btn-block" 
 						id="productRActionButton" value="리뷰보기" title="리뷰보기 버튼">
-						</div>								
+						</div>					
 					</div>	
 				</form>
 			</div>
@@ -702,6 +758,7 @@ function productRAction() {
 		if(!confirm('정말 수정하시겠습니까?')){
 			return false;
 		} else {
+			$("select[name=pcate]").removeAttr('disabled');
 			productUpdateAction();
 		}
 	}
@@ -721,7 +778,7 @@ function productRAction() {
 			productInsertAction();
 		}
 	}
-    
+	
 	function productRActionOk() {
 		if(!confirm('리뷰페이지로 이동하시겠습니까?')){
 			return false;
@@ -729,7 +786,7 @@ function productRAction() {
 			productRAction();
 		}
 	}
-	
+    
 	</script>
 	
 	</div>
@@ -738,5 +795,10 @@ function productRAction() {
 </footer>
 </div>
 </div>
+	<!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
 </body>
 </html>

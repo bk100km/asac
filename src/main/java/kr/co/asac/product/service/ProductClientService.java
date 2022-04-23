@@ -95,9 +95,9 @@ public class ProductClientService {
     	boolean isContainsPcode = cartCode.contains(pcode);
     	
     	model.addAttribute("isContainsPcode", isContainsPcode);
-		
+    	
 		if(mid == null) {
-			mid = request.getParameter("aid");
+			mid = (String)session.getAttribute("sid");
 			System.out.println(mid);
 			
 		}

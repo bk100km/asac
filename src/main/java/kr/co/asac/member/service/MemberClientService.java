@@ -48,7 +48,6 @@ public class MemberClientService {
 		} else {
 			HttpSession session = request.getSession();
 			session.setAttribute("mid", secureMember.getMid());
-			model.addAttribute("mid", secureMember.getMid());
 	    }	
 	}
 	
@@ -120,7 +119,7 @@ public class MemberClientService {
 		model.addAttribute("member", member);
 	}
 	
-	public void memberClientUpdate(HttpServletRequest request, Model model, MemberBean member) {
+	public void memberClientUpdate(HttpServletRequest request, Model model, MemberBean member, HttpServletResponse response) throws Exception {
 		MemberDAO memberDAO =sqlSessionTemplate.getMapper(MemberDAO.class);
 		System.out.println("DAO에 member를 보냈다" + member);
 		String gender = member.getMbirth().substring(7,8);
@@ -141,6 +140,15 @@ public class MemberClientService {
 		
 		memberDAO.memberClientUpdate(member);	
 		model.addAttribute("member", member);
+		
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>");
+		out.println("alert('수정이 완료되었습니다.')");
+		out.println("location.href='/me/cl/my'");
+		out.println("</script>");
+		out.flush();
+		return;
 	}
 	
 	public void memberClientDelete(HttpSession session, MemberBean vo, HttpServletResponse response) throws Exception {
@@ -149,7 +157,19 @@ public class MemberClientService {
 		MemberBean secureMember = memberDAO.memberClientLoginCheck(vo.getMid());
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String mid = (String) session.getAttribute("mid");
+		System.out.println("mid 딜리트 서비스 들어왔니?");
 		if(secureMember != null && encoder.matches(vo.getMpwd(), secureMember.getMpwd())) {
+			memberDAO.memberClientDelete(vo, mid);
+			session.invalidate();
+			response.setContentType("text/html; charset=utf-8");
+			System.out.println("딜리트 이후 mid값은" + mid);
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('탈퇴가 완료되었습니다.')");
+			out.println("location.href='/'");
+			out.println("</script>");
+			out.flush();
+		}else {
 			memberDAO.memberClientDelete(vo, mid);
 			session.invalidate();
 			response.setContentType("text/html; charset=utf-8");
@@ -294,7 +314,7 @@ public class MemberClientService {
 			}else {
 				System.out.println("findId()에서 id값은 = " + ck.getMid());
 				sendEmail(ck, "findId");
-				out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+				out.print("이메일로 아이디를 발송하였습니다.");
 				/*
 				 * out.println(
 				 * "<script>location.href='http://localhost:8080/me/cl/lo';</script>");

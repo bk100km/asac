@@ -180,7 +180,7 @@ $(function() {
 });
 </script>
 </head>
-<body>
+<body id="page-top">
 <!-- Page Wrapper -->
 <div id="wrapper">
 <header>
@@ -246,5 +246,9 @@ $(function() {
 </div>
 </div>
 </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 </body>
 </html>

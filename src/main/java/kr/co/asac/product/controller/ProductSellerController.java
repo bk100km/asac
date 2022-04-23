@@ -104,7 +104,7 @@ public class ProductSellerController {
 		String fileName = pfileUpload.getOriginalFilename();
 	
         try {
-        	pfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+        	pfileUpload.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\productUpload\\" + fileName));
         } catch(Exception e) {
 
         }

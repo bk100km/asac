@@ -120,6 +120,14 @@ public class OrderClientService {
 		return cartlist;
 	}
 	
+	public List<CartBean> FastList(String mid, CartBean cart, Model model) {
+		OrderDAO dao = sqlSessionTemplate.getMapper(OrderDAO.class);
+		List<CartBean> cartlist = dao.orderFastCartList(mid);
+		model.addAttribute("cartlist", cartlist);
+		System.out.println(cartlist);
+		return cartlist;
+	}	
+	
 	
     public String cartInsert(CartBean cart,HttpServletResponse response, String mid) throws Exception {
     	CartDAO dao = sqlSessionTemplate.getMapper(CartDAO.class);

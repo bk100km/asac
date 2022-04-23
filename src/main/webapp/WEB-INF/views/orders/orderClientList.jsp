@@ -12,9 +12,11 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <title>마이페이지-내 주문 내역</title>
 <style>
-	.padding{padding: 5px 5px;}
 	.break{
 	word-break:keep-all;
+	}
+	td{
+	    padding: 20px 5px !important;
 	}
 </style>
 </head>
@@ -33,8 +35,8 @@
 	      <thead>
 	        <tr>
 	          <th class="break"><fmt:formatDate value="${order.oregdate}" pattern="yyyy-MM-dd"/></th>
-	    	   <th class="break"><a href="/me/cl/in/${order.ocode}">주문번호 : ${order.ocode}</a></th>
-	          <th class="break">총 결제 금액 : <fmt:formatNumber value="${order.total}" pattern="#,###,###원"/> </th>
+	    	   <th class="break"><a href="/me/cl/in/${order.ocode}">${order.ocode}</a></th>
+	          <th class="break"><fmt:formatNumber value="${order.total}" pattern="#,###,###원"/> </th>
 	          <c:choose>
 	          <c:when test="${order.odelivery eq '배송중'}">
 	          	<th class="break"><a>주문 취소</a></th>
@@ -54,7 +56,7 @@
 	      </thead>
 	      <tbody>
 	        <tr>
-	          <td class="padding"><img class="card-img-to imgpadding" src="/resources/image/product/${order.pfile}" style="width:60px; height:60px;" title="${order.pname}" <%-- alt="${order.pcontent}" --%> /></td>
+	          <td><img class="card-img-to" src="/resources/productUpload/${order.pfile}" style="width:80px; height:80px;" title="${order.pname}" <%-- alt="${order.pcontent}" --%> /></td>
 	          <c:choose>
 	          <c:when test="${order.count eq 1}">
 	          	<td colspan="2"><strong>${order.pname}</strong></td>

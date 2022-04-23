@@ -60,6 +60,8 @@
 			}
 		})
 	});
+	
+
 
 	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
 	function sample4_execDaumPostcode() {
@@ -121,7 +123,9 @@
 					}
 				}).open();
 	}
-
+	
+	
+	
 	function fileUpload() {
 
 		var sfileUpload = new FormData($("#seller")[0])
@@ -148,7 +152,9 @@
 								+ 'class="form-control" name = "sfileUpload" id="sfileUpload" value="파일등록" onchange="fileUpload()">'
 								+ '<label for="sfileUploadButton" id="sfileUploadButtonLabel"></label>'
 								+ '<input type="button" class="form-control" name = "sfileUploadButton" id="sfileUploadButton" value="파일등록" onclick="document.getElementById(`sfileUpload`).click()">'
-								+ '</div>' + '</div>';
+								+ '</div>' 
+								+ '</div>'
+								;
 						document.getElementById("sfileZone").innerHTML = sfilezone;
 					},
 					error : function(request, status, error) {
@@ -165,6 +171,25 @@
   			$(this).val().replace(/[^0-9]/g, "").replace(/([0-9]{3})([0-9]{2})([0-9]+)?/,"$1-$2-$3").replace("--", "-") 
   		); 
   	});
+	
+	function joinconfrim(){
+		var sid = $('#sid').val();
+		var spwd = $('#spwd').val();
+		var sname = $('#sname').val();
+		var sbirth = $('#sbirth').val();
+		var sphone = $('#sphone').val();
+		var smail = $('#smail').val();
+		var snumber = $("#snumber").val();
+		var sname =$("sname").val();
+		var sfile =$("#sfile").val();
+		var saddrz = $('#sample4_postcode').val();
+		var saddr = $('#sample4_roadAddress').val();
+		var saddrd = $('#sample4_detailAddress').val();
+		if(sid !='' && spwd != '' && sname != '' && sbirth != '' && sphone != ''&& smail != '' && snumber !='' && sname!='' && sfile !='' && saddrz != '' && saddr != '' && saddrd != ''){
+			alert("회원가입이 완료 되었습니다.");
+		}
+		
+	};
 </script>
 <style type="text/css">
 .id_ok {
@@ -209,7 +234,9 @@ body {
 	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	margin: auto;
 }
-
+.table-responsive {
+    overflow-x: hidden;
+}
 sfileUploadButtonLabel {
 	margin-top: 14px;
 }
@@ -217,7 +244,6 @@ sfileUploadButtonLabel {
 #sfileUpload {
 	display: none;
 }
-
 .title{
 	text-align : center;
 }
@@ -232,6 +258,17 @@ sfileUploadButtonLabel {
 	text-decoration:none !important;
 	color: #74bf0f;
 }
+.btn-primary{
+	background-color:#74bf0f;
+	border-color:#74bf0f;
+	color:#fff;
+}
+.btn-primary:hover{
+	background-color:#fff;
+	border-color:#74bf0f;
+	color:#74bf0f;
+}
+
 </style>
 </head>
 <body>
@@ -246,12 +283,14 @@ sfileUploadButtonLabel {
 	<a class="logo" href="<%= request.getContextPath() %>/">ASAC</a>
 	<h2 align="center">판매자 회원가입</h2>
 	</div>
-	<div class="container">
-		<div class="input-form-background row">
-			<div class="input-form mx-auto my-auto">
+	<div class="container">			
+		<div class="input-form-background row" >
+			<div class="input-form mx-auto my-auto" >
+									
 				<form:form class="validation-form" method="post" action="./jA"
-					enctype="multipart/form-data" id="seller" name="seller">
-					<div class="mb-3">
+					enctype="multipart/form-data" id="seller" name="seller">	
+						
+					<div class="mb-2">
 						<label for="sid">아이디 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i
@@ -260,75 +299,72 @@ sfileUploadButtonLabel {
 								pattern="^[a-z0-9_]{4,10}$" placeholder="아이디(영문소문자와 숫자로 입력)"
 								minlength="4" maxlength="10" required>
 						</div>
-						<br>
 						<div>
 							<span class="id_ok"><p>사용 가능한 아이디입니다.</p></span> <span
 								class="id_already"><p>이미 사용중인 아이디입니다.</p></span>
 						</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="pw">비밀번호 <span class="text-danger">*</span></label> <input
 							type="password" class="form-control" name="spwd" id="pw"
-							pattern="^[a-z0-9_]{4,10}$" placeholder="비밀번호(영문소문자와 숫자로 입력)"
-							minlength="4" maxlength="10" required /><br>
+							pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{4,16}$" placeholder="비밀번호(영문 숫자 포함 4~16자입력)"
+							minlength="4" maxlength="16" required />
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
 						<input type="password" class="form-control" name="spwd2" id="pw2"
-							pattern="^[a-z0-9_]{4,10}$" placeholder="비밀번호확인(영문소문자와 숫자로 입력)"
-							minlength="4" maxlength="10" required /><br> <span
+							pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{4,16}$" placeholder="비밀번호확인(영문 숫자 포함 4~16자입력)"
+							minlength="4" maxlength="16" required /><span
 							class="pw_ok"><p>비밀번호가 일치합니다.</p></span> <span class="pw_nok"><p>비밀번호가
 								일치하지 않습니다.</p></span>
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sname">이름 <span class="text-danger">*</span></label> <input
 							type="text" class="form-control" pattern=^[가-힣]+$ minlength="3"
-							maxlength="6" placeholder="이름" name="sname" id="sname" required /><br>
+							maxlength="6" placeholder="이름" name="sname" id="sname" required />
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sbirth">생년월일 <span class="text-danger">*</span></label>
 						<input type="text" class="form-control" maxlength="8"
 							pattern="^[0-9_]{8}$" placeholder="생년월일(8자리)" name="sbirth"
-							id="sbirth" required /><br>
+							id="sbirth" required />
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="sphone">전화번호 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-phone"></i><i class="mhpLabel"></i></span> <input
 								type="tel" class="form-control phoneNumber" maxlength="11"
 								pattern=".{11}" placeholder="전화번호" name="sphone" id="sphone"
-								required /><br>
+								required />
 						</div>
-						<br>
+					
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="smail">이메일 <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-envelope"></i></span> <input type="email"
 								class="form-control" name="smail" id="smail"
-								placeholder="you@example.com" maxlength="30" value="" required /><br>
+								placeholder="you@example.com" maxlength="30" value="" required />
 						</div>
-						<br>
+						
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="scompany">회사명 <span class="text-danger">*</span></label>
 
 
-						<input type="text" class="form-control" minlength="4"
-							maxlength="8" name="scompany" id="scompany" placeholder="회사명"
-							required /><br>
+						<input type="text" class="form-control" maxlength="10"
+							 name="scompany" pattern=^[가-힣]+$ id="scompany" placeholder="회사명"
+							required />
 
 					</div>
-					<div class="mb-3">
+					<div class="mb-2">
 						<label for="snumber">사업자번호 <span class="text-danger">*</span></label>
-
-
-						<input type="text" class="form-control snumber" maxlength="11"
+							<input type="text" class="form-control snumber" maxlength="12"
 							name="snumber" id="snumber"
-							pattern="^(\d{3,3})+[-]+(\d{2,2})+[-]+(\d{4,4})"
-							placeholder="사업자번호(000-00-0000)" required /><br>
+							pattern="^(\d{3,3})+[-]+(\d{2,2})+[-]+(\d{5,5})"
+							placeholder="사업자번호(000-00-00000)" required />
 
 					</div>
 					<div class="mb-3" id="sfileZone">
@@ -349,20 +385,21 @@ sfileUploadButtonLabel {
 									onclick="document.getElementById('sfileUpload').click()">
 							</div>
 						</div>
+					
 					</div>
 					<div class="row">
 						<div class="col-md-9 mb-3">
 							<label for="sample4_postcode">우편번호 <span
 								class="text-danger">*</span></label> <input type="text"
 								class="form-control" id="sample4_postcode" placeholder="우편번호"
-								name="saddrz" readonly required><br>
+								name="saddrz" readonly required>
 						</div>
 						<div class="col-md-3 mb-3">
 							<label>&nbsp;</label><br> <input type="button" class="btn"
-								onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+								onclick="sample4_execDaumPostcode()" value="우편번호 찾기">
 						</div>
 					</div>
-					<div class="mb-3">
+					<div class="mb-1">
 						<label for="sample4_roadAddress">도로명주소</label> <input type="text"
 							class="form-control" id="sample4_roadAddress" placeholder="도로명주소"
 							name="saddr" readonly required>
@@ -372,7 +409,7 @@ sfileUploadButtonLabel {
 					</div>
 					<input type="hidden" class="form-control" id="sample4_jibunAddress"
 						placeholder="지번주소" required>
-					<div class="mb-3">
+					<div class="mb-1">
 						<label for="sample4_detailAddress">상세주소</label>
 						<div class="input-group">
 							<span class="input-group-addon"><i
@@ -388,12 +425,17 @@ sfileUploadButtonLabel {
 					<br>
 					<div>
 						<input type="submit" id="submit"
-							class="join_button btn btn-primary btn-lg btn-block" value="가입하기"><br>
+							class="join_button btn btn-primary btn-lg btn-block" onclick="joinconfrim()" value="가입하기"><br>
 					</div>
+				
 				</form:form>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
+		
+	
+		
+	
 	<br>
 	<br>
 	<br>

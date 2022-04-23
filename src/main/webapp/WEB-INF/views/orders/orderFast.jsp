@@ -14,75 +14,50 @@
 <script	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.1.js"></script>
- 
-<style>
-.btn {
-	display: inline-block;
-	min-width: 112px;
-	padding: 11px 31px;
-	font-size: 16px;
-	line-height: 26px;
-	text-align: center;
-	vertical-align: top;
-	border: 1px solid #74bf0f !important;
-	border-radius: 26px;
-	background-color: #74bf0f !important;
-	background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
-	color: #fff;
-	font-weight: 500;
-}
-
-</style>
-<script type="text/javascript">
-function count(type) {
-
-	const countElement = document.getElementById('productCount');
-	const priceElement = document.getElementById('productPrice');
-	const totalPriceElement = document.getElementById('productTotal');
-
-	let count = countElement.innerText.replace(/,/g, '');
-	let price = priceElement.innerText.replace(/,/g, '');
-	let totalPrice = totalPriceElement.innerText.replace(/,/g, '');
-
-	if (type === 'plus') {
-		if (count < 5){
-			count = parseInt(count) + 1;
-			
-			if (parseInt(totalPrice) < (parseInt(price) * 5)){
-			totalPrice = parseInt(totalPrice) + parseInt(price);
-			
-			document.getElementById("productCount").innerHTML = count;
-			document.getElementById("productTotal").innerHTML = totalPrice + "&nbsp;원";
-
-			$('#proCount').val(count);
-			$('#proTotal').val(totalPrice);
-			$('#proTotal1').val(totalPrice);
-			}
-		}
-	}
-	if (type === 'minus') {
-		if (count > 1){
-			count = parseInt(count) - 1;
-			
-			if (parseInt(totalPrice) > parseInt(price)){
-			totalPrice = parseInt(totalPrice) - parseInt(price);
-			
-			document.getElementById("productCount").innerHTML = count;
-			document.getElementById("productTotal").innerHTML = totalPrice + "&nbsp;원";
-
-			$('#proCount').val(count);
-			$('#proTotal').val(totalPrice);
-			$('#proTotal1').val(totalPrice);
-			}
-		}
-	}
-}
+<script>
+$(document).ready(function(){ 
+	document.getElementById("cartTotal").innerHTML = ${cart.pprice * cart.pcount};
+});
 </script>
+<style>
+.updatebtn{
+	 	display: inline-block;
+		min-width: 60px;
+		padding: 5px 7px;
+		font-size: 16px;
+		line-height: 20px;
+		vertical-align: top;
+		border: 2px solid #74bf0f !important;
+		border-radius: 20px;
+		background-color: #fff !important;
+		background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
+		color: #74bf0f;
+		font-weight: 800;
+}
+.btn {
+		display: inline-block;
+		min-width: 112px;
+		padding: 11px 31px;
+		font-size: 16px;
+		line-height: 26px;
+		vertical-align: top;
+		border: 1px solid #74bf0f !important;
+		border-radius: 26px;
+		background-color: #74bf0f !important;
+		background-image: linear-gradient(280deg, #fb5a72, #E1B771 !important);
+		color: #fff !important;
+		font-weight: 500;
+	}
+.pay{text-align:right;}
+.yellow{background-color: #74bf0f; padding:5px; color:white;text-align:center; margin-top:5px;}  
+.white{background-color: #ffffff; padding:5px; }
+td{padding: 20px 5px !important;}
+</style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/clientHeader.jsp" flush="false" />
 	<div class="container">
-		<h2>빠른 주문</h2>
+		<h2 style ="text-align: center;">빠른 주문</h2>
 		<br/><br/>
 		<h3>상품 정보</h3>
 
@@ -113,12 +88,11 @@ function count(type) {
 							<span id="productPrice"><fmt:formatNumber value="${cart.pprice}" pattern="#,###,###원" /></span>
 							<input type="hidden" name="proPrice" id="proPrice" value="${cart.pprice}"/></td>
 						<td>
-							<button id="omb" class="btn mbutton" type="button" onclick='count("minus")'>-</button>
-							<span id="productCount">${cart.pcount}</span>
-							<button id="opb" class="btn pbutton" type="button" onclick='count("plus")'>+</button>
-							<input type="hidden" name="proCount" id="proCount">
+							<input name="pcount" type="number" min="1" max="20"value="${cart.pcount}" style="max-width: 4rem" />
+							<button type="submit" class="updatebtn" onclick="javascript: form.action='./fu'">변경</button></td>
 						<td>
-							<span id="proTotal1"><fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" /></span>
+							<fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" />
+							<input type="hidden" name="ototal" value="${cart.pprice * cart.pcount}"/></td>
 					</tr>
 				</tbody>
 				</form>
@@ -140,42 +114,42 @@ function count(type) {
 			</c:forEach>
 		</table>
 		
-     		<h3>배송지 정보</h3>
+     		<h3>배송정보</h3>
       		<hr/>
       		<form id="ordera" name="ordera" method="post">
-      		<div>
-      		<input type="hidden"name="mid" id="mid" value="${memberInfo.mid}" />
-        	<div>이름  </div>
-        	<div><input type="text"name="oname" id="oname" value="${memberInfo.mname}" required/></div>
-        		
-        	<div>우편번호  </div>
-        	<div><input type="text" name="oaddrz" id="oaddrz" value="${memberInfo.maddrz}" readonly required/> &nbsp;
-        	<button class="btn" type="button" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
-        	
-        	<div>주소  </div>
-        	<div><input type="text" name="oaddr" id="oaddr" value="${memberInfo.maddr}" readonly required/></div>
-        	
-        	<div>상세주소  </div>
-        	<div><input type="text" name="oaddrd" id="oaddrd" value="${memberInfo.maddrd}" required/></div>
-        	
-        	<div>전화번호  </div>
-        	<div><input type="text" name="ophone" id="ophone" value="${memberInfo.mphone}" required/></div>
-     		
-     		
-     		<div>배송요청사항</div>
-        	<div><input type="text" name="omessage" id="omessage" /></div>
-        	<div id='result'></div>
-        	</div>
+      		<div class="row">
+      			<input type="hidden"name="mid" id="mid" value="${memberInfo.mid}" />
+	        	<div class="col-2 yellow">이름  </div>
+	        	<div class="col-10 white"><input type="text"name="oname" id="oname" value="${memberInfo.mname}" required/></div>
+	        		
+	        	<div class="col-2 yellow">우편번호  </div>
+	        	<div class="col-10 white"><input type="text" name="oaddrz" id="oaddrz" value="${memberInfo.maddrz}" readonly required/> &nbsp;
+	        	&nbsp;<button type="button" class="updatebtn" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
+	        	
+	        	<div class="col-2 yellow">주소  </div>
+	        	<div class="col-10 white"><input type="text" name="oaddr" id="oaddr" value="${memberInfo.maddr}" readonly required/></div>
+	        	
+	        	<div class="col-2 yellow">상세주소  </div>
+	        	<div class="col-10 white"><input type="text" name="oaddrd" id="oaddrd" value="${memberInfo.maddrd}" required/></div>
+	        	
+	        	<div class="col-2 yellow">전화번호  </div>
+	        	<div class="col-10 white"><input type="text" name="ophone" id="ophone" value="${memberInfo.mphone}" required/></div>
+	        	
+	        	<div class="col-2 yellow">배송요청사항  </div>
+	        	<div class="col-10 white"><input type="text" name="omessage" id="omessage" /></div>
+	        	<div id='result'></div>
+	        </div>
         	</form>
 		
 		<br/>
 		<br/>
-		<h3 style ="text-align: center;"> 상품총액 <span id="productTotal">0</span> 원<input type="hidden" name="proTotal" id="proTotal">
-	
-		
-		</h3>
+		<div class="pay">
+		<c:forEach var="cart" items="${cartList}">
+		<h3 style ="text-align: right;"> 상품총액 <fmt:formatNumber value="${cart.pprice * cart.pcount}" pattern="#,###,###원" /><input type="hidden" name="ototal" value="${cart.pprice * cart.pcount}"/></h3>
+		</c:forEach>
 		<br/><br/>
      	<button style ="text-align: center;" class="btn" id="kakaopay" type="button">결제하기</button>
+     	</div>
      	</div>
      	<br/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false" />
@@ -204,9 +178,9 @@ function count(type) {
 		console.log(sid);
 		var pcode = $('input[name=pcode]').val();
 		console.log(pcode);
-		var ocount = $('input[name=proCount]').val();
+		var ocount = $('input[name=pcount]').val();
 		console.log(ocount);		
-		var ototal = $('input[name=proTotal]').val();
+		var ototal = $('input[name=ototal]').val();
 		console.log(ototal);
 
 		var IMP = window.IMP; // 생략가능
@@ -267,8 +241,6 @@ function count(type) {
 						msg += '\n상점 거래ID : ' + rsp.merchant_uid; 
 						msg += '\결제 금액 : ' + rsp.paid_amount;
 						msg += '카드 승인번호 : ' + rsp.apply_num;
-						
-						//alert("결제완료" + msg);
 						
 						location.href = "/or/cl/su/"+ocode+"/"+ccode;
 					} else {

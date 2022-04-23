@@ -57,7 +57,7 @@ h1 {
 	line-height: 1;
 	margin-top: 10px;
 	margin-right: 20px;
-	padding: 10px 26px;
+	padding: 10px 35px;
 	text-transform: capitalize;
 	transition: background-color .15s;
 	float: left;
@@ -98,7 +98,7 @@ h1 {
 }
 
 .billing-form label {
-    font-size: 21px;
+    font-size: 21px !important;
 }
 
 .cart-total h3 {
@@ -142,7 +142,18 @@ h1 {
     visibility: unset;
 }
 
-#productCount{text-align: center;}
+#productCount{
+	text-align: center;
+}
+
+.billing-form .form-control {
+    font-size: 18px !important;
+    height: 71px !important;
+}
+
+.cart-detail.cart-total {
+    font-size: 18px;
+}
 
 </style>
 
@@ -257,7 +268,7 @@ function productIndexTag(clickedPtag) {
 				'<div class="col-md-6 col-lg-3 ftco">' + 
 					'<div class="product">' + 
 						'<a href="#" class="img-prod"><img class="img-fluid"' + 
-							'src="/resources/image/product/' + map.productList[i].pfile + '"' + 
+							'src="/resources/productUpload/' + map.productList[i].pfile + '"' + 
 							'alt="Colorlib Template"> </a>' + 
 						'<div class="text py-3 pb-4 px-3 text-center">' + 
 							'<h3>' + 
@@ -294,7 +305,7 @@ function productIndexTag(clickedPtag) {
 </script>
 
 </head>
-<body class="goto-here">
+<body class="goto-here" id="page-top">
 <jsp:include page="common/clientHeader.jsp"></jsp:include>
 
 	<section id="home-section" class="hero">
@@ -356,11 +367,6 @@ function productIndexTag(clickedPtag) {
 						</div>
 						<div class="tagButtonDivDiv">
 							<div class="tagButtonDiv">
-								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="비타민">비타민</a>
-							</div>
-						</div>
-						<div class="tagButtonDivDiv">
-							<div class="tagButtonDiv">
 								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="채소">채소</a>
 							</div>
 						</div>
@@ -394,6 +400,11 @@ function productIndexTag(clickedPtag) {
 								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="잼">잼</a>
 							</div>
 						</div>
+						<div class="tagButtonDivDiv">
+							<div class="tagButtonDiv">
+								<a class="tagButton" href="#ftco-section" onclick="productIndexTag(this)" data-ptag="일상">일상</a>
+							</div>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -403,8 +414,8 @@ function productIndexTag(clickedPtag) {
 				<c:forEach var="product" items="${productList}">
 				<div class="col-md-6 col-lg-3 ftco-animate">
 					<div class="product">
-						<a href="#" class="img-prod"><img class="img-fluid"
-							src="/resources/image/product/${product.pfile}"
+						<a href="/pr/cl/dt/${product.pcode}" class="img-prod"><img class="img-fluid"
+							src="/resources/productUpload/${product.pfile}"
 							alt="Colorlib Template"> </a>
 						<div class="text py-3 pb-4 px-3 text-center">
 							<h3>
@@ -479,15 +490,14 @@ function productIndexTag(clickedPtag) {
 	          	<div class="col-md-12 d-flex mb-5">
 	          		<div class="cart-detail cart-total p-3 p-md-4">
 	          			<form name="orderFast" method="post" class="billing-form">
-	          			<h3 class="billing-heading mb-4">주문내용</h3>
 	          			<div id="rcountbox">
 	          				<p class="d-flex">
-		    						<span>단가</span>
+		    						<span><strong>단가</strong></span>
 		    						<span id="productPrice">상품을 선택하세요.</span>
 		    						<input type="hidden" name="proPrice" id="proPrice">
 		    					</p>
 		    					<p class="d-flex">
-		    						<span>수량</span>
+		    						<span><strong>수량</strong></span>
 		    						<span style="display:flex; width:inherit;">
 		    							<button id="omb" class="btn mbutton" type="button" onclick='count("minus")'>-</button>
 											<span id="productCount"></span>
@@ -497,13 +507,13 @@ function productIndexTag(clickedPtag) {
 		    					</p>
 		    					<hr>
 		    					<p class="d-flex total-price">
-		    						<span>합계 금액</span>
+		    						<span><strong>합계 금액</strong></span>
 		    						<span id="productTotal">상품을 선택하세요.</span>
 									<input type="hidden" name="proTotal" id="proTotal">
 									<input type="hidden" name="pcode" id="pcode">
 									<input type="hidden" name="mid" id="mid" value="${mid}">
 		    					</p>
-		    					<p><button type="submit" class="btn btn-primary py-3 px-4" onclick="javascript: orderFast.action='/ca/cl/fi'">주문하기</button></p>
+		    					<p><button type="submit" class="btn btn-primary py-3 px-4" onclick="javascript: orderFast.action='/ca/cl/fl'">주문하기</button></p>
 							</div>
 						</form>
 					</div>
@@ -570,8 +580,10 @@ function productIndexTag(clickedPtag) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>   
 	</section>
+	
+	
 	<br><br><br>
 	<jsp:include page="common/footer.jsp"></jsp:include>
 
@@ -583,6 +595,12 @@ function productIndexTag(clickedPtag) {
 			<circle class="path" cx="24" cy="24" r="22" fill="none"
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
+	<!-- Scroll to Top Button-->
+    <a class="mouse-icon" href="#page-top">
+    <div class="mouse-wheel">
+        <span class="ion-ios-arrow-up"></span>
+    </div>
+    </a>
 
 	<script src="/resources/bootstrap/vegefoods-master/js/jquery.min.js"></script>
 	<script src="/resources/bootstrap/vegefoods-master/js/jquery-migrate-3.0.1.min.js"></script>

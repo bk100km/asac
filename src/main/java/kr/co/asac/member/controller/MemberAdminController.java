@@ -57,7 +57,7 @@ public class MemberAdminController {
 	@RequestMapping(value = "/me/ad/lO", method = RequestMethod.GET)
 	public String memberAdminLogout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/";
+		return "redirect:/me/ad/lo";
 	}
 	
 	@RequestMapping(value = "/me/ad/lC", method = RequestMethod.GET)

@@ -89,14 +89,14 @@ body {
     border-color: #bce8f1;
 }
 .btn-default {
-    color: #fff !important;
-    background-color: #1e1a1b!important;
-    border-color: #1e1a1b!important;
+    background-color:#74bf0f;
+	border-color:#74bf0f;
+	color:#fff;
 }
 .btn-default:hover {
-    color: #1e1a1b !important;
-    background-color: white !important;
-    border-color: #1e1a1b !important;
+    background-color:#fff;
+	border-color:black;
+	color:black;
 }
 
 .modal-body {

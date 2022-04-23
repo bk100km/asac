@@ -204,13 +204,13 @@ h3 {
 	                	<div class="col-md-6 col-lg-4">
 	                		<c:choose>
 		                    <c:when test="${param.items != null}">
-	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/items/${param.items}/text/${param.text}/${paging.nowPage}">
-	                            <img class="card-img-top img-fluid" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a class="img-prod" href="<%= request.getContextPath() %>/pr/cl/dt/${product.pcode}/items/${param.items}/text/${param.text}/${paging.nowPage}">
+	                            <img class="card-img-top img-fluid" src="/resources/productUpload/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                              </c:when>
 	                            <c:otherwise>
-	                            <a class="img-prod" href="/pr/cl/dt/${product.pcode}/${paging.nowPage}">
-	                            <img class="card-img-top img-fluid" src="/resources/image/product/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <a class="img-prod" href="<%= request.getContextPath() %>/pr/cl/dt/${product.pcode}/${paging.nowPage}">
+	                            <img class="card-img-top img-fluid" src="/resources/productUpload/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                            </c:otherwise>
 	                          
@@ -244,11 +244,11 @@ h3 {
 		<li >
 		<c:choose>
 		<c:when test="${param.items != null}">
-			<a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+			<a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
 			&laquo;</span></a>
 			</c:when>
 		<c:otherwise>
-			<a class="page-link" href="/pr/cl/li/${pcate}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
+			<a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/${paging.startPage - 1}" aria-label="Previous"> <span aria-hidden="true">
 			&laquo;</span></a>
 			</c:otherwise>
 			</c:choose>
@@ -263,11 +263,11 @@ h3 {
 			<c:choose>		
 		        <c:when test="${param.items != null}">
 				
-					<li><a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${p}">${p}</a></li>
+					<li><a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${p}">${p}</a></li>
 					</c:when>
 				<c:otherwise>
 					
-						<li><a class="page-link" href="/pr/cl/li/${pcate}/${p}">${p}</a></li>
+						<li><a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/${p}">${p}</a></li>
 					</c:otherwise>
 					</c:choose>
 				</c:when>
@@ -278,11 +278,11 @@ h3 {
 		<c:choose>
 		 <c:when test="${param.items != null}">
 		<li class="page-item">
-			<a class="page-link" href="/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+			<a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/items/${param.items}/text/${param.text}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
     	 </li>
     	 <c:otherwise>
     	 <li class="page-item">
-    	 <a class="page-link" href="/pr/cl/li/${pcate}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+    	 <a class="page-link" href="<%= request.getContextPath() %>/pr/cl/li/${pcate}/${paging.endPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
     	 </li>
     	 </c:otherwise>
     	 
@@ -304,7 +304,7 @@ h3 {
 		alert("검색어를 입력해 주세요.")}
 	else{	
 		var form = document.getElementById("searchForm");
-	    form.action = "http://localhost:8080/pr/cl/li/${pcate}"+"/items/" + document.getElementById("items").value + "/text/" + document.getElementById("text").value + "/1";
+	    form.action = <%= request.getContextPath() %>"/pr/cl/li/${pcate}"+"/items/" + document.getElementById("items").value + "/text/" + document.getElementById("text").value + "/1";
 	    form.submit();
 	}
 	}

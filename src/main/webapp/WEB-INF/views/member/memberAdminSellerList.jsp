@@ -11,7 +11,7 @@
 <title>ASAC 비건마켓</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 .table-responsive {
@@ -718,7 +718,7 @@ function sfileUploadAction() {
 						<div class="panel-heading" id="panel-heading-right"> &nbsp;상세정보패널</div>
 						<div class="panel-body">
 									<div class="overlay overlayFade" id="overlayFade">
-										<img src="/resources/upload/d.jpg" alt="img" class="image">
+										<img src="/resources/memberUpload/증명서류.jpg" alt="img" class="image">
 									</div>
 							<div class="table-responsive" id="sellerFormTable">
 		<div class="input-form-backgroud row">
@@ -876,6 +876,11 @@ function sfileUploadAction() {
 	<jsp:include page="../common/footer.jsp"></jsp:include>
 	</div>
 	</div>
+	
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>	
 	
 	<script>
 	function sokCheckAction(checkedSeller) {

@@ -44,6 +44,12 @@ body {
 	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 	margin: auto;
 }
+
+.btn-default {
+	width: 280px;
+	position: relative;
+	
+}
 </style>
 	<script>
 		function cancel() {
@@ -113,48 +119,49 @@ body {
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
-				<jsp:include page="../common/toolbarHeader.jsp" />
-
+				<jsp:include page="../common/sellerToolbarHeader.jsp" />
+				<h2 align="center">정보수정</h2>
 				<div class="container">
 					<div class="input-form-background">
 						<div class="input-form ">
 							<form action="./up" method="post">
-								<h2>정보수정</h2>
-								<div class="mb-3">
+
+								<div>
+									<div class="mb-1">
 									<label for="sid">아이디 <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<span class="input-group-addon"><i
 											class="glyphicon glyphicon-user"></i></span> <input type="text"
 											class="form-control" id="sid" name="sid"
-											value="${seller.sid}" readonly>
+											value="${seller.sid}" readonly>	
 									</div>
-									<br>
-									<div class="mb-3">
+									</div>
+									<div class="mb-1">
 										<label for="pw">비밀번호 <span class="text-danger">*</span></label>
 										<input type="password" class="form-control" name="spwd"
-											id="pw" pattern="^[a-z0-9_]{4,10}$"
-											placeholder="비밀번호(영문소문자와 숫자로 입력)" minlength="4"
-											maxlength="10" required />
+											id="pw" pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{4,16}$"
+											placeholder="비밀번호" minlength="4"
+											maxlength="16" />
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="pw2">비밀번호 확인 <span class="text-danger">*</span></label>
 										<input type="password" class="form-control" name="spwd2"
-											id="pw2" pattern="^[a-z0-9_]{4,10}$"
-											placeholder="비밀번호확인(영문소문자와 숫자로 입력)" minlength="4"
-											maxlength="10" required /><span class="pw_ok"><p>비밀번호가
+											id="pw2" pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{4,16}$"
+											placeholder="비밀번호확인" minlength="4"
+											maxlength="16" /><span class="pw_ok"><p>비밀번호가
 												일치합니다.</p></span> <span class="pw_nok"><p>비밀번호가 일치하지 않습니다.</p></span>
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="sname">이름 <span class="text-danger">*</span></label>
 										<input type="text" class="form-control"
 											value="${seller.sname}" readonly />
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="sbirth">생년월일 <span class="text-danger">*</span></label>
 										<input type="text" class="form-control"
 											value="${seller.sbirth}" readonly />
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="sphone">전화번호 <span class="text-danger">*</span></label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
@@ -163,7 +170,7 @@ body {
 												value="${seller.sphone}" />
 										</div>
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="smail">이메일 <span class="text-danger">*</span></label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
@@ -172,7 +179,7 @@ body {
 												value="${seller.smail}" />
 										</div>
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="scompany">회사명 <span class="text-danger">*</span></label>
 
 
@@ -180,7 +187,7 @@ body {
 											value="${seller.scompany}" readonly />
 
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="snumber">사업자번호 <span class="text-danger">*</span></label>
 
 
@@ -188,7 +195,7 @@ body {
 											value="${seller.snumber}" readonly />
 
 									</div>
-									<div>
+									<div class="mb-1">
 										<label for="snumber">증명서류 <span class="text-danger">*</span></label>
 
 
@@ -197,18 +204,18 @@ body {
 
 									</div>
 									<div class="row">
-										<div class="col-md-9 mb-3">
+										<div class="col-md-9 mb-1">
 											<label for="sample4_postcode">우편번호 <span
 												class="text-danger">*</span></label> <input type="text"
 												class="form-control" id="saddrz" placeholder="우편번호"
 												name="saddrz" value="${seller.saddrz}" readonly required>
 										</div>
-										<div class="col-md-3 mb-3">
+										<div class="col-md-3 mb-1">
 											<label>&nbsp;</label><br> <input type="button"
 												class="btn" onclick="exPostCode()" value="우편번호 찾기">
 										</div>
 									</div>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="sample4_roadAddress">도로명주소</label> <input
 											type="text" class="form-control" id="saddr"
 											placeholder="도로명주소" name="saddr" value="${seller.saddr}"
@@ -219,7 +226,7 @@ body {
 									</div>
 									<input type="hidden" class="form-control"
 										id="sample4_jibunAddress" placeholder="지번주소" required>
-									<div class="mb-3">
+									<div class="mb-1">
 										<label for="sample4_detailAddress">상세주소</label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
@@ -229,17 +236,18 @@ body {
 										</div>
 									</div>
 								</div>
-								<div></div><br>
-								<input type="submit" class="btn btn-default" value="수정하기">&nbsp;
+								<div></div>
+								<div align="center">
+								<br> <input type="submit" class="btn btn-default"
+									value="수정하기">&nbsp;&nbsp;&nbsp;
 								<button type="button" class="btn btn-default"
-									onclick="javascript:cancel();">수정취소</button>
+									onclick="javascript:cancel();">뒤로가기</button>
+								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<br>
-				<br>
-				<br>
+				<br> <br> <br>
 
 			</div>
 			<jsp:include page="../common/footer.jsp"></jsp:include>

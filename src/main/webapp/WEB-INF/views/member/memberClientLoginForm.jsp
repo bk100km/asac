@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-	String referer = (String)request.getHeader("REFERER");
-	System.out.println(referer);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,6 +99,15 @@ body {
 	display: none;
 }
 
+.login1{
+	font-weight: 600;
+}
+
+.buttonbu{
+	margin-top:0.8em;
+}
+
+
 </style>
 
 </head>
@@ -112,21 +117,11 @@ body {
 
 <div><br><br><br></div>
 <div class="container">
-	<h1 align="center">로그인</h1>
+	<h1 align="center" class="login1">로그인</h1>
 	<div id="login" class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				<c:choose>
-					<c:when test="${mid != null}">
-						<h2>네이버 아이디 로그인 성공하셨습니다!!</h2>
-						<h3>'${mid}' 님 환영합니다!</h3>
-						<h3>
-							<a href="<%= request.getContextPath() %>/logout">로그아웃</a>
-						</h3>
-					</c:when>
-					<c:otherwise>
 						<form:form id="loginForm" class="loginForm" action="lA" method="post" modelAttribute="member">
-						
 						<label>아이디</label> 
 						<div style="margin-bottom: 12px" class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -139,23 +134,20 @@ body {
 						</div>
 						<a href="<%= request.getContextPath() %>/me/cl/fI">아이디</a> |
 						<a href="<%= request.getContextPath() %>/me/cl/fP">비밀번호 찾기</a>
-						<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>
+						<div align="center" class="buttonbu"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a href="<%= request.getContextPath() %>/me/cl/jo" class="btn btn-default" title="회원가입 링크로 이동">회원가입</a>
 						</div><hr>
-						<div align="center">
+						<div align="center" class="mb-3">
 							<a href="javascript:void(0)">
 								<img width="223" onclick="kakaoLogin();" src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" />
 							</a>
 						 </div>
-						 <br>
+						 
 						 <!-- 네이버 로그인 창으로 이동 -->
-						<div id="naver_id_login" style="text-align:center"><a href="${url}">
+						<div id="naver_id_login" style="text-align:center" class="mb-1"><a href="${url}">
 							<img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png"/></a></div>
-						<br>
-						<input type="hidden" path="referer" name="referer" id="referer" value="<%=referer%>" />
+							<input type="hidden" path="referer" name="referer" id="referer" value="<%=(String) session.getAttribute("referer")%>" />
 						</form:form>
-					</c:otherwise>
-				</c:choose>
 			</div>
 		</div>
 	</div>

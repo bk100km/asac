@@ -80,6 +80,15 @@ h1 {
 	text-align: center;
 }
 
+a {
+	color: #74bf0f;
+	text-decoration: none !important;
+}
+
+h1 a:hover {
+	color: black;
+}
+
 h2 {
     text-align: center;
 }
@@ -87,6 +96,10 @@ h2 {
 .container {
     margin: auto;
     padding: 0;
+}
+
+form label {
+	color: black;
 }
 </style>
 
@@ -97,7 +110,7 @@ h2 {
 <div><br><br><br><br><br><br><br><br><br><br><br></div>
 <div class="container">
 	<div class="container" id="headerContainer">
-		<h1>ASAC</h1>
+		<h1><a href="<%= request.getContextPath() %>/">ASAC</a></h1>
 	</div>
 	<div>
 	<h2>관리자 로그인</h2>
