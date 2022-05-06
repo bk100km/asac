@@ -321,7 +321,7 @@ function orderDeleteAction() {
         <!-- Main Content -->
         <div id="content">
         	<!-- Topbar -->
-        	<jsp:include page="/WEB-INF/views/common/toolbarHeader.jsp" />
+        	<jsp:include page="/WEB-INF/views/common/sellerToolbarHeader.jsp" />
         	
 		<div id="page-wrapper">
 			<div class="row">

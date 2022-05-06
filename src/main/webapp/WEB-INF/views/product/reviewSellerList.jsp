@@ -109,13 +109,15 @@ function openSellerRevise(clicked_id)  {
 	 const reviseButton = document.getElementById(clicked_id+"Button");
 
 	 const answerContent = document.getElementById(clicked_id+"Ranswer");
-	 alert(clicked_id);
-	 
+	 const hiddenButton = document.getElementById(clicked_id);
+	 const hiddenButtonhd = document.getElementById(clicked_id+"hd");
 	 if(reviseAnswer.style.display == 'none'){
-			alert(clicked_id);
+		
 		 answerContent.style.display = 'none';
 		 reviseAnswer.style.display = '';
 		 reviseButton.style.display = '';
+		 hiddenButton.style.display ='none';
+		 hiddenButtonhd.style.display ='none';
 		 }
 		  
 		  else{
@@ -273,6 +275,17 @@ width:17% !important;
 	text-align: center !important;
 
 }
+.registerBtn{
+	margin-top:200px;
+	margin-right:200px !important;
+}
+
+.registerBtn02{
+	margin-top:200px;
+	margin-right:280px !important;
+
+
+}
 </style>    
   
   
@@ -296,24 +309,55 @@ width:17% !important;
 
 
 
+						
+						
+						
 						<div data-bs-spy="scroll" data-bs-target="#navbar-example2"
 							data-bs-offset="0" class="scrollspy-example" tabindex="0">
-							<h4 id="scrollspyHeading1">상품설명</h4>
+							<h4 id="scrollspyHeading1">상품 설명</h4>
 
-							<p>${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}${proDetail.pcontent}
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-								testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</p>
-
+							<p>${proDetail.pcontent}</p>
+							<h4 id="scrollspyHeading1">배송 안내</h4>
+							<span>배송 방법 : 택배</span>
+							<br>
+							<span>배송 지역 : 전국 지역</span>
+							<br>
+							<span>배송 기간 : 2일 ~ 4일</span>
+							<br><br>
+							<span>고객님께서 주문하신 상품은 입금 확인 후 배송해 드립니다. 다만, 상품 종류에 따라서 상품의 배송이 다소 지연될 수 있습니다.</span>
+							<br><br>
+							<span>- 냉동 상품의 경우 하절기 (6월 중순 ~ 8월 중순) 아이스박스 + 아이스팩에 넣어서 배송해 드립니다.</span>
+							<br>
+							<span>- 출고 당일 운송장 번호가 등록되오니 배송조회가 가능합니다.</span>
+							<br><br>
+							<span>* 배송사 : 아삭택배</span>
+							<br>
+							<span>* 배송기간 : 입금확인 후 2~3일 이내로 보내드립니다.(토요일, 일요일, 공휴일, 명절 기간 특별 배송기간 제외)</span>
+							<br>
+							<span>* 택배사의 사정이나 물량이 폭주할 경우에는 배송이 지연될 수 있습니다.</span>
+							<br>
+							<span>* 배송기간은 월~금 15시 이전 결제 완료 시 당일 발송해드립니다.</span>
+							<br>
+							<span>* 일요일, 공휴일 등 휴일 전일은 발송되지 않습니다.</span>
+							<br><br>
+							<h4 id="scrollspyHeading1">교환 / 반품</h4>
+							<span>- 개봉하신 제품은 교환, 반품이 불가능하므로 꼭 확인 후 개봉해 주세요.</span>
+							<br>
+							<span>- 상품 수령 후 보관상 발생한 변질, 파손에 대해서는 교환, 반품, 환불이 불가능합니다.</span>
+							<br>
+							<span>- 상품 발송 이후에는 교환 및 환불이 불가능합니다.</span>
+							<br>
+							<span>- 냉동 상품의 특성상 반송 시 전량 폐기처분되기 때문에 반품 및 교환이 불가하므로 신중하게 구매하여 주시기 바랍니다.</span>
+							<br>
+							<span>- 고객님의 단순 변심일 경우 교환, 반품, 환불이 불가합니다.</span>
+							<br>
+							<span>- 제품 하자 시 제품 배송 즉시 판매자에게 사전 전화를 해주시고 판매자의 승인 없이 임의 반품하는 경우 교환, 반품, 환불이 불가능합니다.</span>
+							<br><br>
+							<span>환불 시 반품 확인 여부를 확인한 후 영업일 3일 이내에 결제 금액을 환불해 드립니다.</span>
+							<br>
+							<span>신용카드로 결제하신 경우는 신용카드 승인을 취소하여 결제 대금이 청구되지 않게 합니다.</span>
+							<br>
+							<span>(단, 신용카드 결제 일자에 맞추어 대금이 청구될 수 있으면 이 경우 익월 신용카드 대금 청구 시 카드사에서 환급 처리됩니다.)</span>
 							<hr /></hr>
 							<br />
 							<br />
@@ -366,18 +410,18 @@ width:17% !important;
 									</tr>
 									<tr style="display: none;"  id="${review.rnum}test">
 
-										<c:choose>
-									<c:when test="${review.rfile != ''}">
-										<td colspan="2"><img
-											src="/resources/image/product/${review.rfile}"
-											width="100" height="100" alt="${review.rfile}">
-											${review.rcontent}</td>
-										</c:when>
-										<c:otherwise>
-										
+									<c:choose>
+									<c:when test="${review.rfile == '' or review.rfile == null}">
 											<td colspan="2">
 											${review.rcontent}</td>
-
+	
+										</c:when>
+										<c:otherwise>
+																			<td colspan="2"><img
+											src="/resources/reviewUpload/${review.rfile}"
+											width="200" height="200" alt="${review.rfile}">
+											${review.rcontent}</td>
+										
 										</c:otherwise>
 										
 										
@@ -400,17 +444,17 @@ width:17% !important;
 										   <td class="seller_content" style="display:'';"  id="${review.rnum}sellerRanswer" colspan="2">
 												${review.ranswer}</td>
 										     <td class="hiddenContent" style="display:none;"  id="${review.rnum}sellerRevise" colspan="2"><p>
-												<textarea id="ranswer" name="ranswer" class="ranswer"  cols="100" rows="7">${review.ranswer}</textarea>	
+												<textarea id="ranswer" name="ranswer" class="ranswer"  cols="70" rows="7">${review.ranswer}</textarea>	
 											    </p></td>
-										    <td id="${review.rnum}sellerButton" style="display: none;" class="hiddenContent">	<button type="submit" class="btn hiddenButton">등록</button> </td>
+										    <td id="${review.rnum}sellerButton" style="display: none;" class="hiddenContent">	<button type="submit" class="btn registerBtn02">등록</button> </td>
 									</c:when>
 									<c:when test="${review.ranswer == null}">
 									<tr class="sellerbox" style="display:none;"  id="${review.rnum}write"  >
 										<th class="seller">판매자</th>
 										<td class="seller_content"  colspan="2"><p>
-												<textarea id="ranswer" name="ranswer" class="none4"  cols="100" rows="7" ></textarea>	
+												<textarea id="ranswer" name="ranswer" class="ranswer"  cols="70" rows="7" ></textarea>	
 											</p></td>
-										<td>	<button type="submit" class="btn">등록</button> </td>
+										<td>	<button type="submit" class="btn registerBtn">등록</button> </td>
 										</c:when>
 										
 								</c:choose>
@@ -421,7 +465,7 @@ width:17% !important;
 												<button type="button" class="btn" id = "${review.rnum}seller"
 													onclick="openSellerRevise(this.id)">수정</button>
 													
-												<button type="button" class="btn"  value="${review.rnum}"onclick="location.href='/re/ad/de/${proDetail.pcode}/${review.rnum}'">삭제
+												<button type="button" class="btn"  value="${review.rnum}" id="${review.rnum}sellerhd" onclick="location.href='/re/ad/de/${proDetail.pcode}/${review.rnum}'">삭제
 												 </button>
 											</td>
 										</c:if>

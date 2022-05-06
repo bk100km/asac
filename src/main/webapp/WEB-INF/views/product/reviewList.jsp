@@ -22,6 +22,7 @@ function openTextarea()  {
 	    if("${mid}"== ""){
 				alert("로그인하세요.");
 				$("#mid").focus();
+				window.location.href = "/me/cl/lo";
 				return;
 		 
 		 
@@ -171,11 +172,7 @@ display:none;
 }
 
 @media (max-width: 1024px) {
-  .tabletras {
- width: 60%;
- 
   
-}
   .sellerbox{
    display: none;
   
@@ -192,13 +189,17 @@ display:none;
 
 
 @media (max-width: 768px){
+.table {
+    min-width: 98px !important;
+
+}
 .rtitle{
-width:33% !important;
+width:70% !important;
 }
 
 .rwiter{
 
-width:17% !important;
+width:54% !important;
 
 
 }
@@ -217,6 +218,37 @@ width:17% !important;
 	user-select: none; 
 	overflow: hidden;
 }
+
+.ui_smooth_scroll{
+	user-select: none; 
+	overflow: hidden;
+	margin-bottom:50px;
+}
+
+.tab-menu-belt {
+	display: flex;
+    flex-direction: row;
+    width: 1010px;
+    margin: 0 auto;
+    }
+.tab-menu{
+	flex: 1;
+    position: relative;
+    top: 1px;
+    height: 60px;
+    line-height: 59px;
+    text-align: center;
+    display: block;
+    color: #666;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -.3px;
+    font-family: noto sans;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+}
+
+
 </style>  
   
   
@@ -226,8 +258,7 @@ width:17% !important;
 				<div class="contents-menu-list" role="navigation" aria-label="Page">
 
 						<div class="ui_smooth_scroll">
-							<ul class="tab-menu-belt type-btn"
-								style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px); width: 431px;">
+							<ul class="tab-menu-belt type-btn">
 								<li class="tab-menu"><a href="#scrollspyHeading1"
 									class="linker" aria-selected="false"
 									data-link-area="pdp_tab_anchor-tab">상세 설명</a></li>
@@ -297,12 +328,11 @@ width:17% !important;
 							
 							<table id="example-table-1" class="table table-hover tabletras">
 
-								<colgroup>
+								<colgroup class="colgroup">
 									<col style="width: 100px;">
 									<col  style="width: 300px;">
 									<col style="width: 51px;">
 									<col style="width: 77px;">
-						
 
 								</colgroup>
 
@@ -347,17 +377,17 @@ width:17% !important;
 									</tr>
 									<tr style="display: none;" id="${review.rnum}test">
 								<c:choose>
-									<c:when test="${review.rfile != ''}">
-										<td colspan="2"><img
-											src="/resources/image/product/${review.rfile}"
-											width="100" height="100" alt="${review.rfile}">
-											${review.rcontent}</td>
-										</c:when>
-										<c:otherwise>
-										
+									<c:when test="${review.rfile == '' or review.rfile == null}">
 											<td colspan="2">
 											${review.rcontent}</td>
-
+	
+										</c:when>
+										<c:otherwise>
+																			<td colspan="2"><img
+											src="/resources/reviewUpload/${review.rfile}"
+											width="200" height="200" alt="${review.rfile}">
+											${review.rcontent}</td>
+										
 										</c:otherwise>
 										
 										
@@ -430,7 +460,7 @@ width:17% !important;
 							<button type="button" class="btn btn-primary"
 								style="line-height: 30px; width: 130px; text-align: center; float: right; font-size: 13px;"
 								onclick="openTextarea()">
-								<span>후기쓰기</span>
+								<span>리뷰쓰기</span>
 							</button>
 							</c:if>
 							<br />

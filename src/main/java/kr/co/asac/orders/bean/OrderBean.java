@@ -29,9 +29,11 @@ public class OrderBean {
 
 	private String daterange;
 	private int count;
+	private int tcount;
 	private int week;
 	private int month;
 	private int total;
+	private int ttotal;
 	private Date date;
 	private String pcate;
 
@@ -273,6 +275,22 @@ public class OrderBean {
 
 	public void setPfile(String pfile) {
 		this.pfile = pfile;
+	}
+
+	public int getTcount() {
+		return tcount;
+	}
+
+	public void setTcount(int tcount) {
+		this.tcount = tcount;
+	}
+
+	public int getTtotal() {
+		return ttotal;
+	}
+
+	public void setTtotal(int ttotal) {
+		this.ttotal = ttotal;
 	}
 
 	@Override

@@ -57,8 +57,20 @@
 	height: 620px;
 }
 
+@media (max-width: 800px) {
+#leftPanel .table-responsive {
+	height: 765px;
+	}
+}
+
 #productInfoBtn td {
 	line-height: 28px;
+}
+
+@media (max-width: 800px) {
+#productInfoBtn td {
+	line-height: 18px;
+	}
 }
 
 th {
@@ -68,8 +80,8 @@ th {
 /* Overlay */
 .image {
 	display: block;
-	width: auto;
-	height:100%;
+	width: 100%;
+	height:75%;
 }
 .overlay {
 	position: absolute;
@@ -92,8 +104,24 @@ th {
     border-width: 2px;
 }
 
+@media (max-width: 800px) {
+.product-panel-default {
+	height: 980px;
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+	}
+}
+
 .left-product-panel-default {
 	height: 760px;
+}
+
+@media (max-width: 800px) {
+.left-product-panel-default {
+	height: 900px;
+	}
 }
 
 .panel-heading {
@@ -144,42 +172,25 @@ option {
     font-family: 'Pretendard';
 }
 
-.nav-tabs {
-	font-size: 20px;
+@media (min-width: 800px) {
+ #page-wrapper { 
+ 	padding-top: 20px; 
+ 	padding-bottom: 20px; 
+ 	padding-left: 100px; 
+ 	padding-right: 100px; 
+ 	}
+ 	
 }
 
-.nav-tabs > li {
-	margin-left: 10px;
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background: #d8e3c9;
-	bproduct-top-left-radius: 10px;
-	bproduct-top-right-radius: 10px;
+@media (max-width: 800px) {
+.nosee {display: none;}
 }
 
-.nav-tabs > li > a{
-	color: #85976d;
-	font-family: Pretendard;
-	text-decoration: none;
-}
-
-.nav-tabs > .active {
-	background: #b8d590;
-}
-
-#page-wrapper {
-	padding-top: 20px;
-	padding-bottom: 20px;
-	padding-left: 100px;
-	padding-right: 100px;
-}
-
+	
 </style>
 </head>
 
-<body id="page-top">
+<body>
 <script>
 
 //pfilePreview
@@ -225,6 +236,7 @@ function productInfoAction(clickedproduct) {
         	
              $(product).each(function(index, item) {
                  $('#pcode').prop('value',product.pcode);
+                 $('#pcode').prop('readonly',true);
                  $('#pname').prop('value',product.pname);
                  $('#pname').prop('readonly',false);
                  $('#pprice').prop('value',product.pprice);
@@ -451,6 +463,7 @@ function productInsertAction() {
         	productInsertCancel();
         },
         error: function(request, status, error) {
+        	alert("상품 추가 실패.\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -474,6 +487,7 @@ function productUpdateAction() {
         	$('#pcate').prop('disabled',true);			
         },
         error: function(request, status, error) {
+        	alert("상품 수정 실패.\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -495,6 +509,7 @@ function productDeleteAction() {
 				
         },
         error: function(request, status, error) {
+        	alert("상품 삭제 실패.\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -578,7 +593,7 @@ function productRAction() {
 										</select>
 										<input class="form-control input-sm" id="productSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction(1)">
 										</span>
 									</div>
 								</div>
@@ -590,8 +605,8 @@ function productRAction() {
 									<thead>
 										<tr>
 											<th>상품명</th>								
-											<th>카테고리</th>
-											<th>태그명</th>								
+											<th class="nosee">카테고리</th>
+											<th class="nosee">태그명</th>								
 											<th>판매자아이디</th>
 										</tr>
 									</thead>
@@ -599,8 +614,8 @@ function productRAction() {
 									<c:forEach var="product" items="${productSellerList}">
 										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
 											<td>${product.pname}</td>
-											<td>${product.pcate}</td>
-											<td>${product.ptag}</td>											
+											<td class="nosee">${product.pcate}</td>
+											<td class="nosee">${product.ptag}</td>											
 											<td>${product.sid}</td>
 										</tr>
 									</c:forEach>
@@ -755,14 +770,45 @@ function productRAction() {
 	<script>
 
 	function productUpdateOk() {
+		var pcode = document.getElementById('pcode').value;
+		var pname = document.getElementById('pname').value;
+		var pcate = document.getElementById('pcate').value;
+		var ptag = document.getElementById('ptag').value;
+		var pfile = document.getElementById('pfile').value;
+		var pprice = document.getElementById('pprice').value;
+		var pcontent = document.getElementById('pcontent').value;
+		
 		if(!confirm('정말 수정하시겠습니까?')){
 			return false;
 		} else {
-			$("select[name=pcate]").removeAttr('disabled');
-			productUpdateAction();
+			if(pcate == '' || pcate == '카테고리 선택') {
+				alert('카테고리를 선택해주세요.')
+				return false;
+			} else if(pcode == '') {
+				alert('상품코드를 입력해주세요.')
+				return false;
+			} else if(pname == '') {
+				alert('상품명을 입력해주세요.')
+				return false;
+			} else if(pprice == '') {
+				alert('가격을 입력해주세요.')
+				return false;
+			} else if(ptag == '') {
+				alert('태그명을 입력해주세요.')
+				return false;
+			} else if(pfile == '') {
+				alert('사진을 추가해주세요.')
+				return false;	
+			} else if(pcontent == '') {
+				alert('상품설명을 입력해주세요.')
+				return false;
+			} else {
+				$("select[name=pcate]").removeAttr('disabled');
+				productUpdateAction();
+			}
 		}
 	}
-	
+
 	function productDeleteOk(){
 		if(!confirm('정말 삭제하시겠습니까?')){
 			return false;
@@ -772,10 +818,45 @@ function productRAction() {
 	}
 	
 	function productInsertOk() {
-		if(!confirm('상품을 추가하시겠습니까?')){
+		var pcode = document.getElementById('pcode').value;
+		var pname = document.getElementById('pname').value;
+		var pcate = document.getElementById('pcate').value;
+		var ptag = document.getElementById('ptag').value;
+		var pfile = document.getElementById('pfile').value;
+		var pprice = document.getElementById('pprice').value;
+		var pcontent = document.getElementById('pcontent').value;
+		var sid = document.getElementById('sid').value;
+		
+		if(!confirm('상품을 추가하시겠습니까?')) {
 			return false;
 		} else {
-			productInsertAction();
+			if(pcate == '' || pcate == '카테고리 선택') {
+				alert('카테고리를 선택해주세요.')
+				return false;
+			} else if(pcode == '') {
+				alert('상품코드를 입력해주세요.')
+				return false;
+			} else if(pname == '') {
+				alert('상품명을 입력해주세요.')
+				return false;
+			} else if(pprice == '') {
+				alert('가격을 입력해주세요.')
+				return false;
+			} else if(ptag == '') {
+				alert('태그명을 입력해주세요.')
+				return false;
+			} else if(pfile == '') {
+				alert('사진을 추가해주세요.')
+				return false;	
+			} else if(pcontent == '') {
+				alert('상품설명을 입력해주세요.')
+				return false;
+			} else if(sid == '') {
+				alert('판매자아이디를 입력해주세요.')
+				return false;
+			} else {
+				productInsertAction();
+			}
 		}
 	}
 	
@@ -795,10 +876,5 @@ function productRAction() {
 </footer>
 </div>
 </div>
-	<!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
 </body>
 </html>

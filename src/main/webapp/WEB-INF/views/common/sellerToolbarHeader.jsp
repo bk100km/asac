@@ -47,7 +47,7 @@
 							href="<%= request.getContextPath() %>/or/se/li"
 							class="nav-link">주문관리</a></li>
 						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/pr/se/al"
+							href="<%= request.getContextPath() %>/pr/se/li"
 							class="nav-link">상품관리</a></li>
 						<li class="nav-item dropdown cta cta-colored"><a
 							class="nav-link dropdown-toggle" href="#" id="dropdown04"
@@ -61,12 +61,6 @@
 									href="<%= request.getContextPath() %>/sa/se/sl">판매자별 매출</a>
 							</div>
 						</li>	
-						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/me/se/lC"
-							class="nav-link">일반회원 관리</a></li>
-						<li class="nav-item"><a
-							href="<%= request.getContextPath() %>/me/se/lS"
-							class="nav-link">판매자 관리</a></li>
 						<li class="nav-item"><a
 							href="<%= request.getContextPath() %>/me/se/lO"
 							class="nav-link">로그아웃</a></li>

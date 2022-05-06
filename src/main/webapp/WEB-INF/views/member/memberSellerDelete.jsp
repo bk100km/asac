@@ -84,7 +84,7 @@ $(document).ready(function(){
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
-                <jsp:include page="../common/toolbarHeader.jsp" /><br><br>
+                <jsp:include page="../common/sellerToolbarHeader.jsp" /><br><br>
 <div class="container">
 	<div class="input-form-background row">
 		<div class="input-form mx-auto my-auto">

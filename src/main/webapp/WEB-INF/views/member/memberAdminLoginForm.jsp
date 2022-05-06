@@ -130,7 +130,7 @@ form label {
 						<form:input path="spwd" id="spwd" type="password" class="form-control" name="spwd" placeholder="비밀번호" data-toggle="tooltip" data-placement="top" title="비밀번호 입력란"  />
 					</div>
 					<div align="center"><button id="btnLogin" type="button" class="btn btn-default"> &nbsp;로그인&nbsp; </button>&nbsp;&nbsp;&nbsp;
-					<button onclick="history.back()" class="btn btn-default"> 메인으로 </button>
+					<button onclick="history.back()" class="btn btn-default"> 뒤로가기 </button>
 					</div><hr>
 				</form:form>
 			</div>

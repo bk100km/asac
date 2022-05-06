@@ -12,8 +12,6 @@
 
 <script>   
 
-
-
 function btnActive(clicked_id)  {
 	
 	
@@ -98,16 +96,16 @@ function fileUpdate(){
    });
 }
 function cartAction() {
-	
-	 if("${mid}"== ""){
+
+	 if("${mid}"== "" ){
 			alert("로그인하세요.");
 			window.location.href = "/me/cl/lo";
-			$("#mid").focus();
 			event.stiplmmediatePropagation();
+	
 			}
 		
-	var cart = $("form[name=productDetail]").serialize();
-    
+
+ var cart = $("form[name=productDetail]").serialize();
     $.ajax({
         type: 'POST',
         url: '/ca/cl/in',
@@ -162,22 +160,22 @@ function directAction() {
 			}
 		
 	var cart = $("form[name=productDetail]").serialize();
-  
-  $.ajax({
-      type: 'POST',
-      url: '/ca/cl/in',
- 		data: cart,
-      success: function() {   
-    		
-   	   window.location.href = "/ca/cl/lf";
+   
+   $.ajax({
+       type: 'POST',
+       url: '/ca/cl/in',
+  		data: cart,
+       success: function() {   
+     		
+    	   window.location.href = "/ca/cl/lf";
 	    }
-      ,
-      error: function(request, status, error) {
-          console.log("code:" + request.status + 
-          		"\n"+"message:" + request.responseText + 
-          		"\n"+"error:"+error);
-      }
-  });
+       ,
+       error: function(request, status, error) {
+           console.log("code:" + request.status + 
+           		"\n"+"message:" + request.responseText + 
+           		"\n"+"error:"+error);
+       }
+   });
 }
 
 
@@ -379,8 +377,23 @@ function directAction() {
 	padding:15px 20px;
 	border-radius:100%;
 }
+.psu{
+	max-width: 4rem
+
+}
+
+.form-control{
+
+}
+@media (max-width: 768px){
+.img-fluid{
+	width:93% !important;
+}
 
 
+
+
+}
 
 </style>
 
@@ -390,7 +403,6 @@ function directAction() {
 
 <a href="#" class="btn_gotop">
   <span class="glyphicon glyphicon-chevron-up">top
-
   </span>
 </a>
 
@@ -401,10 +413,11 @@ function directAction() {
 					<div  class="row" >
 					<div class="col-md-12 col-lg-6">
 						<div class="imgbox">
+						
 							<img src="/resources/productUpload/${proDetail.pfile}"
 								class="img-fluid" title="${proDetail.pname}"
 								alt="${proDetail.pcontent}" />
-								
+						
 							
 								<div class="NFNlCQC2mv">
 						<c:choose>	
@@ -442,9 +455,9 @@ function directAction() {
 								
 				
 							<span class="text-center me-2">구매 수량</span><input type="number"
-								class="content form-control text-center" id="pcount"
+								class="content text-center psu" id="pcount"
 								name="pcount" type="number" min="1" max="30" value="1"
-								style="max-width: 8rem" onclick="total(this.id)" /> <input
+								 onclick="total(this.id)" /> <input
 								name="pcode" type="hidden" value="${proDetail.pcode}">
 							<hr /></hr>
 							<label class="text-center me-2">총 금액:</label><input type="text"
@@ -515,12 +528,6 @@ function directAction() {
 
 
       	</div>
-
-	
-	
-	
-	</div>
-	</div>
 
 	
 	<jsp:include page="../common/footer.jsp" flush="false" />

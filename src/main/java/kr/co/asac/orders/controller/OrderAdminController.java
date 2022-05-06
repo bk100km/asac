@@ -110,7 +110,7 @@ public class OrderAdminController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/or/cl/fi", method = RequestMethod.POST)
+	@RequestMapping(value="/ca/cl/fi", method = RequestMethod.POST)
 	public String orderClientInsert(HttpServletRequest request, Model model, 
 			@RequestParam(value="sid", required = false) String sid, 
 			@RequestParam(value="pcode", required = false) String pcode, @RequestParam(value="ocount", required = false) String ocount, 

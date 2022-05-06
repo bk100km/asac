@@ -65,8 +65,19 @@ public class OrderClientController {
 	}
 	
 	@RequestMapping("or/cl/su/{ocode}/{ccode}") 
-	public String getOrderClientSuccess(Model model, @PathVariable String ocode, @PathVariable String[] ccode,OrderBean order) {
-		 int size = ccode.length;
+	public String getOrderClientSuccess(Model model, @PathVariable String ocode, @PathVariable String[] ccode,OrderBean order, HttpServletResponse response, HttpSession session) throws IOException {
+		
+		if ((String)session.getAttribute("mid") == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		} 
+		
+		int size = ccode.length;
 	        for(int i=0; i<size; i++) {
 	        	orderClientService.delete(ccode[i]);
 	        }
@@ -87,7 +98,18 @@ public class OrderClientController {
 	}
 	
 	@RequestMapping("me/cl/in/{ocode}")
-	public String getOrderClientInfo(Model model, @PathVariable String ocode, OrderBean order) {
+	public String getOrderClientInfo(Model model, @PathVariable String ocode, OrderBean order, HttpSession session, HttpServletResponse response)  throws IOException {
+		
+		if ((String)session.getAttribute("mid") == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		}
+		
 		List<OrderBean> info = orderClientService.orderClientinfo(order, ocode);
 		model.addAttribute("orderClientInfo",info);
 	return "orders/orderClientInfo";
@@ -115,14 +137,26 @@ public class OrderClientController {
 	
 	@RequestMapping("or/cl/de/{ocode}")
 	public String orderClientDelete(@PathVariable String ocode) {
+		
 		int info = orderClientService.orderClientDelete(ocode);
 		System.out.println("delete" + ocode);
 		return "redirect:/me/cl/my";
 	}
 	
 	@RequestMapping(value="or/cl/or/{pcodearr}/{ocountarr}", method= {RequestMethod.GET, RequestMethod.POST})
-	public String OrderClientOrder(HttpServletRequest request, Model model, CartBean cart,  MemberBean member, @PathVariable("pcodearr") String pcodearr, @PathVariable("ocountarr") String ocountarr) {
+	public String OrderClientOrder(HttpServletRequest request, Model model, CartBean cart,  MemberBean member, @PathVariable("pcodearr") String pcodearr, @PathVariable("ocountarr") String ocountarr, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(); 
+		
+		if ((String)session.getAttribute("mid") == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		} 
+		
 		String mid = (String)session.getAttribute("mid");
 		
 		List<CartBean> cartlist = orderClientService.cartList(mid, cart);
@@ -161,8 +195,19 @@ public class OrderClientController {
 	}
 	
 	@RequestMapping(value="ca/cl/li", method= {RequestMethod.GET, RequestMethod.POST})
-	public String CartList(HttpServletRequest request, Model model, CartBean cart,  MemberBean member) {
+	public String CartList(HttpServletRequest request, Model model, CartBean cart,  MemberBean member, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(); 
+		
+		if ((String)session.getAttribute("mid") == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		} 
+		
 		String mid = (String)session.getAttribute("mid");
 		List<CartBean> cartlist = orderClientService.cartList(mid, cart);
 		model.addAttribute("cartList",cartlist);

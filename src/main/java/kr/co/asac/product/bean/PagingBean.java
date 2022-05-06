@@ -2,17 +2,17 @@ package kr.co.asac.product.bean;
 
 public class PagingBean {
 
-	private int listSize = 10; // ÃÊ±â°ªÀ¸·Î ¸ñ·Ï°³¼ö¸¦ 10À¸·Î ¼ÂÆÃ ÇÑ ÆäÀÌÁö´ç º¸¿©Áú ¸®½ºÆ®ÀÇ °³¼ö
-	private int rangeSize = 5; // ÃÊ±â°ªÀ¸·Î ÆäÀÌÁö¹üÀ§¸¦ 5·Î ¼ÂÆÃ ÇÑ ÆäÀÌÁö ¹üÀ§¿¡ º¸¿©Áú ÆäÀÌÁöÀÇ °³¼ö
-	private int page; // ÇöÀç¸ñ·ÏÀÇ ÆäÀÌÁö ¹øÈ£
-	private int range; // °¢ ÆäÀÌÁö ¹üÀ§ ½ÃÀÛ ¹øÈ£
-	private int listCnt; // ÀüÃ¼ °³½Ã¹°ÀÇ °³¼ö
-	private int pageCnt; // ÀüÃ¼ ÆäÀÌÁö ¹üÀ§ÀÇ °³¼ö
-	private int startPage; // °¢ ÆäÀÌÁö ¹üÀ§ ½ÃÀÛ ¹øÈ£
-	private int startList; // °Ô½ÃÆÇ ½ÃÀÛ¹øÈ£
-	private int endPage; // °¢ ÆäÀÌÁö ¹üÀ§ ³¡ ¹øÈ£
-	private boolean prev; // ÀÌÀü ÆäÀÌÁö
-	private boolean next; // ´ÙÀ½ ÆäÀÌÁö
+	private int listSize = 10; // ì´ˆê¸°ê°’ìœ¼ë¡œ ëª©ë¡ê°œìˆ˜ë¥¼ 10ìœ¼ë¡œ ì…‹íŒ… í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ë¦¬ìŠ¤íŠ¸ì˜ ê°œìˆ˜
+	private int rangeSize = 5; // ì´ˆê¸°ê°’ìœ¼ë¡œ í˜ì´ì§€ë²”ìœ„ë¥¼ 5ë¡œ ì…‹íŒ… í•œ í˜ì´ì§€ ë²”ìœ„ì— ë³´ì—¬ì§ˆ í˜ì´ì§€ì˜ ê°œìˆ˜
+	private int page; // í˜„ì¬ëª©ë¡ì˜ í˜ì´ì§€ ë²ˆí˜¸
+	private int range; // ê° í˜ì´ì§€ ë²”ìœ„ ì‹œì‘ ë²ˆí˜¸
+	private int listCnt; // ì „ì²´ ê°œì‹œë¬¼ì˜ ê°œìˆ˜
+	private int pageCnt; // ì „ì²´ í˜ì´ì§€ ë²”ìœ„ì˜ ê°œìˆ˜
+	private int startPage; // ê° í˜ì´ì§€ ë²”ìœ„ ì‹œì‘ ë²ˆí˜¸
+	private int startList; // ê²Œì‹œíŒ ì‹œì‘ë²ˆí˜¸
+	private int endPage; // ê° í˜ì´ì§€ ë²”ìœ„ ë ë²ˆí˜¸
+	private boolean prev; // ì´ì „ í˜ì´ì§€
+	private boolean next; // ë‹¤ìŒ í˜ì´ì§€
 	public int getRangeSize() {
 		return rangeSize;
 	}
@@ -67,25 +67,38 @@ public class PagingBean {
 	public int getStartList() {
 		return startList;
 	}
-	// Ã¹¹øÂ° ÀÎÀÚ page ´Â ÇöÀç ÆäÀÌÁö Á¤º¸, µÎ¹øÂ° ÀÎÀÚ range ´Â ÇöÀç ÆäÀÌÁö ¹üÀ§ Á¤º¸, ¼¼¹øÂ° ÀÎÀÚ listCnt´Â °Ô½Ã¹°ÀÇ ÃÑ °³¼ö
+	// ì²«ë²ˆì§¸ ì¸ì page ëŠ” í˜„ì¬ í˜ì´ì§€ ì •ë³´, ë‘ë²ˆì§¸ ì¸ì range ëŠ” í˜„ì¬ í˜ì´ì§€ ë²”ìœ„ ì •ë³´, ì„¸ë²ˆì§¸ ì¸ì listCntëŠ” ê²Œì‹œë¬¼ì˜ ì´ ê°œìˆ˜
 	public void pageInfo(int page, int range, int listCnt) {
 		this.page = page;
 		this.range = range;
 		this.listCnt = listCnt;
-		// ÀüÃ¼ ÆäÀÌÁö¼ö
+		// ì „ì²´ í˜ì´ì§€ ìˆ˜
 		this.pageCnt = (int) Math.ceil((double) listCnt / listSize);
-		// ½ÃÀÛ ÆäÀÌÁö
-		this.startPage = (range - 1) * rangeSize + 1;
-		// ³¡ ÆäÀÌÁö
-		this.endPage = range * rangeSize;
-		// °Ô½ÃÆÇ ½ÃÀÛ¹øÈ£
+		// ì‹œì‘ í˜ì´ì§€
+		if (page <=5) {
+			this.startPage = 1;
+		} else {
+			this.startPage = 6;
+		}
+		// ë í˜ì´ì§€
+		if (page <=5) {
+			this.endPage = 5;
+		} else {
+			this.endPage = 10;
+		}
+		// ê²Œì‹œíŒ ì‹œì‘ ë²ˆí˜¸
 		this.startList = (page - 1) * listSize;
-		// ÀÌÀü ¹öÆ° »óÅÂ
+		// ì´ì „ ë²„íŠ¼ ìƒíƒœ
 		this.prev = range == 1 ? false : true;
-		// ´ÙÀ½ ¹öÆ° »óÅÂ
+		if (page >= 6) {
+			this.prev = true;
+		}
+		// ë‹¤ìŒ ë²„íŠ¼ ìƒíƒœ
 		this.next = endPage > pageCnt ? false : true;
 		if (this.endPage > this.pageCnt) {
 			this.endPage = this.pageCnt;
+			this.next = false;
+		} else if (page >= 6) {
 			this.next = false;
 		}
 	}

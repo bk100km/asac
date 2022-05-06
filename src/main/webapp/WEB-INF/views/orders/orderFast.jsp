@@ -80,7 +80,7 @@ td{padding: 20px 5px !important;}
 						<td>
 							<input name="sid" type="hidden" value="${cart.sid}" />
 							<input name="ccode" type="hidden" value="${cart.ccode}" />
-							<img class="card-img-to imgpadding" src="/resources/image/product/${cart.pfile}" style="width:60px; height:60px;" title="${cart.pname}" /></td>
+							<img class="card-img-to imgpadding" src="/resources/productUpload/${cart.pfile}" style="width:60px; height:60px;" title="${cart.pname}" /></td>
 						<td>
 							<input name="pcode" type="hidden" value="${cart.pcode}" />
 							<input name="pname" type="hidden" value="${cart.pname}" />${cart.pname}</td>
@@ -213,7 +213,7 @@ td{padding: 20px 5px !important;}
 			if (rsp.success) {
 				//[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
 				jQuery.ajax({
-					url: "/or/cl/fi", //cross-domain error가 발생하지 않도록 주의해주세요
+					url: "/ca/cl/fi", //cross-domain error가 발생하지 않도록 주의해주세요
 					type: 'POST',
 					traditional : true,
 					data: {

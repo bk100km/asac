@@ -462,7 +462,7 @@ function directAction() {
 											<input class="btn content" type="button" value="상품목록"
 												onclick="location.href='<%= request.getContextPath() %>/pr/se/li'">
 								
-									
+
 								</div>
 				
 							</div>
@@ -472,7 +472,6 @@ function directAction() {
 					
 					</div>      
 					</div>
-
 
 					<br /> <br />
 					<br />

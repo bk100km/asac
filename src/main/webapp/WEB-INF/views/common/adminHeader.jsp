@@ -48,10 +48,6 @@ if (sid == null || !sid.equals("admin")) {
     color: #436414 !important;
 }
 
-.sidebar{
-	height: 101rem;
-}
-
 @media ( max-width : 991px) {
 .sidebar {
 	display: none;
@@ -61,6 +57,7 @@ if (sid == null || !sid.equals("admin")) {
 
 </style>
 </head>
+<body>
 		<!-- Sidebar -->
 		<ul	class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion "
 			id="accordionSidebar">

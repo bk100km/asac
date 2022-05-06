@@ -633,7 +633,9 @@ function sfileUploadAction() {
 
     <!-- Page Wrapper -->
     <div id="wrapper">
+    <header>
 	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+	</header>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
@@ -871,6 +873,7 @@ function sfileUploadAction() {
 				</div>
 			</div>
 		</div>
+		<br><br>
 	
 	</div>
 	<jsp:include page="../common/footer.jsp"></jsp:include>

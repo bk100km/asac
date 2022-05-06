@@ -65,18 +65,17 @@ public class ReviewClientController {
 			MultipartFile rfile) throws IOException {
 
 		System.out.println("멀티파일 = " + rfile);
-		 System.out.println("어서오세요");
 			System.out.println("패스" + request.getSession().getServletContext().getRealPath("product"));
-			String filePath = request.getSession().getServletContext().getRealPath("product");
 			String fileName = rfile.getOriginalFilename();
 			 System.out.println(fileName);
 	        try {
-	        	rfile.transferTo(new File("C:\\asac\\asac\\src\\main\\webapp\\resources\\image\\product\\" + fileName));
+	        	rfile.transferTo(new File(request.getSession().getServletContext().getRealPath("/resources/reviewUpload") + "/" +  fileName));
+	        	
 	        } catch(Exception e) {
 	            System.out.println("업로드 오류");
 	        }
 	        System.out.println("업로드 완료");
-	        System.out.println("업로드 파일경로 : " + filePath);
+	        System.out.println("업로드 파일경로 : " + request.getSession().getServletContext().getRealPath("/resources/reviewUpload"));
 			System.out.println("업로드 파일이름 : " + fileName);
 			System.out.println("업로드 파일크기 : " + rfile.getSize());
 			

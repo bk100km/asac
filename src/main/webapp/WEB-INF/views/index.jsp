@@ -155,6 +155,10 @@ h1 {
     font-size: 18px;
 }
 
+.product:hover .pricing {
+    opacity: 1 !important; 
+}
+
 </style>
 
 <script type="text/javascript">
@@ -279,14 +283,6 @@ function productIndexTag(clickedPtag) {
 									'<p class="price">' + 
 										'<span class="price-sale">' + map.productList[i].pprice + '원</span>' +  
 									'</p>' + 
-								'</div>' + 
-							'</div>' + 
-							'<div class="bottom-area d-flex px-3">' + 
-								'<div class="m-auto d-flex">' + 
-									'<a href="#"' + 
-										'class="buy-now d-flex justify-content-center align-items-center mx-1">' + 
-										'<span><i class="ion-ios-cart"></i></span>' + 
-									'</a>' + 
 								'</div>' + 
 							'</div>' + 
 						'</div>' + 
@@ -426,14 +422,6 @@ function productIndexTag(clickedPtag) {
 									<p class="price">
 										<span class="price-sale">${product.pprice}원</span>
 									</p>
-								</div>
-							</div>
-							<div class="bottom-area d-flex px-3">
-								<div class="m-auto d-flex">
-									<a href="#"
-										class="buy-now d-flex justify-content-center align-items-center mx-1">
-										<span><i class="ion-ios-cart"></i></span>
-									</a>
 								</div>
 							</div>
 						</div>

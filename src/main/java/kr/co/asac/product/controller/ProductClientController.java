@@ -44,7 +44,7 @@ public class ProductClientController {
 			) throws Exception {
 		
 		model.addAttribute("pcate", pcate);
-
+		System.out.println("li들어왔어");
 		productClientService.productClientList(model,pcate,text,items,ptag,nowPage,cntPerPage);
 		if (ptag == null || ptag == "") {
 		return "/product/productClientList";
@@ -70,7 +70,7 @@ public class ProductClientController {
 		
 	
 		productClientService.productClientListDetail(request, model, pcode, text, items, ptag, nowPage, reviewNowPage);
-		
+		System.out.println("dt들어왔어");
 	
 		System.out.println("ptag:"+ptag);
 		

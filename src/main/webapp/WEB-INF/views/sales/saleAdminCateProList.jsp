@@ -23,26 +23,22 @@
       
 	function getGraph(){
 		var jsonData = ${adcateProductList}
-		var jsonDataConfirm = ${adcateProductConfirmList}
-		    	  
+  	  
 		var jsonObject = JSON.stringify(jsonData);
-		var jsonObjectConfirm = JSON.stringify(jsonDataConfirm);
 		          
 		var jData = JSON.parse(jsonObject);
-		var jDataConfirm = JSON.parse(jsonObjectConfirm);
 		
 		var labelList = new Array();
 		var valueList = new Array();
 		var valueConfirmList = new Array();
-
+		
 		for (var i = 0; i < jData.length; i++) {
 			var d = jData[i];
 			labelList.push(d.pname);
+			if (isNaN(d.total)) d.total = 0;
 			valueList.push(d.total);
-		}
-		for (var i = 0; i < jDataConfirm.length; i++) {
-			var t = jDataConfirm[i];
-			valueConfirmList.push(t.total);
+			if (isNaN(d.ttotal)) d.ttotal = 0;
+			valueConfirmList.push(d.ttotal);
 		}
           
 		new Chart(document.getElementById("chart"), {
@@ -50,7 +46,7 @@
 			data: {
 				labels : labelList,
 				datasets : [ {
-				label : "총주문수",
+					label : "구매 완료 금액",
  					data : valueList,
 					borderColor: "#0055ff",
 					backgroundColor: "#0055ff",
@@ -58,7 +54,7 @@
 					borderRadius: 2,
 					borderSkipped: false
 				}, {
-					label : "구매완료수",
+					label : "총 주문 금액",
 					data : valueConfirmList,
 					borderColor: "#005500",
 					backgroundColor: "#005500",
@@ -180,7 +176,7 @@ $(function() {
 });
 </script>
 </head>
-<body id="page-top">
+<body>
 <!-- Page Wrapper -->
 <div id="wrapper">
 <header>
@@ -218,15 +214,15 @@ $(function() {
 							<td class="show">${sale.pname}</td>
 							<td class="hide">
 								<c:choose>
-								<c:when test="${saleAdminCateProductConfirmList[status.index].count eq null}">0</c:when>
-								<c:when test="${saleAdminCateProductConfirmList[status.index].count ne null}">${saleAdminCateProductConfirmList[status.index].count}</c:when>
+								<c:when test="${sale.count eq null}">0</c:when>
+								<c:when test="${sale.count ne null}">${sale.count}</c:when>
 								</c:choose></td>
-							<td class="hide">${sale.count}</td>
+							<td class="hide">${sale.tcount}</td>
 							<td class="show"><c:choose>
-								<c:when test="${saleAdminCateProductConfirmList[status.index].total eq null}">0원</c:when>
-								<c:when test="${saleAdminCateProductConfirmList[status.index].total ne null}"><fmt:formatNumber value="${saleAdminCateProductConfirmList[status.index].total}" pattern="#,###,###"/>원</c:when>
+								<c:when test="${sale.total eq null}">0원</c:when>
+								<c:when test="${sale.total ne null}"><fmt:formatNumber value="${sale.total}" pattern="#,###,###"/>원</c:when>
 								</c:choose></td>
-							<td class="show"><fmt:formatNumber value="${sale.total}" pattern="#,###,###"/>원</td>
+							<td class="show"><fmt:formatNumber value="${sale.ttotal}" pattern="#,###,###"/>원</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -246,9 +242,5 @@ $(function() {
 </div>
 </div>
 </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 </body>
 </html>

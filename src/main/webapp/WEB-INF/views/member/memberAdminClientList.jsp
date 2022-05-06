@@ -121,9 +121,11 @@ option {
 	height: 34px;
 }
 
+@media ( min-width : 768px) {
 #page-wrapper {
 	padding-left: 100px;
 	padding-right: 100px;
+}
 }
 
 </style>
@@ -483,7 +485,9 @@ function memberIdCheckAction() {
 
     <!-- Page Wrapper -->
     <div id="wrapper">
+    <header>
 	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+	</header>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
@@ -519,19 +523,19 @@ function memberIdCheckAction() {
 								<table id="memberListTable" class="table table-striped table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>아이디</th>
-											<th>이름</th>
-											<th>전화번호</th>
-											<th>가입일</th>
+											<th class="show">아이디</th>
+											<th class="show">이름</th>
+											<th class="hide">전화번호</th>
+											<th class="hide">가입일</th>
 										</tr>
 									</thead>
 									<tbody id="memberListBody">
 									<c:forEach items="${memberList}" var="member">
 										<tr id="memberInfoBtn" data-mid="${member.mid}" onclick="memberInfoAction(this)">
-											<td>${member.mid}</td>
-											<td>${member.mname}</td>
-											<td>${member.mphone}</td>
-											<td>${member.mregdate}</td>
+											<td class="show">${member.mid}</td>
+											<td class="show">${member.mname}</td>
+											<td class="hide">${member.mphone}</td>
+											<td class="hide">${member.mregdate}</td>
 										</tr>
 									</c:forEach>
 									</tbody>
@@ -688,6 +692,7 @@ function memberIdCheckAction() {
 				</div>
 			</div>
 		</div>
+	<br><br>
 	
 	</div>
 	<jsp:include page="../common/footer.jsp"></jsp:include>

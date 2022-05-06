@@ -50,8 +50,7 @@ public class MemberAdminController {
 	public String memberAdminLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		
 		memberSellerService.memberSellerLoginCheck(request, response, model, seller);
-		memberAdminService.adminIndexChart(request, response, model);
-		return "/adminIndex";
+		return "redirect:/me/ad/in";
 	}
 	
 	@RequestMapping(value = "/me/ad/lO", method = RequestMethod.GET)

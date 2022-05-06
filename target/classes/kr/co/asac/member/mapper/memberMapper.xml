@@ -68,7 +68,7 @@
 	
 	<!-- 아이디 찾기 -->
 	<select id="findId" resultType="kr.co.asac.member.bean.MemberBean">
-		select mid, mpwd, mname, mbirth, replace(mphone,'-','') mphone, maddr, maddrd, maddrz, mmail from member where mname = #{mname} and mmail = #{mmail} and mphone = #{mphone}
+		select * from member where mname = #{mname} and mmail = #{mmail} and mphone = replace(#{mphone}, '-', '')
 	</select>
 
 

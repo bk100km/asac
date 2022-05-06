@@ -50,7 +50,9 @@ background: linear-gradient(to top right);
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+    	<header>
 		<jsp:include page="../common/sellerHeader.jsp" />
+		</header>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
@@ -143,10 +145,8 @@ background: linear-gradient(to top right);
 		</div>
 
 	</div>
-	<br><br>
 	
-
-<br><br><br><br><br><footer>
+<br><br><br><footer>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" flush="false"></jsp:include>
 </footer>
 </div>

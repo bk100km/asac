@@ -153,7 +153,18 @@ public class MemberClientController {
 	}
 
 	@RequestMapping(value = "/me/cl/my", method = RequestMethod.GET)
-	public String memberClientMypage(HttpServletRequest request, HttpSession session, Model model, OrderBean order) {
+	public String memberClientMypage(HttpServletRequest request, HttpSession session, Model model, OrderBean order, HttpServletResponse response) throws IOException {
+		
+		if ((String)session.getAttribute("mid") == null) {
+			response.setContentType("text/html;charset=utf-8");
+		   	PrintWriter out = response.getWriter();
+		   	out.println("<script>");
+		   	out.println("alert('로그인 후 이용해주세요.')");
+		   	out.println("history.back()");
+		   	out.println("</script>");
+		   	out.flush();	
+		} 
+		
 		System.out.println("mid값 찍었니 my1");
 		String mid=(String) session.getAttribute("mid");
 		System.out.println("mid값 찍었니 my2" + mid);
@@ -288,7 +299,7 @@ public class MemberClientController {
 	@RequestMapping(value = "/me/cl/lo/getKakaoAuthUrl")
 	public @ResponseBody String getKakaoAuthUrl(HttpServletRequest request) throws Exception {
 		String reqUrl = "https://kauth.kakao.com/oauth/authorize" + "?client_id=346850b56c865f9b968ddbb705b5d969"
-				+ "&redirect_uri=http://localhost:8080/me/cl/lo/kakao" + "&response_type=code";
+				+ "&redirect_uri=http://www.asac.gq/me/cl/lo/kakao" + "&response_type=code";
 
 		return reqUrl;
 	}
@@ -350,7 +361,7 @@ public class MemberClientController {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=346850b56c865f9b968ddbb705b5d969"); // 본인이 발급받은 key
-			sb.append("&redirect_uri=http://localhost:8080/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
+			sb.append("&redirect_uri=http://www.asac.gq/me/cl/lo/kakao"); // 본인이 설정해 놓은 경로
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();

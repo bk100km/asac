@@ -3,15 +3,15 @@ package kr.co.asac.cart.bean;
 import java.util.Date;
 
 public class CartBean {
-	public int ccode;
-	public String mid;
-	public String pcode;
-	public String pname;
-	public int pprice;
-	public int pcount;
-	public String pfile;
-	public String sid;
-	private Date oregdate;
+	private int ccode;
+	private String mid;
+	private String pcode;
+	private String pname;
+	private int pprice;
+	private int pcount;
+	private String pfile;
+	private String sid;
+	private Date cregdate;
 
 	
 	public int getCcode() {
@@ -70,11 +70,11 @@ public class CartBean {
 	}
 	
 	
-	public Date getOregdate() {
-		return oregdate;
+	public Date getCregdate() {
+		return cregdate;
 	}
-	public void setOregdate(Date oregdate) {
-		this.oregdate = oregdate;
+	public void setCregdate(Date cregdate) {
+		this.cregdate = cregdate;
 	}
 	@Override
 	public String toString() {

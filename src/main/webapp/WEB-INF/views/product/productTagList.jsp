@@ -5,6 +5,24 @@
 <!DOCTYPE html>
 <html>
     <head>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  $(window).scroll(function(){
+    if ($(this).scrollTop() > 100){
+    		$('.btn_gotop').show();
+    	} else{
+    		$('.btn_gotop').hide();
+    	}
+    });
+    $('.btn_gotop').click(function(){
+    	$('html, body').animate({scrollTop:0},400);
+    	return false;
+    });
+    
+    
+    
+    
+    </script>
     
      <style>
  ul {
@@ -147,16 +165,41 @@ h2{
  width:350px;
  
 }
-.productlist{
+h2{
+	margin-left:35% !important;
+}
+.prodiv{
 
-	margin-left:20px !important;
+	margin-left:35px !important;
 }
 
 
+}
+
+.btn_gotop {
+	display:none;
+	position:fixed;
+	bottom:30px; 
+	right:10px; / 
+	z-index:999;
+	border:1px solid #ccc;
+	outline:none;
+	background-color:white;
+	color:#333;
+	cursor:pointer;
+	padding:8px 14px;
+	border-radius:100%;
 }
      </style>
     </head>
     <body>
+
+<a href="#" class="btn_gotop">
+  <span class="glyphicon glyphicon-chevron-up">top
+  </span>
+</a>
+    
+    
     <jsp:include page="../common/clientHeader.jsp" flush="false" />
   
         <!-- Section-->	
@@ -181,7 +224,7 @@ h2{
 	                         
 	    
 	                            <a class="img-prod" href="<%= request.getContextPath() %>/pr/cl/dt/${product.pcode}/ptag/${ptag}/${paging.nowPage}">
-	                            <img class="img-fluid card-img-top" src="/resources/productUpload/${proDetail.pfile}" title="${product.pname}" alt="${product.pcontent}" />
+	                            <img class="img-fluid card-img-top" src="/resources/productUpload/${product.pfile}" title="${product.pname}" alt="${product.pcontent}" />
 	                            </a>
 	                           
 	                            <!-- Product details-->

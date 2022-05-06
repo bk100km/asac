@@ -45,10 +45,7 @@ public class MemberSellerController {
 	public String memberSellerLoginCheck(HttpServletRequest request, HttpServletResponse response, Model model, SellerBean seller) throws Exception {
 		
 		memberSellerService.memberSellerLoginCheck(request, response, model, seller);
-		
-		//sellerChart
-		memberSellerService.sellerIndexChart(request, response, model);	
-		return "sellerIndex";
+		return "redirect:/me/se/in";
 	}
 	
 	@RequestMapping(value ="/me/se/so", method=RequestMethod.POST)

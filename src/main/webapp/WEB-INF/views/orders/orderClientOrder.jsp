@@ -83,7 +83,7 @@
   					<th scope="col" class="break">상품이미지</th>
 					<th scope="col">상품명</th>
 					<th scope="col">가격</th>
-					<th scope="col">수량</th>
+					<th scope="col" class="break">수량</th>
 					<th scope="col" class="break">총가격</th>
 				</tr>
 			</thead>
@@ -137,24 +137,24 @@
       		<form id="ordera" name="ordera" method="post">
       		<div class="row">
       			<input type="hidden"name="mid" id="mid" value="${memberInfo.mid}" />
-	        	<div class="col-2 yellow">이름  </div>
+	        	<div class="col-2 yellow break">이름  </div>
 	        	<div class="col-10 white"><input type="text"name="oname" id="oname" value="${memberInfo.mname}" required/></div>
 	        		
-	        	<div class="col-2 yellow">우편번호  </div>
+	        	<div class="col-2 yellow break">우편번호  </div>
 	        	<div class="col-10 white"><input type="text" name="oaddrz" id="oaddrz" value="${memberInfo.maddrz}" readonly required/> &nbsp;
 	        	&nbsp;<button type="button" class="updatebtn" onclick="sample6_execDaumPostcode()">우편번호 찾기</button></div>
 	        	
-	        	<div class="col-2 yellow">주소  </div>
+	        	<div class="col-2 yellow break">주소  </div>
 	        	<div class="col-10 white"><input type="text" name="oaddr" id="oaddr" value="${memberInfo.maddr}" readonly required/></div>
 	        	
-	        	<div class="col-2 yellow">상세주소  </div>
+	        	<div class="col-2 yellow break">상세주소  </div>
 	        	<div class="col-10 white"><input type="text" name="oaddrd" id="oaddrd" value="${memberInfo.maddrd}" required/></div>
 	        	
-	        	<div class="col-2 yellow">전화번호  </div>
+	        	<div class="col-2 yellow break">전화번호  </div>
 	        	<div class="col-10 white">
 	        	<input type="text" name="ophone" id="ophone" value="${memberInfo.mphone}" placeholder="ex)01012341234" maxlength="11" required/></div>
 	        	
-	        	<div class="col-2 yellow">배송요청사항  </div>
+	        	<div class="col-2 yellow break">배송 요청사항  </div>
 	        	<div class="col-10 white"><input type="text" name="omessage" id="omessage" /></div>
 	        	<div id='result'></div>
 	        </div>

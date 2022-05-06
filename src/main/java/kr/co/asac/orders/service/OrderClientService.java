@@ -136,7 +136,7 @@ public class OrderClientService {
 		System.out.println("이녀석" + pcodelist);
 		String boo;
 		String pcode = pcodelist.toString();
-		String cartpcode = cart.pcode;
+		String cartpcode = cart.getPcode();
 		boolean isContainsPcode = pcode.contains(cartpcode);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();

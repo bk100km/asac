@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="kr.co.asac.product.bean.ProductBean"%>
+
+<%
+ProductBean productBean = (ProductBean) request.getAttribute("product");
+String pfile = (String) request.getParameter("pfile");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,15 +57,27 @@
 #leftPanel {
 	text-align: center;
 	height: 700px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 	
 #leftPanel .table-responsive {
 	height: 620px;
 }
 
+@media (max-width: 800px) {
+#leftPanel .table-responsive {
+	height: 660px;
+	}
+}
+
 #productInfoBtn td {
 	line-height: 28px;
+}
+
+@media (max-width: 800px) {
+#productInfoBtn td {
+	line-height: 18px;
+	}
 }
 
 th {
@@ -68,8 +87,8 @@ th {
 /* Overlay */
 .image {
 	display: block;
-	width: auto;
-	height:100%;
+	width: 100%;
+	height:75%;
 }
 .overlay {
 	position: absolute;
@@ -92,8 +111,24 @@ th {
     border-width: 2px;
 }
 
+@media (max-width: 800px) {
+.product-panel-default {
+	height: 980px;
+	border: 1px solid;
+	border-radius: 10px;
+    border-color:  #d8e3c9;
+    border-width: 2px;
+	}
+}
+
 .left-product-panel-default {
-	height: 760px;
+	height: 780px;
+	}
+
+@media (max-width: 800px) {
+.left-product-panel-default {
+	height: 780px;
+	}
 }
 
 .panel-heading {
@@ -144,38 +179,19 @@ option {
     font-family: 'Pretendard';
 }
 
-.nav-tabs {
-	font-size: 20px;
+@media (min-width: 800px) {
+ #page-wrapper { 
+ 	padding-top: 20px; 
+ 	padding-bottom: 20px; 
+ 	padding-left: 100px; 
+ 	padding-right: 100px; 
+ 	}
+ 	
 }
 
-.nav-tabs > li {
-	margin-left: 10px;
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background: #d8e3c9;
-	bproduct-top-left-radius: 10px;
-	bproduct-top-right-radius: 10px;
+@media (max-width: 800px) {
+.nosee {display: none;}
 }
-
-.nav-tabs > li > a{
-	color: #85976d;
-	font-family: Pretendard;
-	text-decoration: none;
-}
-
-.nav-tabs > .active {
-	background: #b8d590;
-}
-
-#page-wrapper {
-	padding-top: 20px;
-	padding-bottom: 20px;
-	padding-left: 100px;
-	padding-right: 100px;
-}
-
 
 </style>
 </head>
@@ -184,6 +200,7 @@ option {
 <script>
 
 //pfilePreview
+
 $('body').on('click', function() {
 	$('#overlayFade').css("opacity", "0");
     $('#productFormTable').css("opacity", "1");
@@ -191,6 +208,7 @@ $('body').on('click', function() {
 });
 
 function pfilePreview() {
+	var pfile = document.getElementById('pfile').value;
 	$('#overlayFade').css("opacity", "0.95");
     $('#productFormTable').css("opacity", "0.05");
     $('#productFormTable').css("transition", "all .5s ease");
@@ -226,6 +244,7 @@ function productInfoAction(clickedproduct) {
         	
             $(product).each(function(index, item) {
                 $('#pcode').prop('value',product.pcode);
+                $('#pcode').prop('readonly',true);
                 $('#pname').prop('value',product.pname);
                 $('#pname').prop('readonly',false);
                 $('#pprice').prop('value',product.pprice);
@@ -274,15 +293,15 @@ function productSearchAction(clickedPage) {
         	 $.each(map.productList , function(i){
         		 productListText += '<tr id="productInfoBtn" onclick="productInfoAction(this)" data-pcode="' + map.productList[i].pcode + 
 					'"><td>' + map.productList[i].pname + 
-					'</td><td>' + map.productList[i].pcate + 
-					'</td><td>' + map.productList[i].ptag +
+					'</td><td class="nosee">' + map.productList[i].pcate + 
+					'</td><td class="nosee">' + map.productList[i].ptag +
 					'</td><td>' + map.productList[i].sid +
 					'</td></tr>';
 			});
 
 			if (map.paging.prev) {
 				productPagingText +=
-				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>'; 
+				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(5)">이전</a></li>'; 
 			}
 			for (step = map.paging.startPage; step < map.paging.endPage + 1; step++) {
 				productPagingText +=
@@ -290,7 +309,7 @@ function productSearchAction(clickedPage) {
 			}
 			if (map.paging.next) {
 				productPagingText +=
-				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(' + map.paging.endPage + ')">다음</a></li>';
+				'<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(6)">다음</a></li>';
 			}
 			document.getElementById("productListBody").innerHTML = productListText;
 			document.getElementById("productPagingZone").innerHTML = productPagingText;
@@ -332,15 +351,15 @@ function productInsertForm() {
             $("#pcate").val($(this).val());
 
             if ($(this).val() == "농산물류") {
-                $('#pcode').prop('value', 'N');
+                $('#pcode').prop('value', 'N0');
             } else if ($(this).val() == "간편식류") {
-            	$('#pcode').prop('value', 'G');
+            	$('#pcode').prop('value', 'G0');
             } else if ($(this).val() == "콩고기류") {
-        		$('#pcode').prop('value', 'K');
+        		$('#pcode').prop('value', 'K0');
             } else if ($(this).val() == "양념소스류") {
-            	$('#pcode').prop('value', 'Y');
+            	$('#pcode').prop('value', 'Y0');
             } else if ($(this).val() == "음료류") {
-            	$('#pcode').prop('value', 'U');
+            	$('#pcode').prop('value', 'U0');
             } else if ($(this).val() == "생활용품류") {
             	$('#pcode').prop('value', 'S');
             }
@@ -452,6 +471,7 @@ function productInsertAction() {
         	productInsertCancel();
         },
         error: function(request, status, error) {
+        	alert("상품 추가 실패.\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -475,6 +495,7 @@ function productUpdateAction() {
 				
         },
         error: function(request, status, error) {
+        	alert("상품 수정 실패.\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -495,6 +516,7 @@ function productDeleteAction() {
 				
         },
         error: function(request, status, error) {
+        	alert("상품 삭제 실패\n다시 시도해주세요.")
             console.log("code:" + request.status + 
             		"\n"+"message:" + request.responseText + 
             		"\n"+"error:"+error);
@@ -551,7 +573,9 @@ function productRAction() {
 <br>
     <!-- Page Wrapper -->
     <div id="wrapper">
+    <header>
 	<jsp:include page="../common/adminHeader.jsp"></jsp:include>
+	</header>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
@@ -577,7 +601,7 @@ function productRAction() {
 										</select>
 										<input class="form-control input-sm" id="productSearchText" type="text"
 											placeholder="검색어 입력"> <span class="input-group-btn">
-											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction()">
+											<input type="button" class="btn btn-default btn-md" id="productSearchButton" value="검색" onclick="productSearchAction(1)">
 										</span>
 									</div>
 								</div>
@@ -589,8 +613,8 @@ function productRAction() {
 									<thead>
 										<tr>
 											<th>상품명</th>								
-											<th>카테고리</th>
-											<th>태그명</th>								
+											<th class="nosee">카테고리</th>
+											<th class="nosee">태그명</th>								
 											<th>판매자아이디</th>
 										</tr>
 									</thead>
@@ -598,8 +622,8 @@ function productRAction() {
 									<c:forEach var="product" items="${productAdminList}">
 										<tr id="productInfoBtn" data-pcode="${product.pcode}" onclick="productInfoAction(this)">
 											<td>${product.pname}</td>
-											<td>${product.pcate}</td>
-											<td>${product.ptag}</td>											
+											<td class="nosee">${product.pcate}</td>
+											<td class="nosee">${product.ptag}</td>											
 											<td>${product.sid}</td>
 										</tr>
 									</c:forEach>
@@ -608,7 +632,7 @@ function productRAction() {
 							</div>
 							<ul class="pagination justify-content-center" id="productPagingZone">
 								<c:if test= "${productPaging.prev}">
-									<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(1)">이전</a></li>
+									<li class="page-item"><a class="page-link" href="#" onclick="productSearchAction(5)">이전</a></li>
 								</c:if>
 								<c:forEach var="page" begin="${productPaging.startPage}" end="${productPaging.endPage}">
 									<c:if test="${productPaging.page eq page}">
@@ -619,7 +643,7 @@ function productRAction() {
 									</c:if>
 								</c:forEach>
 								<c:if test= "${productPaging.next}">
-									<li class="page-item"><a class="page-link" href="#"  onclick="productSearchAction(${productPaging.endPage})">다음</a></li>
+									<li class="page-item"><a class="page-link" href="#"  onclick="productSearchAction(6)">다음</a></li>
 								</c:if>
 							</ul>
 						</div>
@@ -633,7 +657,7 @@ function productRAction() {
 						<div class="panel-heading" id="panel-heading-right">상품 상세 정보</div>
 						<div class="panel-body">
 						<c:forEach var="product" items="${productAdminList}">
-						<div class="overlay overlayFade" id="overlayFade">
+						<div class="overlay overlayFade" id="overlayFade" name="overlayFade">
 							<img src="/resources/productUpload/${product.pfile}" alt="img" class="image">
 						</div>
 						</c:forEach>
@@ -754,11 +778,46 @@ function productRAction() {
 	<script>
 
 	function productUpdateOk() {
+		var pcode = document.getElementById('pcode').value;
+		var pname = document.getElementById('pname').value;
+		var pcate = document.getElementById('pcate').value;
+		var ptag = document.getElementById('ptag').value;
+		var pfile = document.getElementById('pfile').value;
+		var pprice = document.getElementById('pprice').value;
+		var pcontent = document.getElementById('pcontent').value;
+		var sid = document.getElementById('sid').value;
+		
 		if(!confirm('정말 수정하시겠습니까?')){
 			return false;
 		} else {
-			$("select[name=pcate]").removeAttr('disabled');
-			productUpdateAction();
+			if(pcate == '' || pcate == '카테고리 선택') {
+				alert('카테고리를 선택해주세요.')
+				return false;
+			} else if(pcode == '') {
+				alert('상품코드를 입력해주세요.')
+				return false;
+			} else if(pname == '') {
+				alert('상품명을 입력해주세요.')
+				return false;
+			} else if(pprice == '') {
+				alert('가격을 입력해주세요.')
+				return false;
+			} else if(ptag == '') {
+				alert('태그명을 입력해주세요.')
+				return false;
+			} else if(pfile == '') {
+				alert('사진을 추가해주세요.')
+				return false;	
+			} else if(pcontent == '') {
+				alert('상품설명을 입력해주세요.')
+				return false;
+			} else if(sid == '') {
+				alert('판매자아이디를 입력해주세요.')
+				return false;
+			} else {
+				$("select[name=pcate]").removeAttr('disabled');
+				productUpdateAction();
+			}
 		}
 	}
 	
@@ -771,10 +830,45 @@ function productRAction() {
 	}
 	
 	function productInsertOk() {
-		if(!confirm('상품을 추가하시겠습니까?')){
+		var pcode = document.getElementById('pcode').value;
+		var pname = document.getElementById('pname').value;
+		var pcate = document.getElementById('pcate').value;
+		var ptag = document.getElementById('ptag').value;
+		var pfile = document.getElementById('pfile').value;
+		var pprice = document.getElementById('pprice').value;
+		var pcontent = document.getElementById('pcontent').value;
+		var sid = document.getElementById('sid').value;
+		
+		if(!confirm('상품을 추가하시겠습니까?')) {
 			return false;
 		} else {
-			productInsertAction();
+			if(pcate == '' || pcate == '카테고리 선택') {
+				alert('카테고리를 선택해주세요.')
+				return false;
+			} else if(pcode == '') {
+				alert('상품코드를 입력해주세요.')
+				return false;
+			} else if(pname == '') {
+				alert('상품명을 입력해주세요.')
+				return false;
+			} else if(pprice == '') {
+				alert('가격을 입력해주세요.')
+				return false;
+			} else if(ptag == '') {
+				alert('태그명을 입력해주세요.')
+				return false;
+			} else if(pfile == '') {
+				alert('사진을 추가해주세요.')
+				return false;	
+			} else if(pcontent == '') {
+				alert('상품설명을 입력해주세요.')
+				return false;
+			} else if(sid == '') {
+				alert('판매자아이디를 입력해주세요.')
+				return false;
+			} else {
+				productInsertAction();
+			}
 		}
 	}
 	
@@ -794,9 +888,5 @@ function productRAction() {
 </footer>
 </div>
 </div>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 </body>
 </html>

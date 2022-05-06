@@ -374,7 +374,9 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+    	<header>
 		<jsp:include page="./common/sellerHeader.jsp" />
+		</header>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 

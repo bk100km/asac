@@ -397,7 +397,9 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+    <header>
 	<jsp:include page="./common/adminHeader.jsp" />
+	</header>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
@@ -439,7 +441,6 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -475,7 +476,6 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

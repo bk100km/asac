@@ -118,7 +118,7 @@ function birth_keyup(obj){
 	}
 
 function removeCheck() {
-	 if (confirm("정말 삭제하시겠습니까?")){    //확인
+	 if (confirm("정말 탈퇴하시겠습니까?")){    //확인
 		 location.href= './dk';
 	 }
 }

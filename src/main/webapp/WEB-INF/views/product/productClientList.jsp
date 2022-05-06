@@ -5,16 +5,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-    
-    
-    
-    
-     <style>
-     
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
 
-     
-     
- ul {
+ $(window).scroll(function(){
+ 	if ($(this).scrollTop() > 500){
+ 		$('.btn_gotop').show();
+ 	} else{
+ 		$('.btn_gotop').hide();
+ 	}
+ });
+ $('.btn_gotop').click(function(){
+ 	$('html, body').animate({scrollTop:0},400);
+ 	return false;
+ });
+ 
+ 
+ </script> 
+<style>     
+ul{
     display: block;
     list-style-type: disc;
     margin-block-start: 1em;
@@ -39,8 +49,8 @@
     margin: 0;
     padding: 0;
     min-width: 0;
-}     
-     
+    }  
+    
 li {
     display: list-item;
     text-align: -webkit-match-parent;
@@ -95,9 +105,7 @@ h3 {
 }
 .group_btn {
           
-            opacity: 0.3;
-            
-          
+     opacity: 0.3;
 
 }
 
@@ -138,7 +146,7 @@ h3 {
 
 
 .txt{
-		width:5em;
+		width:6em;
         height:1.5em;
 }
 .pagination{
@@ -153,35 +161,68 @@ h3 {
 
 .row{
  margin-bottom:20px;
- 
- width:350px;
- 
+ width:340px !important;
+
 }
+ .searchform{
+ width:110%;
+ margin-left:-20px;
+ }
+ .selecttext{
+ width:40%;
+ }
 .productlist{
+	
+	margin-left:60px !important;
+}
+.container{
+	 width:420px !important;
 
-	margin-left:55px !important;
+
 }
 
-
+}
+.btn_gotop {
+	display:none;
+	position:fixed;
+	bottom:30px; 
+	right:10px; / 
+	z-index:999;
+	border:1px solid #ccc;
+	outline:none;
+	background-color:white;
+	color:#333;
+	cursor:pointer;
+	padding:15px 20px;
+	border-radius:100%;
 }
 
 
      </style>
     </head>
     <body>
+    
+               <a href="#" class="btn_gotop">
+  <span class="glyphicon glyphicon-chevron-up">top
+  </span></a>
+
     <jsp:include page="../common/clientHeader.jsp" flush="false" />
+  
+  
+  
   
         <!-- Section-->	
         
        <h3>${pcate}</h3>
+
         <section class="py-5">
             <div class="container">
             
             <form class="searchform" id="searchForm" name="search" method="post">
 						<div class="searchdiv"  align="center">&nbsp;&nbsp; 
 						<select name="items" id="items" class="txt">
-								<option value="sid" <c:if test="${param.items eq 'sid'}"> selected="selected"</c:if>>판매자</option>
 								<option value="pname"<c:if test="${param.items eq 'pname'}"> selected="selected"</c:if>>상품이름</option>
+								<option value="sid" <c:if test="${param.items eq 'sid'}"> selected="selected"</c:if>>판매자</option>		
 						</select>
 						<input name="text" id="text" type="text" class="selecttext" <c:if test="${param.text ne null}">value="${param.text}"</c:if>/> 
 						<input type="button" id="btnAdd" class="btn btn-outline-dark" value="검색" onclick="searchAction()">
